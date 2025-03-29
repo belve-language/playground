@@ -1,0 +1,5 @@
+{
+	"emeraldwalk.runonsave": {
+		"commands": [{"cmd": "npx prettier --write ${file}", "match": ".*"}]
+	}
+}
