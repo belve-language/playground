@@ -20,100 +20,180 @@ import {createWhitespaceSegmentConcreteSyntaxTreeNode} from "../../../../concret
 import {createWhitespaceSegmentsConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/whitespace-segments/createWhitespaceSegmentsConcreteSyntaxTreeNode.ts";
 import type {WhitespaceConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/whitespace/WhitespaceConcreteSyntaxTreeNode.ts";
 import type {Parser} from "../../Parser.ts";
-import {FunctionCallKnownSegmentContentFinalWhitespaceSegmentsParser} from "../function-call-known-segment-content-final-whitespace-segments-parser/FunctionCallKnownSegmentContentFinalWhitespaceSegmentsParser.ts";
+import {FunctionCallKnownSegmentContentFinalWhitespaceSegmentsParser} from "../function-call-known-segment-content-final-whitespace-segments/FunctionCallKnownSegmentContentFinalWhitespaceSegmentsParser.ts";
 import {FunctionCallKnownSegmentContentIdentifierSegmentsParser} from "../function-call-known-segment-content-identifier-segments/FunctionCallKnownSegmentContentIdentifierSegmentsParser.ts";
 import {FunctionCallSegmentsParser} from "../function-call-segments-parser/FunctionCallSegmentsParser.ts";
 export class FunctionCallKnownSegmentContentParser implements Parser {
-	private readonly functionCallKnownSegmentClosingBracket: FunctionCallKnownSegmentClosingBracketConcreteSyntaxTreeNode;
-	private readonly functionCallKnownStartingSegmentsRestSegments:
-		| FunctionCallKnownStartingSegmentsConcreteSyntaxTreeNode
-		| FunctionCallUnknownStartingSegmentsConcreteSyntaxTreeNode
-		| FunctionCallWordStartingSegmentsConcreteSyntaxTreeNode
-		| null
-		| FunctionCallSegmentsSeparatedRestSegmentsConcreteSyntaxTreeNode;
-	private readonly statementsRestStatements: StatementsRestStatementsConcreteSyntaxTreeNode | null;
-	private readonly blockContentFinalWhitespace: WhitespaceConcreteSyntaxTreeNode | null;
-	private readonly blockContentEndingIndex: Index;
-	private readonly blockClosingBracket: BlockClosingBracketConcreteSyntaxTreeNode;
-	private readonly blockEndingIndex: Index;
-	private readonly blockStack: readonly (readonly [
-		statementsRestStatements: StatementsRestStatementsConcreteSyntaxTreeNode | null,
-		statementsEndingIndex: Index,
-		finalWhitespace: WhitespaceConcreteSyntaxTreeNode | null,
-		contentEndingIndex: Index,
-		closingBracket: BlockClosingBracketConcreteSyntaxTreeNode,
-		endingIndex: Index,
-	])[];
-	private readonly functionsRestFunctions:
-		| FunctionsSeparatedRestFunctionsConcreteSyntaxTreeNode
-		| null
-		| FunctionsConcreteSyntaxTreeNode;
-	private readonly sourceFileContentFinalWhitespace: WhitespaceConcreteSyntaxTreeNode | null;
 	public constructor(
-		functionCallKnownSegmentClosingBracket: FunctionCallKnownSegmentClosingBracketConcreteSyntaxTreeNode,
-		functionCallKnownSegmentEndingIndex: Index,
-		functionCallKnownStartingSegmentsRestSegments:
-			| FunctionCallKnownStartingSegmentsConcreteSyntaxTreeNode
-			| FunctionCallUnknownStartingSegmentsConcreteSyntaxTreeNode
-			| FunctionCallWordStartingSegmentsConcreteSyntaxTreeNode
-			| null
-			| FunctionCallSegmentsSeparatedRestSegmentsConcreteSyntaxTreeNode,
-		functionCallSegmentsEndingIndex: Index,
-		functionCallEndingIndex: Index,
-		statementsRestStatements: StatementsRestStatementsConcreteSyntaxTreeNode | null,
-		statementsEndingIndex: Index,
-		blockContentFinalWhitespace: WhitespaceConcreteSyntaxTreeNode | null,
-		blockContentEndingIndex: Index,
-		blockClosingBracket: BlockClosingBracketConcreteSyntaxTreeNode,
-		blockEndingIndex: Index,
-		blockStack: readonly (readonly [
-			statementsRestStatements: StatementsRestStatementsConcreteSyntaxTreeNode | null,
-			statementsEndingIndex: Index,
-			finalWhitespace: WhitespaceConcreteSyntaxTreeNode | null,
-			contentEndingIndex: Index,
-			closingBracket: BlockClosingBracketConcreteSyntaxTreeNode,
-			endingIndex: Index,
-		])[],
-		functionBodyEndingIndex: Index,
-		functionEndingIndex: Index,
-		functionsRestFunctions:
-			| FunctionsSeparatedRestFunctionsConcreteSyntaxTreeNode
-			| null
-			| FunctionsConcreteSyntaxTreeNode,
-		functionsEndingIndex: Index,
-		sourceFileContentFinalWhitespace: WhitespaceConcreteSyntaxTreeNode | null,
-		sourceFileContentEndingIndex: Index,
+		sourceFileContent: Readonly<{
+			children: readonly [
+				functions: Readonly<{
+					children: readonly [
+						firstFunction: Readonly<{
+							children: readonly [
+								body: Readonly<{
+									children: readonly [
+										block: Readonly<{
+											children: readonly [
+												content: Readonly<{
+													children: readonly [
+														statements: Readonly<{
+															children: readonly [
+																firstStatement: Readonly<{
+																	children: readonly [
+																		segments: Readonly<{
+																			children: readonly [
+																				firstSegment: Readonly<{
+																					children: readonly [
+																						closingBracket: FunctionCallKnownSegmentClosingBracketConcreteSyntaxTreeNode,
+																					];
+																					endingIndex: Index;
+																				}>,
+																				restSegments:
+																					| FunctionCallKnownStartingSegmentsConcreteSyntaxTreeNode
+																					| FunctionCallUnknownStartingSegmentsConcreteSyntaxTreeNode
+																					| FunctionCallWordStartingSegmentsConcreteSyntaxTreeNode
+																					| null
+																					| FunctionCallSegmentsSeparatedRestSegmentsConcreteSyntaxTreeNode,
+																			];
+																			endingIndex: Index;
+																		}>,
+																	];
+																	endingIndex: Index;
+																}>,
+																restStatements: StatementsRestStatementsConcreteSyntaxTreeNode | null,
+															];
+															endingIndex: Index;
+														}>,
+														finalWhitespace: WhitespaceConcreteSyntaxTreeNode | null,
+													];
+													endingIndex: Index;
+												}>,
+												closingBracket: BlockClosingBracketConcreteSyntaxTreeNode,
+											];
+											endingIndex: Index;
+										}>,
+										blockStack: readonly Readonly<{
+											children: readonly [
+												Readonly<{
+													children: readonly [
+														Readonly<{
+															children: readonly [
+																statementsRestStatements: StatementsRestStatementsConcreteSyntaxTreeNode | null,
+															];
+															endingIndex: Index;
+														}>,
+														finalWhitespace: WhitespaceConcreteSyntaxTreeNode | null,
+													];
+													endingIndex: Index;
+												}>,
+												closingBracket: BlockClosingBracketConcreteSyntaxTreeNode,
+											];
+											endingIndex: Index;
+										}>[],
+									];
+									endingIndex: Index;
+								}>,
+							];
+							endingIndex: Index;
+						}>,
+						restFunctions:
+							| FunctionsSeparatedRestFunctionsConcreteSyntaxTreeNode
+							| null
+							| FunctionsConcreteSyntaxTreeNode,
+					];
+					endingIndex: Index;
+				}>,
+				finalWhitespace: WhitespaceConcreteSyntaxTreeNode | null,
+			];
+			endingIndex: Index;
+		}>,
 	) {
-		this.functionCallKnownSegmentClosingBracket =
-			functionCallKnownSegmentClosingBracket;
-		this.functionCallKnownSegmentEndingIndex =
-			functionCallKnownSegmentEndingIndex;
-		this.functionCallKnownStartingSegmentsRestSegments =
-			functionCallKnownStartingSegmentsRestSegments;
-		this.functionCallSegmentsEndingIndex = functionCallSegmentsEndingIndex;
-		this.functionCallEndingIndex = functionCallEndingIndex;
-		this.statementsRestStatements = statementsRestStatements;
-		this.statementsEndingIndex = statementsEndingIndex;
-		this.blockContentFinalWhitespace = blockContentFinalWhitespace;
-		this.blockContentEndingIndex = blockContentEndingIndex;
-		this.blockClosingBracket = blockClosingBracket;
-		this.blockEndingIndex = blockEndingIndex;
-		this.blockStack = blockStack;
-		this.functionBodyEndingIndex = functionBodyEndingIndex;
-		this.functionEndingIndex = functionEndingIndex;
-		this.functionsRestFunctions = functionsRestFunctions;
-		this.functionsEndingIndex = functionsEndingIndex;
-		this.sourceFileContentFinalWhitespace = sourceFileContentFinalWhitespace;
-		this.sourceFileContentEndingIndex = sourceFileContentEndingIndex;
+		this.sourceFileContent = sourceFileContent;
 	}
-	private readonly functionCallKnownSegmentEndingIndex: Index;
-	private readonly functionCallSegmentsEndingIndex: Index;
-	private readonly functionCallEndingIndex: Index;
-	private readonly statementsEndingIndex: Index;
-	private readonly functionBodyEndingIndex: Index;
-	private readonly functionEndingIndex: Index;
-	private readonly functionsEndingIndex: Index;
-	private readonly sourceFileContentEndingIndex: Index;
+	private readonly sourceFileContent: Readonly<{
+		children: readonly [
+			functions: Readonly<{
+				children: readonly [
+					firstFunction: Readonly<{
+						children: readonly [
+							body: Readonly<{
+								children: readonly [
+									block: Readonly<{
+										children: readonly [
+											content: Readonly<{
+												children: readonly [
+													statements: Readonly<{
+														children: readonly [
+															firstStatement: Readonly<{
+																children: readonly [
+																	segments: Readonly<{
+																		children: readonly [
+																			firstSegment: Readonly<{
+																				children: readonly [
+																					closingBracket: FunctionCallKnownSegmentClosingBracketConcreteSyntaxTreeNode,
+																				];
+																				endingIndex: Index;
+																			}>,
+																			restSegments:
+																				| FunctionCallKnownStartingSegmentsConcreteSyntaxTreeNode
+																				| FunctionCallUnknownStartingSegmentsConcreteSyntaxTreeNode
+																				| FunctionCallWordStartingSegmentsConcreteSyntaxTreeNode
+																				| null
+																				| FunctionCallSegmentsSeparatedRestSegmentsConcreteSyntaxTreeNode,
+																		];
+																		endingIndex: Index;
+																	}>,
+																];
+																endingIndex: Index;
+															}>,
+															restStatements: StatementsRestStatementsConcreteSyntaxTreeNode | null,
+														];
+														endingIndex: Index;
+													}>,
+													finalWhitespace: WhitespaceConcreteSyntaxTreeNode | null,
+												];
+												endingIndex: Index;
+											}>,
+											closingBracket: BlockClosingBracketConcreteSyntaxTreeNode,
+										];
+										endingIndex: Index;
+									}>,
+									blockStack: readonly Readonly<{
+										children: readonly [
+											Readonly<{
+												children: readonly [
+													Readonly<{
+														children: readonly [
+															statementsRestStatements: StatementsRestStatementsConcreteSyntaxTreeNode | null,
+														];
+														endingIndex: Index;
+													}>,
+													finalWhitespace: WhitespaceConcreteSyntaxTreeNode | null,
+												];
+												endingIndex: Index;
+											}>,
+											closingBracket: BlockClosingBracketConcreteSyntaxTreeNode,
+										];
+										endingIndex: Index;
+									}>[],
+								];
+								endingIndex: Index;
+							}>,
+						];
+						endingIndex: Index;
+					}>,
+					restFunctions:
+						| FunctionsSeparatedRestFunctionsConcreteSyntaxTreeNode
+						| null
+						| FunctionsConcreteSyntaxTreeNode,
+				];
+				endingIndex: Index;
+			}>,
+			finalWhitespace: WhitespaceConcreteSyntaxTreeNode | null,
+		];
+		endingIndex: Index;
+	}>;
 	public parseWhitespace(
 		character: WhitespaceCharacter,
 		index: Index,

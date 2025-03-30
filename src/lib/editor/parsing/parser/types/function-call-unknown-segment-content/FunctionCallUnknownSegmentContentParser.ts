@@ -20,7 +20,7 @@ import {createWhitespaceSegmentsConcreteSyntaxTreeNode} from "../../../../concre
 import type {WhitespaceConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/whitespace/WhitespaceConcreteSyntaxTreeNode.ts";
 import type {Parser} from "../../Parser.ts";
 import {FunctionCallSegmentsParser} from "../function-call-segments-parser/FunctionCallSegmentsParser.ts";
-import {FunctionCallUnknownSegmentContentFinalWhitespaceSegmentsParser} from "../function-call-unknown-segment-content-final-whitespace-segments-parser/FunctionCallUnknownSegmentContentFinalWhitespaceSegmentsParser.ts";
+import {FunctionCallUnknownSegmentContentFinalWhitespaceSegmentsParser} from "../function-call-unknown-segment-content-final-whitespace-segments/FunctionCallUnknownSegmentContentFinalWhitespaceSegmentsParser.ts";
 import {createWhitespaceSegmentConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/whitespace-segment/createWhitespaceSegmentConcreteSyntaxTreeNode.ts";
 import {FunctionCallUnknownSegmentContentIdentifierSegmentsParser} from "../function-call-unknown-segment-content-identifier-segments/FunctionCallUnknownSegmentContentIdentifierSegmentsParser.ts";
 export class FunctionCallUnknownSegmentContentParser implements Parser {
