@@ -8,6 +8,7 @@ import type {Parser} from "../../Parser.ts";
 import {BlockContentParser} from "../block-content/BlockContentParser.ts";
 import {SourceFileContentFinalWhitespaceSegmentsParser} from "../source-file-content-final-whitespace-segments/SourceFileContentFinalWhitespaceSegmentsParser.ts";
 export class SourceFileContentParser implements Parser {
+	public constructor() {}
 	public parseWhitespace(
 		character: WhitespaceCharacter,
 		index: Index,
