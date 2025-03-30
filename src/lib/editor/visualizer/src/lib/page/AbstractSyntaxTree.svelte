@@ -7,28 +7,25 @@
 		sourceCode.split(""),
 	);
 	const parseResult = $derived(parse(sourceCodeCharacters));
-	function betterJsonStringify<TypeName extends string, Children>(
-		part: unknown,
-		depth: number,
-	): string {
-		console.log(part);
-		if (Array.isArray(part)) {
-			return `[\n${part.map((p) => `${"\t".repeat(depth + 1)}${betterJsonStringify(p, depth + 1)},`).join("\n")}\n${"\t".repeat(depth)}]`;
-		}
-		if (typeof part === "object") {
-			return `${part.typeName.slice(0, 1).toUpperCase()}${part.typeName.slice(1)}{\n${[
-				...Object.entries(part.children),
-			]
-				.map(
-					([k, v]) =>
-						`${"\t".repeat(depth + 1)}${k}: ${betterJsonStringify(v, depth + 1)},`,
-				)
-				.join("\n")}\n${"\t".repeat(depth)}}`;
-		}
-		if (typeof part === "string") {
-			return `"${part}"`;
-		}
-	}
+	// function betterJsonStringify(part: unknown, depth: number): string {
+	// 	console.log(part);
+	// 	if (Array.isArray(part)) {
+	// 		return `[\n${part.map((p) => `${"\t".repeat(depth + 1)}${betterJsonStringify(p, depth + 1)},`).join("\n")}\n${"\t".repeat(depth)}]`;
+	// 	}
+	// 	if (typeof part === "object") {
+	// 		return `${part.typeName.slice(0, 1).toUpperCase()}${part.typeName.slice(1)}{\n${[
+	// 			...Object.entries(part.children),
+	// 		]
+	// 			.map(
+	// 				([k, v]) =>
+	// 					`${"\t".repeat(depth + 1)}${k}: ${betterJsonStringify(v, depth + 1)},`,
+	// 			)
+	// 			.join("\n")}\n${"\t".repeat(depth)}}`;
+	// 	}
+	// 	if (typeof part === "string") {
+	// 		return `"${part}"`;
+	// 	}
+	// }
 </script>
 
 <section>
@@ -38,7 +35,7 @@
 		<p>{parseResult.error.message}</p>
 	{:else if parseResult.status === "success"}
 		{@const ast: SourceFileContentAbstractSyntaxTreeNode | null = abstractifySyntaxTree(parseResult.tree)}
-		<pre>{betterJsonStringify(ast, 0)}</pre>
+		<pre>{JSON.stringify(ast)}</pre>
 	{/if}
 </section>
 

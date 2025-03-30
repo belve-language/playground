@@ -1,4 +1,4 @@
-import {EditorMode} from "./EditorMode.ts";
+import type {EditorMode} from "./EditorMode.ts";
 export function parseRawMode(rawMode: string | null): EditorMode {
 	switch (rawMode) {
 		case "animated-parser":

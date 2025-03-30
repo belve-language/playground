@@ -15,7 +15,6 @@
 	// }>;
 	class Animator {
 		private animationData = $state<AnimationData>() as AnimationData;
-		private readonly intevalId: ReturnType<typeof setInterval>;
 		public constructor(characters: readonly string[]) {
 			const parser = new SourceFileContentParser();
 			const reversedCharacters: readonly string[] = characters.toReversed();
