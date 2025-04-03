@@ -4,7 +4,7 @@ import type {FunctionHeaderUnknownStartingSegmentsConcreteSyntaxTreeNode} from "
 import type {FunctionHeaderWordStartingSegmentsConcreteSyntaxTreeNode} from "../function-header-word-starting-segments/FunctionHeaderWordStartingSegmentsConcreteSyntaxTreeNode.ts";
 import type {FunctionHeaderSegmentsSeparatedRestSegmentsConcreteSyntaxTreeNode} from "./FunctionHeaderSegmentsSeparatedRestSegmentsConcreteSyntaxTreeNode.ts";
 import {functionHeaderSegmentsSeparatedRestSegmentsConcreteSyntaxTreeNodeTypeName} from "./functionHeaderSegmentsSeparatedRestSegmentsConcreteSyntaxTreeNodeTypeName.ts";
-import type {SpanIndexes} from "../../span-indexes/SpanIndexes.ts";
+import type {SpanIndexes} from "../../../span-indexes/SpanIndexes.ts";
 import type {WhitespaceConcreteSyntaxTreeNode} from "../whitespace/WhitespaceConcreteSyntaxTreeNode.ts";
 export function createFunctionHeaderSegmentsSeparatedRestSegmentsConcreteSyntaxTreeNode(
 	initialWhitespace: WhitespaceConcreteSyntaxTreeNode,

@@ -1,4 +1,6 @@
+import type {ConcreteSyntaxTreeNodeKind} from "./ConcreteSyntaxTreeNodeKind.ts";
 export type ConcreteSyntaxTreeNode<
 	TypeNameToUse extends string,
-	Kind extends "leaf" | "branch",
-> = Readonly<{typeName: TypeNameToUse; kind: Kind}>;
+	KindToUse extends ConcreteSyntaxTreeNodeKind,
+	DataToUse,
+> = Readonly<{typeName: TypeNameToUse; kind: KindToUse; data: DataToUse}>;

@@ -3,7 +3,7 @@ import type {ClosingRoundBracketCharacter} from "../../../../characters/closing-
 import type {ClosingSquareBracketCharacter} from "../../../../characters/closing-square-bracket/ClosingSquareBracketCharacter.ts";
 import type {IdentifierCharacter} from "../../../../characters/identifier/IdentifierCharacter.ts";
 import type {WhitespaceCharacter} from "../../../../characters/whitespace/WhitespaceCharacter.ts";
-import type {Index} from "../../../../concrete-syntax-tree/index/Index.ts";
+import type {Index} from "../../../../index/Index.ts";
 import {createBlockClosingBracketConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/block-closing-bracket/createBlockClosingBracketConcreteSyntaxTreeNode.ts";
 import type {FunctionBodyConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/function-body/FunctionBodyConcreteSyntaxTreeNode.ts";
 import {createFunctionHeaderKnownSegmentClosingBracketConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/function-header-known-segment-closing-bracket/createFunctionHeaderKnownSegmentClosingBracketConcreteSyntaxTreeNode.ts";
@@ -29,7 +29,7 @@ import type {Parser} from "../../Parser.ts";
 import {BlockContentParser} from "../block-content/BlockContentParser.ts";
 import {FunctionHeaderKnownSegmentContentParser} from "../function-header-known-segment-content/FunctionHeaderKnownSegmentContentParser.ts";
 import {FunctionHeaderSegmentsSeparatedRestSegmentsInitialWhitespaceSegmentsParser} from "../function-header-segments-separated-rest-segments-initial-whitespace-segments/FunctionHeaderSegmentsSeparatedRestSegmentsInitialWhitespaceSegmentsParser.ts";
-import {FunctionHeaderUnknownSegmentContentParser} from "../function-header-unknown-segment-content-parser/FunctionHeaderUnknownSegmentContentParser.ts";
+import {FunctionHeaderUnknownSegmentContentParser} from "../function-header-unknown-segment-content/FunctionHeaderUnknownSegmentContentParser.ts";
 import {FunctionHeaderWordSegmentIdentifierSegmentsParser} from "../function-header-word-segment-identifier-segments/FunctionHeaderWordSegmentIdentifierSegmentsParser.ts";
 export class FunctionHeaderSegmentsParser implements Parser {
 	private readonly functionHeaderSegmentsStartingIndex: Index;

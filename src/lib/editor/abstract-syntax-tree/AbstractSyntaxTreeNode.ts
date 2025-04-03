@@ -1,4 +1,4 @@
 export type AbstractSyntaxTreeNode<
-	TypeName extends string,
-	Children,
-> = Readonly<{typeName: TypeName; children: Children}>;
+	TypeNameToUse extends string,
+	ChildrenToUse,
+> = Readonly<{typeName: TypeNameToUse; children: ChildrenToUse}>;

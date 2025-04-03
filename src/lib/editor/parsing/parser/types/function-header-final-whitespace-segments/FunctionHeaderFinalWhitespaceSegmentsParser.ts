@@ -3,15 +3,13 @@ import type {ClosingRoundBracketCharacter} from "../../../../characters/closing-
 import type {ClosingSquareBracketCharacter} from "../../../../characters/closing-square-bracket/ClosingSquareBracketCharacter.ts";
 import type {IdentifierCharacter} from "../../../../characters/identifier/IdentifierCharacter.ts";
 import type {WhitespaceCharacter} from "../../../../characters/whitespace/WhitespaceCharacter.ts";
-import type {Index} from "../../../../concrete-syntax-tree/index/Index.ts";
+import type {Index} from "../../../../index/Index.ts";
 import {createBlockClosingBracketConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/block-closing-bracket/createBlockClosingBracketConcreteSyntaxTreeNode.ts";
-import type {FunctionBodyConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/function-body/FunctionBodyConcreteSyntaxTreeNode.ts";
 import {createFunctionHeaderKnownSegmentClosingBracketConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/function-header-known-segment-closing-bracket/createFunctionHeaderKnownSegmentClosingBracketConcreteSyntaxTreeNode.ts";
 import {createFunctionHeaderUnknownSegmentClosingBracketConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/function-header-unknown-segment-closing-bracket/createFunctionHeaderUnknownSegmentClosingBracketConcreteSyntaxTreeNode.ts";
 import {createFunctionConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/function/createFunctionConcreteSyntaxTreeNode.ts";
 import type {FunctionConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/function/FunctionConcreteSyntaxTreeNode.ts";
 import {createFunctionsSeparatedRestFunctionsConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/functions-separated-rest-functions/createFunctionsSeparatedRestFunctionsConcreteSyntaxTreeNode.ts";
-import type {FunctionsSeparatedRestFunctionsConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/functions-separated-rest-functions/FunctionsSeparatedRestFunctionsConcreteSyntaxTreeNode.ts";
 import {createFunctionsConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/functions/createFunctionsConcreteSyntaxTreeNode.ts";
 import type {FunctionsConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/functions/FunctionsConcreteSyntaxTreeNode.ts";
 import {createIdentifierSegmentConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/identifier-segment/createIdentifierSegmentConcreteSyntaxTreeNode.ts";
@@ -20,60 +18,20 @@ import {createSourceFileContentConcreteSyntaxTreeNode} from "../../../../concret
 import type {SourceFileContentConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/source-file-content/SourceFileContentConcreteSyntaxTreeNode.ts";
 import {createWhitespaceSegmentConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/whitespace-segment/createWhitespaceSegmentConcreteSyntaxTreeNode.ts";
 import {createWhitespaceSegmentsConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/whitespace-segments/createWhitespaceSegmentsConcreteSyntaxTreeNode.ts";
-import type {WhitespaceSegmentsConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/whitespace-segments/WhitespaceSegmentsConcreteSyntaxTreeNode.ts";
 import {createWhitespaceConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/whitespace/createWhitespaceConcreteSyntaxTreeNode.ts";
-import type {WhitespaceConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/whitespace/WhitespaceConcreteSyntaxTreeNode.ts";
 import type {Parser} from "../../Parser.ts";
 import {BlockContentParser} from "../block-content/BlockContentParser.ts";
 import {FunctionHeaderKnownSegmentContentParser} from "../function-header-known-segment-content/FunctionHeaderKnownSegmentContentParser.ts";
-import {FunctionHeaderUnknownSegmentContentParser} from "../function-header-unknown-segment-content-parser/FunctionHeaderUnknownSegmentContentParser.ts";
+import {FunctionHeaderUnknownSegmentContentParser} from "../function-header-unknown-segment-content/FunctionHeaderUnknownSegmentContentParser.ts";
 import {FunctionHeaderWordSegmentIdentifierSegmentsParser} from "../function-header-word-segment-identifier-segments/FunctionHeaderWordSegmentIdentifierSegmentsParser.ts";
+import type {FunctionHeaderFinalWhitespaceSegmentsParserPartialConcreteSyntaxTree} from "./FunctionHeaderFinalWhitespaceSegmentsParserPartialConcreteSyntaxTree.ts";
 export class FunctionHeaderFinalWhitespaceSegmentsParser implements Parser {
-	private readonly functionHeaderFinalWhitespaceSegments: WhitespaceSegmentsConcreteSyntaxTreeNode;
-	private readonly functionBody: FunctionBodyConcreteSyntaxTreeNode;
-	private readonly functionsRestFunctions:
-		| FunctionsSeparatedRestFunctionsConcreteSyntaxTreeNode
-		| null
-		| FunctionsConcreteSyntaxTreeNode;
-	private readonly sourceFileContentFinalWhitespace: WhitespaceConcreteSyntaxTreeNode | null;
+	private readonly partialConcreteSyntaxTree: FunctionHeaderFinalWhitespaceSegmentsParserPartialConcreteSyntaxTree;
 	public constructor(
-		functionHeaderFinalWhitespaceSegmentsStartingIndex: Index,
-		functionHeaderFinalWhitespaceSegments: WhitespaceSegmentsConcreteSyntaxTreeNode,
-		functionHeaderFinalWhitespaceEndingIndex: Index,
-		functionHeaderEndingIndex: Index,
-		functionBodyStartingIndex: Index,
-		functionBody: FunctionBodyConcreteSyntaxTreeNode,
-		functionEndingIndex: Index,
-		functionsRestFunctions:
-			| FunctionsSeparatedRestFunctionsConcreteSyntaxTreeNode
-			| null
-			| FunctionsConcreteSyntaxTreeNode,
-		functionsEndingIndex: Index,
-		sourceFileContentFinalWhitespace: WhitespaceConcreteSyntaxTreeNode | null,
-		sourceFileContentEndingIndex: Index,
+		partialConcreteSyntaxTree: FunctionHeaderFinalWhitespaceSegmentsParserPartialConcreteSyntaxTree,
 	) {
-		this.functionHeaderFinalWhitespaceSegmentsStartingIndex =
-			functionHeaderFinalWhitespaceSegmentsStartingIndex;
-		this.functionHeaderFinalWhitespaceSegments =
-			functionHeaderFinalWhitespaceSegments;
-		this.functionHeaderFinalWhitespaceEndingIndex =
-			functionHeaderFinalWhitespaceEndingIndex;
-		this.functionHeaderEndingIndex = functionHeaderEndingIndex;
-		this.functionBodyStartingIndex = functionBodyStartingIndex;
-		this.functionBody = functionBody;
-		this.functionEndingIndex = functionEndingIndex;
-		this.functionsRestFunctions = functionsRestFunctions;
-		this.functionsEndingIndex = functionsEndingIndex;
-		this.sourceFileContentFinalWhitespace = sourceFileContentFinalWhitespace;
-		this.sourceFileContentEndingIndex = sourceFileContentEndingIndex;
+		this.partialConcreteSyntaxTree = partialConcreteSyntaxTree;
 	}
-	private readonly functionBodyStartingIndex: Index;
-	private readonly functionHeaderEndingIndex: Index;
-	private readonly functionHeaderFinalWhitespaceSegmentsStartingIndex: Index;
-	private readonly functionHeaderFinalWhitespaceEndingIndex: Index;
-	private readonly functionEndingIndex: Index;
-	private readonly functionsEndingIndex: Index;
-	private readonly sourceFileContentEndingIndex: Index;
 	public parseWhitespace(
 		character: WhitespaceCharacter,
 		index: Index,

@@ -1,45 +1,37 @@
-import type {Index} from "../../concrete-syntax-tree/index/Index.ts";
+import type {Index} from "../../index/Index.ts";
 import type {Parser} from "../parser/Parser.ts";
 export function computeNewParser(
 	character: string,
 	parser: Parser,
 	index: Index,
-) {
+): Parser {
 	switch (character) {
 		case "}": {
-			const newParser = parser.parseClosingCurlyBracket(character, index);
-			return newParser;
+			return parser.parseClosingCurlyBracket(character, index);
 		}
 		case ")": {
-			const newParser = parser.parseClosingRoundBracket(character, index);
-			return newParser;
+			return parser.parseClosingRoundBracket(character, index);
 		}
 		case "]": {
-			const newParser = parser.parseClosingSquareBracket(character, index);
-			return newParser;
+			return parser.parseClosingSquareBracket(character, index);
 		}
 		case "{": {
-			const newParser = parser.parseOpeningCurlyBracket(character, index);
-			return newParser;
+			return parser.parseOpeningCurlyBracket(character, index);
 		}
 		case "(": {
-			const newParser = parser.parseOpeningRoundBracket(character, index);
-			return newParser;
+			return parser.parseOpeningRoundBracket(character, index);
 		}
 		case "[": {
-			const newParser = parser.parseOpeningSquareBracket(character, index);
-			return newParser;
+			return parser.parseOpeningSquareBracket(character, index);
 		}
 		case ",":
 		case ".": {
-			const newParser = parser.parseOperator(character, index);
-			return newParser;
+			return parser.parseOperator(character, index);
 		}
 		case " ":
 		case "\t":
 		case "\n": {
-			const newParser = parser.parseWhitespace(character, index);
-			return newParser;
+			return parser.parseWhitespace(character, index);
 		}
 		case "a":
 		case "b":
@@ -110,8 +102,7 @@ export function computeNewParser(
 		case ">":
 		case "<":
 		case "!": {
-			const newParser = parser.parseIdentifier(character, index);
-			return newParser;
+			return parser.parseIdentifier(character, index);
 		}
 		default: {
 			throw new Error(`Unexpected character: ${character}`);

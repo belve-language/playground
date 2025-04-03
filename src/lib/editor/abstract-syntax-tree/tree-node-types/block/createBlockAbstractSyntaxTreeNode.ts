@@ -9,9 +9,7 @@ export function createBlockAbstractSyntaxTreeNode(
 		...OperatedStatementAbstractSyntaxTreeNode[],
 	],
 ): BlockAbstractSyntaxTreeNode {
-	const treeNode: BlockAbstractSyntaxTreeNode = createAbstractSyntaxTreeNode(
-		blockAbstractSyntaxTreeNodeTypeName,
-		{statements} as const,
-	);
-	return treeNode;
+	return createAbstractSyntaxTreeNode(blockAbstractSyntaxTreeNodeTypeName, {
+		statements,
+	} as const);
 }

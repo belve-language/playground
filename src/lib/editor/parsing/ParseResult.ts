@@ -1,1 +1,4 @@
-export type ParserResult<Status> = Readonly<{status: Status}>;
+export type ParserResult<Status extends string, Data> = Readonly<{
+	status: Status;
+	data: Data;
+}>;

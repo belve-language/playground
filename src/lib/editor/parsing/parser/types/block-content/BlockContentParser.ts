@@ -4,7 +4,7 @@ import type {ClosingSquareBracketCharacter} from "../../../../characters/closing
 import type {IdentifierCharacter} from "../../../../characters/identifier/IdentifierCharacter.ts";
 import type {OpeningCurlyBracketCharacter} from "../../../../characters/opening-curly-bracket/OpeningCurlyBracketCharacter.ts";
 import type {WhitespaceCharacter} from "../../../../characters/whitespace/WhitespaceCharacter.ts";
-import type {Index} from "../../../../concrete-syntax-tree/index/Index.ts";
+import type {Index} from "../../../../index/Index.ts";
 import type {BlockClosingBracketConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/block-closing-bracket/BlockClosingBracketConcreteSyntaxTreeNode.ts";
 import {createBlockClosingBracketConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/block-closing-bracket/createBlockClosingBracketConcreteSyntaxTreeNode.ts";
 import {createBlockOpeningBracketConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/block-opening-bracket/createBlockOpeningBracketConcreteSyntaxTreeNode.ts";
@@ -12,8 +12,6 @@ import {createBlockConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tre
 import {createFunctionBodyConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/function-body/createFunctionBodyConcreteSyntaxTreeNode.ts";
 import {createFunctionCallKnownSegmentClosingBracketConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/function-call-known-segment-closing-bracket/createFunctionCallKnownSegmentClosingBracketConcreteSyntaxTreeNode.ts";
 import {createFunctionCallUnknownSegmentClosingBracketConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/function-call-unknown-segment-closing-bracket/createFunctionCallUnknownSegmentClosingBracketConcreteSyntaxTreeNode.ts";
-import type {FunctionsSeparatedRestFunctionsConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/functions-separated-rest-functions/FunctionsSeparatedRestFunctionsConcreteSyntaxTreeNode.ts";
-import type {FunctionsConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/functions/FunctionsConcreteSyntaxTreeNode.ts";
 import {createIdentifierSegmentConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/identifier-segment/createIdentifierSegmentConcreteSyntaxTreeNode.ts";
 import {createIdentifierSegmentsConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/identifier-segments/createIdentifierSegmentsConcreteSyntaxTreeNode.ts";
 import type {StatementsRestStatementsConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/statements-rest-statements/StatementsRestStatementsConcreteSyntaxTreeNode.ts";
@@ -28,127 +26,33 @@ import {FunctionCallUnknownSegmentContentParser} from "../function-call-unknown-
 import {FunctionCallWordSegmentIdentifierSegmentsParser} from "../function-call-word-segment-identifier-segments/FunctionCallWordSegmentIdentifierSegmentsParser.ts";
 import {FunctionHeaderParser} from "../function-header/FunctionHeaderParser.ts";
 import {StatementsRestStatementsAfterOperatorParser} from "../statements-rest-statements-after-operator/StatementsRestStatementsAfterOperatorParser.ts";
+import type {BlockContentParserPartialConcreteSyntaxTree} from "./BlockContentParserPartialConcreteSyntaxTree.ts";
 export class BlockContentParser implements Parser {
 	public constructor(
-		sourceFileContent: Readonly<{
-			children: readonly [
-				functions: Readonly<{
-					children: readonly [
-						firstFunction: Readonly<{
-							children: readonly [
-								body: Readonly<{
-									children: readonly [
-										block: Readonly<{
-											children: readonly [
-												closingBracket: BlockClosingBracketConcreteSyntaxTreeNode,
-											];
-											endingIndex: Index;
-										}>,
-										blockStack: readonly Readonly<{
-											children: readonly [
-												Readonly<{
-													children: readonly [
-														Readonly<{
-															children: readonly [
-																statementsRestStatements: StatementsRestStatementsConcreteSyntaxTreeNode | null,
-															];
-															endingIndex: Index;
-														}>,
-														finalWhitespace: WhitespaceConcreteSyntaxTreeNode | null,
-													];
-													endingIndex: Index;
-												}>,
-												closingBracket: BlockClosingBracketConcreteSyntaxTreeNode,
-											];
-											endingIndex: Index;
-										}>[],
-									];
-									endingIndex: Index;
-								}>,
-							];
-							endingIndex: Index;
-						}>,
-						restFunctions:
-							| FunctionsSeparatedRestFunctionsConcreteSyntaxTreeNode
-							| null
-							| FunctionsConcreteSyntaxTreeNode,
-					];
-					endingIndex: Index;
-				}>,
-				finalWhitespace: WhitespaceConcreteSyntaxTreeNode | null,
-			];
-			endingIndex: Index;
-		}>,
+		partialConcreteSyntaxTree: BlockContentParserPartialConcreteSyntaxTree,
 	) {
-		this.sourceFileContent = sourceFileContent;
+		this.partialConcreteSyntaxTree = partialConcreteSyntaxTree;
 	}
-	private readonly sourceFileContent: Readonly<{
-		children: readonly [
-			functions: Readonly<{
-				children: readonly [
-					firstFunction: Readonly<{
-						children: readonly [
-							body: Readonly<{
-								children: readonly [
-									block: Readonly<{
-										children: readonly [
-											closingBracket: BlockClosingBracketConcreteSyntaxTreeNode,
-										];
-										endingIndex: Index;
-									}>,
-									blockStack: readonly Readonly<{
-										children: readonly [
-											Readonly<{
-												children: readonly [
-													Readonly<{
-														children: readonly [
-															statementsRestStatements: StatementsRestStatementsConcreteSyntaxTreeNode | null,
-														];
-														endingIndex: Index;
-													}>,
-													finalWhitespace: WhitespaceConcreteSyntaxTreeNode | null,
-												];
-												endingIndex: Index;
-											}>,
-											closingBracket: BlockClosingBracketConcreteSyntaxTreeNode,
-										];
-										endingIndex: Index;
-									}>[],
-								];
-								endingIndex: Index;
-							}>,
-						];
-						endingIndex: Index;
-					}>,
-					restFunctions:
-						| FunctionsSeparatedRestFunctionsConcreteSyntaxTreeNode
-						| null
-						| FunctionsConcreteSyntaxTreeNode,
-				];
-				endingIndex: Index;
-			}>,
-			finalWhitespace: WhitespaceConcreteSyntaxTreeNode | null,
-		];
-		endingIndex: Index;
-	}>;
+	private readonly partialConcreteSyntaxTree: BlockContentParserPartialConcreteSyntaxTree;
 	public parseWhitespace(
 		character: WhitespaceCharacter,
 		index: Index,
 	): BlockContentFinalWhitespaceSegmentsParser {
 		return new BlockContentFinalWhitespaceSegmentsParser({
-			...this.sourceFileContent,
+			...this.partialConcreteSyntaxTree,
 			children: [
 				{
-					...this.sourceFileContent.children[0],
+					...this.partialConcreteSyntaxTree.children[0],
 					children: [
 						{
-							...this.sourceFileContent.children[0].children[0],
+							...this.partialConcreteSyntaxTree.children[0].children[0],
 							children: [
 								{
-									...this.sourceFileContent.children[0].children[0].children[0],
+									...this.partialConcreteSyntaxTree.children[0].children[0]
+										.children[0],
 									children: [
 										{
-											...this.sourceFileContent.children[0].children[0]
+											...this.partialConcreteSyntaxTree.children[0].children[0]
 												.children[0].children[0],
 											children: [
 												{
@@ -171,20 +75,20 @@ export class BlockContentParser implements Parser {
 													],
 													endingIndex: index,
 												},
-												this.sourceFileContent.children[0].children[0]
+												this.partialConcreteSyntaxTree.children[0].children[0]
 													.children[0].children[0].children[0],
 											],
 										},
-										this.sourceFileContent.children[0].children[0].children[0]
-											.children[1],
+										this.partialConcreteSyntaxTree.children[0].children[0]
+											.children[0].children[1],
 									],
 								},
 							],
 						},
-						this.sourceFileContent.children[0].children[1],
+						this.partialConcreteSyntaxTree.children[0].children[1],
 					],
 				},
-				this.sourceFileContent.children[1],
+				this.partialConcreteSyntaxTree.children[1],
 			],
 		});
 	}
@@ -218,8 +122,8 @@ export class BlockContentParser implements Parser {
 				this.functionEndingIndex,
 				this.functionsRestFunctions,
 				this.functionsEndingIndex,
-				this.sourceFileContentFinalWhitespace,
-				this.sourceFileContentEndingIndex,
+				this.partialConcreteSyntaxTreeFinalWhitespace,
+				this.partialConcreteSyntaxTreeEndingIndex,
 			);
 		return functionCallUnknownSegmentContentParser;
 	}
@@ -249,8 +153,8 @@ export class BlockContentParser implements Parser {
 				this.functionEndingIndex,
 				this.functionsRestFunctions,
 				this.functionsEndingIndex,
-				this.sourceFileContentFinalWhitespace,
-				this.sourceFileContentEndingIndex,
+				this.partialConcreteSyntaxTreeFinalWhitespace,
+				this.partialConcreteSyntaxTreeEndingIndex,
 			);
 			return functionHeaderParser;
 		}
@@ -281,8 +185,8 @@ export class BlockContentParser implements Parser {
 				this.functionEndingIndex,
 				this.functionsRestFunctions,
 				this.functionsEndingIndex,
-				this.sourceFileContentFinalWhitespace,
-				this.sourceFileContentEndingIndex,
+				this.partialConcreteSyntaxTreeFinalWhitespace,
+				this.partialConcreteSyntaxTreeEndingIndex,
 			);
 		return statementsRestStatementsAfterOperatorParser;
 	}
@@ -320,8 +224,8 @@ export class BlockContentParser implements Parser {
 			this.functionEndingIndex,
 			this.functionsRestFunctions,
 			this.functionsEndingIndex,
-			this.sourceFileContentFinalWhitespace,
-			this.sourceFileContentEndingIndex,
+			this.partialConcreteSyntaxTreeFinalWhitespace,
+			this.partialConcreteSyntaxTreeEndingIndex,
 		);
 		return blockContentParser;
 	}
@@ -355,8 +259,8 @@ export class BlockContentParser implements Parser {
 				this.functionEndingIndex,
 				this.functionsRestFunctions,
 				this.functionsEndingIndex,
-				this.sourceFileContentFinalWhitespace,
-				this.sourceFileContentEndingIndex,
+				this.partialConcreteSyntaxTreeFinalWhitespace,
+				this.partialConcreteSyntaxTreeEndingIndex,
 			);
 		return functionCallKnownSegmentContentParser;
 	}
@@ -393,8 +297,8 @@ export class BlockContentParser implements Parser {
 				this.functionEndingIndex,
 				this.functionsRestFunctions,
 				this.functionsEndingIndex,
-				this.sourceFileContentFinalWhitespace,
-				this.sourceFileContentEndingIndex,
+				this.partialConcreteSyntaxTreeFinalWhitespace,
+				this.partialConcreteSyntaxTreeEndingIndex,
 			);
 		return functionCallWordSegmentIdentifierSegmentsParser;
 	}

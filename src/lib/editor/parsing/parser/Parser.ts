@@ -8,7 +8,7 @@ import type {OpeningSquareBracketCharacter} from "../../characters/opening-squar
 import type {OperatorCharacter} from "../../characters/operator/OperatorCharacter.ts";
 import type {WhitespaceCharacter} from "../../characters/whitespace/WhitespaceCharacter.ts";
 import type {ConcreteSyntaxTree} from "../../concrete-syntax-tree/ConreteSyntaxTree.ts";
-import type {Index} from "../../concrete-syntax-tree/index/Index.ts";
+import type {Index} from "../../index/Index.ts";
 export interface Parser {
 	parseWhitespace: (character: WhitespaceCharacter, index: Index) => Parser;
 	parseOpeningSquareBracket: (

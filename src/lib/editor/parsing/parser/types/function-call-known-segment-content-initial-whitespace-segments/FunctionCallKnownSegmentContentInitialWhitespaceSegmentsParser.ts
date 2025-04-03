@@ -1,6 +1,6 @@
 import type {OpeningRoundBracketCharacter} from "../../../../characters/opening-round-bracket/OpeningRoundBracketCharacter.ts";
 import type {WhitespaceCharacter} from "../../../../characters/whitespace/WhitespaceCharacter.ts";
-import type {Index} from "../../../../concrete-syntax-tree/index/Index.ts";
+import type {Index} from "../../../../index/Index.ts";
 import type {BlockClosingBracketConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/block-closing-bracket/BlockClosingBracketConcreteSyntaxTreeNode.ts";
 import type {FunctionCallKnownSegmentClosingBracketConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/function-call-known-segment-closing-bracket/FunctionCallKnownSegmentClosingBracketConcreteSyntaxTreeNode.ts";
 import {createFunctionCallKnownSegmentContentConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/function-call-known-segment-content/createFunctionCallKnownSegmentContentConcreteSyntaxTreeNode.ts";
@@ -22,127 +22,16 @@ import {createWhitespaceConcreteSyntaxTreeNode} from "../../../../concrete-synta
 import type {WhitespaceConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/whitespace/WhitespaceConcreteSyntaxTreeNode.ts";
 import type {Parser} from "../../Parser.ts";
 import {FunctionCallSegmentsParser} from "../function-call-segments-parser/FunctionCallSegmentsParser.ts";
+import type {FunctionCallKnownSegmentContentInitialWhitespaceSegmentsParserPartialConcreteSyntaxTree} from "./FunctionCallKnownSegmentContentInitialWhitespaceSegmentsParserPartialConcreteSyntaxTree.ts";
 export class FunctionCallKnownSegmentContentInitialWhitespaceSegmentsParser
 	implements Parser
 {
-	private readonly functionCallKnownSegmentContentInitialWhitespaceSegments: WhitespaceSegmentsConcreteSyntaxTreeNode;
-	private readonly functionCallKnownSegmentContentIdentifier: IdentifierConcreteSyntaxTreeNode;
-	private readonly functionCallKnownSegmentContentFinalWhitespace: WhitespaceConcreteSyntaxTreeNode | null;
-	private readonly functionCallKnownSegmentClosingBracket: FunctionCallKnownSegmentClosingBracketConcreteSyntaxTreeNode;
-	private readonly functionCallKnownStartingSegmentsRestSegments:
-		| FunctionCallKnownStartingSegmentsConcreteSyntaxTreeNode
-		| FunctionCallUnknownStartingSegmentsConcreteSyntaxTreeNode
-		| FunctionCallWordStartingSegmentsConcreteSyntaxTreeNode
-		| null
-		| FunctionCallSegmentsSeparatedRestSegmentsConcreteSyntaxTreeNode;
-	private readonly statementsRestStatements: StatementsRestStatementsConcreteSyntaxTreeNode | null;
-	private readonly blockContentFinalWhitespace: WhitespaceConcreteSyntaxTreeNode | null;
-	private readonly blockContentEndingIndex: Index;
-	private readonly blockClosingBracket: BlockClosingBracketConcreteSyntaxTreeNode;
-	private readonly blockEndingIndex: Index;
-	private readonly blockStack: readonly (readonly [
-		statementsRestStatements: StatementsRestStatementsConcreteSyntaxTreeNode | null,
-		statementsEndingIndex: Index,
-		finalWhitespace: WhitespaceConcreteSyntaxTreeNode | null,
-		contentEndingIndex: Index,
-		closingBracket: BlockClosingBracketConcreteSyntaxTreeNode,
-		endingIndex: Index,
-	])[];
-	private readonly functionsRestFunctions:
-		| FunctionsSeparatedRestFunctionsConcreteSyntaxTreeNode
-		| null
-		| FunctionsConcreteSyntaxTreeNode;
-	private readonly sourceFileContentFinalWhitespace: WhitespaceConcreteSyntaxTreeNode | null;
+	private readonly partialConcreteSyntaxTree: FunctionCallKnownSegmentContentInitialWhitespaceSegmentsParserPartialConcreteSyntaxTree;
 	public constructor(
-		functionCallKnownSegmentContentInitialWhitespaceSegmentsStartingIndex: Index,
-		functionCallKnownSegmentContentInitialWhitespaceSegments: WhitespaceSegmentsConcreteSyntaxTreeNode,
-		functionCallKnownSegmentContentInitialWhitespaceSegmentsEndingIndex: Index,
-		functionCallKnownSegmentContentInitialWhitespaceEndingIndex: Index,
-		functionCallKnownSegmentContentIdentifier: IdentifierConcreteSyntaxTreeNode,
-		functionCallKnownSegmentContentFinalWhitespace: WhitespaceConcreteSyntaxTreeNode | null,
-		functionCallKnownSegmentContentEndingIndex: Index,
-		functionCallKnownSegmentClosingBracket: FunctionCallKnownSegmentClosingBracketConcreteSyntaxTreeNode,
-		functionCallKnownSegmentEndingIndex: Index,
-		functionCallKnownStartingSegmentsRestSegments:
-			| FunctionCallKnownStartingSegmentsConcreteSyntaxTreeNode
-			| FunctionCallUnknownStartingSegmentsConcreteSyntaxTreeNode
-			| FunctionCallWordStartingSegmentsConcreteSyntaxTreeNode
-			| null
-			| FunctionCallSegmentsSeparatedRestSegmentsConcreteSyntaxTreeNode,
-		functionCallSegmentsEndingIndex: Index,
-		functionCallEndingIndex: Index,
-		statementsRestStatements: StatementsRestStatementsConcreteSyntaxTreeNode | null,
-		statementsEndingIndex: Index,
-		blockContentFinalWhitespace: WhitespaceConcreteSyntaxTreeNode | null,
-		blockContentEndingIndex: Index,
-		blockClosingBracket: BlockClosingBracketConcreteSyntaxTreeNode,
-		blockEndingIndex: Index,
-		blockStack: readonly (readonly [
-			statementsRestStatements: StatementsRestStatementsConcreteSyntaxTreeNode | null,
-			statementsEndingIndex: Index,
-			finalWhitespace: WhitespaceConcreteSyntaxTreeNode | null,
-			contentEndingIndex: Index,
-			closingBracket: BlockClosingBracketConcreteSyntaxTreeNode,
-			endingIndex: Index,
-		])[],
-		functionBodyEndingIndex: Index,
-		functionEndingIndex: Index,
-		functionsRestFunctions:
-			| FunctionsSeparatedRestFunctionsConcreteSyntaxTreeNode
-			| null
-			| FunctionsConcreteSyntaxTreeNode,
-		functionsEndingIndex: Index,
-		sourceFileContentFinalWhitespace: WhitespaceConcreteSyntaxTreeNode | null,
-		sourceFileContentEndingIndex: Index,
+		partialConcreteSyntaxTree: FunctionCallKnownSegmentContentInitialWhitespaceSegmentsParserPartialConcreteSyntaxTree,
 	) {
-		this.functionCallKnownSegmentContentInitialWhitespaceSegmentsStartingIndex =
-			functionCallKnownSegmentContentInitialWhitespaceSegmentsStartingIndex;
-		this.functionCallKnownSegmentContentInitialWhitespaceSegments =
-			functionCallKnownSegmentContentInitialWhitespaceSegments;
-		this.functionCallKnownSegmentContentInitialWhitespaceSegmentsEndingIndex =
-			functionCallKnownSegmentContentInitialWhitespaceSegmentsEndingIndex;
-		this.functionCallKnownSegmentContentInitialWhitespaceEndingIndex =
-			functionCallKnownSegmentContentInitialWhitespaceEndingIndex;
-		this.functionCallKnownSegmentContentIdentifier =
-			functionCallKnownSegmentContentIdentifier;
-		this.functionCallKnownSegmentContentFinalWhitespace =
-			functionCallKnownSegmentContentFinalWhitespace;
-		this.functionCallKnownSegmentContentEndingIndex =
-			functionCallKnownSegmentContentEndingIndex;
-		this.functionCallKnownSegmentClosingBracket =
-			functionCallKnownSegmentClosingBracket;
-		this.functionCallKnownSegmentEndingIndex =
-			functionCallKnownSegmentEndingIndex;
-		this.functionCallKnownStartingSegmentsRestSegments =
-			functionCallKnownStartingSegmentsRestSegments;
-		this.functionCallSegmentsEndingIndex = functionCallSegmentsEndingIndex;
-		this.functionCallEndingIndex = functionCallEndingIndex;
-		this.statementsRestStatements = statementsRestStatements;
-		this.statementsEndingIndex = statementsEndingIndex;
-		this.blockContentFinalWhitespace = blockContentFinalWhitespace;
-		this.blockContentEndingIndex = blockContentEndingIndex;
-		this.blockClosingBracket = blockClosingBracket;
-		this.blockEndingIndex = blockEndingIndex;
-		this.blockStack = blockStack;
-		this.functionBodyEndingIndex = functionBodyEndingIndex;
-		this.functionEndingIndex = functionEndingIndex;
-		this.functionsRestFunctions = functionsRestFunctions;
-		this.functionsEndingIndex = functionsEndingIndex;
-		this.sourceFileContentFinalWhitespace = sourceFileContentFinalWhitespace;
-		this.sourceFileContentEndingIndex = sourceFileContentEndingIndex;
+		this.partialConcreteSyntaxTree = partialConcreteSyntaxTree;
 	}
-	private readonly functionCallSegmentsEndingIndex: Index;
-	private readonly functionCallEndingIndex: Index;
-	private readonly functionCallKnownSegmentEndingIndex: Index;
-	private readonly functionCallKnownSegmentContentEndingIndex: Index;
-	private readonly functionCallKnownSegmentContentInitialWhitespaceSegmentsStartingIndex: Index;
-	private readonly functionCallKnownSegmentContentInitialWhitespaceSegmentsEndingIndex: Index;
-	private readonly functionCallKnownSegmentContentInitialWhitespaceEndingIndex: Index;
-	private readonly statementsEndingIndex: Index;
-	private readonly functionBodyEndingIndex: Index;
-	private readonly functionEndingIndex: Index;
-	private readonly functionsEndingIndex: Index;
-	private readonly sourceFileContentEndingIndex: Index;
 	public parseWhitespace(
 		character: WhitespaceCharacter,
 		index: Index,

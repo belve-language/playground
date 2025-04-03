@@ -1,9 +1,7 @@
 import {SourceFileContentParser} from "./parser/types/source-file-content/SourceFileContentParser.ts";
 import {computeNewParser} from "./computing-new-parser/computeNewParser.ts";
 import type {Parser} from "./parser/Parser.ts";
-import type {ErrorParseResult} from "./ErrorParseResult.ts";
 import type {ConcreteSyntaxTree} from "../concrete-syntax-tree/ConreteSyntaxTree.ts";
-import type {SuccessParseResult} from "./SuccessParseResult.ts";
 import type {SupportedParseResult} from "./SupportedParseResult.ts";
 export function parse(
 	characters: readonly string[],
@@ -23,8 +21,8 @@ export function parse(
 		if (rawResult === null) {
 			return null;
 		}
-		return {status: "success", tree: rawResult} as SuccessParseResult;
+		return {status: "success", data: {tree: rawResult}};
 	} catch (error: unknown) {
-		return {status: "error", error} as ErrorParseResult;
+		return {status: "error", data: {error}};
 	}
 }

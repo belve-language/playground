@@ -1,5 +1,5 @@
 import {createBranchConcreteSyntaxTreeNode} from "../../createBranchConcreteSyntaxTreeNode.ts";
-import type {SpanIndexes} from "../../span-indexes/SpanIndexes.ts";
+import type {SpanIndexes} from "../../../span-indexes/SpanIndexes.ts";
 import type {FunctionBodyConcreteSyntaxTreeNode} from "../function-body/FunctionBodyConcreteSyntaxTreeNode.ts";
 import type {FunctionHeaderConcreteSyntaxTreeNode} from "../function-header/FunctionHeaderConcreteSyntaxTreeNode.ts";
 import type {FunctionConcreteSyntaxTreeNode} from "./FunctionConcreteSyntaxTreeNode.ts";
