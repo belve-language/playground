@@ -9,7 +9,7 @@ export function abstractifyBlockContent(
 	BlockAbstractSyntaxTreeNode | FunctionCallAbstractSyntaxTreeNode,
 	...OperatedStatementAbstractSyntaxTreeNode[],
 ] {
-	const [, blockContentStatements] = blockContent.children;
+	const [, blockContentStatements] = blockContent.data.children;
 	const abstractifiedBlockContentStatements: readonly [
 		BlockAbstractSyntaxTreeNode | FunctionCallAbstractSyntaxTreeNode,
 		...OperatedStatementAbstractSyntaxTreeNode[],

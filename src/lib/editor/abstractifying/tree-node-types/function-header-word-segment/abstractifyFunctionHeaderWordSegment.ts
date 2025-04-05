@@ -5,7 +5,7 @@ import {abstractifyIdentifier} from "../identifier/abstractifyIdentifier.ts";
 export function abstractifyFunctionHeaderWordSegment(
 	segment: FunctionHeaderWordSegmentConcreteSyntaxTreeNode,
 ): FunctionHeaderWordSegmentAbstractSyntaxTreeNode {
-	const [segmentIdentifier] = segment.children;
+	const [segmentIdentifier] = segment.data.children;
 	const abstractifiedSegmentIdentifier =
 		abstractifyIdentifier(segmentIdentifier);
 	const abstractifiedSegment: FunctionHeaderWordSegmentAbstractSyntaxTreeNode =

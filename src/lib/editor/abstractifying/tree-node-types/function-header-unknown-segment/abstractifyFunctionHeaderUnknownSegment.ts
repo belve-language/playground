@@ -6,7 +6,7 @@ import {abstractifyFunctionHeaderUnknownSegmentContent} from "../function-header
 export function abstractifyFunctionHeaderUnknownSegment(
 	segment: FunctionHeaderUnknownSegmentConcreteSyntaxTreeNode,
 ): FunctionHeaderUnknownSegmentAbstractSyntaxTreeNode {
-	const [, segmentContent] = segment.children;
+	const [, segmentContent] = segment.data.children;
 	if (
 		segmentContent === null
 		|| segmentContent.typeName === whitespaceConcreteSyntaxTreeNodeTypeName

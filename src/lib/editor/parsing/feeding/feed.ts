@@ -8,31 +8,31 @@ export function feed(
 ): SupportedFeedResult {
 	switch (character) {
 		case "}": {
-			return parser.feedWithClosingCurlyBracket(character, index);
+			return parser.feedWithClosingCurlyBracketCharacter(character, index);
 		}
 		case ")": {
-			return parser.feedWithClosingRoundBracket(character, index);
+			return parser.feedWithClosingRoundBracketCharacter(character, index);
 		}
 		case "]": {
-			return parser.feedWithClosingSquareBracket(character, index);
+			return parser.feedWithClosingSquareBracketCharacter(character, index);
 		}
 		case "{": {
-			return parser.feedWithOpeningCurlyBracket(character, index);
+			return parser.feedWithOpeningCurlyBracketCharacter(character, index);
 		}
 		case "(": {
-			return parser.feedWithOpeningRoundBracket(character, index);
+			return parser.feedWithOpeningRoundBracketCharacter(character, index);
 		}
 		case "[": {
-			return parser.feedWithOpeningSquareBracket(character, index);
+			return parser.feedWithOpeningSquareBracketCharacter(character, index);
 		}
 		case ",":
 		case ".": {
-			return parser.feedWithOperator(character, index);
+			return parser.feedWithOperatorCharacter(character, index);
 		}
 		case " ":
 		case "\t":
 		case "\n": {
-			return parser.feedWithWhitespace(character, index);
+			return parser.feedWithWhitespaceCharacter(character, index);
 		}
 		case "a":
 		case "b":
@@ -103,7 +103,7 @@ export function feed(
 		case ">":
 		case "<":
 		case "!": {
-			return parser.feedWithIdentifier(character, index);
+			return parser.feedWithIdentifierCharacter(character, index);
 		}
 		default: {
 			throw new Error(`Unexpected character: ${character}`);

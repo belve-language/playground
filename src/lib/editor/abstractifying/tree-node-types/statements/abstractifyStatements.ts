@@ -11,7 +11,7 @@ export function abstractifyStatements(
 	...OperatedStatementAbstractSyntaxTreeNode[],
 ] {
 	const [statementsFirstStatement, statementsRestStatements] =
-		statements.children;
+		statements.data.children;
 	const abstractifiedStatementsFirstStatement:
 		| FunctionCallAbstractSyntaxTreeNode
 		| BlockAbstractSyntaxTreeNode = abstractifyStatement(

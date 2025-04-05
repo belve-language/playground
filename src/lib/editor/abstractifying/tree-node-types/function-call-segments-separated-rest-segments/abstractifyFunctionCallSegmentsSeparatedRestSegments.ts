@@ -22,7 +22,7 @@ export function abstractifyFunctionCallSegmentsSeparatedRestSegments(
 		| FunctionCallKnownSegmentAbstractSyntaxTreeNode
 	)[],
 ] {
-	const [, segmentsSegments] = segments.children;
+	const [, segmentsSegments] = segments.data.children;
 	switch (segmentsSegments.typeName) {
 		case functionCallKnownStartingSegmentsConcreteSyntaxTreeNodeTypeName: {
 			const abstractifiedSegmentsRestSegments: readonly [

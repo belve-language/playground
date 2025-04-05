@@ -3,12 +3,14 @@ import type {IdentifierSegmentsConcreteSyntaxTreeNode} from "../../../concrete-s
 export function abstractifyIdentifierSegments(
 	identifier: IdentifierSegmentsConcreteSyntaxTreeNode,
 ): Identifier {
-	const [identifierFirstSegment, identifierRestSegments] = identifier.children;
+	const [identifierFirstSegment, identifierRestSegments] =
+		identifier.data.children;
 	if (identifierRestSegments === null) {
-		return identifierFirstSegment.character;
+		return identifierFirstSegment.data.character;
+	} else {
+		const abstractifiedIdentifierRestSegments = abstractifyIdentifierSegments(
+			identifierRestSegments,
+		);
+		return `${identifierFirstSegment.data.character}${abstractifiedIdentifierRestSegments}`;
 	}
-	const abstractifiedIdentifierRestSegments = abstractifyIdentifierSegments(
-		identifierRestSegments,
-	);
-	return `${identifierFirstSegment.character}${abstractifiedIdentifierRestSegments}`;
 }

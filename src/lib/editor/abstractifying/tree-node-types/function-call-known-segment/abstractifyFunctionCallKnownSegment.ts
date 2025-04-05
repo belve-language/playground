@@ -7,7 +7,7 @@ import {abstractifyFunctionCallKnownSegmentContent} from "../function-call-known
 export function abstractifyFunctionCallKnownSegment(
 	segment: FunctionCallKnownSegmentConcreteSyntaxTreeNode,
 ): FunctionCallKnownSegmentAbstractSyntaxTreeNode {
-	const [, segmentContent] = segment.children;
+	const [, segmentContent] = segment.data.children;
 	if (
 		segmentContent === null
 		|| segmentContent.typeName === whitespaceConcreteSyntaxTreeNodeTypeName

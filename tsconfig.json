@@ -36,7 +36,7 @@
 		"noUncheckedIndexedAccess": true,
 		"noUncheckedSideEffectImports": true,
 		"noUnusedLocals": false,
-		"noUnusedParameters": true,
+		"noUnusedParameters": false,
 		"paths": {},
 		"resolveJsonModule": false,
 		"resolvePackageJsonExports": false,

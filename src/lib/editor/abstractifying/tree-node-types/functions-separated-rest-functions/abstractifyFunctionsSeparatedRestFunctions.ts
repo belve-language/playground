@@ -8,7 +8,7 @@ export function abstractifyFunctionsSeparatedRestFunctions(
 	...FunctionAbstractSyntaxTreeNode[],
 ] {
 	const [, functionsSeparatedRestFunctionsFunctions] =
-		functionsSeparatedRestFunctions.children;
+		functionsSeparatedRestFunctions.data.children;
 	const abstractifiedFunctionsSeparatedRestFunctions: readonly [
 		FunctionAbstractSyntaxTreeNode,
 		...FunctionAbstractSyntaxTreeNode[],

@@ -8,7 +8,7 @@ import {abstractifyFunctionHeader} from "../function-header/abstractifyFunctionH
 export function abstractifyFunction(
 	function_: FunctionConcreteSyntaxTreeNode,
 ): FunctionAbstractSyntaxTreeNode {
-	const [functionHeader, functionBody] = function_.children;
+	const [functionHeader, functionBody] = function_.data.children;
 	if (functionHeader === null) {
 		const abstractifiedFunctionBody: FunctionBodyAbstractSyntaxTreeNode =
 			abstractifyFunctionBody(functionBody);

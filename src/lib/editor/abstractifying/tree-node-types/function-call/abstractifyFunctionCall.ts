@@ -8,7 +8,7 @@ import {abstractifyFunctionCallSegments} from "../function-call-segments/abstrac
 export function abstractifyFunctionCall(
 	functionCall: FunctionCallConcreteSyntaxTreeNode,
 ): FunctionCallAbstractSyntaxTreeNode {
-	const [functionCallSegments] = functionCall.children;
+	const [functionCallSegments] = functionCall.data.children;
 	const abstractifiedFunctionCallSegments: readonly [
 		(
 			| FunctionCallWordSegmentAbstractSyntaxTreeNode

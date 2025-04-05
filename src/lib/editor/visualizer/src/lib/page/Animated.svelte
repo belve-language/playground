@@ -1,8 +1,7 @@
 <script lang="ts">
-	import {computeNewParser} from "../../../../parsing/computing-new-parser/computeNewParser.ts";
 	import type {Parser} from "../../../../parsing/parser/Parser.ts";
 	import {SourceFileContentParser} from "../../../../parsing/parser/types/source-file-content/SourceFileContentParser.ts";
-
+	import {feed} from "../../../../parsing/feeding/feed.ts";
 	const {sourceCode}: Readonly<{sourceCode: string}> = $props();
 	const sourceCodeCharacters = $derived(sourceCode.split(""));
 	type AnimationData = Readonly<{
@@ -33,7 +32,6 @@
 			// 		reversedCharactersLeft: restReversedCharactersLeft,
 			// 	};
 			// }, 500);
-
 			// $effect(() => {
 			// 	return () => {
 			// 		console.log("clearing interval");
@@ -49,20 +47,17 @@
 				return;
 			}
 			const index = reversedCharactersLeft.length - 1;
-			const newParser = computeNewParser(
-				firstReversedCharactersLeft,
-				parser,
-				index,
-			);
-			this.animationData = {
-				parser: newParser,
-				reversedCharactersLeft: restReversedCharactersLeft,
-			};
+			// TODO RESTORE
+			// const feedResult = feed(firstReversedCharactersLeft, parser, index);
+
+			// this.animationData = {
+			// 	parser: newParser,
+			// 	reversedCharactersLeft: restReversedCharactersLeft,
+			// };
 		}
 		public get $animationData(): AnimationData {
 			return this.animationData;
 		}
-
 		// TODO REPLACE WITH JUST FUNCTION CREATING
 		// private readonly animation: Animation;
 		// constructor(animationData: AnimationData) {
@@ -91,7 +86,6 @@
 	// 	if (parsingConfiguration.isAnimated) {
 	// 		const characters: readonly string[] = parsingConfiguration.sourceCode.split("");
 	// 		animator = new Animator(characters);
-
 	// 		// const reversedCharactersEntries = reversedCharacters.entries();
 	// 		// for (const [index, character] of reversedCharactersEntries) {
 	// 		// 	parser = computeNewParser(character, parser, reversedCharacters.length - index - 1);

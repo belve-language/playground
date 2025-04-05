@@ -4,7 +4,7 @@ import {abstractifyIdentifier} from "../identifier/abstractifyIdentifier.ts";
 export function abstractifyFunctionCallKnownSegmentContent(
 	content: FunctionCallKnownSegmentContentConcreteSyntaxTreeNode,
 ): Identifier {
-	const [, contentIdentifier] = content.children;
+	const [, contentIdentifier] = content.data.children;
 	const serializedContentIdentifier = abstractifyIdentifier(contentIdentifier);
 	return serializedContentIdentifier;
 }

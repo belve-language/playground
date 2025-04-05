@@ -19,7 +19,7 @@ export function abstractifyFunctionHeaderWordStartingSegments(
 		| FunctionHeaderKnownSegmentAbstractSyntaxTreeNode
 	)[],
 ] {
-	const [segmentsFirstSegment, segmentsRestSegments] = segments.children;
+	const [segmentsFirstSegment, segmentsRestSegments] = segments.data.children;
 	const abstractifiedSegmentsFirstSegment =
 		abstractifyFunctionHeaderWordSegment(segmentsFirstSegment);
 	if (segmentsRestSegments === null) {

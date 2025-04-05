@@ -1,115 +1,81 @@
 import type {ClosingCurlyBracketCharacter} from "../../../../characters/closing-curly-bracket/ClosingCurlyBracketCharacter.ts";
+import type {ClosingRoundBracketCharacter} from "../../../../characters/closing-round-bracket/ClosingRoundBracketCharacter.ts";
+import type {ClosingSquareBracketCharacter} from "../../../../characters/closing-square-bracket/ClosingSquareBracketCharacter.ts";
+import type {IdentifierCharacter} from "../../../../characters/identifier/IdentifierCharacter.ts";
+import type {OpeningCurlyBracketCharacter} from "../../../../characters/opening-curly-bracket/OpeningCurlyBracketCharacter.ts";
+import type {OpeningRoundBracketCharacter} from "../../../../characters/opening-round-bracket/OpeningRoundBracketCharacter.ts";
+import type {OpeningSquareBracketCharacter} from "../../../../characters/opening-square-bracket/OpeningSquareBracketCharacter.ts";
+import type {OperatorCharacter} from "../../../../characters/operator/OperatorCharacter.ts";
 import type {WhitespaceCharacter} from "../../../../characters/whitespace/WhitespaceCharacter.ts";
 import type {Index} from "../../../../index/Index.ts";
-import {createBlockClosingBracketConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/block-closing-bracket/createBlockClosingBracketConcreteSyntaxTreeNode.ts";
-import {createWhitespaceSegmentConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/whitespace-segment/createWhitespaceSegmentConcreteSyntaxTreeNode.ts";
-import {createWhitespaceSegmentsConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/whitespace-segments/createWhitespaceSegmentsConcreteSyntaxTreeNode.ts";
-import {createWhitespaceConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/whitespace/createWhitespaceConcreteSyntaxTreeNode.ts";
-import type {WhitespaceConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/whitespace/WhitespaceConcreteSyntaxTreeNode.ts";
+import type {ErrorFeedResult} from "../../../feed-result-types/error/ErrorFeedResult.ts";
+import type {SuccessFeedResult} from "../../../feed-result-types/success/SuccessFeedResult.ts";
+import type {ErrorFinalizeResult} from "../../../finalize-result-types/error/ErrorFinalizeResult.ts";
+import type {SuccessFinalizeResult} from "../../../finalize-result-types/success/SuccessFinalizeResult.ts";
 import type {Parser} from "../../Parser.ts";
-import {BlockContentParser} from "../block-content/BlockContentParser.ts";
 import type {SourceFileContentFinalWhitespaceSegmentsParserPartialConcreteSyntaxTree} from "./SourceFileContentFinalWhitespaceSegmentsParserPartialConcreteSyntaxTree.ts";
 export class SourceFileContentFinalWhitespaceSegmentsParser implements Parser {
-	private readonly partialConcreteSyntaxTree: SourceFileContentFinalWhitespaceSegmentsParserPartialConcreteSyntaxTree;
+	private readonly tree: SourceFileContentFinalWhitespaceSegmentsParserPartialConcreteSyntaxTree;
 	public constructor(
-		partialConcreteSyntaxTree: SourceFileContentFinalWhitespaceSegmentsParserPartialConcreteSyntaxTree,
+		tree: SourceFileContentFinalWhitespaceSegmentsParserPartialConcreteSyntaxTree,
 	) {
-		this.partialConcreteSyntaxTree = partialConcreteSyntaxTree;
+		this.tree = tree;
 	}
-	public finalize(): WhitespaceConcreteSyntaxTreeNode {
-		const whitespace = createWhitespaceConcreteSyntaxTreeNode(
-			this.sourceFileContentFinalWhitespaceSegments,
-			{
-				starting: this.sourceFileContentFinalWhitespaceSegmentsStartingIndex,
-				ending: this.sourceFileContentFinalWhitespaceSegmentsEndingIndex,
-			},
-		);
-		return whitespace;
+	public feedWithWhitespaceCharacter(
+		character: WhitespaceCharacter,
+		index: Index,
+	): ErrorFeedResult | SuccessFeedResult<Parser> {
+		throw new Error("Not implemented.");
 	}
-	public feedWithWhitespace(character: WhitespaceCharacter, index: Index) {
-		const newSourceFileContentFinalWhitespaceSegmentsFirstSegment =
-			createWhitespaceSegmentConcreteSyntaxTreeNode(character, index);
-		const newSourceFileContentFinalWhitespaceSegments =
-			createWhitespaceSegmentsConcreteSyntaxTreeNode(
-				newSourceFileContentFinalWhitespaceSegmentsFirstSegment,
-				this.sourceFileContentFinalWhitespaceSegments,
-				{
-					starting: index,
-					ending: this.sourceFileContentFinalWhitespaceSegmentsEndingIndex,
-				},
-			);
-		const sourceFileContentFinalWhitespaceSegmentsParser =
-			new SourceFileContentFinalWhitespaceSegmentsParser(
-				index,
-				newSourceFileContentFinalWhitespaceSegments,
-				this.sourceFileContentFinalWhitespaceSegmentsEndingIndex,
-				this.sourceFileContentFinalWhitespaceEndingIndex,
-				this.sourceFileContentEndingIndex,
-			);
-		return sourceFileContentFinalWhitespaceSegmentsParser;
+	public feedWithOpeningSquareBracketCharacter(
+		character: OpeningSquareBracketCharacter,
+		index: Index,
+	): ErrorFeedResult | SuccessFeedResult<Parser> {
+		throw new Error("Not implemented.");
 	}
-	public feedWithOpeningSquareBracket(): never {
-		throw new Error(
-			"Opening square bracket should not be present in final whitespace characters.",
-		);
+	public feedWithClosingSquareBracketCharacter(
+		character: ClosingSquareBracketCharacter,
+		index: Index,
+	): ErrorFeedResult | SuccessFeedResult<Parser> {
+		throw new Error("Not implemented.");
 	}
-	public feedWithClosingSquareBracket(): never {
-		throw new Error(
-			"Closing square bracket should not be present in final whitespace characters.",
-		);
+	public feedWithOpeningCurlyBracketCharacter(
+		character: OpeningCurlyBracketCharacter,
+		index: Index,
+	): ErrorFeedResult | SuccessFeedResult<Parser> {
+		throw new Error("Not implemented.");
 	}
-	public feedWithOpeningCurlyBracket(): never {
-		throw new Error(
-			"Opening curly bracket should not be present in final whitespace characters.",
-		);
-	}
-	public feedWithClosingCurlyBracket(
+	public feedWithClosingCurlyBracketCharacter(
 		character: ClosingCurlyBracketCharacter,
 		index: Index,
-	): BlockContentParser {
-		const blockClosingBracket = createBlockClosingBracketConcreteSyntaxTreeNode(
-			character,
-			index,
-		);
-		const sourceFileContentFinalWhitespace =
-			createWhitespaceConcreteSyntaxTreeNode(
-				this.sourceFileContentFinalWhitespaceSegments,
-				{
-					starting: this.sourceFileContentFinalWhitespaceSegmentsStartingIndex,
-					ending: this.sourceFileContentFinalWhitespaceEndingIndex,
-				},
-			);
-		const blockContentParser = new BlockContentParser(
-			blockClosingBracket,
-			index,
-			[] as const,
-			index,
-			index,
-			null,
-			index,
-			sourceFileContentFinalWhitespace,
-			this.sourceFileContentEndingIndex,
-		);
-		return blockContentParser;
+	): ErrorFeedResult | SuccessFeedResult<Parser> {
+		throw new Error("Not implemented.");
 	}
-	public feedWithOpeningRoundBracket(): never {
-		throw new Error(
-			"Opening round bracket should not be present in final whitespace characters.",
-		);
+	public feedWithOpeningRoundBracketCharacter(
+		character: OpeningRoundBracketCharacter,
+		index: Index,
+	): ErrorFeedResult | SuccessFeedResult<Parser> {
+		throw new Error("Not implemented.");
 	}
-	public feedWithClosingRoundBracket(): never {
-		throw new Error(
-			"Closing round bracket should not be present in final whitespace characters.",
-		);
+	public feedWithClosingRoundBracketCharacter(
+		character: ClosingRoundBracketCharacter,
+		index: Index,
+	): ErrorFeedResult | SuccessFeedResult<Parser> {
+		throw new Error("Not implemented.");
 	}
-	public feedWithIdentifier(): never {
-		throw new Error(
-			"Identifier should not be present in final whitespace characters.",
-		);
+	public feedWithIdentifierCharacter(
+		character: IdentifierCharacter,
+		index: Index,
+	): ErrorFeedResult | SuccessFeedResult<Parser> {
+		throw new Error("Not implemented.");
 	}
-	public feedWithOperator(): never {
-		throw new Error(
-			"Operator should not be present in final whitespace characters.",
-		);
+	public feedWithOperatorCharacter(
+		character: OperatorCharacter,
+		index: Index,
+	): ErrorFeedResult | SuccessFeedResult<Parser> {
+		throw new Error("Not implemented.");
+	}
+	public finalize(): null | ErrorFinalizeResult | SuccessFinalizeResult {
+		throw new Error("Not implemented.");
 	}
 }

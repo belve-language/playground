@@ -4,7 +4,7 @@ import {abstractifyIdentifierSegments} from "../identifier-segments/abstractifyI
 export function abstractifyIdentifier(
 	identifier: IdentifierConcreteSyntaxTreeNode,
 ): Identifier {
-	const [identifierSegments] = identifier.children;
+	const [identifierSegments] = identifier.data.children;
 	const abstractifiedIdentifierSegments =
 		abstractifyIdentifierSegments(identifierSegments);
 	return abstractifiedIdentifierSegments;

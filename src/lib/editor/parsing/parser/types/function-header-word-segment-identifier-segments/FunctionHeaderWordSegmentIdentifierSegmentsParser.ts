@@ -2,390 +2,82 @@ import type {ClosingCurlyBracketCharacter} from "../../../../characters/closing-
 import type {ClosingRoundBracketCharacter} from "../../../../characters/closing-round-bracket/ClosingRoundBracketCharacter.ts";
 import type {ClosingSquareBracketCharacter} from "../../../../characters/closing-square-bracket/ClosingSquareBracketCharacter.ts";
 import type {IdentifierCharacter} from "../../../../characters/identifier/IdentifierCharacter.ts";
+import type {OpeningCurlyBracketCharacter} from "../../../../characters/opening-curly-bracket/OpeningCurlyBracketCharacter.ts";
+import type {OpeningRoundBracketCharacter} from "../../../../characters/opening-round-bracket/OpeningRoundBracketCharacter.ts";
+import type {OpeningSquareBracketCharacter} from "../../../../characters/opening-square-bracket/OpeningSquareBracketCharacter.ts";
+import type {OperatorCharacter} from "../../../../characters/operator/OperatorCharacter.ts";
 import type {WhitespaceCharacter} from "../../../../characters/whitespace/WhitespaceCharacter.ts";
 import type {Index} from "../../../../index/Index.ts";
-import {createBlockClosingBracketConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/block-closing-bracket/createBlockClosingBracketConcreteSyntaxTreeNode.ts";
-import {createFunctionHeaderKnownSegmentClosingBracketConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/function-header-known-segment-closing-bracket/createFunctionHeaderKnownSegmentClosingBracketConcreteSyntaxTreeNode.ts";
-import {createFunctionHeaderUnknownSegmentClosingBracketConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/function-header-unknown-segment-closing-bracket/createFunctionHeaderUnknownSegmentClosingBracketConcreteSyntaxTreeNode.ts";
-import {createFunctionHeaderWordSegmentConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/function-header-word-segment/createFunctionHeaderWordSegmentConcreteSyntaxTreeNode.ts";
-import {createFunctionHeaderWordStartingSegmentsConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/function-header-word-starting-segments/createFunctionHeaderWordStartingSegmentsConcreteSyntaxTreeNode.ts";
-import {createFunctionHeaderConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/function-header/createFunctionHeaderConcreteSyntaxTreeNode.ts";
-import {createFunctionConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/function/createFunctionConcreteSyntaxTreeNode.ts";
-import type {FunctionConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/function/FunctionConcreteSyntaxTreeNode.ts";
-import {createFunctionsConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/functions/createFunctionsConcreteSyntaxTreeNode.ts";
-import type {FunctionsConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/functions/FunctionsConcreteSyntaxTreeNode.ts";
-import {createIdentifierSegmentConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/identifier-segment/createIdentifierSegmentConcreteSyntaxTreeNode.ts";
-import {createIdentifierSegmentsConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/identifier-segments/createIdentifierSegmentsConcreteSyntaxTreeNode.ts";
-import {createIdentifierConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/identifier/createIdentifierConcreteSyntaxTreeNode.ts";
-import {createSourceFileContentConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/source-file-content/createSourcefileContentConcreteSyntaxTreeNode.ts";
-import type {SourceFileContentConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/source-file-content/SourceFileContentConcreteSyntaxTreeNode.ts";
-import {createWhitespaceSegmentConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/whitespace-segment/createWhitespaceSegmentConcreteSyntaxTreeNode.ts";
-import {createWhitespaceSegmentsConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/whitespace-segments/createWhitespaceSegmentsConcreteSyntaxTreeNode.ts";
+import type {ErrorFeedResult} from "../../../feed-result-types/error/ErrorFeedResult.ts";
+import type {SuccessFeedResult} from "../../../feed-result-types/success/SuccessFeedResult.ts";
+import type {ErrorFinalizeResult} from "../../../finalize-result-types/error/ErrorFinalizeResult.ts";
+import type {SuccessFinalizeResult} from "../../../finalize-result-types/success/SuccessFinalizeResult.ts";
 import type {Parser} from "../../Parser.ts";
-import {BlockContentParser} from "../block-content/BlockContentParser.ts";
-import {FunctionHeaderKnownSegmentContentParser} from "../function-header-known-segment-content/FunctionHeaderKnownSegmentContentParser.ts";
-import {FunctionHeaderSegmentsSeparatedRestSegmentsInitialWhitespaceSegmentsParser} from "../function-header-segments-separated-rest-segments-initial-whitespace-segments/FunctionHeaderSegmentsSeparatedRestSegmentsInitialWhitespaceSegmentsParser.ts";
-import {FunctionHeaderUnknownSegmentContentParser} from "../function-header-unknown-segment-content/FunctionHeaderUnknownSegmentContentParser.ts";
 import type {FunctionHeaderWordSegmentIdentifierSegmentsParserPartialConcreteSyntaxTree} from "./FunctionHeaderWordSegmentIdentifierSegmentsParserPartialConcreteSyntaxTree.ts";
 export class FunctionHeaderWordSegmentIdentifierSegmentsParser
 	implements Parser
 {
-	private readonly partialConcreteSyntaxTree: FunctionHeaderWordSegmentIdentifierSegmentsParserPartialConcreteSyntaxTree;
+	private readonly tree: FunctionHeaderWordSegmentIdentifierSegmentsParserPartialConcreteSyntaxTree;
 	public constructor(
-		partialConcreteSyntaxTree: FunctionHeaderWordSegmentIdentifierSegmentsParserPartialConcreteSyntaxTree,
+		tree: FunctionHeaderWordSegmentIdentifierSegmentsParserPartialConcreteSyntaxTree,
 	) {
-		this.partialConcreteSyntaxTree = partialConcreteSyntaxTree;
+		this.tree = tree;
 	}
-	public feedWithWhitespace(
+	public feedWithWhitespaceCharacter(
 		character: WhitespaceCharacter,
 		index: Index,
-	): FunctionHeaderSegmentsSeparatedRestSegmentsInitialWhitespaceSegmentsParser {
-		const functionHeaderSegmentsSeparatedRestSegmentsInitialWhitespaceSegmentsFirstSegment =
-			createWhitespaceSegmentConcreteSyntaxTreeNode(character, index);
-		const functionHeaderSegmentsSeparatedRestSegmentsInitialWhitespaceSegments =
-			createWhitespaceSegmentsConcreteSyntaxTreeNode(
-				functionHeaderSegmentsSeparatedRestSegmentsInitialWhitespaceSegmentsFirstSegment,
-				null,
-				{starting: index, ending: index},
-			);
-		const functionHeaderWordSegmentIdentifier =
-			createIdentifierConcreteSyntaxTreeNode(
-				this.functionHeaderWordSegmentIdentifierSegments,
-				{
-					starting:
-						this.functionHeaderWordSegmentIdentifierSegmentsStartingIndex,
-					ending: this.functionHeaderWordSegmentIdentifierEndingIndex,
-				},
-			);
-		const functionHeaderWordSegment =
-			createFunctionHeaderWordSegmentConcreteSyntaxTreeNode(
-				functionHeaderWordSegmentIdentifier,
-				{
-					starting:
-						this.functionHeaderWordSegmentIdentifierSegmentsStartingIndex,
-					ending: this.functionHeaderWordSegmentEndingIndex,
-				},
-			);
-		const functionHeaderWordStartingSegments =
-			createFunctionHeaderWordStartingSegmentsConcreteSyntaxTreeNode(
-				functionHeaderWordSegment,
-				this.functionHeaderWordStartingSegmentsRestSegments,
-				{
-					starting:
-						this.functionHeaderWordSegmentIdentifierSegmentsStartingIndex,
-					ending: this.functionHeaderSegmentsEndingIndex,
-				},
-			);
-		const functionHeaderSegmentsSeparatedRestSegmentsIntialWhitespaceSegmentsParser =
-			new FunctionHeaderSegmentsSeparatedRestSegmentsInitialWhitespaceSegmentsParser(
-				index,
-				functionHeaderSegmentsSeparatedRestSegmentsInitialWhitespaceSegments,
-				index,
-				this.functionHeaderWordSegmentIdentifierSegmentsStartingIndex,
-				functionHeaderWordStartingSegments,
-				this.functionHeaderSegmentsEndingIndex,
-				this.functionHeaderFinalWhitespace,
-				this.functionHeaderEndingIndex,
-				this.functionBody,
-				this.functionEndingIndex,
-				this.functionsRestFunctions,
-				this.functionsEndingIndex,
-				this.sourceFileContentFinalWhitespace,
-				this.sourceFileContentEndingIndex,
-			);
-		return functionHeaderSegmentsSeparatedRestSegmentsIntialWhitespaceSegmentsParser;
-	}
-	public feedWithOpeningSquareBracket(): never {
+	): ErrorFeedResult | SuccessFeedResult<Parser> {
 		throw new Error("Not implemented.");
 	}
-	public feedWithClosingSquareBracket(
+	public feedWithOpeningSquareBracketCharacter(
+		character: OpeningSquareBracketCharacter,
+		index: Index,
+	): ErrorFeedResult | SuccessFeedResult<Parser> {
+		throw new Error("Not implemented.");
+	}
+	public feedWithClosingSquareBracketCharacter(
 		character: ClosingSquareBracketCharacter,
 		index: Index,
-	): FunctionHeaderUnknownSegmentContentParser {
-		const functionHeaderUnknownSegmentClosingBracket =
-			createFunctionHeaderUnknownSegmentClosingBracketConcreteSyntaxTreeNode(
-				character,
-				index,
-			);
-		const functionHeaderWordSegmentIdentifier =
-			createIdentifierConcreteSyntaxTreeNode(
-				this.functionHeaderWordSegmentIdentifierSegments,
-				{
-					starting:
-						this.functionHeaderWordSegmentIdentifierSegmentsStartingIndex,
-					ending: this.functionHeaderWordSegmentIdentifierEndingIndex,
-				},
-			);
-		const functionHeaderWordSegment =
-			createFunctionHeaderWordSegmentConcreteSyntaxTreeNode(
-				functionHeaderWordSegmentIdentifier,
-				{
-					starting:
-						this.functionHeaderWordSegmentIdentifierSegmentsStartingIndex,
-					ending: this.functionHeaderWordSegmentEndingIndex,
-				},
-			);
-		const functionHeaderWordStartingSegments =
-			createFunctionHeaderWordStartingSegmentsConcreteSyntaxTreeNode(
-				functionHeaderWordSegment,
-				this.functionHeaderWordStartingSegmentsRestSegments,
-				{
-					starting:
-						this.functionHeaderWordSegmentIdentifierSegmentsStartingIndex,
-					ending: this.functionHeaderSegmentsEndingIndex,
-				},
-			);
-		const functionHeaderUnknownSegmentContentFinalWhitespaceSegmentsParser =
-			new FunctionHeaderUnknownSegmentContentParser(
-				functionHeaderUnknownSegmentClosingBracket,
-				index,
-				functionHeaderWordStartingSegments,
-				this.functionHeaderSegmentsEndingIndex,
-				this.functionHeaderFinalWhitespace,
-				this.functionHeaderEndingIndex,
-				this.functionBody,
-				this.functionEndingIndex,
-				this.functionsRestFunctions,
-				this.functionsEndingIndex,
-				this.sourceFileContentFinalWhitespace,
-				this.sourceFileContentEndingIndex,
-			);
-		return functionHeaderUnknownSegmentContentFinalWhitespaceSegmentsParser;
-	}
-	public feedWithOpeningCurlyBracket(): never {
+	): ErrorFeedResult | SuccessFeedResult<Parser> {
 		throw new Error("Not implemented.");
 	}
-	public feedWithClosingCurlyBracket(
+	public feedWithOpeningCurlyBracketCharacter(
+		character: OpeningCurlyBracketCharacter,
+		index: Index,
+	): ErrorFeedResult | SuccessFeedResult<Parser> {
+		throw new Error("Not implemented.");
+	}
+	public feedWithClosingCurlyBracketCharacter(
 		character: ClosingCurlyBracketCharacter,
 		index: Index,
-	): BlockContentParser {
-		const blockClosingBracket = createBlockClosingBracketConcreteSyntaxTreeNode(
-			character,
-			index,
-		);
-		const functionHeaderWordSegmentIdentifier =
-			createIdentifierConcreteSyntaxTreeNode(
-				this.functionHeaderWordSegmentIdentifierSegments,
-				{
-					starting:
-						this.functionHeaderWordSegmentIdentifierSegmentsStartingIndex,
-					ending: this.functionHeaderWordSegmentIdentifierEndingIndex,
-				},
-			);
-		const functionHeaderWordSegment =
-			createFunctionHeaderWordSegmentConcreteSyntaxTreeNode(
-				functionHeaderWordSegmentIdentifier,
-				{
-					starting:
-						this.functionHeaderWordSegmentIdentifierSegmentsStartingIndex,
-					ending: this.functionHeaderWordSegmentEndingIndex,
-				},
-			);
-		const functionHeaderWordStartingSegments =
-			createFunctionHeaderWordStartingSegmentsConcreteSyntaxTreeNode(
-				functionHeaderWordSegment,
-				this.functionHeaderWordStartingSegmentsRestSegments,
-				{
-					starting:
-						this.functionHeaderWordSegmentIdentifierSegmentsStartingIndex,
-					ending: this.functionHeaderSegmentsEndingIndex,
-				},
-			);
-		const functionHeader = createFunctionHeaderConcreteSyntaxTreeNode(
-			functionHeaderWordStartingSegments,
-			this.functionHeaderFinalWhitespace,
-			{
-				starting: this.functionHeaderWordSegmentIdentifierSegmentsStartingIndex,
-				ending: this.functionHeaderEndingIndex,
-			},
-		);
-		const function_ = createFunctionConcreteSyntaxTreeNode(
-			functionHeader,
-			this.functionBody,
-			{
-				starting: this.functionHeaderWordSegmentIdentifierSegmentsStartingIndex,
-				ending: this.functionEndingIndex,
-			},
-		);
-		const functions = createFunctionsConcreteSyntaxTreeNode(
-			function_,
-			this.functionsRestFunctions,
-			{
-				starting: this.functionHeaderWordSegmentIdentifierSegmentsStartingIndex,
-				ending: this.functionsEndingIndex,
-			},
-		);
-		const blockContentParser = new BlockContentParser(
-			blockClosingBracket,
-			index,
-			[] as const,
-			index,
-			index,
-			functions,
-			this.functionsEndingIndex,
-			this.sourceFileContentFinalWhitespace,
-			this.sourceFileContentEndingIndex,
-		);
-		return blockContentParser;
-	}
-	public feedWithOpeningRoundBracket(): never {
+	): ErrorFeedResult | SuccessFeedResult<Parser> {
 		throw new Error("Not implemented.");
 	}
-	public feedWithClosingRoundBracket(
+	public feedWithOpeningRoundBracketCharacter(
+		character: OpeningRoundBracketCharacter,
+		index: Index,
+	): ErrorFeedResult | SuccessFeedResult<Parser> {
+		throw new Error("Not implemented.");
+	}
+	public feedWithClosingRoundBracketCharacter(
 		character: ClosingRoundBracketCharacter,
 		index: Index,
-	): FunctionHeaderKnownSegmentContentParser {
-		const functionHeaderKnownSegmentClosingBracket =
-			createFunctionHeaderKnownSegmentClosingBracketConcreteSyntaxTreeNode(
-				character,
-				index,
-			);
-		const functionHeaderWordSegmentIdentifier =
-			createIdentifierConcreteSyntaxTreeNode(
-				this.functionHeaderWordSegmentIdentifierSegments,
-				{
-					starting:
-						this.functionHeaderWordSegmentIdentifierSegmentsStartingIndex,
-					ending: this.functionHeaderWordSegmentIdentifierEndingIndex,
-				},
-			);
-		const functionHeaderWordSegment =
-			createFunctionHeaderWordSegmentConcreteSyntaxTreeNode(
-				functionHeaderWordSegmentIdentifier,
-				{
-					starting:
-						this.functionHeaderWordSegmentIdentifierSegmentsStartingIndex,
-					ending: this.functionHeaderWordSegmentEndingIndex,
-				},
-			);
-		const functionHeaderWordStartingSegments =
-			createFunctionHeaderWordStartingSegmentsConcreteSyntaxTreeNode(
-				functionHeaderWordSegment,
-				this.functionHeaderWordStartingSegmentsRestSegments,
-				{
-					starting:
-						this.functionHeaderWordSegmentIdentifierSegmentsStartingIndex,
-					ending: this.functionHeaderSegmentsEndingIndex,
-				},
-			);
-		const functionHeaderKnownSegmentContentParser =
-			new FunctionHeaderKnownSegmentContentParser(
-				functionHeaderKnownSegmentClosingBracket,
-				index,
-				functionHeaderWordStartingSegments,
-				this.functionHeaderSegmentsEndingIndex,
-				this.functionHeaderFinalWhitespace,
-				this.functionHeaderEndingIndex,
-				this.functionBody,
-				this.functionEndingIndex,
-				this.functionsRestFunctions,
-				this.functionsEndingIndex,
-				this.sourceFileContentFinalWhitespace,
-				this.sourceFileContentEndingIndex,
-			);
-		return functionHeaderKnownSegmentContentParser;
-	}
-	public feedWithIdentifier(
-		character: IdentifierCharacter,
-		index: Index,
-	): FunctionHeaderWordSegmentIdentifierSegmentsParser {
-		const newFunctionHeaderWordSegmentIdentifierSegmentsFirstSegment =
-			createIdentifierSegmentConcreteSyntaxTreeNode(character, index);
-		const newFunctionHeaderWordSegmentIdentifierSegments =
-			createIdentifierSegmentsConcreteSyntaxTreeNode(
-				newFunctionHeaderWordSegmentIdentifierSegmentsFirstSegment,
-				this.functionHeaderWordSegmentIdentifierSegments,
-				{
-					starting: index,
-					ending: this.functionHeaderWordSegmentIdentifierSegmentsEndingIndex,
-				},
-			);
-		const functionHeaderWordSegmentIdentifierSegmentsParser =
-			new FunctionHeaderWordSegmentIdentifierSegmentsParser(
-				index,
-				newFunctionHeaderWordSegmentIdentifierSegments,
-				this.functionHeaderWordSegmentIdentifierSegmentsEndingIndex,
-				this.functionHeaderWordSegmentIdentifierEndingIndex,
-				this.functionHeaderWordSegmentEndingIndex,
-				this.functionHeaderWordStartingSegmentsRestSegments,
-				this.functionHeaderSegmentsEndingIndex,
-				this.functionHeaderFinalWhitespace,
-				this.functionHeaderEndingIndex,
-				this.functionBody,
-				this.functionEndingIndex,
-				this.functionsRestFunctions,
-				this.functionsEndingIndex,
-				this.sourceFileContentFinalWhitespace,
-				this.sourceFileContentEndingIndex,
-			);
-		return functionHeaderWordSegmentIdentifierSegmentsParser;
-	}
-	public feedWithOperator(): never {
+	): ErrorFeedResult | SuccessFeedResult<Parser> {
 		throw new Error("Not implemented.");
 	}
-	public finalize(): SourceFileContentConcreteSyntaxTreeNode {
-		const functionHeaderWordSegmentIdentifier =
-			createIdentifierConcreteSyntaxTreeNode(
-				this.functionHeaderWordSegmentIdentifierSegments,
-				{
-					starting:
-						this.functionHeaderWordSegmentIdentifierSegmentsStartingIndex,
-					ending: this.functionHeaderWordSegmentIdentifierEndingIndex,
-				},
-			);
-		const functionHeaderWordSegment =
-			createFunctionHeaderWordSegmentConcreteSyntaxTreeNode(
-				functionHeaderWordSegmentIdentifier,
-				{
-					starting:
-						this.functionHeaderWordSegmentIdentifierSegmentsStartingIndex,
-					ending: this.functionHeaderWordSegmentEndingIndex,
-				},
-			);
-		const functionHeaderWordStartingSegments =
-			createFunctionHeaderWordStartingSegmentsConcreteSyntaxTreeNode(
-				functionHeaderWordSegment,
-				this.functionHeaderWordStartingSegmentsRestSegments,
-				{
-					starting:
-						this.functionHeaderWordSegmentIdentifierSegmentsStartingIndex,
-					ending: this.functionHeaderSegmentsEndingIndex,
-				},
-			);
-		const functionHeader = createFunctionHeaderConcreteSyntaxTreeNode(
-			functionHeaderWordStartingSegments,
-			this.functionHeaderFinalWhitespace,
-			{
-				starting: this.functionHeaderWordSegmentIdentifierSegmentsStartingIndex,
-				ending: this.functionHeaderEndingIndex,
-			},
-		);
-		const function_: FunctionConcreteSyntaxTreeNode =
-			createFunctionConcreteSyntaxTreeNode(functionHeader, this.functionBody, {
-				starting: this.functionHeaderWordSegmentIdentifierSegmentsStartingIndex,
-				ending: this.functionEndingIndex,
-			});
-		const functions: FunctionsConcreteSyntaxTreeNode =
-			createFunctionsConcreteSyntaxTreeNode(
-				function_,
-				this.functionsRestFunctions,
-				{
-					starting:
-						this.functionHeaderWordSegmentIdentifierSegmentsStartingIndex,
-					ending: this.functionsEndingIndex,
-				},
-			);
-		const sourceFileContent: SourceFileContentConcreteSyntaxTreeNode =
-			createSourceFileContentConcreteSyntaxTreeNode(
-				null,
-				functions,
-				this.sourceFileContentFinalWhitespace,
-				{
-					starting:
-						this.functionHeaderWordSegmentIdentifierSegmentsStartingIndex,
-					ending: this.sourceFileContentEndingIndex,
-				},
-			);
-		return sourceFileContent;
+	public feedWithIdentifierCharacter(
+		character: IdentifierCharacter,
+		index: Index,
+	): ErrorFeedResult | SuccessFeedResult<Parser> {
+		throw new Error("Not implemented.");
+	}
+	public feedWithOperatorCharacter(
+		character: OperatorCharacter,
+		index: Index,
+	): ErrorFeedResult | SuccessFeedResult<Parser> {
+		throw new Error("Not implemented.");
+	}
+	public finalize(): null | ErrorFinalizeResult | SuccessFinalizeResult {
+		throw new Error("Not implemented.");
 	}
 }

@@ -11,39 +11,39 @@ import type {Index} from "../../index/Index.ts";
 import type {SupportedFeedResult} from "../SupportedFeedResult.ts";
 import type {SupportedFinalizeResult} from "../SupportedFinalizeResult.ts";
 export interface Parser {
-	feedWithWhitespace: (
+	feedWithWhitespaceCharacter: (
 		character: WhitespaceCharacter,
 		index: Index,
 	) => SupportedFeedResult;
-	feedWithOpeningSquareBracket: (
+	feedWithOpeningSquareBracketCharacter: (
 		character: OpeningSquareBracketCharacter,
 		index: Index,
 	) => SupportedFeedResult;
-	feedWithClosingSquareBracket: (
+	feedWithClosingSquareBracketCharacter: (
 		character: ClosingSquareBracketCharacter,
 		index: Index,
 	) => SupportedFeedResult;
-	feedWithOpeningCurlyBracket: (
+	feedWithOpeningCurlyBracketCharacter: (
 		character: OpeningCurlyBracketCharacter,
 		index: Index,
 	) => SupportedFeedResult;
-	feedWithClosingCurlyBracket: (
+	feedWithClosingCurlyBracketCharacter: (
 		character: ClosingCurlyBracketCharacter,
 		index: Index,
 	) => SupportedFeedResult;
-	feedWithOpeningRoundBracket: (
+	feedWithOpeningRoundBracketCharacter: (
 		character: OpeningRoundBracketCharacter,
 		index: Index,
 	) => SupportedFeedResult;
-	feedWithClosingRoundBracket: (
+	feedWithClosingRoundBracketCharacter: (
 		character: ClosingRoundBracketCharacter,
 		index: Index,
 	) => SupportedFeedResult;
-	feedWithIdentifier: (
+	feedWithIdentifierCharacter: (
 		character: IdentifierCharacter,
 		index: Index,
 	) => SupportedFeedResult;
-	feedWithOperator: (
+	feedWithOperatorCharacter: (
 		character: OperatorCharacter,
 		index: Index,
 	) => SupportedFeedResult;

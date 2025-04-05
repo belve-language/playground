@@ -1,106 +1,75 @@
 import type {ClosingCurlyBracketCharacter} from "../../../../characters/closing-curly-bracket/ClosingCurlyBracketCharacter.ts";
+import type {ClosingRoundBracketCharacter} from "../../../../characters/closing-round-bracket/ClosingRoundBracketCharacter.ts";
+import type {ClosingSquareBracketCharacter} from "../../../../characters/closing-square-bracket/ClosingSquareBracketCharacter.ts";
+import type {IdentifierCharacter} from "../../../../characters/identifier/IdentifierCharacter.ts";
+import type {OpeningCurlyBracketCharacter} from "../../../../characters/opening-curly-bracket/OpeningCurlyBracketCharacter.ts";
+import type {OpeningRoundBracketCharacter} from "../../../../characters/opening-round-bracket/OpeningRoundBracketCharacter.ts";
+import type {OpeningSquareBracketCharacter} from "../../../../characters/opening-square-bracket/OpeningSquareBracketCharacter.ts";
+import type {OperatorCharacter} from "../../../../characters/operator/OperatorCharacter.ts";
 import type {WhitespaceCharacter} from "../../../../characters/whitespace/WhitespaceCharacter.ts";
 import type {Index} from "../../../../index/Index.ts";
-import {createBlockClosingBracketConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/block-closing-bracket/createBlockClosingBracketConcreteSyntaxTreeNode.ts";
-import {createWhitespaceSegmentConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/whitespace-segment/createWhitespaceSegmentConcreteSyntaxTreeNode.ts";
-import {createWhitespaceSegmentsConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/whitespace-segments/createWhitespaceSegmentsConcreteSyntaxTreeNode.ts";
+import type {ErrorFeedResult} from "../../../feed-result-types/error/ErrorFeedResult.ts";
+import type {SuccessFeedResult} from "../../../feed-result-types/success/SuccessFeedResult.ts";
+import type {ErrorFinalizeResult} from "../../../finalize-result-types/error/ErrorFinalizeResult.ts";
+import type {SuccessFinalizeResult} from "../../../finalize-result-types/success/SuccessFinalizeResult.ts";
 import type {Parser} from "../../Parser.ts";
-import {BlockContentParser} from "../block-content/BlockContentParser.ts";
-import {SourceFileContentFinalWhitespaceSegmentsParser} from "../source-file-content-final-whitespace-segments/SourceFileContentFinalWhitespaceSegmentsParser.ts";
 export class SourceFileContentParser implements Parser {
 	public constructor() {}
-	public feedWithWhitespace(
+	public feedWithWhitespaceCharacter(
 		character: WhitespaceCharacter,
 		index: Index,
-	): SourceFileContentFinalWhitespaceSegmentsParser {
-		const sourceFileContentFinalWhitespaceSegmentsFirstSegment =
-			createWhitespaceSegmentConcreteSyntaxTreeNode(character, index);
-		const sourceFileContentFinalWhitespaceSegments =
-			createWhitespaceSegmentsConcreteSyntaxTreeNode(
-				sourceFileContentFinalWhitespaceSegmentsFirstSegment,
-				null,
-				{starting: index, ending: index},
-			);
-		const sourceFileContentFinalWhitespaceSegmentsParser =
-			new SourceFileContentFinalWhitespaceSegmentsParser(
-				index,
-				sourceFileContentFinalWhitespaceSegments,
-				index,
-				index,
-				index,
-			);
-		return sourceFileContentFinalWhitespaceSegmentsParser;
+	): ErrorFeedResult | SuccessFeedResult<Parser> {
+		throw new Error("Not implemented.");
 	}
-	public feedWithOpeningSquareBracket(): never {
-		throw new Error(
-			"OpeningSquareBracketCharacter is not allowed in SourceFileContent.",
-		);
+	public feedWithOpeningSquareBracketCharacter(
+		character: OpeningSquareBracketCharacter,
+		index: Index,
+	): ErrorFeedResult | SuccessFeedResult<Parser> {
+		throw new Error("Not implemented.");
 	}
-	public feedWithClosingSquareBracket(): never {
-		throw new Error(
-			"ClosingSquareBracketCharacter is not allowed in SourceFileContent.",
-		);
+	public feedWithClosingSquareBracketCharacter(
+		character: ClosingSquareBracketCharacter,
+		index: Index,
+	): ErrorFeedResult | SuccessFeedResult<Parser> {
+		throw new Error("Not implemented.");
 	}
-	public feedWithOpeningCurlyBracket(): never {
-		throw new Error(
-			"OpeningCurlyBracketCharacter is not allowed in SourceFileContent.",
-		);
+	public feedWithOpeningCurlyBracketCharacter(
+		character: OpeningCurlyBracketCharacter,
+		index: Index,
+	): ErrorFeedResult | SuccessFeedResult<Parser> {
+		throw new Error("Not implemented.");
 	}
-	public feedWithClosingCurlyBracket(
+	public feedWithClosingCurlyBracketCharacter(
 		character: ClosingCurlyBracketCharacter,
 		index: Index,
-	): BlockContentParser {
-		const blockContentParser = new BlockContentParser({
-			children: [
-				{
-					children: [
-						{
-							children: [
-								{
-									children: [
-										{
-											children: [
-												createBlockClosingBracketConcreteSyntaxTreeNode(
-													character,
-													index,
-												),
-											],
-											endingIndex: index,
-										},
-										[],
-									],
-									endingIndex: index,
-								},
-							],
-							endingIndex: index,
-						},
-						null,
-					],
-					endingIndex: index,
-				},
-				null,
-			],
-			endingIndex: index,
-		});
-		return blockContentParser;
+	): ErrorFeedResult | SuccessFeedResult<Parser> {
+		throw new Error("Not implemented.");
 	}
-	public feedWithOpeningRoundBracket(): never {
-		throw new Error(
-			"OpeningRoundBracketCharacter is not allowed in SourceFileContent.",
-		);
+	public feedWithOpeningRoundBracketCharacter(
+		character: OpeningRoundBracketCharacter,
+		index: Index,
+	): ErrorFeedResult | SuccessFeedResult<Parser> {
+		throw new Error("Not implemented.");
 	}
-	public feedWithClosingRoundBracket(): never {
-		throw new Error(
-			"ClosingRoundBracketCharacter is not allowed in SourceFileContent.",
-		);
+	public feedWithClosingRoundBracketCharacter(
+		character: ClosingRoundBracketCharacter,
+		index: Index,
+	): ErrorFeedResult | SuccessFeedResult<Parser> {
+		throw new Error("Not implemented.");
 	}
-	public feedWithIdentifier(): never {
-		throw new Error("IdentifierCharacter is not allowed in SourceFileContent.");
+	public feedWithIdentifierCharacter(
+		character: IdentifierCharacter,
+		index: Index,
+	): ErrorFeedResult | SuccessFeedResult<Parser> {
+		throw new Error("Not implemented.");
 	}
-	public feedWithOperator(): never {
-		throw new Error("OperatorCharacter is not allowed in SourceFileContent.");
+	public feedWithOperatorCharacter(
+		character: OperatorCharacter,
+		index: Index,
+	): ErrorFeedResult | SuccessFeedResult<Parser> {
+		throw new Error("Not implemented.");
 	}
-	public finalize(): null {
-		return null;
+	public finalize(): null | ErrorFinalizeResult | SuccessFinalizeResult {
+		throw new Error("Not implemented.");
 	}
 }

@@ -8,7 +8,7 @@ import {abstractifyFunctionHeaderSegments} from "../function-header-segments/abs
 export function abstractifyFunctionHeader(
 	functionHeader: FunctionHeaderConcreteSyntaxTreeNode,
 ): FunctionHeaderAbstractSyntaxTreeNode {
-	const [functionHeaderSegments] = functionHeader.children;
+	const [functionHeaderSegments] = functionHeader.data.children;
 	const abstractifiedFunctionHeaderSegments: readonly [
 		(
 			| FunctionHeaderWordSegmentAbstractSyntaxTreeNode

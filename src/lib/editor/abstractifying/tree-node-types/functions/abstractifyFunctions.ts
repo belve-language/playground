@@ -10,7 +10,8 @@ export function abstractifyFunctions(
 	FunctionAbstractSyntaxTreeNode,
 	...FunctionAbstractSyntaxTreeNode[],
 ] {
-	const [functionsFirstFunction, functionsRestFunctions] = functions.children;
+	const [functionsFirstFunction, functionsRestFunctions] =
+		functions.data.children;
 	const abstractifiedFunctionsFirstFunction: FunctionAbstractSyntaxTreeNode =
 		abstractifyFunction(functionsFirstFunction);
 	if (functionsRestFunctions === null) {

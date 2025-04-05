@@ -7,7 +7,7 @@ import {abstractifyFunctionCallUnknownSegmentContent} from "../function-call-unk
 export function abstractifyFunctionCallUnknownSegment(
 	segment: FunctionCallUnknownSegmentConcreteSyntaxTreeNode,
 ): FunctionCallUnknownSegmentAbstractSyntaxTreeNode {
-	const [, segmentContent] = segment.children;
+	const [, segmentContent] = segment.data.children;
 	if (
 		segmentContent === null
 		|| segmentContent.typeName === whitespaceConcreteSyntaxTreeNodeTypeName

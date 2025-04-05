@@ -6,7 +6,7 @@ import {abstractifyFunctionHeaderKnownSegmentContent} from "../function-header-k
 export function abstractifyFunctionHeaderKnownSegment(
 	segment: FunctionHeaderKnownSegmentConcreteSyntaxTreeNode,
 ): FunctionHeaderKnownSegmentAbstractSyntaxTreeNode {
-	const [, segmentContent] = segment.children;
+	const [, segmentContent] = segment.data.children;
 	if (
 		segmentContent === null
 		|| segmentContent.typeName === whitespaceConcreteSyntaxTreeNodeTypeName

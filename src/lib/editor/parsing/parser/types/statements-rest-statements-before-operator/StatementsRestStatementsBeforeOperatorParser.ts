@@ -2,264 +2,80 @@ import type {ClosingCurlyBracketCharacter} from "../../../../characters/closing-
 import type {ClosingRoundBracketCharacter} from "../../../../characters/closing-round-bracket/ClosingRoundBracketCharacter.ts";
 import type {ClosingSquareBracketCharacter} from "../../../../characters/closing-square-bracket/ClosingSquareBracketCharacter.ts";
 import type {IdentifierCharacter} from "../../../../characters/identifier/IdentifierCharacter.ts";
+import type {OpeningCurlyBracketCharacter} from "../../../../characters/opening-curly-bracket/OpeningCurlyBracketCharacter.ts";
+import type {OpeningRoundBracketCharacter} from "../../../../characters/opening-round-bracket/OpeningRoundBracketCharacter.ts";
+import type {OpeningSquareBracketCharacter} from "../../../../characters/opening-square-bracket/OpeningSquareBracketCharacter.ts";
+import type {OperatorCharacter} from "../../../../characters/operator/OperatorCharacter.ts";
 import type {WhitespaceCharacter} from "../../../../characters/whitespace/WhitespaceCharacter.ts";
-import {createIdentifierSegmentsConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/identifier-segments/createIdentifierSegmentsConcreteSyntaxTreeNode.ts";
-import type {Parser} from "../../Parser.ts";
-import {FunctionCallKnownSegmentContentParser} from "../function-call-known-segment-content/FunctionCallKnownSegmentContentParser.ts";
-import {BlockContentParser} from "../block-content/BlockContentParser.ts";
-import {createWhitespaceSegmentsConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/whitespace-segments/createWhitespaceSegmentsConcreteSyntaxTreeNode.ts";
-import {FunctionCallUnknownSegmentContentParser} from "../function-call-unknown-segment-content/FunctionCallUnknownSegmentContentParser.ts";
-import type {StatementsRestStatementsConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/statements-rest-statements/StatementsRestStatementsConcreteSyntaxTreeNode.ts";
-import {createStatementsRestStatementsConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/statements-rest-statements/createStatementsRestStatementsConcreteSyntaxTreeNode.ts";
 import type {Index} from "../../../../index/Index.ts";
-import {createIdentifierSegmentConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/identifier-segment/createIdentifierSegmentConcreteSyntaxTreeNode.ts";
-import type {WhitespaceConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/whitespace/WhitespaceConcreteSyntaxTreeNode.ts";
-import {createWhitespaceSegmentConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/whitespace-segment/createWhitespaceSegmentConcreteSyntaxTreeNode.ts";
-import {StatementsRestStatementsBeforeOperatorWhitespaceSegmentsParser} from "../statements-rest-statements-before-operator-whitespace-segments/StatementsRestStatementsBeforeOperatorWhitespaceSegmentsParser.ts";
-import {createBlockClosingBracketConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/block-closing-bracket/createBlockClosingBracketConcreteSyntaxTreeNode.ts";
-import {createFunctionCallUnknownSegmentClosingBracketConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/function-call-unknown-segment-closing-bracket/createFunctionCallUnknownSegmentClosingBracketConcreteSyntaxTreeNode.ts";
-import {createFunctionCallKnownSegmentClosingBracketConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/function-call-known-segment-closing-bracket/createFunctionCallKnownSegmentClosingBracketConcreteSyntaxTreeNode.ts";
-import type {BlockClosingBracketConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/block-closing-bracket/BlockClosingBracketConcreteSyntaxTreeNode.ts";
-import {FunctionCallWordSegmentIdentifierSegmentsParser} from "../function-call-word-segment-identifier-segments/FunctionCallWordSegmentIdentifierSegmentsParser.ts";
-import type {StatementsRestStatementsBeforeOperatorParserParserPartialConcreteSyntaxTree} from "./StatementsRestStatementsBeforeOperatorParserPartialConcreteSyntaxTree.ts";
+import type {ErrorFeedResult} from "../../../feed-result-types/error/ErrorFeedResult.ts";
+import type {SuccessFeedResult} from "../../../feed-result-types/success/SuccessFeedResult.ts";
+import type {ErrorFinalizeResult} from "../../../finalize-result-types/error/ErrorFinalizeResult.ts";
+import type {SuccessFinalizeResult} from "../../../finalize-result-types/success/SuccessFinalizeResult.ts";
+import type {Parser} from "../../Parser.ts";
+import type {StatementsRestStatementsBeforeOperatorParserPartialConcreteSyntaxTree} from "./StatementsRestStatementsBeforeOperatorParserPartialConcreteSyntaxTree.ts";
 export class StatementsRestStatementsBeforeOperatorParser implements Parser {
-	private readonly partialConcreteSyntaxTree: StatementsRestStatementsBeforeOperatorParserParserPartialConcreteSyntaxTree;
+	private readonly tree: StatementsRestStatementsBeforeOperatorParserPartialConcreteSyntaxTree;
 	public constructor(
-		partialConcreteSyntaxTree: StatementsRestStatementsBeforeOperatorParserParserPartialConcreteSyntaxTree,
+		tree: StatementsRestStatementsBeforeOperatorParserPartialConcreteSyntaxTree,
 	) {
-		this.partialConcreteSyntaxTree = partialConcreteSyntaxTree;
+		this.tree = tree;
 	}
-	public feedWithWhitespace(character: WhitespaceCharacter, index: Index) {
-		const statementsRestStatementsBeforeOperatorWhitespaceSegmentsFirstSegment =
-			createWhitespaceSegmentConcreteSyntaxTreeNode(character, index);
-		const statementsRestStatementsBeforeOperatorWhitespaceSegments =
-			createWhitespaceSegmentsConcreteSyntaxTreeNode(
-				statementsRestStatementsBeforeOperatorWhitespaceSegmentsFirstSegment,
-				null,
-				{starting: index, ending: index},
-			);
-		const statementsRestStatementsBeforeOperatorWhitespaceSegmentsParser =
-			new StatementsRestStatementsBeforeOperatorWhitespaceSegmentsParser(
-				index,
-				statementsRestStatementsBeforeOperatorWhitespaceSegments,
-				index,
-				index,
-				this.statementsRestStatementsOperator,
-				this.statementsRestStatementsAfterOperatorWhitespace,
-				this.statementsRestStatementsStatements,
-				this.statementsEndingIndex,
-				this.blockContentFinalWhitespace,
-				this.blockContentEndingIndex,
-				this.blockClosingBracket,
-				this.blockEndingIndex,
-				this.blockStack,
-				this.functionBodyEndingIndex,
-				this.functionEndingIndex,
-				this.functionsRestFunctions,
-				this.functionsEndingIndex,
-				this.sourceFileContentFinalWhitespace,
-				this.sourceFileContentEndingIndex,
-			);
-		return statementsRestStatementsBeforeOperatorWhitespaceSegmentsParser;
+	public feedWithWhitespaceCharacter(
+		character: WhitespaceCharacter,
+		index: Index,
+	): ErrorFeedResult | SuccessFeedResult<Parser> {
+		throw new Error("Not implemented.");
 	}
-	public feedWithOpeningSquareBracket(): never {
-		throw new Error("Method not implemented.");
+	public feedWithOpeningSquareBracketCharacter(
+		character: OpeningSquareBracketCharacter,
+		index: Index,
+	): ErrorFeedResult | SuccessFeedResult<Parser> {
+		throw new Error("Not implemented.");
 	}
-	public feedWithClosingSquareBracket(
+	public feedWithClosingSquareBracketCharacter(
 		character: ClosingSquareBracketCharacter,
 		index: Index,
-	): FunctionCallUnknownSegmentContentParser {
-		const functionCallUnknownSegmentClosingBracket =
-			createFunctionCallUnknownSegmentClosingBracketConcreteSyntaxTreeNode(
-				character,
-				index,
-			);
-		const statementsRestStatements =
-			createStatementsRestStatementsConcreteSyntaxTreeNode(
-				null,
-				this.statementsRestStatementsOperator,
-				this.statementsRestStatementsAfterOperatorWhitespace,
-				this.statementsRestStatementsStatements,
-				{
-					starting: this.statementsRestStatementsOperatorIndex,
-					ending: this.statementsEndingIndex,
-				},
-			);
-		const functionCallUnknownSegmentContentParser =
-			new FunctionCallUnknownSegmentContentParser(
-				functionCallUnknownSegmentClosingBracket,
-				index,
-				null,
-				index,
-				index,
-				statementsRestStatements,
-				this.statementsEndingIndex,
-				this.blockContentFinalWhitespace,
-				this.blockContentEndingIndex,
-				this.blockClosingBracket,
-				this.blockEndingIndex,
-				this.blockStack,
-				this.functionBodyEndingIndex,
-				this.functionEndingIndex,
-				this.functionsRestFunctions,
-				this.functionsEndingIndex,
-				this.sourceFileContentFinalWhitespace,
-				this.sourceFileContentEndingIndex,
-			);
-		return functionCallUnknownSegmentContentParser;
+	): ErrorFeedResult | SuccessFeedResult<Parser> {
+		throw new Error("Not implemented.");
 	}
-	public feedWithOpeningCurlyBracket(): never {
-		throw new Error("Method not implemented.");
+	public feedWithOpeningCurlyBracketCharacter(
+		character: OpeningCurlyBracketCharacter,
+		index: Index,
+	): ErrorFeedResult | SuccessFeedResult<Parser> {
+		throw new Error("Not implemented.");
 	}
-	public feedWithClosingCurlyBracket(
+	public feedWithClosingCurlyBracketCharacter(
 		character: ClosingCurlyBracketCharacter,
 		index: Index,
-	) {
-		const blockClosingBracket = createBlockClosingBracketConcreteSyntaxTreeNode(
-			character,
-			index,
-		);
-		const statementsRestStatements =
-			createStatementsRestStatementsConcreteSyntaxTreeNode(
-				null,
-				this.statementsRestStatementsOperator,
-				this.statementsRestStatementsAfterOperatorWhitespace,
-				this.statementsRestStatementsStatements,
-				{
-					starting: this.statementsRestStatementsOperatorIndex,
-					ending: this.statementsEndingIndex,
-				},
-			);
-		const newBlockStack = [
-			[
-				statementsRestStatements,
-				this.statementsEndingIndex,
-				this.blockContentFinalWhitespace,
-				this.blockContentEndingIndex,
-				this.blockClosingBracket,
-				this.blockEndingIndex,
-			],
-			...this.blockStack,
-		] as const satisfies readonly (readonly [
-			statementsRestStatements: StatementsRestStatementsConcreteSyntaxTreeNode | null,
-			statementsEndingIndex: Index,
-			finalWhitespace: WhitespaceConcreteSyntaxTreeNode | null,
-			contentEndingIndex: Index,
-			closingBracket: BlockClosingBracketConcreteSyntaxTreeNode,
-			endingIndex: Index,
-		])[];
-		const blockContentParser = new BlockContentParser(
-			blockClosingBracket,
-			index,
-			newBlockStack,
-			this.functionBodyEndingIndex,
-			this.functionEndingIndex,
-			this.functionsRestFunctions,
-			this.functionsEndingIndex,
-			this.sourceFileContentFinalWhitespace,
-			this.sourceFileContentEndingIndex,
-		);
-		return blockContentParser;
+	): ErrorFeedResult | SuccessFeedResult<Parser> {
+		throw new Error("Not implemented.");
 	}
-	public feedWithOpeningRoundBracket(): never {
-		throw new Error("Method not implemented.");
+	public feedWithOpeningRoundBracketCharacter(
+		character: OpeningRoundBracketCharacter,
+		index: Index,
+	): ErrorFeedResult | SuccessFeedResult<Parser> {
+		throw new Error("Not implemented.");
 	}
-	public feedWithClosingRoundBracket(
+	public feedWithClosingRoundBracketCharacter(
 		character: ClosingRoundBracketCharacter,
 		index: Index,
-	): FunctionCallKnownSegmentContentParser {
-		const functionCallKnownSegmentClosingBracket =
-			createFunctionCallKnownSegmentClosingBracketConcreteSyntaxTreeNode(
-				character,
-				index,
-			);
-		const statementsRestStatements =
-			createStatementsRestStatementsConcreteSyntaxTreeNode(
-				null,
-				this.statementsRestStatementsOperator,
-				this.statementsRestStatementsAfterOperatorWhitespace,
-				this.statementsRestStatementsStatements,
-				{
-					starting: this.statementsRestStatementsOperatorIndex,
-					ending: this.statementsEndingIndex,
-				},
-			);
-		const functionCallKnownSegmentContentParser =
-			new FunctionCallKnownSegmentContentParser(
-				functionCallKnownSegmentClosingBracket,
-				index,
-				null,
-				index,
-				index,
-				statementsRestStatements,
-				this.statementsEndingIndex,
-				this.blockContentFinalWhitespace,
-				this.blockContentEndingIndex,
-				this.blockClosingBracket,
-				this.blockEndingIndex,
-				this.blockStack,
-				this.functionBodyEndingIndex,
-				this.functionEndingIndex,
-				this.functionsRestFunctions,
-				this.functionsEndingIndex,
-				this.sourceFileContentFinalWhitespace,
-				this.sourceFileContentEndingIndex,
-			);
-		return functionCallKnownSegmentContentParser;
+	): ErrorFeedResult | SuccessFeedResult<Parser> {
+		throw new Error("Not implemented.");
 	}
-	public feedWithIdentifier(
+	public feedWithIdentifierCharacter(
 		character: IdentifierCharacter,
 		index: Index,
-	): FunctionCallWordSegmentIdentifierSegmentsParser {
-		const functionCallWordSegmentIdentifierSegmentsFirstIdentifier =
-			createIdentifierSegmentConcreteSyntaxTreeNode(character, index);
-		const functionCallWordSegmentIdentifierSegments =
-			createIdentifierSegmentsConcreteSyntaxTreeNode(
-				functionCallWordSegmentIdentifierSegmentsFirstIdentifier,
-				null,
-				{starting: index, ending: index},
-			);
-		const statementsRestStatements =
-			createStatementsRestStatementsConcreteSyntaxTreeNode(
-				null,
-				this.statementsRestStatementsOperator,
-				this.statementsRestStatementsAfterOperatorWhitespace,
-				this.statementsRestStatementsStatements,
-				{
-					starting: this.statementsRestStatementsOperatorIndex,
-					ending: this.statementsEndingIndex,
-				},
-			);
-		const functionCallWordSegmentIdentifierSegmentsParser =
-			new FunctionCallWordSegmentIdentifierSegmentsParser(
-				index,
-				functionCallWordSegmentIdentifierSegments,
-				index,
-				index,
-				index,
-				null,
-				index,
-				index,
-				statementsRestStatements,
-				this.statementsEndingIndex,
-				this.blockContentFinalWhitespace,
-				this.blockContentEndingIndex,
-				this.blockClosingBracket,
-				this.blockEndingIndex,
-				this.blockStack,
-				this.functionBodyEndingIndex,
-				this.functionEndingIndex,
-				this.functionsRestFunctions,
-				this.functionsEndingIndex,
-				this.sourceFileContentFinalWhitespace,
-				this.sourceFileContentEndingIndex,
-			);
-		return functionCallWordSegmentIdentifierSegmentsParser;
+	): ErrorFeedResult | SuccessFeedResult<Parser> {
+		throw new Error("Not implemented.");
 	}
-	public feedWithOperator(): never {
-		throw new Error("Method not implemented.");
+	public feedWithOperatorCharacter(
+		character: OperatorCharacter,
+		index: Index,
+	): ErrorFeedResult | SuccessFeedResult<Parser> {
+		throw new Error("Not implemented.");
 	}
-	public finalize(): never {
-		throw new Error("Method not implemented.");
+	public finalize(): null | ErrorFinalizeResult | SuccessFinalizeResult {
+		throw new Error("Not implemented.");
 	}
 }

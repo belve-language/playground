@@ -8,12 +8,13 @@ import {abstractifyBlockContent} from "../block-content/abstractifyBlockContent.
 export function abstractifyBlock(
 	block: BlockConcreteSyntaxTreeNode,
 ): BlockAbstractSyntaxTreeNode {
-	const [, blockContent] = block.children;
+	const [, blockContent] = block.data.children;
 	if (
 		blockContent === null
 		|| blockContent.typeName === whitespaceConcreteSyntaxTreeNodeTypeName
 	) {
-		throw new Error("A block must have content.");
+		// TODO : no throw
+		throw new Error("Not implemented.");
 	}
 	const abstractifiedBlockContent: readonly [
 		BlockAbstractSyntaxTreeNode | FunctionCallAbstractSyntaxTreeNode,

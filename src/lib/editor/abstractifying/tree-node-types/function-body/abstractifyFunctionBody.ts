@@ -6,7 +6,7 @@ import {abstractifyBlock} from "../block/abstractifyBlock.ts";
 export function abstractifyFunctionBody(
 	functionBody: FunctionBodyConcreteSyntaxTreeNode,
 ): FunctionBodyAbstractSyntaxTreeNode {
-	const [functionBodyBlock] = functionBody.children;
+	const [functionBodyBlock] = functionBody.data.children;
 	const abstractifiedFunctionBodyBlock: BlockAbstractSyntaxTreeNode =
 		abstractifyBlock(functionBodyBlock);
 	const abstractifiedFunctionBody: FunctionBodyAbstractSyntaxTreeNode =

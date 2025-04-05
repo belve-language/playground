@@ -3,7 +3,7 @@ import type {OperatorConcreteSyntaxTreeNode} from "../../../concrete-syntax-tree
 export function abstractifyOperator(
 	operator: OperatorConcreteSyntaxTreeNode,
 ): Operator {
-	switch (operator.character) {
+	switch (operator.data.character) {
 		case ",": {
 			return "and";
 		}

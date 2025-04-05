@@ -6,7 +6,7 @@ import {abstractifyFunctions} from "../functions/abstractifyFunctions.ts";
 export function abstractifySourceFileContent(
 	sourceFileContent: SourceFileContentConcreteSyntaxTreeNode,
 ): SourceFileContentAbstractSyntaxTreeNode {
-	const [, sourceFileContentFunctions] = sourceFileContent.children;
+	const [, sourceFileContentFunctions] = sourceFileContent.data.children;
 	const abstractifiedSourceFileContentFunctions: readonly [
 		FunctionAbstractSyntaxTreeNode,
 		...FunctionAbstractSyntaxTreeNode[],

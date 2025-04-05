@@ -3,7 +3,7 @@ import {abstractifyIdentifier} from "../identifier/abstractifyIdentifier.ts";
 export function abstractifyFunctionHeaderUnknownSegmentContent(
 	content: FunctionHeaderUnknownSegmentContentConcreteSyntaxTreeNode,
 ): string {
-	const [, contentIdentifier] = content.children;
+	const [, contentIdentifier] = content.data.children;
 	const abstractifiedContentIdentifier =
 		abstractifyIdentifier(contentIdentifier);
 	return abstractifiedContentIdentifier;

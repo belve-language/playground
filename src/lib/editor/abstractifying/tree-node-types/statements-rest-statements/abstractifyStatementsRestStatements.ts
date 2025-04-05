@@ -11,13 +11,14 @@ export function abstractifyStatementsRestStatements(
 	OperatedStatementAbstractSyntaxTreeNode,
 	...OperatedStatementAbstractSyntaxTreeNode[],
 ] {
-	const [, statementsOperator, , statementsStatements] = statements.children;
+	const [, statementsOperator, , statementsStatements] =
+		statements.data.children;
 	const abstractifiedStatementsOperator =
 		abstractifyOperator(statementsOperator);
 	const [
 		statementsStatementsFirstStatement,
 		statementsStatementsRestStatement,
-	] = statementsStatements.children;
+	] = statementsStatements.data.children;
 	const abstractifiedFirstStatement:
 		| FunctionCallAbstractSyntaxTreeNode
 		| BlockAbstractSyntaxTreeNode = abstractifyStatement(
