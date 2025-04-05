@@ -115,7 +115,7 @@ export class StatementsRestStatementsBeforeOperatorWhitespaceSegmentsParser
 	private readonly functionEndingIndex: Index;
 	private readonly functionsEndingIndex: Index;
 	private readonly sourceFileContentEndingIndex: Index;
-	public parseWhitespace(
+	public feedWithWhitespace(
 		character: WhitespaceCharacter,
 		index: Index,
 	): StatementsRestStatementsBeforeOperatorWhitespaceSegmentsParser {
@@ -156,10 +156,10 @@ export class StatementsRestStatementsBeforeOperatorWhitespaceSegmentsParser
 			);
 		return statementsRestStatementsBeforeOperatorWhitespaceSegmentsParser;
 	}
-	public parseOpeningSquareBracket(): never {
+	public feedWithOpeningSquareBracket(): never {
 		throw new Error("Unexpected opening square bracket character.");
 	}
-	public parseClosingSquareBracket(
+	public feedWithClosingSquareBracket(
 		character: ClosingSquareBracketCharacter,
 		index: Index,
 	): FunctionCallUnknownSegmentContentParser {
@@ -215,10 +215,10 @@ export class StatementsRestStatementsBeforeOperatorWhitespaceSegmentsParser
 			);
 		return functionCallUnknownSegmentContentParser;
 	}
-	public parseOpeningCurlyBracket(): never {
+	public feedWithOpeningCurlyBracket(): never {
 		throw new Error("Unexpected opening curly bracket character.");
 	}
-	public parseClosingCurlyBracket(
+	public feedWithClosingCurlyBracket(
 		character: ClosingCurlyBracketCharacter,
 		index: Index,
 	) {
@@ -281,10 +281,10 @@ export class StatementsRestStatementsBeforeOperatorWhitespaceSegmentsParser
 		);
 		return blockContentParser;
 	}
-	public parseOpeningRoundBracket(): never {
+	public feedWithOpeningRoundBracket(): never {
 		throw new Error("Unexpected opening round bracket character.");
 	}
-	public parseClosingRoundBracket(
+	public feedWithClosingRoundBracket(
 		character: ClosingRoundBracketCharacter,
 		index: Index,
 	): FunctionCallKnownSegmentContentParser {
@@ -329,7 +329,7 @@ export class StatementsRestStatementsBeforeOperatorWhitespaceSegmentsParser
 			);
 		return functionCallKnownSegmentContentParser;
 	}
-	public parseIdentifier(
+	public feedWithIdentifier(
 		character: IdentifierCharacter,
 		index: Index,
 	): FunctionCallWordSegmentIdentifierSegmentsParser {
@@ -391,7 +391,7 @@ export class StatementsRestStatementsBeforeOperatorWhitespaceSegmentsParser
 			);
 		return functionCallWordSegmentIdentifierSegmentsParser;
 	}
-	public parseOperator(): never {
+	public feedWithOperator(): never {
 		throw new Error("Unexpected operator character");
 	}
 	public finalize(): never {

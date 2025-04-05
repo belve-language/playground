@@ -7,8 +7,8 @@ export function parse(
 	characters: readonly string[],
 ): SupportedParseResult | null {
 	const reversedCharacters: readonly string[] = characters.slice().reverse();
-	let parser: Parser = new SourceFileContentParser();
 	const reversedCharactersEntries = reversedCharacters.entries();
+	let parser: Parser = new SourceFileContentParser();
 	try {
 		for (const [index, character] of reversedCharactersEntries) {
 			parser = computeNewParser(

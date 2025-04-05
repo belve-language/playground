@@ -9,33 +9,43 @@ import type {OperatorCharacter} from "../../characters/operator/OperatorCharacte
 import type {WhitespaceCharacter} from "../../characters/whitespace/WhitespaceCharacter.ts";
 import type {ConcreteSyntaxTree} from "../../concrete-syntax-tree/ConreteSyntaxTree.ts";
 import type {Index} from "../../index/Index.ts";
+import type {SupportedFeedResult} from "../SupportedFeedResult.ts";
 export interface Parser {
-	parseWhitespace: (character: WhitespaceCharacter, index: Index) => Parser;
-	parseOpeningSquareBracket: (
+	feedWithWhitespace: (
+		character: WhitespaceCharacter,
+		index: Index,
+	) => SupportedFeedResult;
+	feedWithOpeningSquareBracket: (
 		character: OpeningSquareBracketCharacter,
 		index: Index,
-	) => Parser;
-	parseClosingSquareBracket: (
+	) => SupportedFeedResult;
+	feedWithClosingSquareBracket: (
 		character: ClosingSquareBracketCharacter,
 		index: Index,
-	) => Parser;
-	parseOpeningCurlyBracket: (
+	) => SupportedFeedResult;
+	feedWithOpeningCurlyBracket: (
 		character: OpeningCurlyBracketCharacter,
 		index: Index,
-	) => Parser;
-	parseClosingCurlyBracket: (
+	) => SupportedFeedResult;
+	feedWithClosingCurlyBracket: (
 		character: ClosingCurlyBracketCharacter,
 		index: Index,
-	) => Parser;
-	parseOpeningRoundBracket: (
+	) => SupportedFeedResult;
+	feedWithOpeningRoundBracket: (
 		character: OpeningRoundBracketCharacter,
 		index: Index,
-	) => Parser;
-	parseClosingRoundBracket: (
+	) => SupportedFeedResult;
+	feedWithClosingRoundBracket: (
 		character: ClosingRoundBracketCharacter,
 		index: Index,
-	) => Parser;
-	parseIdentifier: (character: IdentifierCharacter, index: Index) => Parser;
-	parseOperator: (character: OperatorCharacter, index: Index) => Parser;
+	) => SupportedFeedResult;
+	feedWithIdentifier: (
+		character: IdentifierCharacter,
+		index: Index,
+	) => SupportedFeedResult;
+	feedWithOperator: (
+		character: OperatorCharacter,
+		index: Index,
+	) => SupportedFeedResult;
 	finalize: () => null | ConcreteSyntaxTree;
 }

@@ -103,7 +103,7 @@ export class FunctionHeaderKnownSegmentContentInitialWhitespaceSegmentsParser
 	private readonly functionEndingIndex: Index;
 	private readonly functionsEndingIndex: Index;
 	private readonly sourceFileContentEndingIndex: Index;
-	public parseWhitespace(
+	public feedWithWhitespace(
 		character: WhitespaceCharacter,
 		index: Index,
 	): FunctionHeaderKnownSegmentContentInitialWhitespaceSegmentsParser {
@@ -137,19 +137,19 @@ export class FunctionHeaderKnownSegmentContentInitialWhitespaceSegmentsParser
 			);
 		return functionHeaderKnownSegmentContentInitialWhitespaceSegmentsParser;
 	}
-	public parseOpeningSquareBracket(): never {
+	public feedWithOpeningSquareBracket(): never {
 		throw new Error(".");
 	}
-	public parseClosingSquareBracket(): never {
+	public feedWithClosingSquareBracket(): never {
 		throw new Error(".");
 	}
-	public parseOpeningCurlyBracket(): never {
+	public feedWithOpeningCurlyBracket(): never {
 		throw new Error(".");
 	}
-	public parseClosingCurlyBracket(): never {
+	public feedWithClosingCurlyBracket(): never {
 		throw new Error(".");
 	}
-	public parseOpeningRoundBracket(
+	public feedWithOpeningRoundBracket(
 		character: OpeningRoundBracketCharacter,
 		index: Index,
 	): FunctionHeaderSegmentsParser {
@@ -210,13 +210,13 @@ export class FunctionHeaderKnownSegmentContentInitialWhitespaceSegmentsParser
 		);
 		return functionHeaderSegmentsParser;
 	}
-	public parseClosingRoundBracket(): never {
+	public feedWithClosingRoundBracket(): never {
 		throw new Error(".");
 	}
-	public parseIdentifier(): never {
+	public feedWithIdentifier(): never {
 		throw new Error(".");
 	}
-	public parseOperator(): never {
+	public feedWithOperator(): never {
 		throw new Error(".");
 	}
 	public finalize(): never {

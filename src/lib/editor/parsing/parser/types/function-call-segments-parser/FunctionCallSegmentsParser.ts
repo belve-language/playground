@@ -37,7 +37,7 @@ export class FunctionCallSegmentsParser implements Parser {
 	) {
 		this.partialConcreteSyntaxTree = partialConcreteSyntaxTree;
 	}
-	public parseWhitespace(
+	public feedWithWhitespace(
 		character: WhitespaceCharacter,
 		index: Index,
 	): FunctionCallSegmentsSeparatedRestSegmentsInitialWhitespaceSegmentsParser {
@@ -75,10 +75,10 @@ export class FunctionCallSegmentsParser implements Parser {
 			);
 		return functionCallSegmentsSeparatedRestSegmentsInitialWhitespaceSegmentsParser;
 	}
-	public parseOpeningSquareBracket(): never {
+	public feedWithOpeningSquareBracket(): never {
 		throw new Error("Not implemented.");
 	}
-	public parseClosingSquareBracket(
+	public feedWithClosingSquareBracket(
 		character: ClosingSquareBracketCharacter,
 		index: Index,
 	): FunctionCallUnknownSegmentContentParser {
@@ -110,7 +110,7 @@ export class FunctionCallSegmentsParser implements Parser {
 			);
 		return functionCallUnknownSegmentContentParser;
 	}
-	public parseOpeningCurlyBracket(
+	public feedWithOpeningCurlyBracket(
 		character: OpeningCurlyBracketCharacter,
 		index: Index,
 	): FunctionHeaderParser | StatementsRestStatementsAfterOperatorParser {
@@ -197,13 +197,13 @@ export class FunctionCallSegmentsParser implements Parser {
 			);
 		return statementsRestStatementsAfterOperatorParser;
 	}
-	public parseClosingCurlyBracket(): never {
+	public feedWithClosingCurlyBracket(): never {
 		throw new Error("Not implemented.");
 	}
-	public parseOpeningRoundBracket(): never {
+	public feedWithOpeningRoundBracket(): never {
 		throw new Error("Not implemented.");
 	}
-	public parseClosingRoundBracket(
+	public feedWithClosingRoundBracket(
 		character: ClosingRoundBracketCharacter,
 		index: Index,
 	): FunctionCallKnownSegmentContentParser {
@@ -235,7 +235,7 @@ export class FunctionCallSegmentsParser implements Parser {
 			);
 		return functionCallKnownSegmentContentParser;
 	}
-	public parseIdentifier(
+	public feedWithIdentifier(
 		character: IdentifierCharacter,
 		index: Index,
 	): FunctionCallWordSegmentIdentifierSegmentsParser {
@@ -273,7 +273,7 @@ export class FunctionCallSegmentsParser implements Parser {
 			);
 		return functionCallWordSegmentIdentifierSegmentsParser;
 	}
-	public parseOperator(
+	public feedWithOperator(
 		character: OperatorCharacter,
 		index: Index,
 	): StatementsRestStatementsBeforeOperatorParser {

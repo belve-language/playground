@@ -21,7 +21,7 @@ export class FunctionCallKnownSegmentContentParser implements Parser {
 		this.partialConcreteSyntaxTree = partialConcreteSyntaxTree;
 	}
 	private readonly partialConcreteSyntaxTree: FunctionCallKnownSegmentContentParserPartialConcreteSyntaxTree;
-	public parseWhitespace(
+	public feedWithWhitespace(
 		character: WhitespaceCharacter,
 		index: Index,
 	): FunctionCallKnownSegmentContentFinalWhitespaceSegmentsParser {
@@ -61,19 +61,19 @@ export class FunctionCallKnownSegmentContentParser implements Parser {
 			);
 		return functionCallKnownSegmentContentFinalWhitespaceSegmentsParser;
 	}
-	public parseOpeningSquareBracket(): never {
+	public feedWithOpeningSquareBracket(): never {
 		throw new Error("Not implemented.");
 	}
-	public parseClosingSquareBracket(): never {
+	public feedWithClosingSquareBracket(): never {
 		throw new Error("Not implemented.");
 	}
-	public parseOpeningCurlyBracket(): never {
+	public feedWithOpeningCurlyBracket(): never {
 		throw new Error("Not implemented.");
 	}
-	public parseClosingCurlyBracket(): never {
+	public feedWithClosingCurlyBracket(): never {
 		throw new Error("Not implemented.");
 	}
-	public parseOpeningRoundBracket(
+	public feedWithOpeningRoundBracket(
 		character: OpeningRoundBracketCharacter,
 		index: Index,
 	): FunctionCallSegmentsParser {
@@ -116,10 +116,10 @@ export class FunctionCallKnownSegmentContentParser implements Parser {
 		);
 		return functionCallSegmentsParser;
 	}
-	public parseClosingRoundBracket(): never {
+	public feedWithClosingRoundBracket(): never {
 		throw new Error("Not implemented.");
 	}
-	public parseIdentifier(
+	public feedWithIdentifier(
 		character: IdentifierCharacter,
 		index: Index,
 	): FunctionCallKnownSegmentContentIdentifierSegmentsParser {
@@ -160,7 +160,7 @@ export class FunctionCallKnownSegmentContentParser implements Parser {
 			);
 		return functionCallKnownSegmentContentIdentifierSegmentsParser;
 	}
-	public parseOperator(): never {
+	public feedWithOperator(): never {
 		throw new Error("Not implemented.");
 	}
 	public finalize(): never {

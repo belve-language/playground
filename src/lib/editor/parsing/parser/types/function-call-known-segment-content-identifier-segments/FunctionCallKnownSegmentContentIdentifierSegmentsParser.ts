@@ -24,7 +24,7 @@ export class FunctionCallKnownSegmentContentIdentifierSegmentsParser
 	) {
 		this.partialConcreteSyntaxTree = partialConcreteSyntaxTree;
 	}
-	public parseWhitespace(
+	public feedWithWhitespace(
 		character: WhitespaceCharacter,
 		index: Index,
 	): FunctionCallKnownSegmentContentInitialWhitespaceSegmentsParser {
@@ -75,7 +75,7 @@ export class FunctionCallKnownSegmentContentIdentifierSegmentsParser
 			);
 		return functionCallKnownSegmentContentInitialWhitespaceSegmentsParser;
 	}
-	public parseOpeningRoundBracket(
+	public feedWithOpeningRoundBracket(
 		character: OpeningRoundBracketCharacter,
 		index: Index,
 	): FunctionCallSegmentsParser {
@@ -138,32 +138,32 @@ export class FunctionCallKnownSegmentContentIdentifierSegmentsParser
 		);
 		return functionCallSegmentsParser;
 	}
-	public parseClosingRoundBracket(): never {
+	public feedWithClosingRoundBracket(): never {
 		throw new Error(
 			"Closing round bracket not allowed in known function call segment.",
 		);
 	}
-	public parseOpeningCurlyBracket(): never {
+	public feedWithOpeningCurlyBracket(): never {
 		throw new Error(
 			"Opening curly bracket not allowed in known function call segment.",
 		);
 	}
-	public parseClosingCurlyBracket(): never {
+	public feedWithClosingCurlyBracket(): never {
 		throw new Error(
 			"Closing curly bracket not allowed in known function call segment.",
 		);
 	}
-	public parseOpeningSquareBracket(): never {
+	public feedWithOpeningSquareBracket(): never {
 		throw new Error(
 			"Opening square bracket not allowed in known function call segment.",
 		);
 	}
-	public parseClosingSquareBracket(): never {
+	public feedWithClosingSquareBracket(): never {
 		throw new Error(
 			"Closing square bracket not allowed in known function call segment.",
 		);
 	}
-	public parseIdentifier(
+	public feedWithIdentifier(
 		character: IdentifierCharacter,
 		index: Index,
 	): FunctionCallKnownSegmentContentIdentifierSegmentsParser {
@@ -208,7 +208,7 @@ export class FunctionCallKnownSegmentContentIdentifierSegmentsParser
 			);
 		return functionCallKnownSegmentContentIdentifierSegmentsParser;
 	}
-	public parseOperator(): never {
+	public feedWithOperator(): never {
 		throw new Error("Unexpected operator in known function call segment.");
 	}
 	public finalize(): never {

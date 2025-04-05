@@ -29,7 +29,7 @@ export class StatementsRestStatementsBeforeOperatorParser implements Parser {
 	) {
 		this.partialConcreteSyntaxTree = partialConcreteSyntaxTree;
 	}
-	public parseWhitespace(character: WhitespaceCharacter, index: Index) {
+	public feedWithWhitespace(character: WhitespaceCharacter, index: Index) {
 		const statementsRestStatementsBeforeOperatorWhitespaceSegmentsFirstSegment =
 			createWhitespaceSegmentConcreteSyntaxTreeNode(character, index);
 		const statementsRestStatementsBeforeOperatorWhitespaceSegments =
@@ -62,10 +62,10 @@ export class StatementsRestStatementsBeforeOperatorParser implements Parser {
 			);
 		return statementsRestStatementsBeforeOperatorWhitespaceSegmentsParser;
 	}
-	public parseOpeningSquareBracket(): never {
+	public feedWithOpeningSquareBracket(): never {
 		throw new Error("Method not implemented.");
 	}
-	public parseClosingSquareBracket(
+	public feedWithClosingSquareBracket(
 		character: ClosingSquareBracketCharacter,
 		index: Index,
 	): FunctionCallUnknownSegmentContentParser {
@@ -108,10 +108,10 @@ export class StatementsRestStatementsBeforeOperatorParser implements Parser {
 			);
 		return functionCallUnknownSegmentContentParser;
 	}
-	public parseOpeningCurlyBracket(): never {
+	public feedWithOpeningCurlyBracket(): never {
 		throw new Error("Method not implemented.");
 	}
-	public parseClosingCurlyBracket(
+	public feedWithClosingCurlyBracket(
 		character: ClosingCurlyBracketCharacter,
 		index: Index,
 	) {
@@ -161,10 +161,10 @@ export class StatementsRestStatementsBeforeOperatorParser implements Parser {
 		);
 		return blockContentParser;
 	}
-	public parseOpeningRoundBracket(): never {
+	public feedWithOpeningRoundBracket(): never {
 		throw new Error("Method not implemented.");
 	}
-	public parseClosingRoundBracket(
+	public feedWithClosingRoundBracket(
 		character: ClosingRoundBracketCharacter,
 		index: Index,
 	): FunctionCallKnownSegmentContentParser {
@@ -207,7 +207,7 @@ export class StatementsRestStatementsBeforeOperatorParser implements Parser {
 			);
 		return functionCallKnownSegmentContentParser;
 	}
-	public parseIdentifier(
+	public feedWithIdentifier(
 		character: IdentifierCharacter,
 		index: Index,
 	): FunctionCallWordSegmentIdentifierSegmentsParser {
@@ -256,7 +256,7 @@ export class StatementsRestStatementsBeforeOperatorParser implements Parser {
 			);
 		return functionCallWordSegmentIdentifierSegmentsParser;
 	}
-	public parseOperator(): never {
+	public feedWithOperator(): never {
 		throw new Error("Method not implemented.");
 	}
 	public finalize(): never {

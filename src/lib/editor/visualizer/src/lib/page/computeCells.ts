@@ -1,4 +1,4 @@
-import type {SupportedConcreteSyntaxTreeNode} from "../../../../../concrete-syntax-tree/SupportedConcreteSyntaxTreeNode.ts";
+import type {SupportedConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/SupportedConcreteSyntaxTreeNode.ts";
 import type {BranchCell} from "./BranchCell.ts";
 import type {EmptyCell} from "./EmptyCell.ts";
 import type {LeafCell} from "./LeafCell.ts";

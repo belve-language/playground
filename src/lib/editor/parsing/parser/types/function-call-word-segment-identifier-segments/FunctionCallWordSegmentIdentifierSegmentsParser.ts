@@ -139,7 +139,7 @@ export class FunctionCallWordSegmentIdentifierSegmentsParser implements Parser {
 	private readonly functionCallWordSegmentEndingIndex: Index;
 	private readonly functionsEndingIndex: Index;
 	private readonly sourceFileContentEndingIndex: Index;
-	public parseWhitespace(
+	public feedWithWhitespace(
 		character: WhitespaceCharacter,
 		index: Index,
 	): FunctionCallSegmentsSeparatedRestSegmentsInitialWhitespaceSegmentsParser {
@@ -202,12 +202,12 @@ export class FunctionCallWordSegmentIdentifierSegmentsParser implements Parser {
 			);
 		return functionCallSegmentsSeparatedRestSegmentsInitialWhitespaceSegmentsParser;
 	}
-	public parseOpeningSquareBracket(): never {
+	public feedWithOpeningSquareBracket(): never {
 		throw new Error(
-			"FunctionCallWordSegmentIdentifierSegmentsParser.parseOpeningSquareBracket() should not be called.",
+			"FunctionCallWordSegmentIdentifierSegmentsParser.feedWithOpeningSquareBracket() should not be called.",
 		);
 	}
-	public parseClosingSquareBracket(
+	public feedWithClosingSquareBracket(
 		character: ClosingSquareBracketCharacter,
 		index: Index,
 	): FunctionCallUnknownSegmentContentParser {
@@ -264,7 +264,7 @@ export class FunctionCallWordSegmentIdentifierSegmentsParser implements Parser {
 			);
 		return functionCallUnknownSegmentContentParser;
 	}
-	public parseOpeningCurlyBracket(
+	public feedWithOpeningCurlyBracket(
 		character: OpeningCurlyBracketCharacter,
 		index: Index,
 	): StatementsRestStatementsAfterOperatorParser | FunctionHeaderParser {
@@ -376,17 +376,17 @@ export class FunctionCallWordSegmentIdentifierSegmentsParser implements Parser {
 			);
 		return statementsRestStatementsAfterOperatorParser;
 	}
-	public parseClosingCurlyBracket(): never {
+	public feedWithClosingCurlyBracket(): never {
 		throw new Error(
-			"FunctionCallWordSegmentIdentifierSegmentsParser.parseClosingCurlyBracket() should not be called.",
+			"FunctionCallWordSegmentIdentifierSegmentsParser.feedWithClosingCurlyBracket() should not be called.",
 		);
 	}
-	public parseOpeningRoundBracket(): never {
+	public feedWithOpeningRoundBracket(): never {
 		throw new Error(
-			"FunctionCallWordSegmentIdentifierSegmentsParser.parseOpeningRoundBracket() should not be called.",
+			"FunctionCallWordSegmentIdentifierSegmentsParser.feedWithOpeningRoundBracket() should not be called.",
 		);
 	}
-	public parseClosingRoundBracket(
+	public feedWithClosingRoundBracket(
 		character: ClosingRoundBracketCharacter,
 		index: Index,
 	): FunctionCallKnownSegmentContentParser {
@@ -443,7 +443,7 @@ export class FunctionCallWordSegmentIdentifierSegmentsParser implements Parser {
 			);
 		return functionCallKnownSegmentContentParser;
 	}
-	public parseIdentifier(
+	public feedWithIdentifier(
 		character: IdentifierCharacter,
 		index: Index,
 	): FunctionCallWordSegmentIdentifierSegmentsParser {
@@ -484,7 +484,7 @@ export class FunctionCallWordSegmentIdentifierSegmentsParser implements Parser {
 			);
 		return functionCallWordSegmentIdentifierSegmentsParser;
 	}
-	public parseOperator(
+	public feedWithOperator(
 		character: OperatorCharacter,
 		index: Index,
 	): StatementsRestStatementsBeforeOperatorParser {

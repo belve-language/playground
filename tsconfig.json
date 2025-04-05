@@ -35,7 +35,7 @@
 		"noStrictGenericChecks": false, // ?
 		"noUncheckedIndexedAccess": true,
 		"noUncheckedSideEffectImports": true,
-		"noUnusedLocals": true,
+		"noUnusedLocals": false,
 		"noUnusedParameters": true,
 		"paths": {},
 		"resolveJsonModule": false,

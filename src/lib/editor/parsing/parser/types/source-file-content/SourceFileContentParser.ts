@@ -9,7 +9,7 @@ import {BlockContentParser} from "../block-content/BlockContentParser.ts";
 import {SourceFileContentFinalWhitespaceSegmentsParser} from "../source-file-content-final-whitespace-segments/SourceFileContentFinalWhitespaceSegmentsParser.ts";
 export class SourceFileContentParser implements Parser {
 	public constructor() {}
-	public parseWhitespace(
+	public feedWithWhitespace(
 		character: WhitespaceCharacter,
 		index: Index,
 	): SourceFileContentFinalWhitespaceSegmentsParser {
@@ -31,56 +31,73 @@ export class SourceFileContentParser implements Parser {
 			);
 		return sourceFileContentFinalWhitespaceSegmentsParser;
 	}
-	public parseOpeningSquareBracket(): never {
+	public feedWithOpeningSquareBracket(): never {
 		throw new Error(
 			"OpeningSquareBracketCharacter is not allowed in SourceFileContent.",
 		);
 	}
-	public parseClosingSquareBracket(): never {
+	public feedWithClosingSquareBracket(): never {
 		throw new Error(
 			"ClosingSquareBracketCharacter is not allowed in SourceFileContent.",
 		);
 	}
-	public parseOpeningCurlyBracket(): never {
+	public feedWithOpeningCurlyBracket(): never {
 		throw new Error(
 			"OpeningCurlyBracketCharacter is not allowed in SourceFileContent.",
 		);
 	}
-	public parseClosingCurlyBracket(
+	public feedWithClosingCurlyBracket(
 		character: ClosingCurlyBracketCharacter,
 		index: Index,
 	): BlockContentParser {
-		const blockClosingBracket = createBlockClosingBracketConcreteSyntaxTreeNode(
-			character,
-			index,
-		);
-		const blockContentParser = new BlockContentParser(
-			blockClosingBracket,
-			index,
-			[] as const,
-			index,
-			index,
-			null,
-			index,
-			null,
-			index,
-		);
+		const blockContentParser = new BlockContentParser({
+			children: [
+				{
+					children: [
+						{
+							children: [
+								{
+									children: [
+										{
+											children: [
+												createBlockClosingBracketConcreteSyntaxTreeNode(
+													character,
+													index,
+												),
+											],
+											endingIndex: index,
+										},
+										[],
+									],
+									endingIndex: index,
+								},
+							],
+							endingIndex: index,
+						},
+						null,
+					],
+					endingIndex: index,
+				},
+				null,
+			],
+			endingIndex: index,
+		});
 		return blockContentParser;
 	}
-	public parseOpeningRoundBracket(): never {
+	public feedWithOpeningRoundBracket(): never {
 		throw new Error(
 			"OpeningRoundBracketCharacter is not allowed in SourceFileContent.",
 		);
 	}
-	public parseClosingRoundBracket(): never {
+	public feedWithClosingRoundBracket(): never {
 		throw new Error(
 			"ClosingRoundBracketCharacter is not allowed in SourceFileContent.",
 		);
 	}
-	public parseIdentifier(): never {
+	public feedWithIdentifier(): never {
 		throw new Error("IdentifierCharacter is not allowed in SourceFileContent.");
 	}
-	public parseOperator(): never {
+	public feedWithOperator(): never {
 		throw new Error("OperatorCharacter is not allowed in SourceFileContent.");
 	}
 	public finalize(): null {

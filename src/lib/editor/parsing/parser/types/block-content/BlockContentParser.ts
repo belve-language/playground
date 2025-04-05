@@ -34,7 +34,7 @@ export class BlockContentParser implements Parser {
 		this.partialConcreteSyntaxTree = partialConcreteSyntaxTree;
 	}
 	private readonly partialConcreteSyntaxTree: BlockContentParserPartialConcreteSyntaxTree;
-	public parseWhitespace(
+	public feedWithWhitespace(
 		character: WhitespaceCharacter,
 		index: Index,
 	): BlockContentFinalWhitespaceSegmentsParser {
@@ -92,10 +92,10 @@ export class BlockContentParser implements Parser {
 			],
 		});
 	}
-	public parseOpeningSquareBracket(): never {
+	public feedWithOpeningSquareBracket(): never {
 		throw new Error("Not implemented.");
 	}
-	public parseClosingSquareBracket(
+	public feedWithClosingSquareBracket(
 		character: ClosingSquareBracketCharacter,
 		index: Index,
 	): FunctionCallUnknownSegmentContentParser {
@@ -106,28 +106,11 @@ export class BlockContentParser implements Parser {
 			);
 		const functionCallUnknownSegmentContentParser =
 			new FunctionCallUnknownSegmentContentParser(
-				functionCallUnknownSegmentClosingBracket,
-				index,
-				null,
-				index,
-				index,
-				null,
-				index,
-				null,
-				index,
-				this.blockClosingBracket,
-				this.blockEndingIndex,
-				this.blockStack,
-				this.functionBodyEndingIndex,
-				this.functionEndingIndex,
-				this.functionsRestFunctions,
-				this.functionsEndingIndex,
-				this.partialConcreteSyntaxTreeFinalWhitespace,
-				this.partialConcreteSyntaxTreeEndingIndex,
+				this.partialConcreteSyntaxTree,
 			);
 		return functionCallUnknownSegmentContentParser;
 	}
-	public parseOpeningCurlyBracket(
+	public feedWithOpeningCurlyBracket(
 		character: OpeningCurlyBracketCharacter,
 		index: Index,
 	): FunctionHeaderParser | StatementsRestStatementsAfterOperatorParser {
@@ -190,7 +173,7 @@ export class BlockContentParser implements Parser {
 			);
 		return statementsRestStatementsAfterOperatorParser;
 	}
-	public parseClosingCurlyBracket(
+	public feedWithClosingCurlyBracket(
 		character: ClosingCurlyBracketCharacter,
 		index: Index,
 	): BlockContentParser {
@@ -229,10 +212,10 @@ export class BlockContentParser implements Parser {
 		);
 		return blockContentParser;
 	}
-	public parseOpeningRoundBracket(): never {
+	public feedWithOpeningRoundBracket(): never {
 		throw new Error("Not implemented.");
 	}
-	public parseClosingRoundBracket(
+	public feedWithClosingRoundBracket(
 		character: ClosingRoundBracketCharacter,
 		index: Index,
 	): FunctionCallKnownSegmentContentParser {
@@ -264,7 +247,7 @@ export class BlockContentParser implements Parser {
 			);
 		return functionCallKnownSegmentContentParser;
 	}
-	public parseIdentifier(
+	public feedWithIdentifier(
 		character: IdentifierCharacter,
 		index: Index,
 	): FunctionCallWordSegmentIdentifierSegmentsParser {
@@ -302,7 +285,7 @@ export class BlockContentParser implements Parser {
 			);
 		return functionCallWordSegmentIdentifierSegmentsParser;
 	}
-	public parseOperator(): never {
+	public feedWithOperator(): never {
 		throw new Error("Not implemented.");
 	}
 	public finalize(): never {

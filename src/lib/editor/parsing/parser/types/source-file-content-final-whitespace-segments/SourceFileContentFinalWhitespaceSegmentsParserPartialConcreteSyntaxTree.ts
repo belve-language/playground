@@ -1,5 +1,5 @@
 import type {WhitespaceSegmentsConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/whitespace-segments/WhitespaceSegmentsConcreteSyntaxTreeNode.ts";
-export type SourceFileContentFinalWhitespaceSegmentsParserPartialConcreteParseTree =
+export type SourceFileContentFinalWhitespaceSegmentsParserPartialConcreteSyntaxTree =
 	Readonly<{
 		startingIndex: number;
 		children: readonly [

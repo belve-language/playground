@@ -19,7 +19,7 @@ export class FunctionCallUnknownSegmentContentFinalWhitespaceSegmentsParser
 	) {
 		this.partialConcreteSyntaxTree = partialConcreteSyntaxTree;
 	}
-	public parseWhitespace(
+	public feedWithWhitespace(
 		character: WhitespaceCharacter,
 		index: Index,
 	): FunctionCallUnknownSegmentContentFinalWhitespaceSegmentsParser {
@@ -63,37 +63,37 @@ export class FunctionCallUnknownSegmentContentFinalWhitespaceSegmentsParser
 			);
 		return functionCallUnknownSegmentContentFinalWhitespaceSegmentsParser;
 	}
-	public parseOpeningSquareBracket(): never {
+	public feedWithOpeningSquareBracket(): never {
 		throw new Error(
 			"Opening square bracket not allowed in unknown function call segment.",
 		);
 	}
-	public parseClosingSquareBracket(): never {
+	public feedWithClosingSquareBracket(): never {
 		throw new Error(
 			"Closing square bracket not allowed in unknown function call segment.",
 		);
 	}
-	public parseOpeningCurlyBracket(): never {
+	public feedWithOpeningCurlyBracket(): never {
 		throw new Error(
 			"Opening curly bracket not allowed in unknown function call segment.",
 		);
 	}
-	public parseClosingCurlyBracket(): never {
+	public feedWithClosingCurlyBracket(): never {
 		throw new Error(
 			"Closing curly bracket not allowed in unknown function call segment.",
 		);
 	}
-	public parseOpeningRoundBracket(): never {
+	public feedWithOpeningRoundBracket(): never {
 		throw new Error(
 			"Opening round bracket not allowed in unknown function call segment.",
 		);
 	}
-	public parseClosingRoundBracket(): never {
+	public feedWithClosingRoundBracket(): never {
 		throw new Error(
 			"Closing round bracket not allowed in unknown function call segment.",
 		);
 	}
-	public parseIdentifier(
+	public feedWithIdentifier(
 		character: IdentifierCharacter,
 		index: Index,
 	): FunctionCallUnknownSegmentContentIdentifierSegmentsParser {
@@ -145,7 +145,7 @@ export class FunctionCallUnknownSegmentContentFinalWhitespaceSegmentsParser
 			);
 		return functionCallUnknownSegmentContentIdentifierSegmentsParser;
 	}
-	public parseOperator(): never {
+	public feedWithOperator(): never {
 		throw new Error("Operator not allowed in unknown function call segment.");
 	}
 	public finalize(): never {

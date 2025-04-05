@@ -7,31 +7,31 @@ export function computeNewParser(
 ): Parser {
 	switch (character) {
 		case "}": {
-			return parser.parseClosingCurlyBracket(character, index);
+			return parser.feedWithClosingCurlyBracket(character, index);
 		}
 		case ")": {
-			return parser.parseClosingRoundBracket(character, index);
+			return parser.feedWithClosingRoundBracket(character, index);
 		}
 		case "]": {
-			return parser.parseClosingSquareBracket(character, index);
+			return parser.feedWithClosingSquareBracket(character, index);
 		}
 		case "{": {
-			return parser.parseOpeningCurlyBracket(character, index);
+			return parser.feedWithOpeningCurlyBracket(character, index);
 		}
 		case "(": {
-			return parser.parseOpeningRoundBracket(character, index);
+			return parser.feedWithOpeningRoundBracket(character, index);
 		}
 		case "[": {
-			return parser.parseOpeningSquareBracket(character, index);
+			return parser.feedWithOpeningSquareBracket(character, index);
 		}
 		case ",":
 		case ".": {
-			return parser.parseOperator(character, index);
+			return parser.feedWithOperator(character, index);
 		}
 		case " ":
 		case "\t":
 		case "\n": {
-			return parser.parseWhitespace(character, index);
+			return parser.feedWithWhitespace(character, index);
 		}
 		case "a":
 		case "b":
@@ -102,7 +102,7 @@ export function computeNewParser(
 		case ">":
 		case "<":
 		case "!": {
-			return parser.parseIdentifier(character, index);
+			return parser.feedWithIdentifier(character, index);
 		}
 		default: {
 			throw new Error(`Unexpected character: ${character}`);

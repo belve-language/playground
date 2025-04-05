@@ -32,7 +32,7 @@ export class FunctionHeaderFinalWhitespaceSegmentsParser implements Parser {
 	) {
 		this.partialConcreteSyntaxTree = partialConcreteSyntaxTree;
 	}
-	public parseWhitespace(
+	public feedWithWhitespace(
 		character: WhitespaceCharacter,
 		index: Index,
 	): FunctionHeaderFinalWhitespaceSegmentsParser {
@@ -63,10 +63,10 @@ export class FunctionHeaderFinalWhitespaceSegmentsParser implements Parser {
 			);
 		return functionHeaderFinalWhitespaceSegmentsParser;
 	}
-	public parseOpeningSquareBracket(): never {
+	public feedWithOpeningSquareBracket(): never {
 		throw new Error("Method not implemented.");
 	}
-	public parseClosingSquareBracket(
+	public feedWithClosingSquareBracket(
 		character: ClosingSquareBracketCharacter,
 		index: Index,
 	): FunctionHeaderUnknownSegmentContentParser {
@@ -100,10 +100,10 @@ export class FunctionHeaderFinalWhitespaceSegmentsParser implements Parser {
 			);
 		return functionHeaderUnknownSegmentContentParser;
 	}
-	public parseOpeningCurlyBracket(): never {
+	public feedWithOpeningCurlyBracket(): never {
 		throw new Error("Method not implemented.");
 	}
-	public parseClosingCurlyBracket(
+	public feedWithClosingCurlyBracket(
 		character: ClosingCurlyBracketCharacter,
 		index: Index,
 	): BlockContentParser {
@@ -158,10 +158,10 @@ export class FunctionHeaderFinalWhitespaceSegmentsParser implements Parser {
 		);
 		return blockContentParser;
 	}
-	public parseOpeningRoundBracket(): never {
+	public feedWithOpeningRoundBracket(): never {
 		throw new Error("Method not implemented.");
 	}
-	public parseClosingRoundBracket(
+	public feedWithClosingRoundBracket(
 		character: ClosingRoundBracketCharacter,
 		index: Index,
 	): FunctionHeaderKnownSegmentContentParser {
@@ -195,7 +195,7 @@ export class FunctionHeaderFinalWhitespaceSegmentsParser implements Parser {
 			);
 		return functionHeaderKnownSegmentContentParser;
 	}
-	public parseIdentifier(
+	public feedWithIdentifier(
 		character: IdentifierCharacter,
 		index: Index,
 	): FunctionHeaderWordSegmentIdentifierSegmentsParser {
@@ -235,7 +235,7 @@ export class FunctionHeaderFinalWhitespaceSegmentsParser implements Parser {
 			);
 		return functionHeaderWordSegmentIdentifierSegmentsParser;
 	}
-	public parseOperator(): never {
+	public feedWithOperator(): never {
 		throw new Error("Method not implemented.");
 	}
 	public finalize(): SourceFileContentConcreteSyntaxTreeNode {

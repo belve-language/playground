@@ -104,7 +104,7 @@ export class StatementsRestStatementsAfterOperatorWhitespaceSegmentsParser
 	private readonly sourceFileContentEndingIndex: Index;
 	private readonly functionBodyEndingIndex: Index;
 	private readonly functionEndingIndex: Index;
-	public parseWhitespace(
+	public feedWithWhitespace(
 		character: WhitespaceCharacter,
 		index: Index,
 	): StatementsRestStatementsAfterOperatorWhitespaceSegmentsParser {
@@ -142,13 +142,13 @@ export class StatementsRestStatementsAfterOperatorWhitespaceSegmentsParser
 			);
 		return statementsRestStatementsAfterOperatorWhitespaceSegmentsParser;
 	}
-	public parseOpeningSquareBracket(): never {
+	public feedWithOpeningSquareBracket(): never {
 		throw new Error("Not implemented.");
 	}
-	public parseClosingSquareBracket(): never {
+	public feedWithClosingSquareBracket(): never {
 		throw new Error("Not implemented.");
 	}
-	public parseOpeningCurlyBracket(
+	public feedWithOpeningCurlyBracket(
 		character: OpeningCurlyBracketCharacter,
 		index: Index,
 	): FunctionHeaderParser | StatementsRestStatementsAfterOperatorParser {
@@ -231,19 +231,19 @@ export class StatementsRestStatementsAfterOperatorWhitespaceSegmentsParser
 			);
 		return statementsRestStatementsAfterOperatorParser;
 	}
-	public parseClosingCurlyBracket(): never {
+	public feedWithClosingCurlyBracket(): never {
 		throw new Error("Not implemented.");
 	}
-	public parseOpeningRoundBracket(): never {
+	public feedWithOpeningRoundBracket(): never {
 		throw new Error("Not implemented.");
 	}
-	public parseClosingRoundBracket(): never {
+	public feedWithClosingRoundBracket(): never {
 		throw new Error("Not implemented.");
 	}
-	public parseIdentifier(): never {
+	public feedWithIdentifier(): never {
 		throw new Error("Not implemented.");
 	}
-	public parseOperator(
+	public feedWithOperator(
 		character: OperatorCharacter,
 		index: Index,
 	): StatementsRestStatementsBeforeOperatorParser {

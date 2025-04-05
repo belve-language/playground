@@ -28,7 +28,7 @@ export class FunctionHeaderUnknownSegmentContentIdentifierSegmentsParser
 	) {
 		this.partialConcreteSyntaxTree = partialConcreteSyntaxTree;
 	}
-	public parseWhitespace(
+	public feedWithWhitespace(
 		character: WhitespaceCharacter,
 		index: Index,
 	): FunctionHeaderUnknownSegmentContentInitialWhitespaceSegmentsParser {
@@ -73,7 +73,7 @@ export class FunctionHeaderUnknownSegmentContentIdentifierSegmentsParser
 			);
 		return functionHeaderUnknownSegmentContentInitialWhitespaceSegmentsParser;
 	}
-	public parseOpeningSquareBracket(
+	public feedWithOpeningSquareBracket(
 		character: OpeningSquareBracketCharacter,
 		index: Index,
 	): FunctionHeaderSegmentsParser {
@@ -132,32 +132,32 @@ export class FunctionHeaderUnknownSegmentContentIdentifierSegmentsParser
 		);
 		return functionHeaderSegmentsParser;
 	}
-	public parseClosingSquareBracket(): never {
+	public feedWithClosingSquareBracket(): never {
 		throw new Error(
 			"Unexpected closing square bracket character in function header unknown segment content identifier characters.",
 		);
 	}
-	public parseOpeningCurlyBracket(): never {
+	public feedWithOpeningCurlyBracket(): never {
 		throw new Error(
 			"Unexpected opening curly bracket character in function header unknown segment content identifier characters.",
 		);
 	}
-	public parseClosingCurlyBracket(): never {
+	public feedWithClosingCurlyBracket(): never {
 		throw new Error(
 			"Unexpected closing curly bracket character in function header unknown segment content identifier characters.",
 		);
 	}
-	public parseOpeningRoundBracket(): never {
+	public feedWithOpeningRoundBracket(): never {
 		throw new Error(
 			"Unexpected opening round bracket character in function header unknown segment content identifier characters.",
 		);
 	}
-	public parseClosingRoundBracket(): never {
+	public feedWithClosingRoundBracket(): never {
 		throw new Error(
 			"Unexpected closing round bracket character in function header unknown segment content identifier characters.",
 		);
 	}
-	public parseIdentifier(
+	public feedWithIdentifier(
 		character: IdentifierCharacter,
 		index: Index,
 	): FunctionHeaderUnknownSegmentContentIdentifierSegmentsParser {
@@ -194,7 +194,7 @@ export class FunctionHeaderUnknownSegmentContentIdentifierSegmentsParser
 			);
 		return functionHeaderUnknownSegmentContentIdentifierSegmentsParser;
 	}
-	public parseOperator(): never {
+	public feedWithOperator(): never {
 		throw new Error(
 			"Unexpected operator character in function header unknown segment content identifier characters.",
 		);

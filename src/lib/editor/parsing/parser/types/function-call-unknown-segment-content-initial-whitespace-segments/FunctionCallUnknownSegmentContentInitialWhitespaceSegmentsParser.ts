@@ -20,7 +20,7 @@ export class FunctionCallUnknownSegmentContentInitialWhitespaceSegmentsParser
 	) {
 		this.partialConcreteSyntaxTree = partialConcreteSyntaxTree;
 	}
-	public parseWhitespace(
+	public feedWithWhitespace(
 		character: WhitespaceCharacter,
 		index: Index,
 	): FunctionCallUnknownSegmentContentInitialWhitespaceSegmentsParser {
@@ -67,7 +67,7 @@ export class FunctionCallUnknownSegmentContentInitialWhitespaceSegmentsParser
 			);
 		return functionCallUnknownSegmentContentInitialWhitespaceSegmentsParser;
 	}
-	public parseOpeningSquareBracket(
+	public feedWithOpeningSquareBracket(
 		character: OpeningSquareBracketCharacter,
 		index: Index,
 	): FunctionCallSegmentsParser {
@@ -133,25 +133,25 @@ export class FunctionCallUnknownSegmentContentInitialWhitespaceSegmentsParser
 		);
 		return functionCallSegmentsParser;
 	}
-	public parseClosingSquareBracket(): never {
+	public feedWithClosingSquareBracket(): never {
 		throw new Error("Not implemented.");
 	}
-	public parseOpeningCurlyBracket(): never {
+	public feedWithOpeningCurlyBracket(): never {
 		throw new Error("Not implemented.");
 	}
-	public parseClosingCurlyBracket(): never {
+	public feedWithClosingCurlyBracket(): never {
 		throw new Error("Not implemented.");
 	}
-	public parseOpeningRoundBracket(): never {
+	public feedWithOpeningRoundBracket(): never {
 		throw new Error("Not implemented.");
 	}
-	public parseClosingRoundBracket(): never {
+	public feedWithClosingRoundBracket(): never {
 		throw new Error("Not implemented.");
 	}
-	public parseIdentifier(): never {
+	public feedWithIdentifier(): never {
 		throw new Error("Not implemented.");
 	}
-	public parseOperator(): never {
+	public feedWithOperator(): never {
 		throw new Error("Not implemented.");
 	}
 	public finalize(): never {

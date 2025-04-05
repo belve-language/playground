@@ -24,7 +24,7 @@ export class FunctionHeaderKnownSegmentContentParser implements Parser {
 	) {
 		this.partialConcreteSyntaxTree = partialConcreteSyntaxTree;
 	}
-	public parseWhitespace(
+	public feedWithWhitespace(
 		character: WhitespaceCharacter,
 		index: Index,
 	): FunctionHeaderKnownSegmentContentFinalWhitespaceSegmentsParser {
@@ -57,19 +57,19 @@ export class FunctionHeaderKnownSegmentContentParser implements Parser {
 			);
 		return functionHeaderKnownSegmentContentFinalWhitespaceSegmentsParser;
 	}
-	public parseOpeningSquareBracket(): never {
+	public feedWithOpeningSquareBracket(): never {
 		throw new Error(".");
 	}
-	public parseClosingSquareBracket(): never {
+	public feedWithClosingSquareBracket(): never {
 		throw new Error(".");
 	}
-	public parseOpeningCurlyBracket(): never {
+	public feedWithOpeningCurlyBracket(): never {
 		throw new Error(".");
 	}
-	public parseClosingCurlyBracket(): never {
+	public feedWithClosingCurlyBracket(): never {
 		throw new Error(".");
 	}
-	public parseOpeningRoundBracket(
+	public feedWithOpeningRoundBracket(
 		character: OpeningRoundBracketCharacter,
 		index: Index,
 	): FunctionHeaderSegmentsParser {
@@ -106,10 +106,10 @@ export class FunctionHeaderKnownSegmentContentParser implements Parser {
 		);
 		return functionHeaderSegmentsParser;
 	}
-	public parseClosingRoundBracket(): never {
+	public feedWithClosingRoundBracket(): never {
 		throw new Error(".");
 	}
-	public parseIdentifier(
+	public feedWithIdentifier(
 		character: IdentifierCharacter,
 		index: Index,
 	): FunctionHeaderKnownSegmentContentIdentifierSegmentsParser {
@@ -143,7 +143,7 @@ export class FunctionHeaderKnownSegmentContentParser implements Parser {
 			);
 		return functionHeaderKnownSegmentContentIdentifierSegmentsParser;
 	}
-	public parseOperator(): never {
+	public feedWithOperator(): never {
 		throw new Error(".");
 	}
 	public finalize(): never {

@@ -18,7 +18,7 @@ export class FunctionHeaderUnknownSegmentContentFinalWhitespaceSegmentsParser
 	) {
 		this.partialConcreteSyntaxTree = partialConcreteSyntaxTree;
 	}
-	public parseWhitespace(character: WhitespaceCharacter, index: Index) {
+	public feedWithWhitespace(character: WhitespaceCharacter, index: Index) {
 		const newFunctionHeaderUnknownSegmentContentFinalWhitespaceSegmentsFirstSegment =
 			createWhitespaceSegmentConcreteSyntaxTreeNode(character, index);
 		const newFunctionHeaderUnknownSegmentContentFinalWhitespaceSegments =
@@ -52,37 +52,37 @@ export class FunctionHeaderUnknownSegmentContentFinalWhitespaceSegmentsParser
 			);
 		return functionHeaderUnknownSegmentContentFinalWhitespaceSegmentsParser;
 	}
-	public parseOpeningSquareBracket(): never {
+	public feedWithOpeningSquareBracket(): never {
 		throw new Error(
 			"Unexpected opening square bracket character in function header unknown segment content final whitespace characters.",
 		);
 	}
-	public parseClosingSquareBracket(): never {
+	public feedWithClosingSquareBracket(): never {
 		throw new Error(
 			"Unexpected closing square bracket character in function header unknown segment content final whitespace characters.",
 		);
 	}
-	public parseOpeningCurlyBracket(): never {
+	public feedWithOpeningCurlyBracket(): never {
 		throw new Error(
 			"Unexpected opening curly bracket character in function header unknown segment content final whitespace characters.",
 		);
 	}
-	public parseClosingCurlyBracket(): never {
+	public feedWithClosingCurlyBracket(): never {
 		throw new Error(
 			"Unexpected closing curly bracket character in function header unknown segment content final whitespace characters.",
 		);
 	}
-	public parseOpeningRoundBracket(): never {
+	public feedWithOpeningRoundBracket(): never {
 		throw new Error(
 			"Unexpected opening round bracket character in function header unknown segment content final whitespace characters.",
 		);
 	}
-	public parseClosingRoundBracket(): never {
+	public feedWithClosingRoundBracket(): never {
 		throw new Error(
 			"Unexpected closing round bracket character in function header unknown segment content final whitespace characters.",
 		);
 	}
-	public parseIdentifier<CurrentCharacter extends IdentifierCharacter>(
+	public feedWithIdentifier<CurrentCharacter extends IdentifierCharacter>(
 		character: CurrentCharacter,
 		index: Index,
 	): FunctionHeaderUnknownSegmentContentIdentifierSegmentsParser {
@@ -127,7 +127,7 @@ export class FunctionHeaderUnknownSegmentContentFinalWhitespaceSegmentsParser
 			);
 		return functionHeaderUnknownSegmentContentIdentifierSegmentsParser;
 	}
-	public parseOperator(): never {
+	public feedWithOperator(): never {
 		throw new Error(
 			"Unexpected operator character in function header unknown segment content final whitespace characters.",
 		);

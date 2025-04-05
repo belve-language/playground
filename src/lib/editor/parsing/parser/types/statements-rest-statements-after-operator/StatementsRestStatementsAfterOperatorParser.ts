@@ -25,7 +25,7 @@ export class StatementsRestStatementsAfterOperatorParser implements Parser {
 	) {
 		this.partialConcreteSyntaxTree = partialConcreteSyntaxTree;
 	}
-	public parseWhitespace(
+	public feedWithWhitespace(
 		character: WhitespaceCharacter,
 		index: Index,
 	): StatementsRestStatementsAfterOperatorWhitespaceSegmentsParser {
@@ -59,13 +59,13 @@ export class StatementsRestStatementsAfterOperatorParser implements Parser {
 			);
 		return statementsRestStatementsAfterOperatorWhitespaceSegmentsParser;
 	}
-	public parseOpeningSquareBracket(): never {
+	public feedWithOpeningSquareBracket(): never {
 		throw new Error("Method not implemented.");
 	}
-	public parseClosingSquareBracket(): never {
+	public feedWithClosingSquareBracket(): never {
 		throw new Error("Method not implemented.");
 	}
-	public parseOpeningCurlyBracket(
+	public feedWithOpeningCurlyBracket(
 		character: OpeningCurlyBracketCharacter,
 		index: Index,
 	): FunctionHeaderParser | StatementsRestStatementsAfterOperatorParser {
@@ -137,19 +137,19 @@ export class StatementsRestStatementsAfterOperatorParser implements Parser {
 			);
 		return statementsRestStatementsAfterOperatorParser;
 	}
-	public parseClosingCurlyBracket(): never {
+	public feedWithClosingCurlyBracket(): never {
 		throw new Error("Method not implemented.");
 	}
-	public parseOpeningRoundBracket(): never {
+	public feedWithOpeningRoundBracket(): never {
 		throw new Error("Method not implemented.");
 	}
-	public parseClosingRoundBracket(): never {
+	public feedWithClosingRoundBracket(): never {
 		throw new Error("Method not implemented.");
 	}
-	public parseIdentifier(): never {
+	public feedWithIdentifier(): never {
 		throw new Error("Method not implemented.");
 	}
-	public parseOperator(character: OperatorCharacter, index: Index) {
+	public feedWithOperator(character: OperatorCharacter, index: Index) {
 		const statementsRestStatementsOperator =
 			createOperatorConcreteSyntaxTreeNode(character, index);
 		const statementsRestStatementsBeforeOperatorParser =

@@ -11,18 +11,21 @@
 		parsingConfiguration,
 	}: Readonly<{parsingConfiguration: ParsingConfiguration}> = $props();
 	async function handleSourceCodeTextAreaInput(
-		event: InputEvent & Readonly<{target: HTMLTextAreaElement}>,
+		event: Event & Readonly<{currentTarget: HTMLTextAreaElement}>,
 	): Promise<void> {
 		const newUrl = new URL(page.url);
-		newUrl.searchParams.set(sourceCodeSearchParamName, event.target.value);
+		newUrl.searchParams.set(
+			sourceCodeSearchParamName,
+			event.currentTarget.value,
+		);
 		await goto(newUrl, {keepFocus: true, invalidateAll: false});
 	}
 	async function handleModeInputChange(
-		event: Event & Readonly<{target: HTMLInputElement}>,
+		event: Event & Readonly<{currentTarget: HTMLInputElement}>,
 	): Promise<void> {
 		console.log(event);
 		const newUrl = new URL(page.url);
-		newUrl.searchParams.set(modeSearchParamName, event.target.value);
+		newUrl.searchParams.set(modeSearchParamName, event.currentTarget.value);
 		await goto(newUrl, {keepFocus: true, invalidateAll: false});
 	}
 </script>

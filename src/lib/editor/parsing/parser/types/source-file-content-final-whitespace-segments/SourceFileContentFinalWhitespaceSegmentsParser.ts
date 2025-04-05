@@ -4,34 +4,18 @@ import type {Index} from "../../../../index/Index.ts";
 import {createBlockClosingBracketConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/block-closing-bracket/createBlockClosingBracketConcreteSyntaxTreeNode.ts";
 import {createWhitespaceSegmentConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/whitespace-segment/createWhitespaceSegmentConcreteSyntaxTreeNode.ts";
 import {createWhitespaceSegmentsConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/whitespace-segments/createWhitespaceSegmentsConcreteSyntaxTreeNode.ts";
-import type {WhitespaceSegmentsConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/whitespace-segments/WhitespaceSegmentsConcreteSyntaxTreeNode.ts";
 import {createWhitespaceConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/whitespace/createWhitespaceConcreteSyntaxTreeNode.ts";
 import type {WhitespaceConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/whitespace/WhitespaceConcreteSyntaxTreeNode.ts";
 import type {Parser} from "../../Parser.ts";
 import {BlockContentParser} from "../block-content/BlockContentParser.ts";
+import type {SourceFileContentFinalWhitespaceSegmentsParserPartialConcreteSyntaxTree} from "./SourceFileContentFinalWhitespaceSegmentsParserPartialConcreteSyntaxTree.ts";
 export class SourceFileContentFinalWhitespaceSegmentsParser implements Parser {
-	private readonly sourceFileContentEndingIndex: Index;
-	private readonly sourceFileContentFinalWhitespaceSegments: WhitespaceSegmentsConcreteSyntaxTreeNode;
+	private readonly partialConcreteSyntaxTree: SourceFileContentFinalWhitespaceSegmentsParserPartialConcreteSyntaxTree;
 	public constructor(
-		sourceFileContentFinalWhitespaceSegmentsStartingIndex: Index,
-		sourceFileContentFinalWhitespaceSegments: WhitespaceSegmentsConcreteSyntaxTreeNode,
-		sourceFileContentFinalWhitespaceSegmentsEndingIndex: Index,
-		sourceFileContentFinalWhitespaceEndingIndex: Index,
-		sourceFileContentEndingIndex: Index,
+		partialConcreteSyntaxTree: SourceFileContentFinalWhitespaceSegmentsParserPartialConcreteSyntaxTree,
 	) {
-		this.sourceFileContentFinalWhitespaceSegmentsStartingIndex =
-			sourceFileContentFinalWhitespaceSegmentsStartingIndex;
-		this.sourceFileContentFinalWhitespaceSegments =
-			sourceFileContentFinalWhitespaceSegments;
-		this.sourceFileContentFinalWhitespaceSegmentsEndingIndex =
-			sourceFileContentFinalWhitespaceSegmentsEndingIndex;
-		this.sourceFileContentFinalWhitespaceEndingIndex =
-			sourceFileContentFinalWhitespaceEndingIndex;
-		this.sourceFileContentEndingIndex = sourceFileContentEndingIndex;
+		this.partialConcreteSyntaxTree = partialConcreteSyntaxTree;
 	}
-	private readonly sourceFileContentFinalWhitespaceEndingIndex: Index;
-	private readonly sourceFileContentFinalWhitespaceSegmentsStartingIndex: Index;
-	private readonly sourceFileContentFinalWhitespaceSegmentsEndingIndex: Index;
 	public finalize(): WhitespaceConcreteSyntaxTreeNode {
 		const whitespace = createWhitespaceConcreteSyntaxTreeNode(
 			this.sourceFileContentFinalWhitespaceSegments,
@@ -42,7 +26,7 @@ export class SourceFileContentFinalWhitespaceSegmentsParser implements Parser {
 		);
 		return whitespace;
 	}
-	public parseWhitespace(character: WhitespaceCharacter, index: Index) {
+	public feedWithWhitespace(character: WhitespaceCharacter, index: Index) {
 		const newSourceFileContentFinalWhitespaceSegmentsFirstSegment =
 			createWhitespaceSegmentConcreteSyntaxTreeNode(character, index);
 		const newSourceFileContentFinalWhitespaceSegments =
@@ -64,22 +48,22 @@ export class SourceFileContentFinalWhitespaceSegmentsParser implements Parser {
 			);
 		return sourceFileContentFinalWhitespaceSegmentsParser;
 	}
-	public parseOpeningSquareBracket(): never {
+	public feedWithOpeningSquareBracket(): never {
 		throw new Error(
 			"Opening square bracket should not be present in final whitespace characters.",
 		);
 	}
-	public parseClosingSquareBracket(): never {
+	public feedWithClosingSquareBracket(): never {
 		throw new Error(
 			"Closing square bracket should not be present in final whitespace characters.",
 		);
 	}
-	public parseOpeningCurlyBracket(): never {
+	public feedWithOpeningCurlyBracket(): never {
 		throw new Error(
 			"Opening curly bracket should not be present in final whitespace characters.",
 		);
 	}
-	public parseClosingCurlyBracket(
+	public feedWithClosingCurlyBracket(
 		character: ClosingCurlyBracketCharacter,
 		index: Index,
 	): BlockContentParser {
@@ -108,22 +92,22 @@ export class SourceFileContentFinalWhitespaceSegmentsParser implements Parser {
 		);
 		return blockContentParser;
 	}
-	public parseOpeningRoundBracket(): never {
+	public feedWithOpeningRoundBracket(): never {
 		throw new Error(
 			"Opening round bracket should not be present in final whitespace characters.",
 		);
 	}
-	public parseClosingRoundBracket(): never {
+	public feedWithClosingRoundBracket(): never {
 		throw new Error(
 			"Closing round bracket should not be present in final whitespace characters.",
 		);
 	}
-	public parseIdentifier(): never {
+	public feedWithIdentifier(): never {
 		throw new Error(
 			"Identifier should not be present in final whitespace characters.",
 		);
 	}
-	public parseOperator(): never {
+	public feedWithOperator(): never {
 		throw new Error(
 			"Operator should not be present in final whitespace characters.",
 		);

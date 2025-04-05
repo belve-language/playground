@@ -35,7 +35,7 @@ export class BlockContentFinalWhitespaceSegmentsParser implements Parser {
 		this.partialConcreteSyntaxTree = partialConcreteSyntaxTree;
 	}
 	private readonly partialConcreteSyntaxTree: BlockContentFinalWhitespaceSegmentsParserPartialConcreteSyntaxTree;
-	public parseWhitespace(
+	public feedWithWhitespace(
 		character: WhitespaceCharacter,
 		index: Index,
 	): BlockContentFinalWhitespaceSegmentsParser {
@@ -69,12 +69,12 @@ export class BlockContentFinalWhitespaceSegmentsParser implements Parser {
 			);
 		return blockContentFinalWhitespaceSegmentsParser;
 	}
-	public parseOpeningSquareBracket(): never {
+	public feedWithOpeningSquareBracket(): never {
 		throw new Error(
 			"Opening square bracket should not be present in final whitespace characters of function body content.",
 		);
 	}
-	public parseClosingSquareBracket(
+	public feedWithClosingSquareBracket(
 		character: ClosingSquareBracketCharacter,
 		index: Index,
 	): FunctionCallUnknownSegmentContentParser {
@@ -113,7 +113,7 @@ export class BlockContentFinalWhitespaceSegmentsParser implements Parser {
 			);
 		return functionCallUnknownSegmentContentParser;
 	}
-	public parseOpeningCurlyBracket(
+	public feedWithOpeningCurlyBracket(
 		character: OpeningCurlyBracketCharacter,
 		index: Index,
 	): FunctionHeaderParser | StatementsRestStatementsAfterOperatorParser {
@@ -183,7 +183,7 @@ export class BlockContentFinalWhitespaceSegmentsParser implements Parser {
 			);
 		return statementsRestStatementsAfterOperatorParser;
 	}
-	public parseClosingCurlyBracket(
+	public feedWithClosingCurlyBracket(
 		character: ClosingCurlyBracketCharacter,
 		index: Index,
 	): BlockContentParser {
@@ -229,12 +229,12 @@ export class BlockContentFinalWhitespaceSegmentsParser implements Parser {
 		);
 		return blockContentParser;
 	}
-	public parseOpeningRoundBracket(): never {
+	public feedWithOpeningRoundBracket(): never {
 		throw new Error(
 			"Opening round bracket should not be present in final whitespace characters of function body content.",
 		);
 	}
-	public parseClosingRoundBracket(
+	public feedWithClosingRoundBracket(
 		character: ClosingRoundBracketCharacter,
 		index: Index,
 	): FunctionCallKnownSegmentContentParser {
@@ -273,7 +273,7 @@ export class BlockContentFinalWhitespaceSegmentsParser implements Parser {
 			);
 		return functionCallKnownSegmentContentParser;
 	}
-	public parseIdentifier(
+	public feedWithIdentifier(
 		character: IdentifierCharacter,
 		index: Index,
 	): FunctionCallWordSegmentIdentifierSegmentsParser {
@@ -318,7 +318,7 @@ export class BlockContentFinalWhitespaceSegmentsParser implements Parser {
 			);
 		return functionCallWordSegmentIdentifierSegmentsParser;
 	}
-	public parseOperator(): never {
+	public feedWithOperator(): never {
 		throw new Error(
 			"Operator should not be present in final whitespace characters of function body content.",
 		);

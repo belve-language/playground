@@ -21,7 +21,7 @@ export class FunctionCallUnknownSegmentContentParser implements Parser {
 	) {
 		this.partialConcreteSyntaxTree = partialConcreteSyntaxTree;
 	}
-	public parseWhitespace(
+	public feedWithWhitespace(
 		character: WhitespaceCharacter,
 		index: Index,
 	): FunctionCallUnknownSegmentContentFinalWhitespaceSegmentsParser {
@@ -61,7 +61,7 @@ export class FunctionCallUnknownSegmentContentParser implements Parser {
 			);
 		return functionCallUnknownSegmentContentFinalWhitespaceSegmentsParser;
 	}
-	public parseOpeningSquareBracket(
+	public feedWithOpeningSquareBracket(
 		character: OpeningSquareBracketCharacter,
 		index: Index,
 	): FunctionCallSegmentsParser {
@@ -104,32 +104,32 @@ export class FunctionCallUnknownSegmentContentParser implements Parser {
 		);
 		return functionCallSegmentsParser;
 	}
-	public parseClosingSquareBracket(): never {
+	public feedWithClosingSquareBracket(): never {
 		throw new Error(
 			"Unknown segment content cannot contain a closing square bracket.",
 		);
 	}
-	public parseOpeningCurlyBracket(): never {
+	public feedWithOpeningCurlyBracket(): never {
 		throw new Error(
 			"Unknown segment content cannot contain an opening curly bracket.",
 		);
 	}
-	public parseClosingCurlyBracket(): never {
+	public feedWithClosingCurlyBracket(): never {
 		throw new Error(
 			"Unknown segment content cannot contain a closing curly bracket.",
 		);
 	}
-	public parseOpeningRoundBracket(): never {
+	public feedWithOpeningRoundBracket(): never {
 		throw new Error(
 			"Unknown segment content cannot contain an opening round bracket.",
 		);
 	}
-	public parseClosingRoundBracket(): never {
+	public feedWithClosingRoundBracket(): never {
 		throw new Error(
 			"Unknown segment content cannot contain a closing round bracket.",
 		);
 	}
-	public parseIdentifier(
+	public feedWithIdentifier(
 		character: IdentifierCharacter,
 		index: Index,
 	): FunctionCallUnknownSegmentContentIdentifierSegmentsParser {
@@ -170,7 +170,7 @@ export class FunctionCallUnknownSegmentContentParser implements Parser {
 			);
 		return functionCallUnknownSegmentContentIdentifierSegmentsParser;
 	}
-	public parseOperator(): never {
+	public feedWithOperator(): never {
 		throw new Error("Unknown segment content cannot contain an operator.");
 	}
 	public finalize(): never {

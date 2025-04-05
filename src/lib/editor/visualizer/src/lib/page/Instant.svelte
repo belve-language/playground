@@ -14,10 +14,10 @@
 	{#if parseResult === null}
 		<p>There was nothing to parse.</p>
 	{:else if parseResult.status === "error"}
-		<p>{parseResult.error.message}</p>
+		<p>{parseResult.data.message}</p>
 	{:else if parseResult.status === "success"}
-		{@const maximalIndex = parseResult.tree.spanIndexes.ending}
-		{@const levels: readonly Level[] = [...traverseLevelwise(parseResult.tree)]}
+		{@const maximalIndex = parseResult.data.tree.data.spanIndexes.ending}
+		{@const levels: readonly Level[] = [...traverseLevelwise(parseResult.data.tree)]}
 		<table>
 			<thead>
 				<tr>

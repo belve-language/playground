@@ -1,4 +1,4 @@
-import type {SupportedConcreteSyntaxTreeNode} from "../../../../../concrete-syntax-tree/SupportedConcreteSyntaxTreeNode.ts";
+import type {SupportedConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/SupportedConcreteSyntaxTreeNode.ts";
 import type {Level} from "./Level.ts";
 export function* traverseLevelwise(
 	node: SupportedConcreteSyntaxTreeNode | null,
@@ -19,7 +19,7 @@ export function* traverseLevelwise(
 				if (node.kind === "leaf") {
 					return [] as const;
 				}
-				return node.children;
+				return node.data.children;
 			})
 			.filter((node) => node !== null);
 		if (newNodes.length === 0) {
