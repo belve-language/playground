@@ -7,11 +7,9 @@ export function createWhitespaceConcreteSyntaxTreeNode(
 	segments: WhitespaceSegmentsConcreteSyntaxTreeNode,
 	spanIndexes: SpanIndexes,
 ): WhitespaceConcreteSyntaxTreeNode {
-	const treeNode: WhitespaceConcreteSyntaxTreeNode =
-		createBranchConcreteSyntaxTreeNode(
-			whitespaceConcreteSyntaxTreeNodeTypeName,
-			[segments] as const,
-			spanIndexes,
-		);
-	return treeNode;
+	return createBranchConcreteSyntaxTreeNode(
+		whitespaceConcreteSyntaxTreeNodeTypeName,
+		[segments] as const,
+		spanIndexes,
+	);
 }

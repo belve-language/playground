@@ -7,11 +7,9 @@ export function createIdentifierConcreteSyntaxTreeNode(
 	segments: IdentifierSegmentsConcreteSyntaxTreeNode,
 	spanIndexes: SpanIndexes,
 ): IdentifierConcreteSyntaxTreeNode {
-	const treeNode: IdentifierConcreteSyntaxTreeNode =
-		createBranchConcreteSyntaxTreeNode(
-			identifierConcreteSyntaxTreeNodeTypeName,
-			[segments] as const,
-			spanIndexes,
-		);
-	return treeNode;
+	return createBranchConcreteSyntaxTreeNode(
+		identifierConcreteSyntaxTreeNodeTypeName,
+		[segments] as const,
+		spanIndexes,
+	);
 }

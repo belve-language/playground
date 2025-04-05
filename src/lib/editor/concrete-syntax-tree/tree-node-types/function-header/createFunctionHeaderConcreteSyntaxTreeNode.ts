@@ -14,11 +14,9 @@ export function createFunctionHeaderConcreteSyntaxTreeNode(
 	finalWhitespace: WhitespaceConcreteSyntaxTreeNode | null,
 	spanIndexes: SpanIndexes,
 ): FunctionHeaderConcreteSyntaxTreeNode {
-	const treeNode: FunctionHeaderConcreteSyntaxTreeNode =
-		createBranchConcreteSyntaxTreeNode(
-			functionHeaderConcreteSyntaxTreeNodeTypeName,
-			[segments, finalWhitespace] as const,
-			spanIndexes,
-		);
-	return treeNode;
+	return createBranchConcreteSyntaxTreeNode(
+		functionHeaderConcreteSyntaxTreeNodeTypeName,
+		[segments, finalWhitespace] as const,
+		spanIndexes,
+	);
 }

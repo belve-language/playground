@@ -7,11 +7,9 @@ export function createFunctionHeaderUnknownSegmentClosingBracketConcreteSyntaxTr
 	character: ClosingSquareBracketCharacter,
 	index: Index,
 ): FunctionHeaderUnknownSegmentClosingBracketConcreteSyntaxTreeNode {
-	const treeNode: FunctionHeaderUnknownSegmentClosingBracketConcreteSyntaxTreeNode =
-		createLeafConcreteSyntaxTreeNode(
-			functionHeaderUnknownSegmentClosingBracketConcreteSyntaxTreeNodeTypeName,
-			character,
-			index,
-		);
-	return treeNode;
+	return createLeafConcreteSyntaxTreeNode(
+		functionHeaderUnknownSegmentClosingBracketConcreteSyntaxTreeNodeTypeName,
+		character,
+		index,
+	);
 }

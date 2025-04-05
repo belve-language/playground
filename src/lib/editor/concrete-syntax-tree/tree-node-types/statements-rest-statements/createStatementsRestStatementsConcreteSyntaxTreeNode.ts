@@ -12,16 +12,14 @@ export function createStatementsRestStatementsConcreteSyntaxTreeNode(
 	statements: StatementsConcreteSyntaxTreeNode,
 	spanIndexes: SpanIndexes,
 ): StatementsRestStatementsConcreteSyntaxTreeNode {
-	const treeNode: StatementsRestStatementsConcreteSyntaxTreeNode =
-		createBranchConcreteSyntaxTreeNode(
-			statementsRestStatementsConcreteSyntaxTreeNodeTypeName,
-			[
-				beforeOperatorWhitespace,
-				operator,
-				afterOperatorWhitespace,
-				statements,
-			] as const,
-			spanIndexes,
-		);
-	return treeNode;
+	return createBranchConcreteSyntaxTreeNode(
+		statementsRestStatementsConcreteSyntaxTreeNodeTypeName,
+		[
+			beforeOperatorWhitespace,
+			operator,
+			afterOperatorWhitespace,
+			statements,
+		] as const,
+		spanIndexes,
+	);
 }

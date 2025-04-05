@@ -10,11 +10,9 @@ export function createSourceFileContentConcreteSyntaxTreeNode(
 	finalWhitespace: WhitespaceConcreteSyntaxTreeNode | null,
 	spanIndexes: SpanIndexes,
 ): SourceFileContentConcreteSyntaxTreeNode {
-	const treeNode: SourceFileContentConcreteSyntaxTreeNode =
-		createBranchConcreteSyntaxTreeNode(
-			sourceFileContentConcreteSyntaxTreeNodeTypeName,
-			[initialWhitespace, functions, finalWhitespace] as const,
-			spanIndexes,
-		);
-	return treeNode;
+	return createBranchConcreteSyntaxTreeNode(
+		sourceFileContentConcreteSyntaxTreeNodeTypeName,
+		[initialWhitespace, functions, finalWhitespace] as const,
+		spanIndexes,
+	);
 }

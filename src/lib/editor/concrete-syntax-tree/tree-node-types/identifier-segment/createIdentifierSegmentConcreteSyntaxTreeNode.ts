@@ -7,11 +7,9 @@ export function createIdentifierSegmentConcreteSyntaxTreeNode(
 	character: IdentifierCharacter,
 	index: Index,
 ): IdentifierSegmentConcreteSyntaxTreeNode {
-	const treeNode: IdentifierSegmentConcreteSyntaxTreeNode =
-		createLeafConcreteSyntaxTreeNode(
-			identifierSegmentConcreteSyntaxTreeNodeTypeName,
-			character,
-			index,
-		);
-	return treeNode;
+	return createLeafConcreteSyntaxTreeNode(
+		identifierSegmentConcreteSyntaxTreeNodeTypeName,
+		character,
+		index,
+	);
 }

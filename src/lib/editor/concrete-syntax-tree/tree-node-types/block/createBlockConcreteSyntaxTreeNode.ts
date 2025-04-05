@@ -15,11 +15,9 @@ export function createBlockConcreteSyntaxTreeNode(
 	closingBracket: BlockClosingBracketConcreteSyntaxTreeNode,
 	spanIndexes: SpanIndexes,
 ): BlockConcreteSyntaxTreeNode {
-	const treeNode: BlockConcreteSyntaxTreeNode =
-		createBranchConcreteSyntaxTreeNode(
-			blockConcreteSyntaxTreeNodeTypeName,
-			[openingBracket, content, closingBracket] as const,
-			spanIndexes,
-		);
-	return treeNode;
+	return createBranchConcreteSyntaxTreeNode(
+		blockConcreteSyntaxTreeNodeTypeName,
+		[openingBracket, content, closingBracket] as const,
+		spanIndexes,
+	);
 }

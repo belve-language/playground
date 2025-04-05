@@ -10,11 +10,9 @@ export function createFunctionHeaderUnknownSegmentContentConcreteSyntaxTreeNode(
 	finalWhitespace: WhitespaceConcreteSyntaxTreeNode | null,
 	spanIndexes: SpanIndexes,
 ): FunctionHeaderUnknownSegmentContentConcreteSyntaxTreeNode {
-	const treeNode: FunctionHeaderUnknownSegmentContentConcreteSyntaxTreeNode =
-		createBranchConcreteSyntaxTreeNode(
-			functionHeaderUnknownSegmentContentConcreteSyntaxTreeNodeTypeName,
-			[initialWhitespace, identifier, finalWhitespace] as const,
-			spanIndexes,
-		);
-	return treeNode;
+	return createBranchConcreteSyntaxTreeNode(
+		functionHeaderUnknownSegmentContentConcreteSyntaxTreeNodeTypeName,
+		[initialWhitespace, identifier, finalWhitespace] as const,
+		spanIndexes,
+	);
 }

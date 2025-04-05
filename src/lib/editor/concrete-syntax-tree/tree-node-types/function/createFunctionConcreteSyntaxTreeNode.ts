@@ -9,11 +9,9 @@ export function createFunctionConcreteSyntaxTreeNode(
 	body: FunctionBodyConcreteSyntaxTreeNode,
 	spanIndexes: SpanIndexes,
 ): FunctionConcreteSyntaxTreeNode {
-	const treeNode: FunctionConcreteSyntaxTreeNode =
-		createBranchConcreteSyntaxTreeNode(
-			functionConcreteSyntaxTreeNodeTypeName,
-			[header, body] as const,
-			spanIndexes,
-		);
-	return treeNode;
+	return createBranchConcreteSyntaxTreeNode(
+		functionConcreteSyntaxTreeNodeTypeName,
+		[header, body] as const,
+		spanIndexes,
+	);
 }

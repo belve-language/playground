@@ -8,11 +8,9 @@ export function createIdentifierSegmentsConcreteSyntaxTreeNode(
 	restSegments: IdentifierSegmentsConcreteSyntaxTreeNode | null,
 	spanIndexes: SpanIndexes,
 ): IdentifierSegmentsConcreteSyntaxTreeNode {
-	const treeNode: IdentifierSegmentsConcreteSyntaxTreeNode =
-		createBranchConcreteSyntaxTreeNode(
-			identifierSegmentsConcreteSyntaxTreeNodeTypeName,
-			[firstSegment, restSegments] as const,
-			spanIndexes,
-		);
-	return treeNode;
+	return createBranchConcreteSyntaxTreeNode(
+		identifierSegmentsConcreteSyntaxTreeNodeTypeName,
+		[firstSegment, restSegments] as const,
+		spanIndexes,
+	);
 }

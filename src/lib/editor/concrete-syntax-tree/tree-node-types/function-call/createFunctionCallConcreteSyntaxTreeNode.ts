@@ -12,11 +12,9 @@ export function createFunctionCallConcreteSyntaxTreeNode(
 		| FunctionCallKnownStartingSegmentsConcreteSyntaxTreeNode,
 	spanIndexes: SpanIndexes,
 ): FunctionCallConcreteSyntaxTreeNode {
-	const treeNode: FunctionCallConcreteSyntaxTreeNode =
-		createBranchConcreteSyntaxTreeNode(
-			functionCallConcreteSyntaxTreeNodeTypeName,
-			[segments] as const,
-			spanIndexes,
-		);
-	return treeNode;
+	return createBranchConcreteSyntaxTreeNode(
+		functionCallConcreteSyntaxTreeNodeTypeName,
+		[segments] as const,
+		spanIndexes,
+	);
 }

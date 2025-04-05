@@ -15,11 +15,9 @@ export function createFunctionHeaderUnknownSegmentConcreteSyntaxTreeNode(
 	closingBracket: FunctionHeaderUnknownSegmentClosingBracketConcreteSyntaxTreeNode,
 	spanIndexes: SpanIndexes,
 ): FunctionHeaderUnknownSegmentConcreteSyntaxTreeNode {
-	const treeNode: FunctionHeaderUnknownSegmentConcreteSyntaxTreeNode =
-		createBranchConcreteSyntaxTreeNode(
-			functionHeaderUnknownSegmentConcreteSyntaxTreeNodeTypeName,
-			[openingBracket, content, closingBracket] as const,
-			spanIndexes,
-		);
-	return treeNode;
+	return createBranchConcreteSyntaxTreeNode(
+		functionHeaderUnknownSegmentConcreteSyntaxTreeNodeTypeName,
+		[openingBracket, content, closingBracket] as const,
+		spanIndexes,
+	);
 }

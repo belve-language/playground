@@ -8,11 +8,9 @@ export function createWhitespaceSegmentsConcreteSyntaxTreeNode(
 	restSegments: WhitespaceSegmentsConcreteSyntaxTreeNode | null,
 	spanIndexes: SpanIndexes,
 ): WhitespaceSegmentsConcreteSyntaxTreeNode {
-	const treeNode: WhitespaceSegmentsConcreteSyntaxTreeNode =
-		createBranchConcreteSyntaxTreeNode(
-			whitespaceSegmentsConcreteSyntaxTreeNodeTypeName,
-			[firstSegment, restSegments] as const,
-			spanIndexes,
-		);
-	return treeNode;
+	return createBranchConcreteSyntaxTreeNode(
+		whitespaceSegmentsConcreteSyntaxTreeNodeTypeName,
+		[firstSegment, restSegments] as const,
+		spanIndexes,
+	);
 }

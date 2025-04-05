@@ -7,11 +7,9 @@ export function createOperatorConcreteSyntaxTreeNode(
 	character: OperatorCharacter,
 	index: Index,
 ): OperatorConcreteSyntaxTreeNode {
-	const treeNode: OperatorConcreteSyntaxTreeNode =
-		createLeafConcreteSyntaxTreeNode(
-			operatorConcreteSyntaxTreeNodeTypeName,
-			character,
-			index,
-		);
-	return treeNode;
+	return createLeafConcreteSyntaxTreeNode(
+		operatorConcreteSyntaxTreeNodeTypeName,
+		character,
+		index,
+	);
 }

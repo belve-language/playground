@@ -7,11 +7,9 @@ export function createFunctionCallKnownSegmentOpeningBracketConcreteSyntaxTreeNo
 	character: OpeningRoundBracketCharacter,
 	index: Index,
 ): FunctionCallKnownSegmentOpeningBracketConcreteSyntaxTreeNode {
-	const treeNode: FunctionCallKnownSegmentOpeningBracketConcreteSyntaxTreeNode =
-		createLeafConcreteSyntaxTreeNode(
-			functionCallKnownSegmentOpeningBracketConcreteSyntaxTreeNodeTypeName,
-			character,
-			index,
-		);
-	return treeNode;
+	return createLeafConcreteSyntaxTreeNode(
+		functionCallKnownSegmentOpeningBracketConcreteSyntaxTreeNodeTypeName,
+		character,
+		index,
+	);
 }

@@ -7,11 +7,9 @@ export function createBlockOpeningBracketConcreteSyntaxTreeNode(
 	character: OpeningCurlyBracketCharacter,
 	index: Index,
 ): BlockOpeningBracketConcreteSyntaxTreeNode {
-	const treeNode: BlockOpeningBracketConcreteSyntaxTreeNode =
-		createLeafConcreteSyntaxTreeNode(
-			blockOpeningBracketConcreteSyntaxTreeNodeTypeName,
-			character,
-			index,
-		);
-	return treeNode;
+	return createLeafConcreteSyntaxTreeNode(
+		blockOpeningBracketConcreteSyntaxTreeNodeTypeName,
+		character,
+		index,
+	);
 }

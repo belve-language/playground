@@ -12,11 +12,9 @@ export function createStatementsConcreteSyntaxTreeNode(
 	restStatements: StatementsRestStatementsConcreteSyntaxTreeNode | null,
 	spanIndexes: SpanIndexes,
 ): StatementsConcreteSyntaxTreeNode {
-	const treeNode: StatementsConcreteSyntaxTreeNode =
-		createBranchConcreteSyntaxTreeNode(
-			statementsConcreteSyntaxTreeNodeTypeName,
-			[firstStatement, restStatements] as const,
-			spanIndexes,
-		);
-	return treeNode;
+	return createBranchConcreteSyntaxTreeNode(
+		statementsConcreteSyntaxTreeNodeTypeName,
+		[firstStatement, restStatements] as const,
+		spanIndexes,
+	);
 }

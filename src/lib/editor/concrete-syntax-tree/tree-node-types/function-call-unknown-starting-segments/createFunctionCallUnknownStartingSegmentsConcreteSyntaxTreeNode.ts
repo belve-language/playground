@@ -16,11 +16,9 @@ export function createFunctionCallUnknownStartingSegmentsConcreteSyntaxTreeNode(
 		| FunctionCallWordStartingSegmentsConcreteSyntaxTreeNode,
 	spanIndexes: SpanIndexes,
 ): FunctionCallUnknownStartingSegmentsConcreteSyntaxTreeNode {
-	const treeNode: FunctionCallUnknownStartingSegmentsConcreteSyntaxTreeNode =
-		createBranchConcreteSyntaxTreeNode(
-			functionCallUnknownStartingSegmentsConcreteSyntaxTreeNodeTypeName,
-			[firstSegment, restSegments] as const,
-			spanIndexes,
-		);
-	return treeNode;
+	return createBranchConcreteSyntaxTreeNode(
+		functionCallUnknownStartingSegmentsConcreteSyntaxTreeNodeTypeName,
+		[firstSegment, restSegments] as const,
+		spanIndexes,
+	);
 }

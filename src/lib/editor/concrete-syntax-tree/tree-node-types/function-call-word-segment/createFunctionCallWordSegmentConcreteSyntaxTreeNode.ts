@@ -7,11 +7,9 @@ export function createFunctionCallWordSegmentConcreteSyntaxTreeNode(
 	identifier: IdentifierConcreteSyntaxTreeNode,
 	spanIndexes: SpanIndexes,
 ): FunctionCallWordSegmentConcreteSyntaxTreeNode {
-	const treeNode: FunctionCallWordSegmentConcreteSyntaxTreeNode =
-		createBranchConcreteSyntaxTreeNode(
-			functionCallWordSegmentConcreteSyntaxTreeNodeTypeName,
-			[identifier] as const,
-			spanIndexes,
-		);
-	return treeNode;
+	return createBranchConcreteSyntaxTreeNode(
+		functionCallWordSegmentConcreteSyntaxTreeNodeTypeName,
+		[identifier] as const,
+		spanIndexes,
+	);
 }
