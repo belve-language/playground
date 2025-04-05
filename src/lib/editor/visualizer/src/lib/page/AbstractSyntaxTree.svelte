@@ -32,9 +32,9 @@
 	{#if parseResult === null}
 		<p>There was nothing to parse.</p>
 	{:else if parseResult.status === "error"}
-		<p>{parseResult.error.message}</p>
+		<p>{parseResult.data.message}</p>
 	{:else if parseResult.status === "success"}
-		{@const ast: SourceFileContentAbstractSyntaxTreeNode | null = abstractifySyntaxTree(parseResult.tree)}
+		{@const ast: SourceFileContentAbstractSyntaxTreeNode | null = abstractifySyntaxTree(parseResult.data.tree)}
 		<pre>{JSON.stringify(ast)}</pre>
 	{/if}
 </section>

@@ -1,7 +1,6 @@
 import {SourceFileContentParser} from "./parser/types/source-file-content/SourceFileContentParser.ts";
-import {computeNewParser} from "./computing-new-parser/computeNewParser.ts";
+import {feed} from "./feeding/feed.ts";
 import type {Parser} from "./parser/Parser.ts";
-import type {ConcreteSyntaxTree} from "../concrete-syntax-tree/ConreteSyntaxTree.ts";
 import type {SupportedParseResult} from "./SupportedParseResult.ts";
 export function parse(
 	characters: readonly string[],
@@ -9,20 +8,33 @@ export function parse(
 	const reversedCharacters: readonly string[] = characters.slice().reverse();
 	const reversedCharactersEntries = reversedCharacters.entries();
 	let parser: Parser = new SourceFileContentParser();
-	try {
-		for (const [index, character] of reversedCharactersEntries) {
-			parser = computeNewParser(
-				character,
-				parser,
-				reversedCharacters.length - index - 1,
-			);
+	for (const [index, character] of reversedCharactersEntries) {
+		const feedResult = feed(
+			character,
+			parser,
+			reversedCharacters.length - index - 1,
+		);
+		switch (feedResult.status) {
+			case "error": {
+				return {status: "error", data: {message: feedResult.data.message}};
+			}
+			case "success": {
+				parser = feedResult.data.newParser;
+				break;
+			}
 		}
-		const rawResult: ConcreteSyntaxTree | null = parser.finalize();
-		if (rawResult === null) {
-			return null;
+	}
+	const finalizeResult = parser.finalize();
+	if (finalizeResult === null) {
+		return null;
+	} else {
+		switch (finalizeResult.status) {
+			case "error": {
+				return {status: "error", data: {message: finalizeResult.data.message}};
+			}
+			case "success": {
+				return {status: "success", data: {tree: finalizeResult.data.tree}};
+			}
 		}
-		return {status: "success", data: {tree: rawResult}};
-	} catch (error: unknown) {
-		return {status: "error", data: {error}};
 	}
 }

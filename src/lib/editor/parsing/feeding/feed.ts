@@ -1,10 +1,11 @@
 import type {Index} from "../../index/Index.ts";
 import type {Parser} from "../parser/Parser.ts";
-export function computeNewParser(
+import type {SupportedFeedResult} from "../SupportedFeedResult.ts";
+export function feed(
 	character: string,
 	parser: Parser,
 	index: Index,
-): Parser {
+): SupportedFeedResult {
 	switch (character) {
 		case "}": {
 			return parser.feedWithClosingCurlyBracket(character, index);

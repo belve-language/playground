@@ -7,9 +7,9 @@ import type {OpeningRoundBracketCharacter} from "../../characters/opening-round-
 import type {OpeningSquareBracketCharacter} from "../../characters/opening-square-bracket/OpeningSquareBracketCharacter.ts";
 import type {OperatorCharacter} from "../../characters/operator/OperatorCharacter.ts";
 import type {WhitespaceCharacter} from "../../characters/whitespace/WhitespaceCharacter.ts";
-import type {ConcreteSyntaxTree} from "../../concrete-syntax-tree/ConreteSyntaxTree.ts";
 import type {Index} from "../../index/Index.ts";
 import type {SupportedFeedResult} from "../SupportedFeedResult.ts";
+import type {SupportedFinalizeResult} from "../SupportedFinalizeResult.ts";
 export interface Parser {
 	feedWithWhitespace: (
 		character: WhitespaceCharacter,
@@ -47,5 +47,5 @@ export interface Parser {
 		character: OperatorCharacter,
 		index: Index,
 	) => SupportedFeedResult;
-	finalize: () => null | ConcreteSyntaxTree;
+	finalize: () => null | SupportedFinalizeResult;
 }

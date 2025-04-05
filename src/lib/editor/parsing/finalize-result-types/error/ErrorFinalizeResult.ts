@@ -1,5 +1,5 @@
-import type {ParserResult} from "../../ParseResult.ts";
-export type ErrorFinalizeResult = ParserResult<
+import type {FinalizeResult} from "../../FinalizeResult.ts";
+export type ErrorFinalizeResult = FinalizeResult<
 	"error",
 	Readonly<{message: string}>
 >;

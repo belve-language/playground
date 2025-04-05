@@ -13,9 +13,9 @@ export function computeCells(
 	const cells: SupportedCell[] = [];
 	switch (nodes[0].kind) {
 		case "leaf": {
-			if (nodes[0].index !== 0) {
+			if (nodes[0].data.index !== 0) {
 				cells.push({
-					span: nodes[0].index,
+					span: nodes[0].data.index,
 					kind: "empty",
 				} as const satisfies EmptyCell);
 			}
@@ -26,15 +26,18 @@ export function computeCells(
 			break;
 		}
 		case "branch": {
-			if (nodes[0].spanIndexes.starting !== 0) {
+			if (nodes[0].data.spanIndexes.starting !== 0) {
 				cells.push({
-					span: nodes[0].spanIndexes.starting,
+					span: nodes[0].data.spanIndexes.starting,
 					kind: "empty",
 				} as const satisfies EmptyCell);
 			}
 			cells.push({
 				typeName: nodes[0].typeName,
-				span: nodes[0].spanIndexes.ending - nodes[0].spanIndexes.starting + 1,
+				span:
+					nodes[0].data.spanIndexes.ending
+					- nodes[0].data.spanIndexes.starting
+					+ 1,
 				kind: "branch",
 			} as const satisfies BranchCell);
 			break;
@@ -43,14 +46,14 @@ export function computeCells(
 	let currentNode = nodes[0];
 	let currentNodeEndingIndex =
 		currentNode.kind === "leaf" ?
-			currentNode.index
-		:	currentNode.spanIndexes.ending;
+			currentNode.data.index
+		:	currentNode.data.spanIndexes.ending;
 	for (const node of nodes.slice(1)) {
 		switch (node.kind) {
 			case "leaf": {
-				if (node.index !== currentNodeEndingIndex + 1) {
+				if (node.data.index !== currentNodeEndingIndex + 1) {
 					cells.push({
-						span: node.index - currentNodeEndingIndex - 1,
+						span: node.data.index - currentNodeEndingIndex - 1,
 						kind: "empty",
 					} as const satisfies EmptyCell);
 				}
@@ -58,22 +61,23 @@ export function computeCells(
 					typeName: node.typeName,
 					kind: "leaf",
 				} as const satisfies LeafCell);
-				currentNodeEndingIndex = node.index;
+				currentNodeEndingIndex = node.data.index;
 				break;
 			}
 			case "branch":
-				if (node.spanIndexes.starting !== currentNodeEndingIndex + 1) {
+				if (node.data.spanIndexes.starting !== currentNodeEndingIndex + 1) {
 					cells.push({
-						span: node.spanIndexes.starting - currentNodeEndingIndex - 1,
+						span: node.data.spanIndexes.starting - currentNodeEndingIndex - 1,
 						kind: "empty",
 					} as const satisfies EmptyCell);
 				}
 				cells.push({
 					typeName: node.typeName,
-					span: node.spanIndexes.ending - node.spanIndexes.starting + 1,
+					span:
+						node.data.spanIndexes.ending - node.data.spanIndexes.starting + 1,
 					kind: "branch",
 				} as const satisfies BranchCell);
-				currentNodeEndingIndex = node.spanIndexes.ending;
+				currentNodeEndingIndex = node.data.spanIndexes.ending;
 				break;
 		}
 		currentNode = node;
