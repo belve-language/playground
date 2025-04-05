@@ -1,5 +1,2 @@
-import type {ParserResult} from "../../ParseResult.ts";
-export type ErrorFeedResult = ParserResult<
-	"error",
-	Readonly<{message: string}>
->;
+import type {FeedResult} from "../../FeedResult.ts";
+export type ErrorFeedResult = FeedResult<"error", Readonly<{message: string}>>;

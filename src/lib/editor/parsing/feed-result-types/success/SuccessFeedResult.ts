@@ -1,6 +1,6 @@
+import type {FeedResult} from "../../FeedResult.ts";
 import type {Parser} from "../../parser/Parser.ts";
-import type {ParserResult} from "../../ParseResult.ts";
-export type SuccessFeedResult<NewParserToUse extends Parser> = ParserResult<
+export type SuccessFeedResult<NewParserToUse extends Parser> = FeedResult<
 	"success",
 	Readonly<{newParser: NewParserToUse}>
 >;

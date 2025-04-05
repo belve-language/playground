@@ -13,6 +13,8 @@ import type {SuccessFeedResult} from "../../../feed-result-types/success/Success
 import type {ErrorFinalizeResult} from "../../../finalize-result-types/error/ErrorFinalizeResult.ts";
 import type {SuccessFinalizeResult} from "../../../finalize-result-types/success/SuccessFinalizeResult.ts";
 import type {Parser} from "../../Parser.ts";
+import type {BlockContentFinalWhitespaceSegmentsParser} from "../block-content-final-whitespace-segments/BlockContentFinalWhitespaceSegmentsParser.ts";
+import type {FunctionCallUnknownSegmentContentParser} from "../function-call-unknown-segment-content/FunctionCallUnknownSegmentContentParser.ts";
 import type {BlockContentParserPartialConcreteSyntaxTree} from "./BlockContentParserPartialConcreteSyntaxTree.ts";
 export class BlockContentParser implements Parser {
 	public constructor(tree: BlockContentParserPartialConcreteSyntaxTree) {
@@ -22,19 +24,19 @@ export class BlockContentParser implements Parser {
 	public feedWithWhitespaceCharacter(
 		character: WhitespaceCharacter,
 		index: Index,
-	): ErrorFeedResult | SuccessFeedResult<Parser> {
+	): SuccessFeedResult<BlockContentFinalWhitespaceSegmentsParser> {
 		throw new Error("Not implemented.");
 	}
 	public feedWithOpeningSquareBracketCharacter(
 		character: OpeningSquareBracketCharacter,
 		index: Index,
-	): ErrorFeedResult | SuccessFeedResult<Parser> {
+	): ErrorFeedResult {
 		throw new Error("Not implemented.");
 	}
 	public feedWithClosingSquareBracketCharacter(
 		character: ClosingSquareBracketCharacter,
 		index: Index,
-	): ErrorFeedResult | SuccessFeedResult<Parser> {
+	): SuccessFeedResult<FunctionCallUnknownSegmentContentParser> {
 		throw new Error("Not implemented.");
 	}
 	public feedWithOpeningCurlyBracketCharacter(
