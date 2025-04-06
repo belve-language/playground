@@ -1,2 +1,0 @@
-export const functionCallKnownSegmentAbstractSyntaxTreeNodeTypeName =
-	"functionCallKnownSegment";

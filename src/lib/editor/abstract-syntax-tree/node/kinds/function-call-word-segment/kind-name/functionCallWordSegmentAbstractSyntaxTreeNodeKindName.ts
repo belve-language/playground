@@ -1,0 +1,2 @@
+export const functionCallWordSegmentAbstractSyntaxTreeNodeKindName =
+	"functionCallWordSegment";

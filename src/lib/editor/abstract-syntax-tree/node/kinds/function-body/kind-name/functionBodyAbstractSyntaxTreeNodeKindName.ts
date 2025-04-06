@@ -1,0 +1,1 @@
+export const functionBodyAbstractSyntaxTreeNodeKindName = "functionBody";
