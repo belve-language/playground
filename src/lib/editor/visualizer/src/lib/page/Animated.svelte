@@ -1,7 +1,6 @@
 <script lang="ts">
 	import type {Parser} from "../../../../parsing/parser/Parser.ts";
 	import {SourceFileContentParser} from "../../../../parsing/parser/types/source-file-content/SourceFileContentParser.ts";
-	import {feed} from "../../../../parsing/feeding/feed.ts";
 	const {sourceCode}: Readonly<{sourceCode: string}> = $props();
 	const sourceCodeCharacters = $derived(sourceCode.split(""));
 	type AnimationData = Readonly<{
@@ -49,7 +48,6 @@
 			const index = reversedCharactersLeft.length - 1;
 			// TODO RESTORE
 			// const feedResult = feed(firstReversedCharactersLeft, parser, index);
-
 			// this.animationData = {
 			// 	parser: newParser,
 			// 	reversedCharactersLeft: restReversedCharactersLeft,

@@ -1,3 +1,4 @@
+import type {Parser} from "prettier";
 import type {ClosingCurlyBracketCharacter} from "../../../../characters/closing-curly-bracket/ClosingCurlyBracketCharacter.ts";
 import type {ClosingRoundBracketCharacter} from "../../../../characters/closing-round-bracket/ClosingRoundBracketCharacter.ts";
 import type {ClosingSquareBracketCharacter} from "../../../../characters/closing-square-bracket/ClosingSquareBracketCharacter.ts";
@@ -12,7 +13,6 @@ import type {ErrorFeedResult} from "../../../feed-result-types/error/ErrorFeedRe
 import type {SuccessFeedResult} from "../../../feed-result-types/success/SuccessFeedResult.ts";
 import type {ErrorFinalizeResult} from "../../../finalize-result-types/error/ErrorFinalizeResult.ts";
 import type {SuccessFinalizeResult} from "../../../finalize-result-types/success/SuccessFinalizeResult.ts";
-import type {Parser} from "../../Parser.ts";
 import type {FunctionCallWordSegmentIdentifierSegmentsParserPartialConcreteSyntaxTree} from "./FunctionCallWordSegmentIdentifierSegmentsParserPartialConcreteSyntaxTree.ts";
 export class FunctionCallWordSegmentIdentifierSegmentsParser implements Parser {
 	private readonly tree: FunctionCallWordSegmentIdentifierSegmentsParserPartialConcreteSyntaxTree;

@@ -1,5 +1,5 @@
-import type {BranchConcreteSyntaxTreeNode} from "./BranchConcreteSyntaxTreeNode.ts";
 import type {SpanIndexes} from "../span-indexes/SpanIndexes.ts";
+import type {BranchConcreteSyntaxTreeNode} from "./BranchConcreteSyntaxTreeNode.ts";
 export function createBranchConcreteSyntaxTreeNode<
 	TypeNameToUse extends string,
 	ChildrenToUse extends readonly unknown[],

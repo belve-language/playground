@@ -1,4 +1,4 @@
-import type {FunctionAbstractSyntaxTreeNode} from "../function/FunctionAbstractSyntaxTreeNode.ts";
+import type {FunctionAbstractSyntaxTreeNode} from "../../function/FunctionAbstractSyntaxTreeNode.ts";
 export type SourceFileContentAbstractSyntaxTreeNodeChildren = Readonly<{
 	functions: readonly [
 		FunctionAbstractSyntaxTreeNode,

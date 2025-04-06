@@ -1,7 +1,7 @@
 import type {FunctionHeaderKnownSegmentAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree/node/kinds/function-header-known-segment/FunctionHeaderKnownSegmentAbstractSyntaxTreeNode.ts";
 import type {FunctionHeaderUnknownSegmentAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree/node/kinds/function-header-unknown-segment/FunctionHeaderUnknownSegmentAbstractSyntaxTreeNode.ts";
 import type {FunctionHeaderWordSegmentAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree/node/kinds/function-header-word-segment/FunctionHeaderWordSegmentAbstractSyntaxTreeNode.ts";
-import {createFunctionHeaderAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree/node/kinds/function-header/createFunctionHeaderAbstractSyntaxTreeNode.ts";
+import {createFunctionHeaderAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree/node/kinds/function-header/creating/createFunctionHeaderAbstractSyntaxTreeNode.ts";
 import type {FunctionHeaderAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree/node/kinds/function-header/FunctionHeaderAbstractSyntaxTreeNode.ts";
 import type {FunctionHeaderConcreteSyntaxTreeNode} from "../../../concrete-syntax-tree/tree-node-types/function-header/FunctionHeaderConcreteSyntaxTreeNode.ts";
 import {abstractifyFunctionHeaderSegments} from "../function-header-segments/abstractifyFunctionHeaderSegments.ts";

@@ -1,6 +1,6 @@
-import {SourceFileContentParser} from "./parser/types/source-file-content/SourceFileContentParser.ts";
+import type {Parser} from "prettier";
 import {feed} from "./feeding/feed.ts";
-import type {Parser} from "./parser/Parser.ts";
+import {SourceFileContentParser} from "./parser/types/source-file-content/SourceFileContentParser.ts";
 import type {SupportedParseResult} from "./SupportedParseResult.ts";
 export function parse(
 	characters: readonly string[],

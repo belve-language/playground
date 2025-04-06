@@ -1,7 +1,4 @@
-import {createAbstractSyntaxTreeNode} from "../../../createAbstractSyntaxTreeNode.ts";
-import type {Identifier} from "../../../identifier/Identifier.ts";
-import type {FunctionHeaderKnownSegmentAbstractSyntaxTreeNode} from "./FunctionHeaderKnownSegmentAbstractSyntaxTreeNode.ts";
-import {functionHeaderKnownSegmentAbstractSyntaxTreeNodeTypeName} from "./functionHeaderKnownSegmentAbstractSyntaxTreeNodeTypeName.ts";
+import type {FunctionHeaderKnownSegmentAbstractSyntaxTreeNode} from "../FunctionHeaderKnownSegmentAbstractSyntaxTreeNode.ts";
 export function createFunctionHeaderKnownSegmentAbstractSyntaxTreeNode(
 	identifier: Identifier,
 ): FunctionHeaderKnownSegmentAbstractSyntaxTreeNode {

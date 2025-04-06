@@ -1,7 +1,7 @@
 import type {FunctionCallKnownSegmentAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree/node/kinds/function-call-known-segment/FunctionCallKnownSegmentAbstractSyntaxTreeNode.ts";
 import type {FunctionCallUnknownSegmentAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree/node/kinds/function-call-unknown-segment/FunctionCallUnknownSegmentAbstractSyntaxTreeNode.ts";
 import type {FunctionCallWordSegmentAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree/node/kinds/function-call-word-segment/FunctionCallWordSegmentAbstractSyntaxTreeNode.ts";
-import {createFunctionCallAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree/node/kinds/function-call/createFunctionCallAbstractSyntaxTreeNode.ts";
+import {createFunctionCallAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree/node/kinds/function-call/creating/createFunctionCallAbstractSyntaxTreeNode.ts";
 import type {FunctionCallAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree/node/kinds/function-call/FunctionCallAbstractSyntaxTreeNode.ts";
 import type {FunctionCallConcreteSyntaxTreeNode} from "../../../concrete-syntax-tree/tree-node-types/function-call/FunctionCallConcreteSyntaxTreeNode.ts";
 import {abstractifyFunctionCallSegments} from "../function-call-segments/abstractifyFunctionCallSegments.ts";

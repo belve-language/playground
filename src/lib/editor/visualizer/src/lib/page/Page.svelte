@@ -1,12 +1,12 @@
 <script lang="ts">
-	import {page} from "$app/state";
 	import {goto} from "$app/navigation";
-	import type {ParsingConfiguration} from "./ParsingConfiguration.ts";
+	import {page} from "$app/state";
 	import {modeSearchParamName} from "../modeSearchParamName.ts";
 	import {sourceCodeSearchParamName} from "../sourceCodeSearchParamName.ts";
+	import AbstractSyntaxTree from "./AbstractSyntaxTree.svelte";
 	import Animated from "./Animated.svelte";
 	import Instant from "./Instant.svelte";
-	import AbstractSyntaxTree from "./AbstractSyntaxTree.svelte";
+	import type {ParsingConfiguration} from "./ParsingConfiguration.ts";
 	const {
 		parsingConfiguration,
 	}: Readonly<{parsingConfiguration: ParsingConfiguration}> = $props();

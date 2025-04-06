@@ -1,7 +1,4 @@
-import {createAbstractSyntaxTreeNode} from "../../../createAbstractSyntaxTreeNode.ts";
-import type {Identifier} from "../../../identifier/Identifier.ts";
-import type {FunctionCallWordSegmentAbstractSyntaxTreeNode} from "./FunctionCallWordSegmentAbstractSyntaxTreeNode.ts";
-import {functionCallWordSegmentAbstractSyntaxTreeNodeTypeName} from "./functionCallWordSegmentAbstractSyntaxTreeNodeTypeName.ts";
+import type {FunctionCallWordSegmentAbstractSyntaxTreeNode} from "../FunctionCallWordSegmentAbstractSyntaxTreeNode.ts";
 export function createFunctionCallWordSegmentAbstractSyntaxTreeNode(
 	identifier: Identifier,
 ): FunctionCallWordSegmentAbstractSyntaxTreeNode {

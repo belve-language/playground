@@ -1,8 +1,8 @@
 import {redirect} from "@sveltejs/kit";
-import type {PageLoad} from "./$types.ts";
-import {editorModeQueryParameterName} from "../../lib/editor/editorModeQueryParameterName.ts";
-import {validateSearchParamsFromUrl} from "../../lib/editor/visualizer/src/lib/validateSearchParamsFromUrl.ts";
+import type {editorModeQueryParameterName} from "../../lib/editor/editorModeQueryParameterName.ts";
 import {parseRawMode} from "../../lib/editor/parseRawMode.ts";
+import {validateSearchParamsFromUrl} from "../../lib/editor/visualizer/src/lib/validateSearchParamsFromUrl.ts";
+import type {PageLoad} from "./$types.js";
 export const load: PageLoad = async ({url}) => {
 	const searchValidationResult = validateSearchParamsFromUrl(
 		url,

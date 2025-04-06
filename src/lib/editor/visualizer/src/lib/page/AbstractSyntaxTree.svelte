@@ -1,7 +1,7 @@
 <script lang="ts">
-	import {parse} from "../../../../parsing/parse.ts";
-	import {abstractifySyntaxTree} from "../../../../abstractifying/abstractifySyntaxTree.ts";
 	import type {SourceFileContentAbstractSyntaxTreeNode} from "../../../../abstract-syntax-tree/tree-node-types/source-file-content/SourceFileContentAbstractSyntaxTreeNode.ts";
+	import {abstractifySyntaxTree} from "../../../../abstractifying/abstractifySyntaxTree.ts";
+	import {parse} from "../../../../parsing/parse.ts";
 	const {sourceCode}: Readonly<{sourceCode: string}> = $props();
 	const sourceCodeCharacters: readonly string[] = $derived(
 		sourceCode.split(""),

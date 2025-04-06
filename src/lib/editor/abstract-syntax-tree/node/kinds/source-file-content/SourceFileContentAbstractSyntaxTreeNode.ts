@@ -1,6 +1,5 @@
-import type {AbstractSyntaxTreeNode} from "../../AbstractSyntaxTreeNode.ts";
-import type {SourceFileContentAbstractSyntaxTreeNodeChildren} from "./SourceFileContentAbstractSyntaxTreeNodeChildren.ts";
-import type {sourceFileContentAbstractSyntaxTreeNodeTypeName} from "./sourceFileContentAbstractSyntaxTreeNodeTypeName.ts";
+import type {BranchAbstractSyntaxTreeNode} from "../../types/branch/BranchAbstractSyntaxTreeNode.ts";
+import type {SourceFileContentAbstractSyntaxTreeNodeChildren} from "./children/SourceFileContentAbstractSyntaxTreeNodeChildren.ts";
 export type SourceFileContentAbstractSyntaxTreeNode =
 	BranchAbstractSyntaxTreeNode<
 		typeof sourceFileContentAbstractSyntaxTreeNodeTypeName,
