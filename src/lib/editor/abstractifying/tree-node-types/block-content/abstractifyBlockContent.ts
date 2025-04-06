@@ -1,6 +1,6 @@
-import type {BlockAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree/tree-node-types/block/BlockAbstractSyntaxTreeNode.ts";
-import type {FunctionCallAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree/tree-node-types/function-call/FunctionCallAbstractSyntaxTreeNode.ts";
-import type {OperatedStatementAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree/tree-node-types/operated-statement/OperatedStatementAbstractSyntaxTreeNode.ts";
+import type {BlockAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree/node/kinds/block/BlockAbstractSyntaxTreeNode.ts";
+import type {FunctionCallAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree/node/kinds/function-call/FunctionCallAbstractSyntaxTreeNode.ts";
+import type {OperatedStatementAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree/node/kinds/operated-statement/OperatedStatementAbstractSyntaxTreeNode.ts";
 import type {BlockContentConcreteSyntaxTreeNode} from "../../../concrete-syntax-tree/tree-node-types/block-content/BlockContentConcreteSyntaxTreeNode.ts";
 import {abstractifyStatements} from "../statements/abstractifyStatements.ts";
 export function abstractifyBlockContent(

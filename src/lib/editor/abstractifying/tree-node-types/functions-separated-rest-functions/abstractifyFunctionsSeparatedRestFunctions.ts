@@ -1,4 +1,4 @@
-import type {FunctionAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree/tree-node-types/function/FunctionAbstractSyntaxTreeNode.ts";
+import type {FunctionAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree/node/kinds/function/FunctionAbstractSyntaxTreeNode.ts";
 import type {FunctionsSeparatedRestFunctionsConcreteSyntaxTreeNode} from "../../../concrete-syntax-tree/tree-node-types/functions-separated-rest-functions/FunctionsSeparatedRestFunctionsConcreteSyntaxTreeNode.ts";
 import {abstractifyFunctions} from "../functions/abstractifyFunctions.ts";
 export function abstractifyFunctionsSeparatedRestFunctions(

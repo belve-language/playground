@@ -1,5 +1,5 @@
-import type {BlockAbstractSyntaxTreeNode} from "../../../../abstract-syntax-tree/tree-node-types/block/BlockAbstractSyntaxTreeNode.ts";
-import type {FunctionCallAbstractSyntaxTreeNode} from "../../../../abstract-syntax-tree/tree-node-types/function-call/FunctionCallAbstractSyntaxTreeNode.ts";
+import type {BlockAbstractSyntaxTreeNode} from "../../../../abstract-syntax-tree/node/kinds/block/BlockAbstractSyntaxTreeNode.ts";
+import type {FunctionCallAbstractSyntaxTreeNode} from "../../../../abstract-syntax-tree/node/kinds/function-call/FunctionCallAbstractSyntaxTreeNode.ts";
 import type {BlockConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/block/BlockConcreteSyntaxTreeNode.ts";
 import {blockConcreteSyntaxTreeNodeTypeName} from "../../../../concrete-syntax-tree/tree-node-types/block/blockConcreteSyntaxTreeNodeTypeName.ts";
 import type {FunctionCallConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/tree-node-types/function-call/FunctionCallConcreteSyntaxTreeNode.ts";

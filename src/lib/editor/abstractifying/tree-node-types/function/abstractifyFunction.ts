@@ -1,7 +1,7 @@
-import type {FunctionBodyAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree/tree-node-types/function-body/FunctionBodyAbstractSyntaxTreeNode.ts";
-import type {FunctionHeaderAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree/tree-node-types/function-header/FunctionHeaderAbstractSyntaxTreeNode.ts";
-import {createFunctionAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree/tree-node-types/function/createFunctionAbstractSyntaxTreeNode.ts";
-import type {FunctionAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree/tree-node-types/function/FunctionAbstractSyntaxTreeNode.ts";
+import type {FunctionBodyAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree/node/kinds/function-body/FunctionBodyAbstractSyntaxTreeNode.ts";
+import type {FunctionHeaderAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree/node/kinds/function-header/FunctionHeaderAbstractSyntaxTreeNode.ts";
+import {createFunctionAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree/node/kinds/function/createFunctionAbstractSyntaxTreeNode.ts";
+import type {FunctionAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree/node/kinds/function/FunctionAbstractSyntaxTreeNode.ts";
 import type {FunctionConcreteSyntaxTreeNode} from "../../../concrete-syntax-tree/tree-node-types/function/FunctionConcreteSyntaxTreeNode.ts";
 import {abstractifyFunctionBody} from "../function-body/abstractifyFunctionBody.ts";
 import {abstractifyFunctionHeader} from "../function-header/abstractifyFunctionHeader.ts";

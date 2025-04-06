@@ -1,4 +1,4 @@
-import type {SourceFileContentAbstractSyntaxTreeNode} from "../abstract-syntax-tree/tree-node-types/source-file-content/SourceFileContentAbstractSyntaxTreeNode.ts";
+import type {SourceFileContentAbstractSyntaxTreeNode} from "../abstract-syntax-tree/node/kinds/source-file-content/SourceFileContentAbstractSyntaxTreeNode.ts";
 import type {ConcreteSyntaxTree} from "../concrete-syntax-tree/ConreteSyntaxTree.ts";
 import {whitespaceConcreteSyntaxTreeNodeTypeName} from "../concrete-syntax-tree/tree-node-types/whitespace/whitespaceConcreteSyntaxTreeNodeTypeName.ts";
 import {abstractifySourceFileContent} from "./tree-node-types/source-file-content/abstractifySourceFileContent.ts";

@@ -4,6 +4,7 @@ import type {WhitespaceSegmentConcreteSyntaxTreeNode} from "../whitespace-segmen
 import type {WhitespaceSegmentsConcreteSyntaxTreeNode} from "./WhitespaceSegmentsConcreteSyntaxTreeNode.ts";
 import {whitespaceSegmentsConcreteSyntaxTreeNodeTypeName} from "./whitespaceSegmentsConcreteSyntaxTreeNodeTypeName.ts";
 export function createWhitespaceSegmentsConcreteSyntaxTreeNode(
+	// TODO: Refactor such methods to have a children argument
 	firstSegment: WhitespaceSegmentConcreteSyntaxTreeNode,
 	restSegments: WhitespaceSegmentsConcreteSyntaxTreeNode | null,
 	spanIndexes: SpanIndexes,
