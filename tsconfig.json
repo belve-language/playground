@@ -19,9 +19,9 @@
 		"lib": ["DOM", "DOM.Iterable", "ES2024"],
 		"libReplacement": false,
 		"maxNodeModuleJsDepth": 0,
-		"module": "node18", // "node18" / "nodenext" / "esnext" / "es2022" / "node16"
+		"module": "node18",
 		"moduleDetection": "force",
-		"moduleResolution": "node16", // "bundler" / "node16"
+		"moduleResolution": "node16",
 		"moduleSuffixes": [],
 		"noEmit": true,
 		"noFallthroughCasesInSwitch": true,
