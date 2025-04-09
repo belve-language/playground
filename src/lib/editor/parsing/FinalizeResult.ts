@@ -1,4 +1,4 @@
-export type FinalizeResult<Status extends string, Data> = Readonly<{
-	status: Status;
-	data: Data;
+export type FinalizeResult<StatusToUse extends string, DataToUse> = Readonly<{
+	status: StatusToUse;
+	data: DataToUse;
 }>;
