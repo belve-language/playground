@@ -5,8 +5,7 @@ export function createBranchConcreteSyntaxTreeNode<
 	ChildrenToUse extends readonly unknown[],
 >(
 	typeName: TypeNameToUse,
-	children: ChildrenToUse,
-	spanIndexes: SpanIndexes,
+	data,
 ): BranchConcreteSyntaxTreeNode<TypeNameToUse, ChildrenToUse> {
 	return {typeName, data: {children, spanIndexes}, kind: "branch"} as const;
 }

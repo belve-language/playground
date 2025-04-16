@@ -2,8 +2,7 @@ import type {BlockAbstractSyntaxTreeNode} from "../../block/BlockAbstractSyntaxT
 import type {FunctionCallAbstractSyntaxTreeNode} from "../../function-call/FunctionCallAbstractSyntaxTreeNode.ts";
 import type {OperatedStatementAbstractSyntaxTreeNode} from "../OperatedStatementAbstractSyntaxTreeNode.ts";
 export function createOperatedStatementAbstractSyntaxTreeNode(
-	operator: Operator,
-	statement: BlockAbstractSyntaxTreeNode | FunctionCallAbstractSyntaxTreeNode,
+	children,
 ): OperatedStatementAbstractSyntaxTreeNode {
 	const treeNode: OperatedStatementAbstractSyntaxTreeNode =
 		createAbstractSyntaxTreeNode(

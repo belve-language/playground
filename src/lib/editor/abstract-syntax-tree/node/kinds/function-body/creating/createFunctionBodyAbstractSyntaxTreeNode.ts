@@ -1,7 +1,7 @@
 import type {BlockAbstractSyntaxTreeNode} from "../../block/BlockAbstractSyntaxTreeNode.ts";
 import type {FunctionBodyAbstractSyntaxTreeNode} from "../FunctionBodyAbstractSyntaxTreeNode.ts";
 export function createFunctionBodyAbstractSyntaxTreeNode(
-	block: BlockAbstractSyntaxTreeNode,
+	children,
 ): FunctionBodyAbstractSyntaxTreeNode {
 	const treeNode: FunctionBodyAbstractSyntaxTreeNode =
 		createAbstractSyntaxTreeNode(functionBodyAbstractSyntaxTreeNodeKindName, {

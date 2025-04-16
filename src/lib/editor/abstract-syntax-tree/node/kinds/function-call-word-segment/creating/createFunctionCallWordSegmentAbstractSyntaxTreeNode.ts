@@ -1,6 +1,6 @@
 import type {FunctionCallWordSegmentAbstractSyntaxTreeNode} from "../FunctionCallWordSegmentAbstractSyntaxTreeNode.ts";
 export function createFunctionCallWordSegmentAbstractSyntaxTreeNode(
-	identifier: Identifier,
+	children,
 ): FunctionCallWordSegmentAbstractSyntaxTreeNode {
 	const treeNode: FunctionCallWordSegmentAbstractSyntaxTreeNode =
 		createAbstractSyntaxTreeNode(

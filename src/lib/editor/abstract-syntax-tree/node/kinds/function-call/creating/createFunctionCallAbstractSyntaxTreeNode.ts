@@ -3,18 +3,7 @@ import type {FunctionCallUnknownSegmentAbstractSyntaxTreeNode} from "../../funct
 import type {FunctionCallWordSegmentAbstractSyntaxTreeNode} from "../../function-call-word-segment/FunctionCallWordSegmentAbstractSyntaxTreeNode.ts";
 import type {FunctionCallAbstractSyntaxTreeNode} from "../FunctionCallAbstractSyntaxTreeNode.ts";
 export function createFunctionCallAbstractSyntaxTreeNode(
-	segments: readonly [
-		(
-			| FunctionCallWordSegmentAbstractSyntaxTreeNode
-			| FunctionCallUnknownSegmentAbstractSyntaxTreeNode
-			| FunctionCallKnownSegmentAbstractSyntaxTreeNode
-		),
-		...(
-			| FunctionCallWordSegmentAbstractSyntaxTreeNode
-			| FunctionCallUnknownSegmentAbstractSyntaxTreeNode
-			| FunctionCallKnownSegmentAbstractSyntaxTreeNode
-		)[],
-	],
+	children,
 ): FunctionCallAbstractSyntaxTreeNode {
 	const treeNode: FunctionCallAbstractSyntaxTreeNode =
 		createAbstractSyntaxTreeNode(functionCallAbstractSyntaxTreeNodeKindName, {

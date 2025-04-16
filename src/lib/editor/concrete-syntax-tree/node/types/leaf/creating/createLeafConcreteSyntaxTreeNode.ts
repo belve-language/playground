@@ -5,8 +5,7 @@ export function createLeafConcreteSyntaxTreeNode<
 	CharacterToUse extends string,
 >(
 	typeName: TypeNameToUse,
-	character: CharacterToUse,
-	index: Index,
+	data,
 ): LeafConcreteSyntaxTreeNode<TypeNameToUse, CharacterToUse> {
 	return {typeName, data: {character, index}, kind: "leaf"} as const;
 }

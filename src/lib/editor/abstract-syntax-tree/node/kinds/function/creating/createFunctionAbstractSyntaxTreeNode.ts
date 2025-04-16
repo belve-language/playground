@@ -2,8 +2,7 @@ import type {FunctionBodyAbstractSyntaxTreeNode} from "../../function-body/Funct
 import type {FunctionHeaderAbstractSyntaxTreeNode} from "../../function-header/FunctionHeaderAbstractSyntaxTreeNode.ts";
 import type {FunctionAbstractSyntaxTreeNode} from "../FunctionAbstractSyntaxTreeNode.ts";
 export function createFunctionAbstractSyntaxTreeNode(
-	header: FunctionHeaderAbstractSyntaxTreeNode | null,
-	body: FunctionBodyAbstractSyntaxTreeNode,
+	children,
 ): FunctionAbstractSyntaxTreeNode {
 	const treeNode: FunctionAbstractSyntaxTreeNode = createAbstractSyntaxTreeNode(
 		functionAbstractSyntaxTreeNodeKindName,

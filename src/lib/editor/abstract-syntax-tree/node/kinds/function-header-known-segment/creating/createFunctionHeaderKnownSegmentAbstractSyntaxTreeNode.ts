@@ -1,6 +1,6 @@
 import type {FunctionHeaderKnownSegmentAbstractSyntaxTreeNode} from "../FunctionHeaderKnownSegmentAbstractSyntaxTreeNode.ts";
 export function createFunctionHeaderKnownSegmentAbstractSyntaxTreeNode(
-	identifier: Identifier,
+	children,
 ): FunctionHeaderKnownSegmentAbstractSyntaxTreeNode {
 	const treeNode: FunctionHeaderKnownSegmentAbstractSyntaxTreeNode =
 		createAbstractSyntaxTreeNode(

@@ -2,10 +2,7 @@ import type {FunctionCallAbstractSyntaxTreeNode} from "../../function-call/Funct
 import type {OperatedStatementAbstractSyntaxTreeNode} from "../../operated-statement/OperatedStatementAbstractSyntaxTreeNode.ts";
 import type {BlockAbstractSyntaxTreeNode} from "../BlockAbstractSyntaxTreeNode.ts";
 export function createBlockAbstractSyntaxTreeNode(
-	statements: readonly [
-		BlockAbstractSyntaxTreeNode | FunctionCallAbstractSyntaxTreeNode,
-		...OperatedStatementAbstractSyntaxTreeNode[],
-	],
+	children,
 ): BlockAbstractSyntaxTreeNode {
 	return createAbstractSyntaxTreeNode(blockAbstractSyntaxTreeNodeKindName, {
 		statements,
