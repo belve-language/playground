@@ -4,7 +4,7 @@ export function createFunctionCallKnownSegmentAbstractSyntaxTreeNode(
 ): FunctionCallKnownSegmentAbstractSyntaxTreeNode {
 	const treeNode: FunctionCallKnownSegmentAbstractSyntaxTreeNode =
 		createAbstractSyntaxTreeNode(
-			functionCallKnownSegmentAbstractSyntaxTreeNodeTypeName,
+			functionCallKnownSegmentAbstractSyntaxTreeNodeKindName,
 			{identifier} as const,
 		);
 	return treeNode;

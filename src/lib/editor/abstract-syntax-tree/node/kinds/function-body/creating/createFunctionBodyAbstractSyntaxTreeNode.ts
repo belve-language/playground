@@ -4,7 +4,7 @@ export function createFunctionBodyAbstractSyntaxTreeNode(
 	block: BlockAbstractSyntaxTreeNode,
 ): FunctionBodyAbstractSyntaxTreeNode {
 	const treeNode: FunctionBodyAbstractSyntaxTreeNode =
-		createAbstractSyntaxTreeNode(functionBodyAbstractSyntaxTreeNodeTypeName, {
+		createAbstractSyntaxTreeNode(functionBodyAbstractSyntaxTreeNodeKindName, {
 			block,
 		} as const);
 	return treeNode;

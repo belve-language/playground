@@ -4,7 +4,7 @@ export function createFunctionHeaderKnownSegmentAbstractSyntaxTreeNode(
 ): FunctionHeaderKnownSegmentAbstractSyntaxTreeNode {
 	const treeNode: FunctionHeaderKnownSegmentAbstractSyntaxTreeNode =
 		createAbstractSyntaxTreeNode(
-			functionHeaderKnownSegmentAbstractSyntaxTreeNodeTypeName,
+			functionHeaderKnownSegmentAbstractSyntaxTreeNodeKindName,
 			{identifier} as const,
 		);
 	return treeNode;

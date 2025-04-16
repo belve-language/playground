@@ -1,7 +1,6 @@
-import type {Parser} from "prettier";
 import {feed} from "./feeding/feed.ts";
 import {SourceFileContentParser} from "./parser/types/source-file-content/SourceFileContentParser.ts";
-import type {SupportedParseResult} from "./SupportedParseResult.ts";
+import type {SupportedParseResult} from "./parse-result/SupportedParseResult.ts";
 export function parse(
 	characters: readonly string[],
 ): SupportedParseResult | null {
@@ -14,7 +13,7 @@ export function parse(
 			parser,
 			reversedCharacters.length - index - 1,
 		);
-		switch (feedResult.status) {
+		switch (feedResult.typeName) {
 			case "error": {
 				return {status: "error", data: {message: feedResult.data.message}};
 			}

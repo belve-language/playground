@@ -2,6 +2,6 @@ import type {BranchAbstractSyntaxTreeNode} from "../../types/branch/BranchAbstra
 import type {SourceFileContentAbstractSyntaxTreeNodeChildren} from "./children/SourceFileContentAbstractSyntaxTreeNodeChildren.ts";
 export type SourceFileContentAbstractSyntaxTreeNode =
 	BranchAbstractSyntaxTreeNode<
-		typeof sourceFileContentAbstractSyntaxTreeNodeTypeName,
+		typeof sourceFileContentAbstractSyntaxTreeNodeKindName,
 		SourceFileContentAbstractSyntaxTreeNodeChildren
 	>;

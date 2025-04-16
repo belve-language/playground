@@ -13,9 +13,9 @@
 <section>
 	{#if parseResult === null}
 		<p>There was nothing to parse.</p>
-	{:else if parseResult.status === "error"}
+	{:else if parseResult.typeName === "error"}
 		<p>{parseResult.data.message}</p>
-	{:else if parseResult.status === "success"}
+	{:else if parseResult.typeName === "success"}
 		{@const maximalIndex = parseResult.data.tree.data.spanIndexes.ending}
 		{@const levels: readonly Level[] = [...traverseLevelwise(parseResult.data.tree)]}
 		<table>

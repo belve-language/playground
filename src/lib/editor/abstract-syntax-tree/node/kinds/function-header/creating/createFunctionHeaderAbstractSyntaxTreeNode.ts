@@ -17,7 +17,7 @@ export function createFunctionHeaderAbstractSyntaxTreeNode(
 	],
 ): FunctionHeaderAbstractSyntaxTreeNode {
 	const treeNode: FunctionHeaderAbstractSyntaxTreeNode =
-		createAbstractSyntaxTreeNode(functionHeaderAbstractSyntaxTreeNodeTypeName, {
+		createAbstractSyntaxTreeNode(functionHeaderAbstractSyntaxTreeNodeKindName, {
 			segments,
 		} as const);
 	return treeNode;

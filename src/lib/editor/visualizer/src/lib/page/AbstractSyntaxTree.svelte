@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type {SourceFileContentAbstractSyntaxTreeNode} from "../../../../abstract-syntax-tree/tree-node-types/source-file-content/SourceFileContentAbstractSyntaxTreeNode.ts";
-	import {abstractifySyntaxTree} from "../../../../abstractifying/abstractifySyntaxTree.ts";
+	import {abstractify} from "../../../../abstractifying/abstractify.ts";
+	import type {SupportedAbstractifyResult} from "../../../../abstractifying/SupportedAbstractifyResult.ts";
 	import {parse} from "../../../../parsing/parse.ts";
 	const {sourceCode}: Readonly<{sourceCode: string}> = $props();
 	const sourceCodeCharacters: readonly string[] = $derived(
@@ -31,10 +31,10 @@
 <section>
 	{#if parseResult === null}
 		<p>There was nothing to parse.</p>
-	{:else if parseResult.status === "error"}
+	{:else if parseResult.typeName === "error"}
 		<p>{parseResult.data.message}</p>
-	{:else if parseResult.status === "success"}
-		{@const ast: SourceFileContentAbstractSyntaxTreeNode | null = abstractifySyntaxTree(parseResult.data.tree)}
+	{:else if parseResult.typeName === "success"}
+		{@const ast: SupportedAbstractifyResult | null = abstractify(parseResult.data.tree)}
 		<pre>{JSON.stringify(ast)}</pre>
 	{/if}
 </section>

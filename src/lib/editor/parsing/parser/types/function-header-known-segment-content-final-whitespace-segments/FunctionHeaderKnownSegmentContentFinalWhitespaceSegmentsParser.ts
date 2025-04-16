@@ -1,4 +1,3 @@
-import type {Parser} from "prettier";
 import type {ClosingCurlyBracketCharacter} from "../../../../characters/closing-curly-bracket/ClosingCurlyBracketCharacter.ts";
 import type {ClosingRoundBracketCharacter} from "../../../../characters/closing-round-bracket/ClosingRoundBracketCharacter.ts";
 import type {ClosingSquareBracketCharacter} from "../../../../characters/closing-square-bracket/ClosingSquareBracketCharacter.ts";
@@ -9,8 +8,8 @@ import type {OpeningSquareBracketCharacter} from "../../../../characters/opening
 import type {OperatorCharacter} from "../../../../characters/operator/OperatorCharacter.ts";
 import type {WhitespaceCharacter} from "../../../../characters/whitespace/WhitespaceCharacter.ts";
 import type {Index} from "../../../../index/Index.ts";
-import type {ErrorFeedResult} from "../../../feed-result-types/error/ErrorFeedResult.ts";
-import type {SuccessFeedResult} from "../../../feed-result-types/success/SuccessFeedResult.ts";
+import type {ErrorFeedResult} from "../../../feed-result/types/error/ErrorFeedResult.ts";
+import type {SuccessFeedResult} from "../../../feed-result/types/success/SuccessFeedResult.ts";
 import type {ErrorFinalizeResult} from "../../../finalize-result-types/error/ErrorFinalizeResult.ts";
 import type {SuccessFinalizeResult} from "../../../finalize-result-types/success/SuccessFinalizeResult.ts";
 import type {FunctionHeaderKnownSegmentContentFinalWhitespaceSegmentsParserPartialConcreteSyntaxTree} from "./FunctionHeaderKnownSegmentContentFinalWhitespaceSegmentsParserPartialConcreteSyntaxTree.ts";

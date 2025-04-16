@@ -8,8 +8,8 @@ import type {OpeningSquareBracketCharacter} from "../../characters/opening-squar
 import type {OperatorCharacter} from "../../characters/operator/OperatorCharacter.ts";
 import type {WhitespaceCharacter} from "../../characters/whitespace/WhitespaceCharacter.ts";
 import type {Index} from "../../index/Index.ts";
-import type {SupportedFeedResult} from "../SupportedFeedResult.ts";
-import type {SupportedFinalizeResult} from "../SupportedFinalizeResult.ts";
+import type {SupportedFeedResult} from "../feed-result/SupportedFeedResult.ts";
+import type {SupportedFinalizeResult} from "../finalize-result/SupportedFinalizeResult.ts";
 export interface Parser {
 	feedWithWhitespaceCharacter: (
 		character: WhitespaceCharacter,

@@ -1,5 +1,5 @@
 import {redirect} from "@sveltejs/kit";
-import type {editorModeQueryParameterName} from "../../lib/editor/editorModeQueryParameterName.ts";
+import {editorModeQueryParameterName} from "../../lib/editor/editorModeQueryParameterName.ts";
 import {parseRawMode} from "../../lib/editor/parseRawMode.ts";
 import {validateSearchParamsFromUrl} from "../../lib/editor/visualizer/src/lib/validateSearchParamsFromUrl.ts";
 import type {PageLoad} from "./$types.js";

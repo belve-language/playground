@@ -1,0 +1,2 @@
+export const blockClosingBracketConcreteSyntaxTreeNodeKindName =
+	"blockClosingBracket";

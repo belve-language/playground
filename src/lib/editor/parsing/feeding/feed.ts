@@ -1,6 +1,5 @@
-import type {Parser} from "prettier";
 import type {Index} from "../../index/Index.ts";
-import type {SupportedFeedResult} from "../SupportedFeedResult.ts";
+import type {SupportedFeedResult} from "../feed-result/SupportedFeedResult.ts";
 export function feed(
 	character: string,
 	parser: Parser,

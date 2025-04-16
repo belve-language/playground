@@ -1,0 +1,2 @@
+export const functionCallUnknownStartingSegmentsConcreteSyntaxTreeNodeKindName =
+	"functionCallUnknownStartingSegments";

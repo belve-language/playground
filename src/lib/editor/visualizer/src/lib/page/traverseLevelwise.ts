@@ -1,4 +1,4 @@
-import type {SupportedConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/SupportedConcreteSyntaxTreeNode.ts";
+import type {SupportedConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/node/SupportedConcreteSyntaxTreeNode.ts";
 import type {Level} from "./Level.ts";
 export function* traverseLevelwise(
 	node: SupportedConcreteSyntaxTreeNode | null,

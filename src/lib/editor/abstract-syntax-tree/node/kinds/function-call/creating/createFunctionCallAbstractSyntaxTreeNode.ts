@@ -17,7 +17,7 @@ export function createFunctionCallAbstractSyntaxTreeNode(
 	],
 ): FunctionCallAbstractSyntaxTreeNode {
 	const treeNode: FunctionCallAbstractSyntaxTreeNode =
-		createAbstractSyntaxTreeNode(functionCallAbstractSyntaxTreeNodeTypeName, {
+		createAbstractSyntaxTreeNode(functionCallAbstractSyntaxTreeNodeKindName, {
 			segments,
 		} as const);
 	return treeNode;

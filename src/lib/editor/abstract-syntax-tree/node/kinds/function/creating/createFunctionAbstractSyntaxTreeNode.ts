@@ -6,7 +6,7 @@ export function createFunctionAbstractSyntaxTreeNode(
 	body: FunctionBodyAbstractSyntaxTreeNode,
 ): FunctionAbstractSyntaxTreeNode {
 	const treeNode: FunctionAbstractSyntaxTreeNode = createAbstractSyntaxTreeNode(
-		functionAbstractSyntaxTreeNodeTypeName,
+		functionAbstractSyntaxTreeNodeKindName,
 		{header, body} as const,
 	);
 	return treeNode;

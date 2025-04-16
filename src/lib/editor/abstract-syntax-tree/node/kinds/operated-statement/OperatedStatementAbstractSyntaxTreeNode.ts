@@ -2,6 +2,6 @@ import type {BranchAbstractSyntaxTreeNode} from "../../types/branch/BranchAbstra
 import type {OperatedStatementAbstractSyntaxTreeNodeChildren} from "./children/OperatedStatementAbstractSyntaxTreeNodeChildren.ts";
 export type OperatedStatementAbstractSyntaxTreeNode =
 	BranchAbstractSyntaxTreeNode<
-		typeof operatedStatementAbstractSyntaxTreeNodeTypeName,
+		typeof operatedStatementAbstractSyntaxTreeNodeKindName,
 		OperatedStatementAbstractSyntaxTreeNodeChildren
 	>;

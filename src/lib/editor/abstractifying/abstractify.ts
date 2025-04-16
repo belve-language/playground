@@ -2,7 +2,7 @@ import type {SourceFileContentAbstractSyntaxTreeNode} from "../abstract-syntax-t
 import type {ConcreteSyntaxTree} from "../concrete-syntax-tree/ConreteSyntaxTree.ts";
 import {whitespaceConcreteSyntaxTreeNodeTypeName} from "../concrete-syntax-tree/tree-node-types/whitespace/whitespaceConcreteSyntaxTreeNodeTypeName.ts";
 import type {SupportedAbstractifyResult} from "./SupportedAbstractifyResult.ts";
-import {abstractifySourceFileContent} from "./tree-node-types/source-file-content/abstractifySourceFileContent.ts";
+import {abstractifySourceFileContent} from "./tree-node-kinds/source-file-content/abstractifySourceFileContent.ts";
 export function abstractify(
 	tree: ConcreteSyntaxTree,
 ): null | SupportedAbstractifyResult {
@@ -12,7 +12,6 @@ export function abstractify(
 	) {
 		return null;
 	}
-	const abstractifiedSourceFileContent: SourceFileContentAbstractSyntaxTreeNode =
-		abstractifySourceFileContent(tree);
+	const abstractifiedSourceFileContent = abstractifySourceFileContent(tree);
 	return abstractifiedSourceFileContent;
 }

@@ -7,7 +7,7 @@ export function createOperatedStatementAbstractSyntaxTreeNode(
 ): OperatedStatementAbstractSyntaxTreeNode {
 	const treeNode: OperatedStatementAbstractSyntaxTreeNode =
 		createAbstractSyntaxTreeNode(
-			operatedStatementAbstractSyntaxTreeNodeTypeName,
+			operatedStatementAbstractSyntaxTreeNodeKindName,
 			{operator, statement} as const,
 		);
 	return treeNode;

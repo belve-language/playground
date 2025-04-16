@@ -7,7 +7,7 @@ export function createBlockAbstractSyntaxTreeNode(
 		...OperatedStatementAbstractSyntaxTreeNode[],
 	],
 ): BlockAbstractSyntaxTreeNode {
-	return createAbstractSyntaxTreeNode(blockAbstractSyntaxTreeNodeTypeName, {
+	return createAbstractSyntaxTreeNode(blockAbstractSyntaxTreeNodeKindName, {
 		statements,
 	} as const);
 }

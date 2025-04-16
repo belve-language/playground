@@ -8,7 +8,7 @@ export function createSourceFileContentAbstractSyntaxTreeNode(
 ): SourceFileContentAbstractSyntaxTreeNode {
 	const treeNode: SourceFileContentAbstractSyntaxTreeNode =
 		createAbstractSyntaxTreeNode(
-			sourceFileContentAbstractSyntaxTreeNodeTypeName,
+			sourceFileContentAbstractSyntaxTreeNodeKindName,
 			{functions} as const,
 		);
 	return treeNode;
