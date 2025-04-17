@@ -1,11 +1,12 @@
-import type {Index} from "../index/Index.ts";
-import type {LeafConcreteSyntaxTreeNode} from "./LeafConcreteSyntaxTreeNode.ts";
+import type {LeafConcreteSyntaxTreeNodeData} from "../data/LeafConcreteSyntaxTreeNodeData.ts";
+import type {LeafConcreteSyntaxTreeNode} from "../LeafConcreteSyntaxTreeNode.ts";
+import {leafConcreteSyntaxTreeNodeTypeName} from "../type-name/leafConcreteSyntaxTreeNodeTypeName.ts";
 export function createLeafConcreteSyntaxTreeNode<
-	TypeNameToUse extends string,
+	KindNameToUse extends string,
 	CharacterToUse extends string,
 >(
-	typeName: TypeNameToUse,
-	data,
-): LeafConcreteSyntaxTreeNode<TypeNameToUse, CharacterToUse> {
-	return {typeName, data: {character, index}, kind: "leaf"} as const;
+	kindName: KindNameToUse,
+	data: LeafConcreteSyntaxTreeNodeData<CharacterToUse>,
+): LeafConcreteSyntaxTreeNode<KindNameToUse, CharacterToUse> {
+	return {kindName, data, typeName: leafConcreteSyntaxTreeNodeTypeName};
 }

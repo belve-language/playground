@@ -1,0 +1,1 @@
+export const successParseResultTypeName = "success";

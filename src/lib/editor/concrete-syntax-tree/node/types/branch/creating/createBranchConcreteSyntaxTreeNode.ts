@@ -1,11 +1,12 @@
-import type {SpanIndexes} from "../span-indexes/SpanIndexes.ts";
-import type {BranchConcreteSyntaxTreeNode} from "./BranchConcreteSyntaxTreeNode.ts";
+import type {BranchConcreteSyntaxTreeNode} from "../BranchConcreteSyntaxTreeNode.ts";
+import type {BranchConcreteSyntaxTreeNodeData} from "../data/BranchConcreteSyntaxTreeNodeData.ts";
+import {branchConcreteSyntaxTreeNodeTypeName} from "../type-name/branchConcreteSyntaxTreeNodeTypeName.ts";
 export function createBranchConcreteSyntaxTreeNode<
-	TypeNameToUse extends string,
+	KindNameToUse extends string,
 	ChildrenToUse extends readonly unknown[],
 >(
-	typeName: TypeNameToUse,
-	data,
-): BranchConcreteSyntaxTreeNode<TypeNameToUse, ChildrenToUse> {
-	return {typeName, data: {children, spanIndexes}, kind: "branch"} as const;
+	kindName: KindNameToUse,
+	data: BranchConcreteSyntaxTreeNodeData<ChildrenToUse>,
+): BranchConcreteSyntaxTreeNode<KindNameToUse, ChildrenToUse> {
+	return {typeName: branchConcreteSyntaxTreeNodeTypeName, data, kindName};
 }

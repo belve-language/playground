@@ -1,7 +1,7 @@
-import type {ParseResult} from "./ParseResult.ts";
-export function createParseResult<StatusToUse extends string, DataToUse>(
-	status: StatusToUse,
+import type {ParseResult} from "../ParseResult.ts";
+export function createParseResult<TypeNameToUse extends string, DataToUse>(
+	typeName: TypeNameToUse,
 	data: DataToUse,
-): ParseResult<StatusToUse, DataToUse> {
-	return {status, data};
+): ParseResult<TypeNameToUse, DataToUse> {
+	return {typeName, data};
 }

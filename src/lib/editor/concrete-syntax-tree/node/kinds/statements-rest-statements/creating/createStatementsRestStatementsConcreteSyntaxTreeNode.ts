@@ -1,21 +1,14 @@
-import type {SpanIndexes} from "../../../span-indexes/SpanIndexes.ts";
-import {createBranchConcreteSyntaxTreeNode} from "../../createBranchConcreteSyntaxTreeNode.ts";
-import type {OperatorConcreteSyntaxTreeNode} from "../operator/OperatorConcreteSyntaxTreeNode.ts";
-import type {StatementsConcreteSyntaxTreeNode} from "../statements/StatementsConcreteSyntaxTreeNode.ts";
-import type {WhitespaceConcreteSyntaxTreeNode} from "../whitespace/WhitespaceConcreteSyntaxTreeNode.ts";
-import type {StatementsRestStatementsConcreteSyntaxTreeNode} from "./StatementsRestStatementsConcreteSyntaxTreeNode.ts";
-import {statementsRestStatementsConcreteSyntaxTreeNodeKindName} from "./statementsRestStatementsConcreteSyntaxTreeNodeKindName.ts";
+import type {SpanIndexes} from "../../../../../span-indexes/SpanIndexes.ts";
+import {createBranchConcreteSyntaxTreeNode} from "../../../types/branch/creating/createBranchConcreteSyntaxTreeNode.ts";
+import type {StatementsRestStatementsConcreteSyntaxTreeNodeChildren} from "../children/StatementsRestStatementsConcreteSyntaxTreeNodeChildren.ts";
+import {statementsRestStatementsConcreteSyntaxTreeNodeKindName} from "../kind-name/statementsRestStatementsConcreteSyntaxTreeNodeKindName.ts";
+import type {StatementsRestStatementsConcreteSyntaxTreeNode} from "../StatementsRestStatementsConcreteSyntaxTreeNode.ts";
 export function createStatementsRestStatementsConcreteSyntaxTreeNode(
+	children: StatementsRestStatementsConcreteSyntaxTreeNodeChildren,
 	spanIndexes: SpanIndexes,
 ): StatementsRestStatementsConcreteSyntaxTreeNode {
 	return createBranchConcreteSyntaxTreeNode(
 		statementsRestStatementsConcreteSyntaxTreeNodeKindName,
-		[
-			beforeOperatorWhitespace,
-			operator,
-			afterOperatorWhitespace,
-			statements,
-		] as const,
-		spanIndexes,
+		{children, spanIndexes},
 	);
 }

@@ -1,6 +1,7 @@
-import type {ConcreteSyntaxTree} from "../../../../concrete-syntax-tree/ConreteSyntaxTree.ts";
 import type {ParseResult} from "../../ParseResult.ts";
+import type {SuccessParseResultData} from "./data/SuccessParseResultData.ts";
+import type {successParseResultTypeName} from "./type-name/successParseResultTypeName.ts";
 export type SuccessParseResult = ParseResult<
-	"success",
-	Readonly<{tree: ConcreteSyntaxTree}>
+	typeof successParseResultTypeName,
+	SuccessParseResultData
 >;

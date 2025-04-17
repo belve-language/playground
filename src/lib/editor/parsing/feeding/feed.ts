@@ -1,5 +1,7 @@
 import type {Index} from "../../index/Index.ts";
 import type {SupportedFeedResult} from "../feed-result/SupportedFeedResult.ts";
+import {createErrorFeedResult} from "../feed-result/types/error/creating/createErrorFeedResult.ts";
+import type {Parser} from "../parser/Parser.ts";
 export function feed(
 	character: string,
 	parser: Parser,
@@ -105,7 +107,9 @@ export function feed(
 			return parser.feedWithIdentifierCharacter(character, index);
 		}
 		default: {
-			throw new Error(`Unexpected character: ${character}`);
+			return createErrorFeedResult(
+				`Unexpected character "${character}" at index ${index}.`,
+			);
 		}
 	}
 }
