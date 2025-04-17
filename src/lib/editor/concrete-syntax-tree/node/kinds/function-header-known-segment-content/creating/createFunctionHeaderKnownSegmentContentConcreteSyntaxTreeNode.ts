@@ -1,15 +1,14 @@
-import type {SpanIndexes} from "../../../span-indexes/SpanIndexes.ts";
-import {createBranchConcreteSyntaxTreeNode} from "../../createBranchConcreteSyntaxTreeNode.ts";
-import type {IdentifierConcreteSyntaxTreeNode} from "../identifier/IdentifierConcreteSyntaxTreeNode.ts";
-import type {WhitespaceConcreteSyntaxTreeNode} from "../whitespace/WhitespaceConcreteSyntaxTreeNode.ts";
-import type {FunctionHeaderKnownSegmentContentConcreteSyntaxTreeNode} from "./FunctionHeaderKnownSegmentContentConcreteSyntaxTreeNode.ts";
-import {functionHeaderKnownSegmentContentConcreteSyntaxTreeNodeKindName} from "./functionHeaderKnownSegmentContentConcreteSyntaxTreeNodeKindName.ts";
+import type {SpanIndexes} from "../../../../../span-indexes/SpanIndexes.ts";
+import {createBranchConcreteSyntaxTreeNode} from "../../../types/branch/creating/createBranchConcreteSyntaxTreeNode.ts";
+import type {FunctionHeaderKnownSegmentContentConcreteSyntaxTreeNodeChildren} from "../children/FunctionHeaderKnownSegmentContentConcreteSyntaxTreeNodeChildren.ts";
+import type {FunctionHeaderKnownSegmentContentConcreteSyntaxTreeNode} from "../FunctionHeaderKnownSegmentContentConcreteSyntaxTreeNode.ts";
+import {functionHeaderKnownSegmentContentConcreteSyntaxTreeNodeKindName} from "../kind-name/functionHeaderKnownSegmentContentConcreteSyntaxTreeNodeKindName.ts";
 export function createFunctionHeaderKnownSegmentContentConcreteSyntaxTreeNode(
+	children: FunctionHeaderKnownSegmentContentConcreteSyntaxTreeNodeChildren,
 	spanIndexes: SpanIndexes,
 ): FunctionHeaderKnownSegmentContentConcreteSyntaxTreeNode {
 	return createBranchConcreteSyntaxTreeNode(
 		functionHeaderKnownSegmentContentConcreteSyntaxTreeNodeKindName,
-		[initialWhitespace, identifier, finalWhitespace] as const,
-		spanIndexes,
+		{children, spanIndexes},
 	);
 }

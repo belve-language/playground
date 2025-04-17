@@ -1,14 +1,14 @@
-import type {SpanIndexes} from "../../../span-indexes/SpanIndexes.ts";
-import {createBranchConcreteSyntaxTreeNode} from "../../createBranchConcreteSyntaxTreeNode.ts";
-import type {IdentifierSegmentsConcreteSyntaxTreeNode} from "../identifier-segments/IdentifierSegmentsConcreteSyntaxTreeNode.ts";
-import type {IdentifierConcreteSyntaxTreeNode} from "./IdentifierConcreteSyntaxTreeNode.ts";
-import {identifierConcreteSyntaxTreeNodeKindName} from "./identifierConcreteSyntaxTreeNodeKindName.ts";
+import type {SpanIndexes} from "../../../../../span-indexes/SpanIndexes.ts";
+import {createBranchConcreteSyntaxTreeNode} from "../../../types/branch/creating/createBranchConcreteSyntaxTreeNode.ts";
+import type {IdentifierConcreteSyntaxTreeNodeChildren} from "../children/IdentifierConcreteSyntaxTreeNodeChildren.ts";
+import type {IdentifierConcreteSyntaxTreeNode} from "../IdentifierConcreteSyntaxTreeNode.ts";
+import {identifierConcreteSyntaxTreeNodeKindName} from "../kind-name/identifierConcreteSyntaxTreeNodeKindName.ts";
 export function createIdentifierConcreteSyntaxTreeNode(
+	children: IdentifierConcreteSyntaxTreeNodeChildren,
 	spanIndexes: SpanIndexes,
 ): IdentifierConcreteSyntaxTreeNode {
 	return createBranchConcreteSyntaxTreeNode(
 		identifierConcreteSyntaxTreeNodeKindName,
-		[segments] as const,
-		spanIndexes,
+		{children, spanIndexes},
 	);
 }

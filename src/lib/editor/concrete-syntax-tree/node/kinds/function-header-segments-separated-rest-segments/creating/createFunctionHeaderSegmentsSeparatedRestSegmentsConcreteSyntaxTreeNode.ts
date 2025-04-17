@@ -1,17 +1,14 @@
-import type {SpanIndexes} from "../../../span-indexes/SpanIndexes.ts";
-import {createBranchConcreteSyntaxTreeNode} from "../../createBranchConcreteSyntaxTreeNode.ts";
-import type {FunctionHeaderKnownStartingSegmentsConcreteSyntaxTreeNode} from "../function-header-known-starting-segments/FunctionHeaderKnownStartingSegmentsConcreteSyntaxTreeNode.ts";
-import type {FunctionHeaderUnknownStartingSegmentsConcreteSyntaxTreeNode} from "../function-header-unknown-starting-segments/FunctionHeaderUnknownStartingSegmentsConcreteSyntaxTreeNode.ts";
-import type {FunctionHeaderWordStartingSegmentsConcreteSyntaxTreeNode} from "../function-header-word-starting-segments/FunctionHeaderWordStartingSegmentsConcreteSyntaxTreeNode.ts";
-import type {WhitespaceConcreteSyntaxTreeNode} from "../whitespace/WhitespaceConcreteSyntaxTreeNode.ts";
-import type {FunctionHeaderSegmentsSeparatedRestSegmentsConcreteSyntaxTreeNode} from "./FunctionHeaderSegmentsSeparatedRestSegmentsConcreteSyntaxTreeNode.ts";
-import {functionHeaderSegmentsSeparatedRestSegmentsConcreteSyntaxTreeNodeKindName} from "./functionHeaderSegmentsSeparatedRestSegmentsConcreteSyntaxTreeNodeKindName.ts";
+import type {SpanIndexes} from "../../../../../span-indexes/SpanIndexes.ts";
+import {createBranchConcreteSyntaxTreeNode} from "../../../types/branch/creating/createBranchConcreteSyntaxTreeNode.ts";
+import type {FunctionHeaderSegmentsSeparatedRestSegmentsConcreteSyntaxTreeNodeChildren} from "../children/FunctionHeaderSegmentsSeparatedRestSegmentsConcreteSyntaxTreeNodeChildren.ts";
+import type {FunctionHeaderSegmentsSeparatedRestSegmentsConcreteSyntaxTreeNode} from "../FunctionHeaderSegmentsSeparatedRestSegmentsConcreteSyntaxTreeNode.ts";
+import {functionHeaderSegmentsSeparatedRestSegmentsConcreteSyntaxTreeNodeKindName} from "../kind-name/functionHeaderSegmentsSeparatedRestSegmentsConcreteSyntaxTreeNodeKindName.ts";
 export function createFunctionHeaderSegmentsSeparatedRestSegmentsConcreteSyntaxTreeNode(
+	children: FunctionHeaderSegmentsSeparatedRestSegmentsConcreteSyntaxTreeNodeChildren,
 	spanIndexes: SpanIndexes,
 ): FunctionHeaderSegmentsSeparatedRestSegmentsConcreteSyntaxTreeNode {
 	return createBranchConcreteSyntaxTreeNode(
 		functionHeaderSegmentsSeparatedRestSegmentsConcreteSyntaxTreeNodeKindName,
-		[initialWhitespace, segments] as const,
-		spanIndexes,
+		{children, spanIndexes},
 	);
 }
