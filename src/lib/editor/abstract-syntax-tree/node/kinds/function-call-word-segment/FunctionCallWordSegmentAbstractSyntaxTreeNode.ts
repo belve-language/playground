@@ -1,7 +1,8 @@
-import type {AbstractSyntaxTreeNode} from "../../AbstractSyntaxTreeNode.ts";
-import type {FunctionCallWordSegmentAbstractSyntaxTreeNodeChildren} from "./children/FunctionCallWordSegmentAbstractSyntaxTreeNodeChildren.ts";
+import type {BranchAbstractSyntaxTreeNode} from "../../types/branch/BranchAbstractSyntaxTreeNode.ts";
+import type {FunctionCallWordSegmentAbstractSyntaxTreeNodeData} from "./data/FunctionCallWordSegmentAbstractSyntaxTreeNodeData.ts";
+import type {functionCallWordSegmentAbstractSyntaxTreeNodeKindName} from "./kind-name/functionCallWordSegmentAbstractSyntaxTreeNodeKindName.ts";
 export type FunctionCallWordSegmentAbstractSyntaxTreeNode =
-	AbstractSyntaxTreeNode<
+	BranchAbstractSyntaxTreeNode<
 		typeof functionCallWordSegmentAbstractSyntaxTreeNodeKindName,
-		FunctionCallWordSegmentAbstractSyntaxTreeNodeChildren
+		FunctionCallWordSegmentAbstractSyntaxTreeNodeData
 	>;

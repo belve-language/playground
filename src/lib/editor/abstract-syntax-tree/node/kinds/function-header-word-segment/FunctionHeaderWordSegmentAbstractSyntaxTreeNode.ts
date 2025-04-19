@@ -1,7 +1,7 @@
 import type {AbstractSyntaxTreeNode} from "../../AbstractSyntaxTreeNode.ts";
-import type {FunctionHeaderWordSegmentAbstractSyntaxTreeNodeChildren} from "./children/FunctionHeaderWordSegmentAbstractSyntaxTreeNodeChildren.ts";
+import type {FunctionHeaderWordSegmentAbstractSyntaxTreeNodeDataChildren} from "./data-children/FunctionHeaderWordSegmentAbstractSyntaxTreeNodeDataChildren.ts";
 export type FunctionHeaderWordSegmentAbstractSyntaxTreeNode =
 	AbstractSyntaxTreeNode<
 		typeof functionHeaderWordSegmentAbstractSyntaxTreeNodeKindName,
-		FunctionHeaderWordSegmentAbstractSyntaxTreeNodeChildren
+		FunctionHeaderWordSegmentAbstractSyntaxTreeNodeDataChildren
 	>;

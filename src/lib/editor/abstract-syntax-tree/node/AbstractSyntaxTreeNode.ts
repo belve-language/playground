@@ -4,6 +4,6 @@ export type AbstractSyntaxTreeNode<
 	DataToUse,
 > = Readonly<{
 	kindName: KindNameToUse;
-	data: DataToUse;
 	typeName: TypeNameToUse;
+	data: DataToUse;
 }>;

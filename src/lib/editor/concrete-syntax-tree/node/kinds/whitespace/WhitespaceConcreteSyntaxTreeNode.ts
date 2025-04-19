@@ -1,7 +1,7 @@
-import type {BranchConcreteSyntaxTreeNode} from "../../BranchConcreteSyntaxTreeNode.ts";
-import type {WhitespaceConcreteSyntaxTreeNodeChildren} from "./WhitespaceConcreteSyntaxTreeNodeChildren.ts";
-import type {whitespaceConcreteSyntaxTreeNodeKindName} from "./whitespaceConcreteSyntaxTreeNodeKindName.ts";
+import type {BranchConcreteSyntaxTreeNode} from "../../types/branch/BranchConcreteSyntaxTreeNode.ts";
+import type {WhitespaceConcreteSyntaxTreeNodeDataChildren} from "./data-children/WhitespaceConcreteSyntaxTreeNodeDataChildren.ts";
+import type {whitespaceConcreteSyntaxTreeNodeKindName} from "./kind-name/whitespaceConcreteSyntaxTreeNodeKindName.ts";
 export type WhitespaceConcreteSyntaxTreeNode = BranchConcreteSyntaxTreeNode<
 	typeof whitespaceConcreteSyntaxTreeNodeKindName,
-	WhitespaceConcreteSyntaxTreeNodeChildren
+	WhitespaceConcreteSyntaxTreeNodeDataChildren
 >;

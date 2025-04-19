@@ -1,13 +1,20 @@
-import type {OperatorCharacter} from "../../../../characters/operator/OperatorCharacter.ts";
+import {createOperatorAbstractSyntaxTreeNode} from "../../../../abstract-syntax-tree/node/kinds/operator/creating/createOperatorAbstractSyntaxTreeNode.ts";
+import type {OperatorAbstractSyntaxTreeNode} from "../../../../abstract-syntax-tree/node/kinds/operator/OperatorAbstractSyntaxTreeNode.ts";
+import type {OperatorConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/node/kinds/operator/OperatorConcreteSyntaxTreeNode.ts";
+import type {SpanIndexes} from "../../../../span-indexes/SpanIndexes.ts";
 export function abstractifyOperatorCharacter(
-	operatorCharacter: OperatorCharacter,
-): Operator {
-	switch (operatorCharacter) {
+	operator: OperatorConcreteSyntaxTreeNode,
+): OperatorAbstractSyntaxTreeNode {
+	const spanIndexes: SpanIndexes = {
+		starting: operator.data.index,
+		ending: operator.data.index,
+	};
+	switch (operator.data.character) {
 		case ".": {
-			return "and";
+			return createOperatorAbstractSyntaxTreeNode("and", spanIndexes);
 		}
 		case ",": {
-			return "or";
+			return createOperatorAbstractSyntaxTreeNode("or", spanIndexes);
 		}
 	}
 }

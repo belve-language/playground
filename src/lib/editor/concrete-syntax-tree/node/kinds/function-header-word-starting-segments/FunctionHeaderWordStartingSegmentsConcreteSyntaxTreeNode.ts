@@ -1,8 +1,8 @@
-import type {BranchConcreteSyntaxTreeNode} from "../../BranchConcreteSyntaxTreeNode.ts";
-import type {FunctionHeaderWordStartingSegmentsConcreteSyntaxTreeNodeChildren} from "./FunctionHeaderWordStartingSegmentsConcreteSyntaxTreeNodeChildren.ts";
-import type {functionHeaderWordStartingSegmentsConcreteSyntaxTreeNodeKindName} from "./functionHeaderWordStartingSegmentsConcreteSyntaxTreeNodeKindName.ts";
+import type {BranchConcreteSyntaxTreeNode} from "../../types/branch/BranchConcreteSyntaxTreeNode.ts";
+import type {FunctionHeaderWordStartingSegmentsConcreteSyntaxTreeNodeDataChildren} from "./data-children/FunctionHeaderWordStartingSegmentsConcreteSyntaxTreeNodeDataChildren.ts";
+import type {functionHeaderWordStartingSegmentsConcreteSyntaxTreeNodeKindName} from "./kind-name/functionHeaderWordStartingSegmentsConcreteSyntaxTreeNodeKindName.ts";
 export type FunctionHeaderWordStartingSegmentsConcreteSyntaxTreeNode =
 	BranchConcreteSyntaxTreeNode<
 		typeof functionHeaderWordStartingSegmentsConcreteSyntaxTreeNodeKindName,
-		FunctionHeaderWordStartingSegmentsConcreteSyntaxTreeNodeChildren
+		FunctionHeaderWordStartingSegmentsConcreteSyntaxTreeNodeDataChildren
 	>;

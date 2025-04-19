@@ -1,9 +1,9 @@
 import type {FunctionBodyAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree/node/kinds/function-body/FunctionBodyAbstractSyntaxTreeNode.ts";
 import type {FunctionHeaderAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree/node/kinds/function-header/FunctionHeaderAbstractSyntaxTreeNode.ts";
-import type {createFunctionAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree/node/kinds/function/creating/createFunctionAbstractSyntaxTreeNode.ts";
+import {createFunctionAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree/node/kinds/function/creating/createFunctionAbstractSyntaxTreeNode.ts";
 import type {FunctionAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree/node/kinds/function/FunctionAbstractSyntaxTreeNode.ts";
 import type {FunctionConcreteSyntaxTreeNode} from "../../../concrete-syntax-tree/node/kinds/function/FunctionConcreteSyntaxTreeNode.ts";
-import type {abstractifyFunctionBody} from "../function-body/abstractifyFunctionBody.ts";
+import {abstractifyFunctionBody} from "../function-body/abstractifyFunctionBody.ts";
 import {abstractifyFunctionHeader} from "../function-header/abstractifyFunctionHeader.ts";
 export function abstractifyFunction(
 	function_: FunctionConcreteSyntaxTreeNode,

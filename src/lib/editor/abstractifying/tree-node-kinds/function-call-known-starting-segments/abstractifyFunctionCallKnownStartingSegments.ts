@@ -2,10 +2,10 @@ import type {FunctionCallKnownSegmentAbstractSyntaxTreeNode} from "../../../abst
 import type {FunctionCallUnknownSegmentAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree/node/kinds/function-call-unknown-segment/FunctionCallUnknownSegmentAbstractSyntaxTreeNode.ts";
 import type {FunctionCallWordSegmentAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree/node/kinds/function-call-word-segment/FunctionCallWordSegmentAbstractSyntaxTreeNode.ts";
 import type {FunctionCallKnownStartingSegmentsConcreteSyntaxTreeNode} from "../../../concrete-syntax-tree/node/kinds/function-call-known-starting-segments/FunctionCallKnownStartingSegmentsConcreteSyntaxTreeNode.ts";
-import {functionCallKnownStartingSegmentsConcreteSyntaxTreeNodeTypeName} from "../../../concrete-syntax-tree/node/kinds/function-call-known-starting-segments/functionCallKnownStartingSegmentsConcreteSyntaxTreeNodeTypeName.ts";
-import {functionCallSegmentsSeparatedRestSegmentsConcreteSyntaxTreeNodeTypeName} from "../../../concrete-syntax-tree/node/kinds/function-call-segments-separated-rest-segments/functionCallSegmentsSeparatedRestSegmentsConcreteSyntaxTreeNodeTypeName.ts";
-import {functionCallUnknownStartingSegmentsConcreteSyntaxTreeNodeTypeName} from "../../../concrete-syntax-tree/node/kinds/function-call-unknown-starting-segments/functionCallUnknownStartingSegmentsConcreteSyntaxTreeNodeTypeName.ts";
-import {functionCallWordStartingSegmentsConcreteSyntaxTreeNodeTypeName} from "../../../concrete-syntax-tree/node/kinds/function-call-word-starting-segments/functionCallWordStartingSegmentsConcreteSyntaxTreeNodeTypeName.ts";
+import {functionCallKnownStartingSegmentsConcreteSyntaxTreeNodeKindName} from "../../../concrete-syntax-tree/node/kinds/function-call-known-starting-segments/functionCallKnownStartingSegmentsConcreteSyntaxTreeNodeKindName.ts";
+import {functionCallSegmentsSeparatedRestSegmentsConcreteSyntaxTreeNodeKindName} from "../../../concrete-syntax-tree/node/kinds/function-call-segments-separated-rest-segments/functionCallSegmentsSeparatedRestSegmentsConcreteSyntaxTreeNodeKindName.ts";
+import {functionCallUnknownStartingSegmentsConcreteSyntaxTreeNodeKindName} from "../../../concrete-syntax-tree/node/kinds/function-call-unknown-starting-segments/functionCallUnknownStartingSegmentsConcreteSyntaxTreeNodeKindName.ts";
+import {functionCallWordStartingSegmentsConcreteSyntaxTreeNodeKindName} from "../../../concrete-syntax-tree/node/kinds/function-call-word-starting-segments/functionCallWordStartingSegmentsConcreteSyntaxTreeNodeKindName.ts";
 import {abstractifyFunctionCallKnownSegment} from "../function-call-known-segment/abstractifyFunctionCallKnownSegment.ts";
 import {abstractifyFunctionCallSegmentsSeparatedRestSegments} from "../function-call-segments-separated-rest-segments/abstractifyFunctionCallSegmentsSeparatedRestSegments.ts";
 import {abstractifyFunctionCallUnknownStartingSegments} from "../function-call-unknown-starting-segments/abstractifyFunctionCallUnknownStartingSegments.ts";
@@ -27,7 +27,7 @@ export function abstractifyFunctionCallKnownStartingSegments(
 		return [abstractifiedSegmentsFirstSegment] as const;
 	}
 	switch (segmentsRestSegments.typeName) {
-		case functionCallKnownStartingSegmentsConcreteSyntaxTreeNodeTypeName: {
+		case functionCallKnownStartingSegmentsConcreteSyntaxTreeNodeKindName: {
 			const abstractifiedSegmentsRestSegments: readonly [
 				FunctionCallKnownSegmentAbstractSyntaxTreeNode,
 				...(
@@ -41,7 +41,7 @@ export function abstractifyFunctionCallKnownStartingSegments(
 				...abstractifiedSegmentsRestSegments,
 			] as const;
 		}
-		case functionCallUnknownStartingSegmentsConcreteSyntaxTreeNodeTypeName: {
+		case functionCallUnknownStartingSegmentsConcreteSyntaxTreeNodeKindName: {
 			const abstractifiedSegmentsRestSegments: readonly [
 				FunctionCallUnknownSegmentAbstractSyntaxTreeNode,
 				...(
@@ -55,7 +55,7 @@ export function abstractifyFunctionCallKnownStartingSegments(
 				...abstractifiedSegmentsRestSegments,
 			] as const;
 		}
-		case functionCallWordStartingSegmentsConcreteSyntaxTreeNodeTypeName: {
+		case functionCallWordStartingSegmentsConcreteSyntaxTreeNodeKindName: {
 			const abstractifiedSegmentsRestSegments: readonly [
 				FunctionCallWordSegmentAbstractSyntaxTreeNode,
 				...(
@@ -69,7 +69,7 @@ export function abstractifyFunctionCallKnownStartingSegments(
 				...abstractifiedSegmentsRestSegments,
 			] as const;
 		}
-		case functionCallSegmentsSeparatedRestSegmentsConcreteSyntaxTreeNodeTypeName: {
+		case functionCallSegmentsSeparatedRestSegmentsConcreteSyntaxTreeNodeKindName: {
 			const abstractifiedSegmentsRestSegments: readonly [
 				(
 					| FunctionCallWordSegmentAbstractSyntaxTreeNode

@@ -3,9 +3,13 @@ import type {BranchConcreteSyntaxTreeNodeData} from "./data/BranchConcreteSyntax
 import type {branchConcreteSyntaxTreeNodeTypeName} from "./type-name/branchConcreteSyntaxTreeNodeTypeName.ts";
 export type BranchConcreteSyntaxTreeNode<
 	KindNameToUse extends string,
-	ChildrenToUse extends readonly unknown[],
+	DataChildrenToUse extends readonly (ConcreteSyntaxTreeNode<
+		string,
+		string,
+		unknown
+	> | null)[],
 > = ConcreteSyntaxTreeNode<
 	typeof branchConcreteSyntaxTreeNodeTypeName,
 	KindNameToUse,
-	BranchConcreteSyntaxTreeNodeData<ChildrenToUse>
+	BranchConcreteSyntaxTreeNodeData<DataChildrenToUse>
 >;

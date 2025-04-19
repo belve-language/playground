@@ -1,7 +1,7 @@
 import type {FunctionAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree/node/kinds/function/FunctionAbstractSyntaxTreeNode.ts";
-import {functionsSeparatedRestFunctionsConcreteSyntaxTreeNodeTypeName} from "../../../concrete-syntax-tree/node/kinds/functions-separated-rest-functions/functionsSeparatedRestFunctionsConcreteSyntaxTreeNodeTypeName.ts";
+import {functionsSeparatedRestFunctionsConcreteSyntaxTreeNodeKindName} from "../../../concrete-syntax-tree/node/kinds/functions-separated-rest-functions/kind-name/functionsSeparatedRestFunctionsConcreteSyntaxTreeNodeKindName.ts";
 import type {FunctionsConcreteSyntaxTreeNode} from "../../../concrete-syntax-tree/node/kinds/functions/FunctionsConcreteSyntaxTreeNode.ts";
-import {functionsConcreteSyntaxTreeNodeTypeName} from "../../../concrete-syntax-tree/node/kinds/functions/functionsConcreteSyntaxTreeNodeTypeName.ts";
+import {functionsConcreteSyntaxTreeNodeKindName} from "../../../concrete-syntax-tree/node/kinds/functions/kind-name/functionsConcreteSyntaxTreeNodeKindName.ts";
 import {abstractifyFunction} from "../function/abstractifyFunction.ts";
 import {abstractifyFunctionsSeparatedRestFunctions} from "../functions-separated-rest-functions/abstractifyFunctionsSeparatedRestFunctions.ts";
 export function abstractifyFunctions(
@@ -18,7 +18,7 @@ export function abstractifyFunctions(
 		return [abstractifiedFunctionsFirstFunction] as const;
 	}
 	switch (functionsRestFunctions.typeName) {
-		case functionsSeparatedRestFunctionsConcreteSyntaxTreeNodeTypeName: {
+		case functionsSeparatedRestFunctionsConcreteSyntaxTreeNodeKindName: {
 			const abstractifiedFunctionsRestFunctions: readonly [
 				FunctionAbstractSyntaxTreeNode,
 				...FunctionAbstractSyntaxTreeNode[],
@@ -28,7 +28,7 @@ export function abstractifyFunctions(
 				...abstractifiedFunctionsRestFunctions,
 			] as const;
 		}
-		case functionsConcreteSyntaxTreeNodeTypeName: {
+		case functionsConcreteSyntaxTreeNodeKindName: {
 			const abstractifiedFunctionsRestFunctions: readonly [
 				FunctionAbstractSyntaxTreeNode,
 				...FunctionAbstractSyntaxTreeNode[],

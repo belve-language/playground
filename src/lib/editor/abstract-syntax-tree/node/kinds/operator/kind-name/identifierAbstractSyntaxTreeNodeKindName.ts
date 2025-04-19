@@ -1,1 +1,1 @@
-export const operatorAbstractSyntaxTreeNodeKindName = "indentifier";
+export const operatorAbstractSyntaxTreeNodeKindName = "operator";

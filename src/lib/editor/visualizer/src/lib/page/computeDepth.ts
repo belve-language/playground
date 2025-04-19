@@ -52,56 +52,56 @@
 // 		return 0;
 // 	}
 // 	switch (node.typeName) {
-// 		case blockConcreteSyntaxTreeNodeTypeName:
-// 		case blockContentConcreteSyntaxTreeNodeTypeName:
-// 		case functionBodyConcreteSyntaxTreeNodeTypeName:
-// 		case functionCallConcreteSyntaxTreeNodeTypeName:
-// 		case functionCallKnownSegmentConcreteSyntaxTreeNodeTypeName:
-// 		case functionCallKnownSegmentContentConcreteSyntaxTreeNodeTypeName:
-// 		case functionCallKnownStartingSegmentsConcreteSyntaxTreeNodeTypeName:
-// 		case functionCallSegmentsSeparatedRestSegmentsConcreteSyntaxTreeNodeTypeName:
-// 		case functionCallUnknownSegmentConcreteSyntaxTreeNodeTypeName:
-// 		case functionCallUnknownSegmentContentConcreteSyntaxTreeNodeTypeName:
-// 		case functionCallUnknownStartingSegmentsConcreteSyntaxTreeNodeTypeName:
-// 		case functionCallWordSegmentConcreteSyntaxTreeNodeTypeName:
-// 		case functionCallWordStartingSegmentsConcreteSyntaxTreeNodeTypeName:
-// 		case functionConcreteSyntaxTreeNodeTypeName:
-// 		case functionHeaderConcreteSyntaxTreeNodeTypeName:
-// 		case functionHeaderKnownSegmentConcreteSyntaxTreeNodeTypeName:
-// 		case functionHeaderKnownStartingSegmentsConcreteSyntaxTreeNodeTypeName:
-// 		case functionHeaderSegmentsSeparatedRestSegmentsConcreteSyntaxTreeNodeTypeName:
-// 		case functionHeaderUnknownSegmentConcreteSyntaxTreeNodeTypeName:
-// 		case functionHeaderUnknownStartingSegmentsConcreteSyntaxTreeNodeTypeName:
-// 		case functionHeaderWordSegmentConcreteSyntaxTreeNodeTypeName:
-// 		case functionHeaderWordStartingSegmentsConcreteSyntaxTreeNodeTypeName:
-// 		case functionsConcreteSyntaxTreeNodeTypeName:
-// 		case functionsSeparatedRestFunctionsConcreteSyntaxTreeNodeTypeName:
-// 		case sourceFileContentConcreteSyntaxTreeNodeTypeName:
-// 		case whitespaceConcreteSyntaxTreeNodeTypeName:
-// 		case whitespaceSegmentsConcreteSyntaxTreeNodeTypeName:
-// 		case identifierConcreteSyntaxTreeNodeTypeName:
-// 		case statementsConcreteSyntaxTreeNodeTypeName:
-// 		case functionHeaderUnknownSegmentContentConcreteSyntaxTreeNodeTypeName:
-// 		case statementsRestStatementsConcreteSyntaxTreeNodeTypeName:
-// 		case identifierSegmentsConcreteSyntaxTreeNodeTypeName: {
+// 		case blockConcreteSyntaxTreeNodeKindName:
+// 		case blockContentConcreteSyntaxTreeNodeKindName:
+// 		case functionBodyConcreteSyntaxTreeNodeKindName:
+// 		case functionCallConcreteSyntaxTreeNodeKindName:
+// 		case functionCallKnownSegmentConcreteSyntaxTreeNodeKindName:
+// 		case functionCallKnownSegmentContentConcreteSyntaxTreeNodeKindName:
+// 		case functionCallKnownStartingSegmentsConcreteSyntaxTreeNodeKindName:
+// 		case functionCallSegmentsSeparatedRestSegmentsConcreteSyntaxTreeNodeKindName:
+// 		case functionCallUnknownSegmentConcreteSyntaxTreeNodeKindName:
+// 		case functionCallUnknownSegmentContentConcreteSyntaxTreeNodeKindName:
+// 		case functionCallUnknownStartingSegmentsConcreteSyntaxTreeNodeKindName:
+// 		case functionCallWordSegmentConcreteSyntaxTreeNodeKindName:
+// 		case functionCallWordStartingSegmentsConcreteSyntaxTreeNodeKindName:
+// 		case functionConcreteSyntaxTreeNodeKindName:
+// 		case functionHeaderConcreteSyntaxTreeNodeKindName:
+// 		case functionHeaderKnownSegmentConcreteSyntaxTreeNodeKindName:
+// 		case functionHeaderKnownStartingSegmentsConcreteSyntaxTreeNodeKindName:
+// 		case functionHeaderSegmentsSeparatedRestSegmentsConcreteSyntaxTreeNodeKindName:
+// 		case functionHeaderUnknownSegmentConcreteSyntaxTreeNodeKindName:
+// 		case functionHeaderUnknownStartingSegmentsConcreteSyntaxTreeNodeKindName:
+// 		case functionHeaderWordSegmentConcreteSyntaxTreeNodeKindName:
+// 		case functionHeaderWordStartingSegmentsConcreteSyntaxTreeNodeKindName:
+// 		case functionsConcreteSyntaxTreeNodeKindName:
+// 		case functionsSeparatedRestFunctionsConcreteSyntaxTreeNodeKindName:
+// 		case sourceFileContentConcreteSyntaxTreeNodeKindName:
+// 		case whitespaceConcreteSyntaxTreeNodeKindName:
+// 		case whitespaceSegmentsConcreteSyntaxTreeNodeKindName:
+// 		case identifierConcreteSyntaxTreeNodeKindName:
+// 		case statementsConcreteSyntaxTreeNodeKindName:
+// 		case functionHeaderUnknownSegmentContentConcreteSyntaxTreeNodeKindName:
+// 		case statementsRestStatementsConcreteSyntaxTreeNodeKindName:
+// 		case identifierSegmentsConcreteSyntaxTreeNodeKindName: {
 // 			const childDepths: readonly number[] = node.children.map(computeDepth);
 // 			const maximalChildDepth = Math.max(...childDepths);
 // 			return maximalChildDepth + 1;
 // 		}
-// 		case blockOpeningBracketConcreteSyntaxTreeNodeTypeName:
-// 		case blockClosingBracketConcreteSyntaxTreeNodeTypeName:
-// 		case functionCallUnknownSegmentOpeningBracketConcreteSyntaxTreeNodeTypeName:
-// 		case functionCallKnownSegmentClosingBracketConcreteSyntaxTreeNodeTypeName:
-// 		case functionCallUnknownSegmentClosingBracketConcreteSyntaxTreeNodeTypeName:
-// 		case functionCallKnownSegmentOpeningBracketConcreteSyntaxTreeNodeTypeName:
-// 		case whitespaceSegmentConcreteSyntaxTreeNodeTypeName:
-// 		case functionHeaderKnownSegmentOpeningBracketConcreteSyntaxTreeNodeTypeName:
-// 		case functionHeaderKnownSegmentContentConcreteSyntaxTreeNodeTypeName:
-// 		case functionHeaderKnownSegmentClosingBracketConcreteSyntaxTreeNodeTypeName:
-// 		case operatorConcreteSyntaxTreeNodeTypeName:
-// 		case identifierSegmentConcreteSyntaxTreeNodeTypeName:
-// 		case functionHeaderUnknownSegmentOpeningBracketConcreteSyntaxTreeNodeTypeName:
-// 		case functionHeaderUnknownSegmentClosingBracketConcreteSyntaxTreeNodeTypeName: {
+// 		case blockOpeningBracketConcreteSyntaxTreeNodeKindName:
+// 		case blockClosingBracketConcreteSyntaxTreeNodeKindName:
+// 		case functionCallUnknownSegmentOpeningBracketConcreteSyntaxTreeNodeKindName:
+// 		case functionCallKnownSegmentClosingBracketConcreteSyntaxTreeNodeKindName:
+// 		case functionCallUnknownSegmentClosingBracketConcreteSyntaxTreeNodeKindName:
+// 		case functionCallKnownSegmentOpeningBracketConcreteSyntaxTreeNodeKindName:
+// 		case whitespaceSegmentConcreteSyntaxTreeNodeKindName:
+// 		case functionHeaderKnownSegmentOpeningBracketConcreteSyntaxTreeNodeKindName:
+// 		case functionHeaderKnownSegmentContentConcreteSyntaxTreeNodeKindName:
+// 		case functionHeaderKnownSegmentClosingBracketConcreteSyntaxTreeNodeKindName:
+// 		case operatorConcreteSyntaxTreeNodeKindName:
+// 		case identifierSegmentConcreteSyntaxTreeNodeKindName:
+// 		case functionHeaderUnknownSegmentOpeningBracketConcreteSyntaxTreeNodeKindName:
+// 		case functionHeaderUnknownSegmentClosingBracketConcreteSyntaxTreeNodeKindName: {
 // 			return 1;
 // 		}
 // 	}

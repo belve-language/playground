@@ -1,6 +1,6 @@
 import type {BranchAbstractSyntaxTreeNode} from "../../types/branch/BranchAbstractSyntaxTreeNode.ts";
-import type {FunctionHeaderAbstractSyntaxTreeNodeChildren} from "./children/FunctionHeaderAbstractSyntaxTreeNodeChildren.ts";
+import type {FunctionHeaderAbstractSyntaxTreeNodeDataChildren} from "./data-children/FunctionHeaderAbstractSyntaxTreeNodeDataChildren.ts";
 export type FunctionHeaderAbstractSyntaxTreeNode = BranchAbstractSyntaxTreeNode<
 	typeof functionHeaderAbstractSyntaxTreeNodeKindName,
-	FunctionHeaderAbstractSyntaxTreeNodeChildren
+	FunctionHeaderAbstractSyntaxTreeNodeDataChildren
 >;

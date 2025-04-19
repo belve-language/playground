@@ -1,8 +1,8 @@
 import type {BranchConcreteSyntaxTreeNode} from "../../../BranchConcreteSyntaxTreeNode.ts";
-import type {FunctionHeaderUnknownSegmentContentConcreteSyntaxTreeNodeChildren} from "./FunctionHeaderUnknownSegmentContentConcreteSyntaxTreeNodeChildren.ts";
+import type {FunctionHeaderUnknownSegmentContentConcreteSyntaxTreeNodeDataChildren} from "./FunctionHeaderUnknownSegmentContentConcreteSyntaxTreeNodeDataChildren.ts";
 import type {functionHeaderUnknownSegmentContentConcreteSyntaxTreeNodeKindName} from "./functionHeaderUnknownSegmentContentConcreteSyntaxTreeNodeKindName.ts";
 export type FunctionHeaderUnknownSegmentContentConcreteSyntaxTreeNode =
 	BranchConcreteSyntaxTreeNode<
 		typeof functionHeaderUnknownSegmentContentConcreteSyntaxTreeNodeKindName,
-		FunctionHeaderUnknownSegmentContentConcreteSyntaxTreeNodeChildren
+		FunctionHeaderUnknownSegmentContentConcreteSyntaxTreeNodeDataChildren
 	>;

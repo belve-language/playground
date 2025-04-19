@@ -3,7 +3,7 @@ import {createBlockAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree/n
 import type {FunctionCallAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree/node/kinds/function-call/FunctionCallAbstractSyntaxTreeNode.ts";
 import type {OperatedStatementAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree/node/kinds/operated-statement/OperatedStatementAbstractSyntaxTreeNode.ts";
 import type {BlockConcreteSyntaxTreeNode} from "../../../concrete-syntax-tree/node/kinds/block/BlockConcreteSyntaxTreeNode.ts";
-import {whitespaceConcreteSyntaxTreeNodeTypeName} from "../../../concrete-syntax-tree/tree-node-types/whitespace/whitespaceConcreteSyntaxTreeNodeTypeName.ts";
+import {whitespaceConcreteSyntaxTreeNodeKindName} from "../../../concrete-syntax-tree/tree-node-types/whitespace/whitespaceConcreteSyntaxTreeNodeKindName.ts";
 import {abstractifyBlockContent} from "../block-content/abstractifyBlockContent.ts";
 export function abstractifyBlock(
 	block: BlockConcreteSyntaxTreeNode,
@@ -11,7 +11,7 @@ export function abstractifyBlock(
 	const [, blockContent] = block.data.children;
 	if (
 		blockContent === null
-		|| blockContent.typeName === whitespaceConcreteSyntaxTreeNodeTypeName
+		|| blockContent.typeName === whitespaceConcreteSyntaxTreeNodeKindName
 	) {
 		// TODO : no throw
 		throw new Error("Not implemented.");

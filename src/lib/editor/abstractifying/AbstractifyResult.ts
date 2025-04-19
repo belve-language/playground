@@ -1,4 +1,4 @@
-export type AbstractifyResult<TypeToUse extends string, DataToUse> = Readonly<{
-	type: TypeToUse;
-	data: DataToUse;
-}>;
+export type AbstractifyResult<
+	TypeNameToUse extends string,
+	DataToUse,
+> = Readonly<{typeName: TypeNameToUse; data: DataToUse}>;

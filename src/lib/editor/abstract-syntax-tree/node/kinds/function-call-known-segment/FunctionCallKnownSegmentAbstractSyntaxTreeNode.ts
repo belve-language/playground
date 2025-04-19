@@ -1,7 +1,7 @@
 import type {AbstractSyntaxTreeNode} from "../../AbstractSyntaxTreeNode.ts";
-import type {FunctionCallKnownSegmentAbstractSyntaxTreeNodeChildren} from "./children/FunctionCallKnownSegmentAbstractSyntaxTreeNodeChildren.ts";
+import type {FunctionCallKnownSegmentAbstractSyntaxTreeNodeDataChildren} from "./data-children/FunctionCallKnownSegmentAbstractSyntaxTreeNodeDataChildren.ts";
 export type FunctionCallKnownSegmentAbstractSyntaxTreeNode =
 	AbstractSyntaxTreeNode<
 		typeof functionCallKnownSegmentAbstractSyntaxTreeNodeKindName,
-		FunctionCallKnownSegmentAbstractSyntaxTreeNodeChildren
+		FunctionCallKnownSegmentAbstractSyntaxTreeNodeDataChildren
 	>;

@@ -1,7 +1,10 @@
 import type {AbstractifyResult} from "../AbstractifyResult.ts";
-export function createAbstractifyResult<StatusToUse extends string, DataToUse>(
-	status: StatusToUse,
+export function createAbstractifyResult<
+	TypeNameToUse extends string,
+	DataToUse,
+>(
+	typeName: TypeNameToUse,
 	data: DataToUse,
-): AbstractifyResult<StatusToUse, DataToUse> {
-	return {status, data};
+): AbstractifyResult<TypeNameToUse, DataToUse> {
+	return {typeName, data};
 }
