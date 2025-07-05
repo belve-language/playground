@@ -1,4 +1,6 @@
 import type {SupportedConcreteSyntaxTreeNode} from "../../../../concrete-syntax-tree/node/SupportedConcreteSyntaxTreeNode.ts";
+import {branchConcreteSyntaxTreeNodeTypeName} from "../../../../concrete-syntax-tree/node/branch/type-name/branchConcreteSyntaxTreeNodeTypeName.ts";
+import {leafConcreteSyntaxTreeNodeTypeName} from "../../../../concrete-syntax-tree/node/leaf/type-name/leafConcreteSyntaxTreeNodeTypeName.ts";
 import type {BranchCell} from "./BranchCell.ts";
 import type {EmptyCell} from "./EmptyCell.ts";
 import type {LeafCell} from "./LeafCell.ts";
@@ -11,7 +13,7 @@ export function computeCells(
 	maximalIndex: number,
 ): readonly SupportedCell[] {
 	const cells: SupportedCell[] = [];
-	switch (nodes[0].kind) {
+	switch (nodes[0].typeName) {
 		case "leaf": {
 			if (nodes[0].data.index !== 0) {
 				cells.push({
@@ -45,12 +47,12 @@ export function computeCells(
 	}
 	let currentNode = nodes[0];
 	let currentNodeEndingIndex =
-		currentNode.kind === "leaf" ?
+		currentNode.typeName === leafConcreteSyntaxTreeNodeTypeName ?
 			currentNode.data.index
 		:	currentNode.data.spanIndexes.ending;
 	for (const node of nodes.slice(1)) {
-		switch (node.kind) {
-			case "leaf": {
+		switch (node.typeName) {
+			case leafConcreteSyntaxTreeNodeTypeName: {
 				if (node.data.index !== currentNodeEndingIndex + 1) {
 					cells.push({
 						span: node.data.index - currentNodeEndingIndex - 1,
@@ -64,7 +66,7 @@ export function computeCells(
 				currentNodeEndingIndex = node.data.index;
 				break;
 			}
-			case "branch":
+			case branchConcreteSyntaxTreeNodeTypeName:
 				if (node.data.spanIndexes.starting !== currentNodeEndingIndex + 1) {
 					cells.push({
 						span: node.data.spanIndexes.starting - currentNodeEndingIndex - 1,

@@ -1,11 +1,12 @@
+import type {SpanIndexes} from "../../../../../span-indexes/SpanIndexes.ts";
+import type {FunctionHeaderKnownSegmentAbstractSyntaxTreeNodeDataChildren} from "../data-children/FunctionHeaderKnownSegmentAbstractSyntaxTreeNodeDataChildren.ts";
 import type {FunctionHeaderKnownSegmentAbstractSyntaxTreeNode} from "../FunctionHeaderKnownSegmentAbstractSyntaxTreeNode.ts";
 export function createFunctionHeaderKnownSegmentAbstractSyntaxTreeNode(
-	children,
+	children: FunctionHeaderKnownSegmentAbstractSyntaxTreeNodeDataChildren,
+	spanIndexes: SpanIndexes,
 ): FunctionHeaderKnownSegmentAbstractSyntaxTreeNode {
-	const treeNode: FunctionHeaderKnownSegmentAbstractSyntaxTreeNode =
-		createAbstractSyntaxTreeNode(
-			functionHeaderKnownSegmentAbstractSyntaxTreeNodeKindName,
-			{identifier} as const,
-		);
-	return treeNode;
+	return createBranchAbstractSyntaxTreeNode(
+		functionHeaderKnownSegmentAbstractSyntaxTreeNodeKindName,
+		{children, spanIndexes},
+	);
 }

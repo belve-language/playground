@@ -1,6 +1,6 @@
-import type {BranchConcreteSyntaxTreeNode} from "../../../BranchConcreteSyntaxTreeNode.ts";
-import type {FunctionCallKnownSegmentContentConcreteSyntaxTreeNodeDataChildren} from "./FunctionCallKnownSegmentContentConcreteSyntaxTreeNodeDataChildren.ts";
-import type {functionCallKnownSegmentContentConcreteSyntaxTreeNodeKindName} from "./functionCallKnownSegmentContentConcreteSyntaxTreeNodeKindName.ts";
+import type {BranchConcreteSyntaxTreeNode} from "../../branch/BranchConcreteSyntaxTreeNode.ts";
+import type {FunctionCallKnownSegmentContentConcreteSyntaxTreeNodeDataChildren} from "./data-children/FunctionCallKnownSegmentContentConcreteSyntaxTreeNodeDataChildren.ts";
+import type {functionCallKnownSegmentContentConcreteSyntaxTreeNodeKindName} from "./kind-name/functionCallKnownSegmentContentConcreteSyntaxTreeNodeKindName.ts";
 export type FunctionCallKnownSegmentContentConcreteSyntaxTreeNode =
 	BranchConcreteSyntaxTreeNode<
 		typeof functionCallKnownSegmentContentConcreteSyntaxTreeNodeKindName,

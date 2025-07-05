@@ -1,12 +1,13 @@
-import type {FunctionBodyAbstractSyntaxTreeNode} from "../../function-body/FunctionBodyAbstractSyntaxTreeNode.ts";
-import type {FunctionHeaderAbstractSyntaxTreeNode} from "../../function-header/FunctionHeaderAbstractSyntaxTreeNode.ts";
+import type {SpanIndexes} from "../../../../../span-indexes/SpanIndexes.ts";
+import {createBranchAbstractSyntaxTreeNode} from "../../../types/branch/creating/createBranchAbstractSyntaxTreeNode.ts";
 import type {FunctionAbstractSyntaxTreeNode} from "../FunctionAbstractSyntaxTreeNode.ts";
 import {functionAbstractSyntaxTreeNodeKindName} from "../kind-name/functionAbstractSyntaxTreeNodeKindName.ts";
 export function createFunctionAbstractSyntaxTreeNode(
-	children,
+	children: FunctionAbstractSyntaxTreeNodeDataChildren,
+	spanIndexes: SpanIndexes,
 ): FunctionAbstractSyntaxTreeNode {
-	return createAbstractSyntaxTreeNode(functionAbstractSyntaxTreeNodeKindName, {
-		header,
-		body,
-	});
+	return createBranchAbstractSyntaxTreeNode(
+		functionAbstractSyntaxTreeNodeKindName,
+		{children, spanIndexes},
+	);
 }

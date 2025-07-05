@@ -1,11 +1,10 @@
 import type {Index} from "../../index/Index.ts";
-import type {SupportedFeedResult} from "../feed-result/SupportedFeedResult.ts";
 import {createErrorFeedResult} from "../feed-result/types/error/creating/createErrorFeedResult.ts";
 import type {Parser} from "../parser/Parser.ts";
 export function feed(
 	character: string,
 	parser: Parser,
-	index: Index,
+	spanIndex: Index,
 ): SupportedFeedResult {
 	switch (character) {
 		case "}": {

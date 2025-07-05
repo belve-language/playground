@@ -25,55 +25,55 @@ export class StatementsRestStatementsBeforeOperatorWhitespaceSegmentsParser
 	}
 	public feedWithWhitespaceCharacter(
 		character: WhitespaceCharacter,
-		index: Index,
+		spanIndex: Index,
 	): ErrorFeedResult | SuccessFeedResult<Parser> {
 		throw new Error("Not implemented.");
 	}
 	public feedWithOpeningSquareBracketCharacter(
 		character: OpeningSquareBracketCharacter,
-		index: Index,
+		spanIndex: Index,
 	): ErrorFeedResult | SuccessFeedResult<Parser> {
 		throw new Error("Not implemented.");
 	}
 	public feedWithClosingSquareBracketCharacter(
 		character: ClosingSquareBracketCharacter,
-		index: Index,
+		spanIndex: Index,
 	): ErrorFeedResult | SuccessFeedResult<Parser> {
 		throw new Error("Not implemented.");
 	}
 	public feedWithOpeningCurlyBracketCharacter(
 		character: OpeningCurlyBracketCharacter,
-		index: Index,
+		spanIndex: Index,
 	): ErrorFeedResult | SuccessFeedResult<Parser> {
 		throw new Error("Not implemented.");
 	}
 	public feedWithClosingCurlyBracketCharacter(
 		character: ClosingCurlyBracketCharacter,
-		index: Index,
+		spanIndex: Index,
 	): ErrorFeedResult | SuccessFeedResult<Parser> {
 		throw new Error("Not implemented.");
 	}
 	public feedWithOpeningRoundBracketCharacter(
 		character: OpeningRoundBracketCharacter,
-		index: Index,
+		spanIndex: Index,
 	): ErrorFeedResult | SuccessFeedResult<Parser> {
 		throw new Error("Not implemented.");
 	}
 	public feedWithClosingRoundBracketCharacter(
 		character: ClosingRoundBracketCharacter,
-		index: Index,
+		spanIndex: Index,
 	): ErrorFeedResult | SuccessFeedResult<Parser> {
 		throw new Error("Not implemented.");
 	}
 	public feedWithIdentifierCharacter(
 		character: IdentifierCharacter,
-		index: Index,
+		spanIndex: Index,
 	): ErrorFeedResult | SuccessFeedResult<Parser> {
 		throw new Error("Not implemented.");
 	}
 	public feedWithOperatorCharacter(
 		character: OperatorCharacter,
-		index: Index,
+		spanIndex: Index,
 	): ErrorFeedResult | SuccessFeedResult<Parser> {
 		throw new Error("Not implemented.");
 	}

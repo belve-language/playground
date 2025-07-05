@@ -8,44 +8,44 @@ import type {OpeningSquareBracketCharacter} from "../../characters/opening-squar
 import type {OperatorCharacter} from "../../characters/operator/OperatorCharacter.ts";
 import type {WhitespaceCharacter} from "../../characters/whitespace/WhitespaceCharacter.ts";
 import type {Index} from "../../index/Index.ts";
-import type {SupportedFeedResult} from "../feed-result/SupportedFeedResult.ts";
-import type {SupportedFinalizeResult} from "../finalize-result/SupportedFinalizeResult.ts";
+import type {SupportedFeedResult} from "../feed-result/supported/SupportedFeedResult.ts";
+import type {SupportedFinalizeResult} from "../finalize-result/supported/SupportedFinalizeResult.ts";
 export interface Parser {
 	feedWithWhitespaceCharacter: (
 		character: WhitespaceCharacter,
-		index: Index,
+		spanIndex: Index,
 	) => SupportedFeedResult;
 	feedWithOpeningSquareBracketCharacter: (
 		character: OpeningSquareBracketCharacter,
-		index: Index,
+		spanIndex: Index,
 	) => SupportedFeedResult;
 	feedWithClosingSquareBracketCharacter: (
 		character: ClosingSquareBracketCharacter,
-		index: Index,
+		spanIndex: Index,
 	) => SupportedFeedResult;
 	feedWithOpeningCurlyBracketCharacter: (
 		character: OpeningCurlyBracketCharacter,
-		index: Index,
+		spanIndex: Index,
 	) => SupportedFeedResult;
 	feedWithClosingCurlyBracketCharacter: (
 		character: ClosingCurlyBracketCharacter,
-		index: Index,
+		spanIndex: Index,
 	) => SupportedFeedResult;
 	feedWithOpeningRoundBracketCharacter: (
 		character: OpeningRoundBracketCharacter,
-		index: Index,
+		spanIndex: Index,
 	) => SupportedFeedResult;
 	feedWithClosingRoundBracketCharacter: (
 		character: ClosingRoundBracketCharacter,
-		index: Index,
+		spanIndex: Index,
 	) => SupportedFeedResult;
 	feedWithIdentifierCharacter: (
 		character: IdentifierCharacter,
-		index: Index,
+		spanIndex: Index,
 	) => SupportedFeedResult;
 	feedWithOperatorCharacter: (
 		character: OperatorCharacter,
-		index: Index,
+		spanIndex: Index,
 	) => SupportedFeedResult;
 	finalize: () => null | SupportedFinalizeResult;
 }

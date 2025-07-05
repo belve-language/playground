@@ -53,7 +53,7 @@
 // 		return;
 // 	}
 // 	yield {node, depth};
-// 	switch (node.typeName) {
+// 	switch (node.kindName) {
 // 		case blockConcreteSyntaxTreeNodeKindName:
 // 		case blockContentConcreteSyntaxTreeNodeKindName:
 // 		case functionBodyConcreteSyntaxTreeNodeKindName:

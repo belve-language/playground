@@ -1,6 +1,6 @@
-import type {BranchConcreteSyntaxTreeNode} from "../../../BranchConcreteSyntaxTreeNode.ts";
-import type {SourceFileContentConcreteSyntaxTreeNodeDataChildren} from "./SourceFileContentConcreteSyntaxTreeNodeDataChildren.ts";
-import type {sourceFileContentConcreteSyntaxTreeNodeKindName} from "./sourceFileContentConcreteSyntaxTreeNodeKindName.ts";
+import type {BranchConcreteSyntaxTreeNode} from "../../branch/BranchConcreteSyntaxTreeNode.ts";
+import type {SourceFileContentConcreteSyntaxTreeNodeDataChildren} from "./data-children/SourceFileContentConcreteSyntaxTreeNodeDataChildren.ts";
+import type {sourceFileContentConcreteSyntaxTreeNodeKindName} from "./kind-name/sourceFileContentConcreteSyntaxTreeNodeKindName.ts";
 export type SourceFileContentConcreteSyntaxTreeNode =
 	BranchConcreteSyntaxTreeNode<
 		typeof sourceFileContentConcreteSyntaxTreeNodeKindName,

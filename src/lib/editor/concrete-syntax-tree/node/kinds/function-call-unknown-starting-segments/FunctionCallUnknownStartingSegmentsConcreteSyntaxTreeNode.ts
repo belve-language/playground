@@ -1,4 +1,4 @@
-import type {BranchConcreteSyntaxTreeNode} from "../../types/branch/BranchConcreteSyntaxTreeNode.ts";
+import type {BranchConcreteSyntaxTreeNode} from "../../branch/BranchConcreteSyntaxTreeNode.ts";
 import type {FunctionCallUnknownStartingSegmentsConcreteSyntaxTreeNodeDataChildren} from "./data-children/FunctionCallUnknownStartingSegmentsConcreteSyntaxTreeNodeDataChildren.ts";
 import type {functionCallUnknownStartingSegmentsConcreteSyntaxTreeNodeKindName} from "./kind-name/functionCallUnknownStartingSegmentsConcreteSyntaxTreeNodeKindName.ts";
 export type FunctionCallUnknownStartingSegmentsConcreteSyntaxTreeNode =

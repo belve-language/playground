@@ -16,7 +16,7 @@ export function* traverseLevelwise(
 		levelNumber += 1;
 		const newNodes = nodes
 			.flatMap((node): readonly (SupportedConcreteSyntaxTreeNode | null)[] => {
-				if (node.kind === "leaf") {
+				if (node.typeName === "leaf") {
 					return [] as const;
 				}
 				return node.data.children;

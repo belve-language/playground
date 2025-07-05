@@ -1,11 +1,11 @@
 import type {OpeningSquareBracketCharacter} from "../../../../../characters/opening-square-bracket/OpeningSquareBracketCharacter.ts";
 import type {Index} from "../../../../../index/Index.ts";
-import {createLeafConcreteSyntaxTreeNode} from "../../../types/leaf/creating/createLeafConcreteSyntaxTreeNode.ts";
+import {createLeafConcreteSyntaxTreeNode} from "../../../leaf/creating/createLeafConcreteSyntaxTreeNode.ts";
 import type {FunctionCallUnknownSegmentOpeningBracketConcreteSyntaxTreeNode} from "../FunctionCallUnknownSegmentOpeningBracketConcreteSyntaxTreeNode.ts";
 import {functionCallUnknownSegmentOpeningBracketConcreteSyntaxTreeNodeKindName} from "../kind-name/functionCallUnknownSegmentOpeningBracketConcreteSyntaxTreeNodeKindName.ts";
 export function createFunctionCallUnknownSegmentOpeningBracketConcreteSyntaxTreeNode(
 	character: OpeningSquareBracketCharacter,
-	index: Index,
+	spanIndex: Index,
 ): FunctionCallUnknownSegmentOpeningBracketConcreteSyntaxTreeNode {
 	return createLeafConcreteSyntaxTreeNode(
 		functionCallUnknownSegmentOpeningBracketConcreteSyntaxTreeNodeKindName,

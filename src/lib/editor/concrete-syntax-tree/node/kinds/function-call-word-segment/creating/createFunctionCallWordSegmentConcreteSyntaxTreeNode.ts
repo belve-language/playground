@@ -1,5 +1,5 @@
 import type {SpanIndexes} from "../../../../../span-indexes/SpanIndexes.ts";
-import {createBranchConcreteSyntaxTreeNode} from "../../../types/branch/creating/createBranchConcreteSyntaxTreeNode.ts";
+import {createBranchConcreteSyntaxTreeNode} from "../../../branch/creating/createBranchConcreteSyntaxTreeNode.ts";
 import type {FunctionCallWordSegmentConcreteSyntaxTreeNodeDataChildren} from "../data-children/FunctionCallWordSegmentConcreteSyntaxTreeNodeDataChildren.ts";
 import type {FunctionCallWordSegmentConcreteSyntaxTreeNode} from "../FunctionCallWordSegmentConcreteSyntaxTreeNode.ts";
 import {functionCallWordSegmentConcreteSyntaxTreeNodeKindName} from "../kind-name/functionCallWordSegmentConcreteSyntaxTreeNodeKindName.ts";

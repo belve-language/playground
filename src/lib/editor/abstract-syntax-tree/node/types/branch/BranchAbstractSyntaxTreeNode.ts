@@ -3,13 +3,13 @@ import type {BranchAbstractSyntaxTreeNodeData} from "./data/BranchAbstractSyntax
 import type {branchAbstractSyntaxTreeNodeTypeName} from "./type-name/branchAbstractSyntaxTreeNodeTypeName.ts";
 export type BranchAbstractSyntaxTreeNode<
 	KindNameToUse extends string,
-	DataChildrenToUse extends readonly AbstractSyntaxTreeNode<
-		string,
-		string,
-		unknown
-	>[],
+	DataChildrenToUse,
 > = AbstractSyntaxTreeNode<
 	KindNameToUse,
 	typeof branchAbstractSyntaxTreeNodeTypeName,
 	BranchAbstractSyntaxTreeNodeData<DataChildrenToUse>
 >;
+export class BranchAbstractSyntaxTreeNode<
+	KindNameToUse extends string,
+	DataChildrenToUse,
+> {}

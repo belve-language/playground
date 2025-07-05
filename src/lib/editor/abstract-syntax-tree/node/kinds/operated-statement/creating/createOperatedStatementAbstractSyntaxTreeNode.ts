@@ -1,13 +1,14 @@
-import type {BlockAbstractSyntaxTreeNode} from "../../block/BlockAbstractSyntaxTreeNode.ts";
-import type {FunctionCallAbstractSyntaxTreeNode} from "../../function-call/FunctionCallAbstractSyntaxTreeNode.ts";
+import type {SpanIndexes} from "../../../../../span-indexes/SpanIndexes.ts";
+import {createBranchAbstractSyntaxTreeNode} from "../../../types/branch/creating/createBranchAbstractSyntaxTreeNode.ts";
+import type {OperatedStatementAbstractSyntaxTreeNodeDataChildren} from "../data-children/OperatedStatementAbstractSyntaxTreeNodeDataChildren.ts";
+import {operatedStatementAbstractSyntaxTreeNodeKindName} from "../kind-name/operatedStatementAbstractSyntaxTreeNodeKindName.ts";
 import type {OperatedStatementAbstractSyntaxTreeNode} from "../OperatedStatementAbstractSyntaxTreeNode.ts";
 export function createOperatedStatementAbstractSyntaxTreeNode(
-	children,
+	children: OperatedStatementAbstractSyntaxTreeNodeDataChildren,
+	spanIndexes: SpanIndexes,
 ): OperatedStatementAbstractSyntaxTreeNode {
-	const treeNode: OperatedStatementAbstractSyntaxTreeNode =
-		createAbstractSyntaxTreeNode(
-			operatedStatementAbstractSyntaxTreeNodeKindName,
-			{operator, statement} as const,
-		);
-	return treeNode;
+	return createBranchAbstractSyntaxTreeNode(
+		operatedStatementAbstractSyntaxTreeNodeKindName,
+		{children, spanIndexes},
+	);
 }

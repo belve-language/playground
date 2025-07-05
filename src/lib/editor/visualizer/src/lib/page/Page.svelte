@@ -3,9 +3,12 @@
 	import {page} from "$app/state";
 	import {modeSearchParamName} from "../modeSearchParamName.ts";
 	import {sourceCodeSearchParamName} from "../sourceCodeSearchParamName.ts";
-	import AbstractSyntaxTree from "./AbstractSyntaxTree.svelte";
-	import Animated from "./Animated.svelte";
-	import Instant from "./Instant.svelte";
+	import AbstractSyntaxTreeDisplayer from "./AbstractSyntaxTreeDisplayer.svelte";
+	import AbstractSyntaxTree from "./AbstractSyntaxTreeDisplayer.svelte";
+	import AnimatedConcreteSyntaxTreeDisplayer from "./AnimatedConcreteSyntaxTreeDisplayer.svelte";
+	import Animated from "./AnimatedConcreteSyntaxTreeDisplayer.svelte";
+	import InstantConcreteSyntaxTreeDisplayer from "./InstantConcreteSyntaxTreeDisplayer.svelte";
+	import Instant from "./InstantConcreteSyntaxTreeDisplayer.svelte";
 	import type {ParsingConfiguration} from "./ParsingConfiguration.ts";
 	const {
 		parsingConfiguration,
@@ -45,7 +48,7 @@
 				<input type="radio" name="mode" value="animated" />
 				Animated
 			</label> -->
-			{#each ["none", "instant", "animated", "abstract-syntax-tree"] as mode}
+			{#each ["none", "instant-concrete-syntax-tree", "animated-concrete-syntax-tree", "abstract-syntax-tree"] as mode}
 				<label>
 					<input
 						type="radio"
@@ -59,14 +62,18 @@
 			{/each}
 		</div>
 	</fieldset>
-	{#if parsingConfiguration.mode === "instant"}
-		<Instant sourceCode={parsingConfiguration.sourceCode} />
+	{#if parsingConfiguration.mode === "instant-concrete-syntax-tree"}
+		<InstantConcreteSyntaxTreeDisplayer
+			sourceCode={parsingConfiguration.sourceCode}
+		/>
 	{/if}
-	{#if parsingConfiguration.mode === "animated"}
-		<Animated sourceCode={parsingConfiguration.sourceCode} />
+	{#if parsingConfiguration.mode === "animated-concrete-syntax-tree"}
+		<AnimatedConcreteSyntaxTreeDisplayer
+			sourceCode={parsingConfiguration.sourceCode}
+		/>
 	{/if}
 	{#if parsingConfiguration.mode === "abstract-syntax-tree"}
-		<AbstractSyntaxTree sourceCode={parsingConfiguration.sourceCode} />
+		<AbstractSyntaxTreeDisplayer sourceCode={parsingConfiguration.sourceCode} />
 	{/if}
 </main>
 
