@@ -12,11 +12,12 @@
 		"customConditions": [],
 		"disableSizeLimit": true,
 		"erasableSyntaxOnly": true,
-		"esModuleInterop": false, // ?
+		"esModuleInterop": false,
 		"exactOptionalPropertyTypes": true,
 		"forceConsistentCasingInFileNames": false,
+		"isolatedDeclarations": false,
 		"isolatedModules": true,
-		"lib": ["DOM", "DOM.Iterable", "ES2024"],
+		"lib": ["DOM", "DOM.Iterable", "ESNext"],
 		"libReplacement": false,
 		"maxNodeModuleJsDepth": 0,
 		"module": "node18",
@@ -31,8 +32,8 @@
 		"noImplicitThis": true,
 		"noLib": false,
 		"noPropertyAccessFromIndexSignature": true,
-		"noResolve": false, // ?
-		"noStrictGenericChecks": false, // ?
+		"noResolve": false,
+		"noStrictGenericChecks": false,
 		"noUncheckedIndexedAccess": true,
 		"noUncheckedSideEffectImports": true,
 		"noUnusedLocals": false,
@@ -41,7 +42,7 @@
 		"resolveJsonModule": false,
 		"resolvePackageJsonExports": false,
 		"resolvePackageJsonImports": false,
-		"skipLibCheck": false,
+		"skipLibCheck": true,
 		"strict": true,
 		"strictBindCallApply": true,
 		"strictBuiltinIteratorReturn": true,
@@ -50,15 +51,14 @@
 		"strictPropertyInitialization": true,
 		"suppressExcessPropertyErrors": false,
 		"suppressImplicitAnyIndexErrors": false,
-		"target": "es2024", // ?
+		"target": "es2024",
+		"useDefineForClassFields": true,
 		"useUnknownInCatchVariables": true,
 		"verbatimModuleSyntax": true
-		// "isolatedDeclarations": true,
-		// useDefineForClassFields: true,
 	},
-	"exclude": [".git", "node_modules"],
-	"extends": ["./.svelte-kit/tsconfig.json"],
+	"exclude": ["./.git", "./.svelte-kit", "./node_modules"],
+	"extends": [],
 	"files": [],
-	"include": ["**/*"],
+	"include": ["./**/*", "./**/.*", "./**/.*/**/*"],
 	"references": []
 }

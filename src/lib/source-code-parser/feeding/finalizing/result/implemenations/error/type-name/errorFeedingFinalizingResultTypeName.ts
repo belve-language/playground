@@ -1,0 +1,1 @@
+export const errorFeedingFinalizingResultTypeName = "error";

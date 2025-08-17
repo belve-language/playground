@@ -1,8 +1,0 @@
-import type {BranchConcreteSyntaxTreeNode} from "../../branch/BranchConcreteSyntaxTreeNode.ts";
-import type {FunctionHeaderWordStartingSegmentsConcreteSyntaxTreeNodeDataChildren} from "./data-children/FunctionHeaderWordStartingSegmentsConcreteSyntaxTreeNodeDataChildren.ts";
-import type {functionHeaderWordStartingSegmentsConcreteSyntaxTreeNodeKindName} from "./kind-name/functionHeaderWordStartingSegmentsConcreteSyntaxTreeNodeKindName.ts";
-export type FunctionHeaderWordStartingSegmentsConcreteSyntaxTreeNode =
-	BranchConcreteSyntaxTreeNode<
-		typeof functionHeaderWordStartingSegmentsConcreteSyntaxTreeNodeKindName,
-		FunctionHeaderWordStartingSegmentsConcreteSyntaxTreeNodeDataChildren
-	>;

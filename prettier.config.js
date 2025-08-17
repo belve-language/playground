@@ -8,7 +8,7 @@ export default /** @type {const} @satisfies {import("prettier").Config} */ ({
 	overrides: [],
 	plugins: ["prettier-plugin-svelte"],
 	printWidth: 80,
-	quoteProps: "as-needed",
+	quoteProps: "preserve",
 	semi: true,
 	singleQuote: false,
 	trailingComma: "all",

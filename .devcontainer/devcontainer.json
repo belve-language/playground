@@ -1,39 +1,33 @@
 {
-	"appPort": [],
-	"build": {
-		"args": {"ALPINE_VERSION": "3.21", "NODE_JS_VERSION": "23.10.0"},
-		"cacheFrom": [],
-		"dockerfile": "./Dockerfile",
-		"options": []
-	},
 	"capAdd": [],
 	"containerEnv": {},
-	"containerUser": "node",
+	"containerUser": "developer",
 	"customizations": {
 		"vscode": {
 			"extensions": [
+				"dbaeumer.vscode-eslint",
 				"esbenp.prettier-vscode",
-				"mhutchie.git-graph",
 				"svelte.svelte-vscode"
 			]
 		}
 	},
+	"dockerComposeFile": ["./docker-compose.yaml"],
 	"features": {},
 	"forwardPorts": [],
 	"init": false,
 	"mounts": [],
-	"name": "Development",
+	"name": "Developing",
 	"otherPortsAttributes": {},
 	"overrideCommand": true,
 	"portsAttributes": {},
+	"postCreateCommand": "npm clean-install && npx svelte-kit sync",
 	"privileged": false,
 	"remoteEnv": {},
-	"remoteUser": "node",
-	"runArgs": [],
+	"remoteUser": "developer",
 	"securityOpt": [],
-	"shutdownAction": "stopContainer",
+	"service": "belve-explorer",
+	"shutdownAction": "stopCompose",
 	"updateRemoteUserUID": true,
 	"userEnvProbe": "none",
-	"workspaceFolder": "/home/node/${localWorkspaceFolderBasename}",
-	"workspaceMount": "source=${localWorkspaceFolder},target=/home/node/${localWorkspaceFolderBasename},type=bind,consistency=consistent"
+	"workspaceFolder": "/home/developer/belve-explorer"
 }

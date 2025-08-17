@@ -1,0 +1,18 @@
+services:
+  belve-explorer:
+    build:
+      args:
+        ALPINE_VERSION: "3.22.1"
+      context: "."
+      dockerfile: "Dockerfile"
+    volumes:
+      - consistency: "consistent"
+        read_only: false
+        source: ".."
+        target: "/home/developer/belve-explorer"
+        type: "bind"
+      - consistency: "consistent"
+        read_only: false
+        source: "/var/run/docker.sock"
+        target: "/var/run/docker.sock"
+        type: "bind"

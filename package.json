@@ -4,7 +4,10 @@
 		"@sveltejs/kit": "2.20.2",
 		"@sveltejs/vite-plugin-svelte": "5.0.3",
 		"@types/node": "22.13.14",
+		"@typescript-eslint/parser": "8.39.1",
 		"dependency-cruiser": "16.10.1",
+		"eslint-plugin-import": "2.32.0",
+		"eslint-plugin-perfectionist": "4.15.0",
 		"prettier": "3.5.3",
 		"prettier-plugin-svelte": "3.3.3",
 		"svelte": "5.25.3",
@@ -13,9 +16,19 @@
 		"vite": "6.2.3"
 	},
 	"name": "belve-explorer",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/belve-language/belve-explorer.git"
+	},
 	"scripts": {
-		"build:check": "svelte-kit sync && svelte-check",
-		"dev": "vite dev"
+		"dev": "vite dev",
+		"eslint:check": "svelte-kit sync && eslint --max-warnings=0 .",
+		"eslint:fix": "svelte-kit sync && eslint --fix --max-warnings=0 .",
+		"prettier:check": "prettier --check .",
+		"prettier:fix": "prettier --write .",
+		"svelte:check": "svelte-kit sync && svelte-check",
+		"test:check:e2e": "DOCKER_AUTH_CONFIG='{}' node --test --experimental-strip-types --experimental-test-coverage --test-concurrency=1 '**/*.e2e.test.ts'",
+		"test:check:unit": "DOCKER_AUTH_CONFIG='{}' node --test --experimental-strip-types --experimental-test-coverage '**/*.unit.test.ts'"
 	},
 	"type": "module",
 	"version": "0.0.0"

@@ -1,1 +1,0 @@
-export const successFinalizeResultTypeName = "success";
