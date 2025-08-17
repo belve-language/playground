@@ -2,5 +2,5 @@ import type {FunctionsBranchConcreteSyntaxTreeNode} from "../../functions/Functi
 import type {WhitespaceBranchConcreteSyntaxTreeNode} from "../../whitespace/WhitespaceBranchConcreteSyntaxTreeNode.ts";
 export type SeparatedFunctionsBranchConcreteSyntaxTreeNodeChildren = readonly [
 	FunctionsBranchConcreteSyntaxTreeNode,
-	WhitespaceBranchConcreteSyntaxTreeNode | null,
+	null | WhitespaceBranchConcreteSyntaxTreeNode,
 ];

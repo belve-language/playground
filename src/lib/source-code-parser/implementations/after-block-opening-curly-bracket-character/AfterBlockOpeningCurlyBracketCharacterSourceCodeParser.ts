@@ -7,6 +7,7 @@ import type {OpeningSquareBracketCharacter} from "../../../characters/opening-sq
 import type {OperatorCharacter} from "../../../characters/operator/OperatorCharacter.ts";
 import type {WhitespaceCharacter} from "../../../characters/whitespace/WhitespaceCharacter.ts";
 import type {WordCharacter} from "../../../characters/word/WordCharacter.ts";
+import type {WithWhitespace1PaddedFunctionsBranchConcreteSyntaxTreeNodeBuilder} from "../../../concrete-syntax-tree-node/implementations/branch/implementations/padded-functions/builders/with-whitespace-1/WithWhitespace1PaddedFunctionsBranchConcreteSyntaxTreeNodeBuilder.ts";
 import type {Index} from "../../../index/Index.ts";
 import type {SourceCodeParser} from "../../SourceCodeParser.ts";
 import {ErrorFeedingFinalizingResult} from "../../feeding/finalizing/result/implemenations/error/ErrorFeedingFinalizingResult.ts";

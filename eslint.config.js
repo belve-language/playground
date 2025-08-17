@@ -46,7 +46,7 @@ export default [
 				{
 					customGroups: [],
 					groups: ["constructor", "unknown"],
-					ignoreCase: false,
+					ignoreCase: true,
 					newlinesBetween: "never",
 					order: "asc",
 					partitionByComment: false,
@@ -59,7 +59,21 @@ export default [
 				{
 					customGroups: [],
 					groups: ["unknown"],
-					ignoreCase: false,
+					ignoreCase: true,
+					newlinesBetween: "never",
+					order: "asc",
+					partitionByComment: false,
+					partitionByNewLine: false,
+					specialCharacters: "keep",
+					type: "natural",
+				},
+			],
+			"perfectionist/sort-union-types": [
+				"warn",
+				{
+					customGroups: [],
+					groups: ["unknown"],
+					ignoreCase: true,
 					newlinesBetween: "never",
 					order: "asc",
 					partitionByComment: false,

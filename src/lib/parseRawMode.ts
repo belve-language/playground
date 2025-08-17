@@ -1,5 +1,5 @@
 import type {EditorMode} from "./EditorMode.ts";
-export function parseRawMode(rawMode: string | null): EditorMode {
+export function parseRawMode(rawMode: null | string): EditorMode {
 	switch (rawMode) {
 		case "animated-parser":
 		case "instant-parser":

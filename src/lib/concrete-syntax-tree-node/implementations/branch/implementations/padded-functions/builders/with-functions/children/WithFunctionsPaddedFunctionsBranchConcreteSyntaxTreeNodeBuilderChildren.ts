@@ -2,6 +2,6 @@ import type {FunctionsBranchConcreteSyntaxTreeNode} from "../../../../functions/
 import type {WhitespaceBranchConcreteSyntaxTreeNode} from "../../../../whitespace/WhitespaceBranchConcreteSyntaxTreeNode.ts";
 export type WithFunctionsPaddedFunctionsBranchConcreteSyntaxTreeNodeBuilderChildren =
 	readonly [
-		WhitespaceBranchConcreteSyntaxTreeNode | null,
+		null | WhitespaceBranchConcreteSyntaxTreeNode,
 		FunctionsBranchConcreteSyntaxTreeNode,
 	];

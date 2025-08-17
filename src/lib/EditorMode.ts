@@ -1,7 +1,7 @@
 export type EditorMode =
-	| "none"
-	| "animated-parser"
-	| "instant-parser"
 	| "abstracter"
+	| "animated-parser"
 	| "formatter"
-	| "interpreter";
+	| "instant-parser"
+	| "interpreter"
+	| "none";
