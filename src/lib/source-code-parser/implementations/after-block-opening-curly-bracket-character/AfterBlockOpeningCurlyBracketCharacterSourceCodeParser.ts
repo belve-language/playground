@@ -7,46 +7,73 @@ import type {OpeningSquareBracketCharacter} from "../../../characters/opening-sq
 import type {OperatorCharacter} from "../../../characters/operator/OperatorCharacter.ts";
 import type {WhitespaceCharacter} from "../../../characters/whitespace/WhitespaceCharacter.ts";
 import type {WordCharacter} from "../../../characters/word/WordCharacter.ts";
+import {InStackBlockBranchConcreteSyntaxTreeNodeBuilder} from "../../../concrete-syntax-tree-node/implementations/branch/implementations/block/builders/in-stack/InStackBlockBranchConcreteSyntaxTreeNodeBuilder.ts";
+import {WithOpeningCurlyBracketBlockBranchConcreteSyntaxTreeNodeBuilder} from "../../../concrete-syntax-tree-node/implementations/branch/implementations/block/builders/with-opening-curly-bracket/WithOpeningCurlyBracketBlockBranchConcreteSyntaxTreeNodeBuilder.ts";
+import {WithoutBlockContentConcreteSyntaxTreeNodeNodeBuilder} from "../../../concrete-syntax-tree-node/implementations/branch/implementations/block-content/builders/without/WithoutBlockContentConcreteSyntaxTreeNodeNodeBuilder.ts";
+import type {WithSeparatedFunctionsFunctionsBranchConcreteSyntaxTreeNodeBuilder} from "../../../concrete-syntax-tree-node/implementations/branch/implementations/functions/builders/with-separated-functions/WithSeparatedFunctionsFunctionsBranchConcreteSyntaxTreeNodeBuilder.ts";
 import type {WithWhitespace1PaddedFunctionsBranchConcreteSyntaxTreeNodeBuilder} from "../../../concrete-syntax-tree-node/implementations/branch/implementations/padded-functions/builders/with-whitespace-1/WithWhitespace1PaddedFunctionsBranchConcreteSyntaxTreeNodeBuilder.ts";
+import {WithWhitespace1PaddedStatementsBranchConcreteSyntaxTreeNodeBuilder} from "../../../concrete-syntax-tree-node/implementations/branch/implementations/padded-statements/builders/with-whitespace-1/WithWhitespace1PaddedStatementsBranchConcreteSyntaxTreeNodeBuilder.ts";
+import type {WithSeparatedFunctionHeaderFunctionBranchConcreteSyntaxTreeNodeBuilder} from "../../../concrete-syntax-tree-node/implementations/branch/implementations/separated-function-header/builders/with-function/WithSeparatedFunctionHeaderFunctionBranchConcreteSyntaxTreeNodeBuilder.ts";
+import {WhitespaceCharactersBranchConcreteSyntaxTreeNode} from "../../../concrete-syntax-tree-node/implementations/branch/implementations/whitespace-characters/WhitespaceCharactersBranchConcreteSyntaxTreeNode.ts";
+import {WhitespaceCharacterLeafConcreteSyntaxTreeNode} from "../../../concrete-syntax-tree-node/implementations/leaf/implementations/whitespace-character/WhitespaceCharacterLeafConcreteSyntaxTreeNode.ts";
 import type {Index} from "../../../index/Index.ts";
 import type {SourceCodeParser} from "../../SourceCodeParser.ts";
 import {ErrorFeedingFinalizingResult} from "../../feeding/finalizing/result/implemenations/error/ErrorFeedingFinalizingResult.ts";
 import {ErrorFeedingResult} from "../../feeding/result/implementations/error/ErrorFeedingResult.ts";
 import {SuccessFeedingResult} from "../../feeding/result/implementations/success/SuccessFeedingResult.ts";
+import {AfterBlockSourceCodeParser} from "../after-block/AfterBlockSourceCodeParser.ts";
+import {AfterFunctionSourceCodeParser} from "../after-function/AfterFunctionSourceCodeParser.ts";
+import {AfterWhitespaceCharactersBlockContentSourceCodeParser} from "../after-whitespace-characters-block-content/AfterWhitespaceCharactersBlockContentSourceCodeParser.ts";
+import {AfterWordFunctionCallSegmentWordCharacterSourceCodeParser} from "../after-word-function-call-segment-word-character/AfterWordFunctionCallSegmentWordCharacterSourceCodeParser.ts";
+import {AfterOpeningRoundBracketKnownFunctionCallSegmentSourceCodeParser} from "../after-opening-round-bracket-known-function-call-segment/AfterOpeningRoundBracketKnownFunctionCallSegmentSourceCodeParser.ts";
 export class AfterBlockOpeningCurlyBracketCharacterSourceCodeParser
 	implements SourceCodeParser
 {
 	public constructor(
-		paddedFunctionsBuilder: WithWhitespace1PaddedFunctionsBuilder,
-		functionsBuilder: WithSeparatedFunctionsFunctionsBuilder,
-		functionBuilder: WithSeparatedFunctionHeaderFunctionBuilder,
-		blockBuildersStack: readonly WithOpeningCurlyBracketBlockBuilder[],
-		blockBuilder: WithOpeningCurlyBracketBlockBuilder,
+		paddedFunctionsBuilder: WithWhitespace1PaddedFunctionsBranchConcreteSyntaxTreeNodeBuilder,
+		functionsBuilder: WithSeparatedFunctionsFunctionsBranchConcreteSyntaxTreeNodeBuilder,
+		functionBuilder: WithSeparatedFunctionHeaderFunctionBranchConcreteSyntaxTreeNodeBuilder,
+		blockBuilders: readonly [
+			InStackBlockBranchConcreteSyntaxTreeNodeBuilder,
+			...(readonly InStackBlockBranchConcreteSyntaxTreeNodeBuilder[]),
+		],
+		blockBuilder: WithOpeningCurlyBracketBlockBranchConcreteSyntaxTreeNodeBuilder,
 	) {
 		this.paddedFunctionsBuilder = paddedFunctionsBuilder;
 		this.functionsBuilder = functionsBuilder;
 		this.functionBuilder = functionBuilder;
-		this.inStackBlockBuilders = blockBuildersStack;
+		this.blockBuilders = blockBuilders;
 		this.blockBuilder = blockBuilder;
 	}
-	private readonly blockBuilder: WithOpeningCurlyBracketBlockBuilder;
+	private readonly blockBuilder: WithOpeningCurlyBracketBlockBranchConcreteSyntaxTreeNodeBuilder;
+	private readonly blockBuilders: readonly [
+		InStackBlockBranchConcreteSyntaxTreeNodeBuilder,
+		...(readonly InStackBlockBranchConcreteSyntaxTreeNodeBuilder[]),
+	];
 	public feedWithClosingCurlyBracketCharacter(
 		character: ClosingCurlyBracketCharacter,
 		index: Index,
 	): SuccessFeedingResult {
-		const [firstInStackBlockBuilder, ...restInStackBlockBuilders] =
-			this.inStackBlockBuilders;
-		if (firstInStackBlockBuilder === undefined) {
-			return new SuccessFeedingResult(new AfterFunctionParser());
+		const [firstBlockBuilder, firstRestBlockBuilder, ...restRestBlockBuilders] =
+			this.blockBuilders;
+		if (firstRestBlockBuilder === undefined) {
+			const result = new SuccessFeedingResult(
+				new AfterFunctionSourceCodeParser(),
+			);
 		} else {
-			return new SuccessFeedingResult(new AfterBlockStatementParser());
+			const result = new SuccessFeedingResult(
+				new AfterBlockSourceCodeParser([
+					firstRestBlockBuilder,
+					...restRestBlockBuilders,
+				]),
+			);
 		}
 	}
 	public feedWithClosingRoundBracketCharacter(
 		character: ClosingRoundBracketCharacter,
 		index: Index,
 	): ErrorFeedingResult {
-		return new ErrorFeedingResult(
+		const result = new ErrorFeedingResult(
 			character,
 			index,
 			"No known function header segment to close.",
@@ -56,7 +83,7 @@ export class AfterBlockOpeningCurlyBracketCharacterSourceCodeParser
 		character: ClosingSquareBracketCharacter,
 		index: Index,
 	): ErrorFeedingResult {
-		return new ErrorFeedingResult(
+		const result = new ErrorFeedingResult(
 			character,
 			index,
 			"No unknown function header segment to close.",
@@ -66,11 +93,24 @@ export class AfterBlockOpeningCurlyBracketCharacterSourceCodeParser
 		character: OpeningCurlyBracketCharacter,
 		index: Index,
 	): SuccessFeedingResult {
-		return new SuccessFeedingResult(
+		const result = new SuccessFeedingResult(
 			new AfterBlockOpeningCurlyBracketCharacterSourceCodeParser(
 				this.paddedFunctionsBuilder,
 				this.functionsBuilder,
 				this.functionBuilder,
+				[
+					// new WithOpeningCurlyBracketBlockBranchConcreteSyntaxTreeNodeBuilder(
+					// 	[
+					// 		new OpeningCurlyBracketLeafConcreteSyntaxTreeNode(
+					// 			character,
+					// 			index,
+					// 		),
+					// 	],
+					// 	index,
+					// ),
+					this.blockBuilder,
+					...this.blockBuilders,
+				],
 				new WithOpeningCurlyBracketBlockBuilder(),
 			),
 		);
@@ -79,49 +119,50 @@ export class AfterBlockOpeningCurlyBracketCharacterSourceCodeParser
 		character: OpeningRoundBracketCharacter,
 		index: Index,
 	): SuccessFeedingResult {
-		return new SuccessFeedingResult(
-			new AfterKnownFunctionCallSegmentOpeningRoundBracketParser(
-				this.paddedFunctionsBuilder,
-				this.functionsBuilder,
-				this.functionBuilder,
-				this.blockBuilder,
-			),
+		const result = new SuccessFeedingResult(
+			new AfterOpeningRoundBracketKnownFunctionCallSegmentSourceCodeParser(),
 		);
 	}
 	public feedWithOpeningSquareBracketCharacter(
 		character: OpeningSquareBracketCharacter,
 		index: Index,
 	): SuccessFeedingResult {
-		return new SuccessFeedingResult(
-			new AfterUnknownFunctionCallSegmentOpeningSquareBracketParser(
+		// change to new parser everywhere else
+		const newParser =
+			new AfterOpeningSquareBracketUnknownFunctionCallSegmentSourceCodeParser(
 				this.paddedFunctionsBuilder,
 				this.functionsBuilder,
 				this.functionBuilder,
 				this.blockBuilder,
-			),
-		);
+			);
+		const result = new SuccessFeedingResult();
+		return result;
 	}
 	public feedWithOperatorCharacter(
 		character: OperatorCharacter,
 		index: Index,
 	): ErrorFeedingResult {
-		return new ErrorFeedingResult(
+		const result = new ErrorFeedingResult(
 			character,
 			index,
-			`No statement to operate on in block starting at index ${this.blockBuilder.startingIndex.toString(10)}.`,
+			`No statement to operate on in block starting at index ${this.blockBuilder.computeSpanIndexesStartingIndex().toString(10)}.`,
 		);
 	}
 	public feedWithWhitespaceCharacter(
 		character: WhitespaceCharacter,
 		index: Index,
 	): SuccessFeedingResult {
-		return new SuccessFeedingResult(
-			new AfterWhitespaceCharacterAfterBlockOpeningCurlyBracketCharacterSourceCodeParser(
+		const result = new SuccessFeedingResult(
+			new AfterWhitespaceCharactersBlockContentSourceCodeParser(
 				this.paddedFunctionsBuilder,
 				this.functionsBuilder,
 				this.functionBuilder,
 				this.blockBuilder,
 				new WhitespaceCharacterLeafConcreteSyntaxTreeNode(character, index),
+				WhitespaceCharactersBranchConcreteSyntaxTreeNode.create(
+					null,
+					new WhitespaceCharacterLeafConcreteSyntaxTreeNode(character, index),
+				),
 			),
 		);
 	}
@@ -129,23 +170,26 @@ export class AfterBlockOpeningCurlyBracketCharacterSourceCodeParser
 		character: WordCharacter,
 		index: Index,
 	): SuccessFeedingResult {
-		return new SuccessFeedingResult(
-			new AfterWordFunctionCallSegmentWordCharacterParser(
+		const result = new SuccessFeedingResult(
+			new AfterWordFunctionCallSegmentWordCharacterSourceCodeParser(
 				this.paddedFunctionsBuilder,
 				this.functionsBuilder,
 				this.functionBuilder,
+				this.blockBuilders,
 				this.blockBuilder,
-				new WordCharacterLeafConcreteSyntaxTreeNode(character, index),
+				new WithoutBlockContentConcreteSyntaxTreeNodeNodeBuilder([], index),
+				WithWhitespace1PaddedStatementsBranchConcreteSyntaxTreeNodeBuilder.create(
+					null,
+				),
 			),
 		);
 	}
 	public finalizeFeeding(): ErrorFeedingFinalizingResult {
-		return new ErrorFeedingFinalizingResult(
-			`The block starting at index ${this.blockBuilder.startingIndex.toString(10)} is not closed.`,
+		const result = new ErrorFeedingFinalizingResult(
+			`The block starting at index ${this.blockBuilder.computeSpanIndexesStartingIndex().toString(10)} is not closed.`,
 		);
 	}
 	private readonly functionBuilder: WithSeparatedFunctionHeaderFunctionBranchConcreteSyntaxTreeNodeBuilder;
 	private readonly functionsBuilder: WithSeparatedFunctionsFunctionsBranchConcreteSyntaxTreeNodeBuilder;
-	private readonly inStackBlockBuilders: readonly WithOpeningCurlyBracketBlockBranchConcreteSyntaxTreeNodeBuilder[];
 	private readonly paddedFunctionsBuilder: WithWhitespace1PaddedFunctionsBranchConcreteSyntaxTreeNodeBuilder;
 }

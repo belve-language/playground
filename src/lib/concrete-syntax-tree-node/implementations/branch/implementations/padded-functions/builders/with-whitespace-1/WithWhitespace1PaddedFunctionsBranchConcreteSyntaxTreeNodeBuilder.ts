@@ -1,21 +1,19 @@
 import type {WithWhitespace1PaddedFunctionsBranchConcreteSyntaxTreeNodeBuilderChildren} from "./children/WithWhitespace1PaddedFunctionsBranchConcreteSyntaxTreeNodeBuilderChildren.ts";
-import type {Index} from "../../../../../../../index/Index.ts";
 import {BranchConcreteSyntaxTreeNodeBuilder} from "../../../../builder/BranchConcreteSyntaxTreeNodeBuilder.ts";
-import type {FunctionsBranchConcreteSyntaxTreeNode} from "../../../functions/FunctionsBranchConcreteSyntaxTreeNode.ts";
-import {WithFunctionsPaddedFunctionsBranchConcreteSyntaxTreeNodeBuilder} from "../with-functions/WithFunctionsPaddedFunctionsBranchConcreteSyntaxTreeNodeBuilder.ts";
+import type {WhitespaceBranchConcreteSyntaxTreeNode} from "../../../whitespace/WhitespaceBranchConcreteSyntaxTreeNode.ts";
 export class WithWhitespace1PaddedFunctionsBranchConcreteSyntaxTreeNodeBuilder extends BranchConcreteSyntaxTreeNodeBuilder<WithWhitespace1PaddedFunctionsBranchConcreteSyntaxTreeNodeBuilderChildren> {
-	public constructor(
+	private constructor(
 		children: WithWhitespace1PaddedFunctionsBranchConcreteSyntaxTreeNodeBuilderChildren,
-		startingIndex: Index,
 	) {
-		super(children, startingIndex);
+		super(children);
 	}
-	public addFunctions(
-		functions: FunctionsBranchConcreteSyntaxTreeNode,
-	): WithFunctionsPaddedFunctionsBranchConcreteSyntaxTreeNodeBuilder {
-		return new WithFunctionsPaddedFunctionsBranchConcreteSyntaxTreeNodeBuilder(
-			[this.children[0], functions],
-			this.startingIndex,
-		);
+	public static create(
+		whitespace1: null | WhitespaceBranchConcreteSyntaxTreeNode,
+	): WithWhitespace1PaddedFunctionsBranchConcreteSyntaxTreeNodeBuilder {
+		const builder =
+			new WithWhitespace1PaddedFunctionsBranchConcreteSyntaxTreeNodeBuilder([
+				whitespace1,
+			]);
+		return builder;
 	}
 }

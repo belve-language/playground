@@ -1,0 +1,1 @@
+export type BlockContentConcreteSyntaxTreeNodeNodeBuilderChildren = readonly [];

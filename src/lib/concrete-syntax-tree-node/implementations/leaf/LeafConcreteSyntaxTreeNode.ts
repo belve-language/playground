@@ -3,9 +3,14 @@ import type {Index} from "../../../index/Index.ts";
 import {ConcreteSyntaxTreeNode} from "../../ConcreteSyntaxTreeNode.ts";
 export abstract class LeafConcreteSyntaxTreeNode<
 	CharacterToUse extends Character,
-> extends ConcreteSyntaxTreeNode {
-	protected constructor(character: CharacterToUse, index: Index) {
-		super();
+	TypeName extends string,
+> extends ConcreteSyntaxTreeNode<TypeName> {
+	protected constructor(
+		character: CharacterToUse,
+		index: Index,
+		typeName: TypeName,
+	) {
+		super(typeName);
 		this.character = character;
 		this.index = index;
 	}

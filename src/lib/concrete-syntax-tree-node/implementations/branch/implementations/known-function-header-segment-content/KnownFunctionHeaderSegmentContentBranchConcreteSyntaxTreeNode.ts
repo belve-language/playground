@@ -1,11 +1,19 @@
 import type {KnownFunctionHeaderSegmentContentBranchConcreteSyntaxTreeNodeChildren} from "./children/KnownFunctionHeaderSegmentContentBranchConcreteSyntaxTreeNodeChildren.ts";
+import {knownFunctionHeaderSegmentContentBranchConcreteSyntaxTreeNodeTypeName} from "./type-name/knownFunctionHeaderSegmentContentBranchConcreteSyntaxTreeNodeTypeName.ts";
 import type {SpanIndexes} from "../../../../../span-indexes/SpanIndexes.ts";
 import {BranchConcreteSyntaxTreeNode} from "../../BranchConcreteSyntaxTreeNode.ts";
-export class KnownFunctionHeaderSegmentContentBranchConcreteSyntaxTreeNode extends BranchConcreteSyntaxTreeNode<KnownFunctionHeaderSegmentContentBranchConcreteSyntaxTreeNodeChildren> {
+export class KnownFunctionHeaderSegmentContentBranchConcreteSyntaxTreeNode extends BranchConcreteSyntaxTreeNode<
+	KnownFunctionHeaderSegmentContentBranchConcreteSyntaxTreeNodeChildren,
+	typeof knownFunctionHeaderSegmentContentBranchConcreteSyntaxTreeNodeTypeName
+> {
 	public constructor(
 		children: KnownFunctionHeaderSegmentContentBranchConcreteSyntaxTreeNodeChildren,
 		spanIndexes: SpanIndexes,
 	) {
-		super(children, spanIndexes);
+		super(
+			children,
+			spanIndexes,
+			knownFunctionHeaderSegmentContentBranchConcreteSyntaxTreeNodeTypeName,
+		);
 	}
 }

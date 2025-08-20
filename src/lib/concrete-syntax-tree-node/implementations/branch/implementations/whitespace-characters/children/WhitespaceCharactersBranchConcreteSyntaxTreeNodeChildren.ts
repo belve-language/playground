@@ -2,6 +2,6 @@ import type {WhitespaceCharacterLeafConcreteSyntaxTreeNode} from "../../../../le
 import type {WhitespaceCharactersBranchConcreteSyntaxTreeNode} from "../WhitespaceCharactersBranchConcreteSyntaxTreeNode.ts";
 export type WhitespaceCharactersBranchConcreteSyntaxTreeNodeChildren =
 	readonly [
-		null | WhitespaceCharactersBranchConcreteSyntaxTreeNode,
-		WhitespaceCharacterLeafConcreteSyntaxTreeNode,
+		whitespaceCharacters: null | WhitespaceCharactersBranchConcreteSyntaxTreeNode,
+		whitespaceCharacter: WhitespaceCharacterLeafConcreteSyntaxTreeNode,
 	];

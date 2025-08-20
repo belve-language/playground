@@ -1,0 +1,2 @@
+export const separatedFunctionHeaderBranchConcreteSyntaxTreeNodeTypeName =
+	"separatedFunctionHeader";

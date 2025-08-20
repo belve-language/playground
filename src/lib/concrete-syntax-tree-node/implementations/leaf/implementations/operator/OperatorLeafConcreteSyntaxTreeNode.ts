@@ -1,8 +1,12 @@
 import type {OperatorCharacter} from "../../../../../characters/operator/OperatorCharacter.ts";
 import type {Index} from "../../../../../index/Index.ts";
 import {LeafConcreteSyntaxTreeNode} from "../../LeafConcreteSyntaxTreeNode.ts";
-export class OperatorLeafConcreteSyntaxTreeNode extends LeafConcreteSyntaxTreeNode<OperatorCharacter> {
+import {operatorLeafConcreteSyntaxTreeNodeTypeName} from "./type-name/operatorLeafConcreteSyntaxTreeNodeTypeName.ts";
+export class OperatorLeafConcreteSyntaxTreeNode extends LeafConcreteSyntaxTreeNode<
+	OperatorCharacter,
+	typeof operatorLeafConcreteSyntaxTreeNodeTypeName
+> {
 	public constructor(character: OperatorCharacter, index: Index) {
-		super(character, index);
+		super(character, index, operatorLeafConcreteSyntaxTreeNodeTypeName);
 	}
 }

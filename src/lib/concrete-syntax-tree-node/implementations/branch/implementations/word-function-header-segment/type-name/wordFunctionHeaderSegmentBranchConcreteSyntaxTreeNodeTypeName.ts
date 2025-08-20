@@ -1,0 +1,2 @@
+export const wordFunctionHeaderSegmentBranchConcreteSyntaxTreeNodeTypeName =
+	"wordFunctionHeaderSegment";
