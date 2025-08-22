@@ -1,0 +1,2 @@
+export const paddedOperatedStatementsBranchConcreteSyntaxTreeNodeTypeName =
+	"paddedOperatedStatements";

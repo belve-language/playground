@@ -1,0 +1,7 @@
+import type {KnownFunctionHeaderSegmentAbstractSyntaxTreeNode} from "../implementations/known/KnownFunctionHeaderSegmentAbstractSyntaxTreeNode.ts";
+import type {UnknownFunctionHeaderSegmentAbstractSyntaxTreeNode} from "../implementations/unknown/UnknownFunctionHeaderSegmentAbstractSyntaxTreeNode.ts";
+import type {WordFunctionHeaderSegmentAbstractSyntaxTreeNode} from "../implementations/word/WordFunctionHeaderSegmentAbstractSyntaxTreeNode.ts";
+export type SupportedFunctionHeaderSegmentAbstractSyntaxTreeNode =
+	| KnownFunctionHeaderSegmentAbstractSyntaxTreeNode
+	| UnknownFunctionHeaderSegmentAbstractSyntaxTreeNode
+	| WordFunctionHeaderSegmentAbstractSyntaxTreeNode;

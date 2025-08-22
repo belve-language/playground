@@ -1,5 +1,10 @@
-import type {WordFunctionCallSegmentAbstractSyntaxTreeNode} from "../word-function-call-segment/WordFunctionCallSegmentAbstractSyntaxTreeNode.ts";
-export type FunctionCallSegmentAbstractSyntaxTreeNode =
-	| KnownFunctionCallSegmentAbstractSyntaxTreeNode
-	| UnknownFunctionCallSegmentAbstractSyntaxTreeNode
-	| WordFunctionCallSegmentAbstractSyntaxTreeNode;
+import type {SpanIndexes} from "../../../span-indexes/SpanIndexes.ts";
+import {AbstractSyntaxTreeNode} from "../../AbstractSyntaxTreeNode.ts";
+export abstract class FunctionCallSegmentAbstractSyntaxTreeNode<
+	Children,
+> extends AbstractSyntaxTreeNode<Children> {
+	public constructor(children: Children, spanIndexes: SpanIndexes) {
+		super(children, spanIndexes);
+	}
+	public abstract computeId(): string;
+}

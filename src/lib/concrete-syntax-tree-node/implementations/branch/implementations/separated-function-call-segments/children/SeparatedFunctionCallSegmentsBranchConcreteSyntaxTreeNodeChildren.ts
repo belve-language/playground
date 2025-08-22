@@ -4,10 +4,9 @@ import type {EndingWithWordFunctionCallSegmentsBranchConcreteSyntaxTreeNode} fro
 import type {WhitespaceBranchConcreteSyntaxTreeNode} from "../../whitespace/WhitespaceBranchConcreteSyntaxTreeNode.ts";
 export type SeparatedFunctionCallSegmentsBranchConcreteSyntaxTreeNodeChildren =
 	readonly [
-		(
+		functionCallSegments:
 			| EndingWithKnownFunctionCallSegmentsBranchConcreteSyntaxTreeNode
 			| EndingWithUnknownFunctionCallSegmentsBranchConcreteSyntaxTreeNode
-			| EndingWithWordFunctionCallSegmentsBranchConcreteSyntaxTreeNode
-		),
-		WhitespaceBranchConcreteSyntaxTreeNode,
+			| EndingWithWordFunctionCallSegmentsBranchConcreteSyntaxTreeNode,
+		whitespace: WhitespaceBranchConcreteSyntaxTreeNode,
 	];

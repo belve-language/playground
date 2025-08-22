@@ -1,6 +1,6 @@
-import type {PaddedStatementsBranchConcreteSyntaxTreeNode} from "../../padded-statements/PaddedStatementsBranchConcreteSyntaxTreeNode.ts";
+import type {PaddedOperatedStatementsBranchConcreteSyntaxTreeNode} from "../../padded-operated-statements/PaddedOperatedStatementsBranchConcreteSyntaxTreeNode.ts";
 import type {WhitespaceBranchConcreteSyntaxTreeNode} from "../../whitespace/WhitespaceBranchConcreteSyntaxTreeNode.ts";
 export type BlockContentBranchConcreteSyntaxTreeNodeChildren = readonly [
-	| PaddedStatementsBranchConcreteSyntaxTreeNode
+	| PaddedOperatedStatementsBranchConcreteSyntaxTreeNode
 	| WhitespaceBranchConcreteSyntaxTreeNode,
 ];

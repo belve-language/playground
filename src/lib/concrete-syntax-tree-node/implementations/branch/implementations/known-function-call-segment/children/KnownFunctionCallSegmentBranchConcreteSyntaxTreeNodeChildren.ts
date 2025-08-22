@@ -3,7 +3,7 @@ import type {OpeningRoundBracketLeafConcreteSyntaxTreeNode} from "../../../../le
 import type {KnownFunctionCallSegmentContentBranchConcreteSyntaxTreeNode} from "../../known-function-call-segment-content/KnownFunctionCallSegmentContentBranchConcreteSyntaxTreeNode.ts";
 export type KnownFunctionCallSegmentBranchConcreteSyntaxTreeNodeChildren =
 	readonly [
-		OpeningRoundBracketLeafConcreteSyntaxTreeNode,
-		KnownFunctionCallSegmentContentBranchConcreteSyntaxTreeNode | null,
-		ClosingRoundBracketLeafConcreteSyntaxTreeNode,
+		openingRoundBracket: OpeningRoundBracketLeafConcreteSyntaxTreeNode,
+		knownFunctionCallSegmentContent: KnownFunctionCallSegmentContentBranchConcreteSyntaxTreeNode | null,
+		closingRoundBracket: ClosingRoundBracketLeafConcreteSyntaxTreeNode,
 	];

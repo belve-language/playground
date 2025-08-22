@@ -1,6 +1,5 @@
 import type {VariableNameBranchConcreteSyntaxTreeNodeChildren} from "./children/VariableNameBranchConcreteSyntaxTreeNodeChildren.ts";
 import {variableNameBranchConcreteSyntaxTreeNodeTypeName} from "./type-name/variableNameBranchConcreteSyntaxTreeNodeTypeName.ts";
-import type {SpanIndexes} from "../../../../../span-indexes/SpanIndexes.ts";
 import {BranchConcreteSyntaxTreeNode} from "../../BranchConcreteSyntaxTreeNode.ts";
 export class VariableNameBranchConcreteSyntaxTreeNode extends BranchConcreteSyntaxTreeNode<
 	VariableNameBranchConcreteSyntaxTreeNodeChildren,
@@ -8,12 +7,11 @@ export class VariableNameBranchConcreteSyntaxTreeNode extends BranchConcreteSynt
 > {
 	public constructor(
 		children: VariableNameBranchConcreteSyntaxTreeNodeChildren,
-		spanIndexes: SpanIndexes,
 	) {
-		super(
-			children,
-			spanIndexes,
-			variableNameBranchConcreteSyntaxTreeNodeTypeName,
-		);
+		super(children, variableNameBranchConcreteSyntaxTreeNodeTypeName);
+	}
+	public abstractify(): string {
+		const variableName = this.children[0].abstractify();
+		return variableName;
 	}
 }

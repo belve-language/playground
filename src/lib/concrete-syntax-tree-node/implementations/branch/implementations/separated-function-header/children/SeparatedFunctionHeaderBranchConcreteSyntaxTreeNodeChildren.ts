@@ -2,6 +2,6 @@ import type {FunctionHeaderBranchConcreteSyntaxTreeNode} from "../../function-he
 import type {WhitespaceBranchConcreteSyntaxTreeNode} from "../../whitespace/WhitespaceBranchConcreteSyntaxTreeNode.ts";
 export type SeparatedFunctionHeaderBranchConcreteSyntaxTreeNodeChildren =
 	readonly [
-		FunctionHeaderBranchConcreteSyntaxTreeNode,
-		null | WhitespaceBranchConcreteSyntaxTreeNode,
+		functionHeader: FunctionHeaderBranchConcreteSyntaxTreeNode,
+		whitespace: null | WhitespaceBranchConcreteSyntaxTreeNode,
 	];

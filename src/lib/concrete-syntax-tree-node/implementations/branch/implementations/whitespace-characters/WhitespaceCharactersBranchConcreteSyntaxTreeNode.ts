@@ -6,7 +6,7 @@ export class WhitespaceCharactersBranchConcreteSyntaxTreeNode extends BranchConc
 	WhitespaceCharactersBranchConcreteSyntaxTreeNodeChildren,
 	typeof whitespaceCharactersBranchConcreteSyntaxTreeNodeTypeName
 > {
-	public constructor(
+	private constructor(
 		children: WhitespaceCharactersBranchConcreteSyntaxTreeNodeChildren,
 	) {
 		super(children, whitespaceCharactersBranchConcreteSyntaxTreeNodeTypeName);

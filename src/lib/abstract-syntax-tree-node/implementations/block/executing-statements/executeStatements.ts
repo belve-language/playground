@@ -1,26 +1,26 @@
-import type {Statement} from "../../../statement/Statement.ts";
-import type {FunctionAbstractSyntaxTreeNodeDataFunctions} from "../../functions/data/functions/FunctionAbstractSyntaxTreeNodeDataFunctions.ts";
-export function executeStatements(
-	functions: FunctionAbstractSyntaxTreeNodeDataFunctions,
-	knownsStack: readonly [
-		{readonly [variableName: string]: unknown},
-		...(readonly {readonly [variableName: string]: unknown}[]),
+import type {FunctionAbstractSyntaxTreeNodeChildrenFunctions} from "../../functions/children/functions/FunctionAbstractSyntaxTreeNodeChildrenFunctions.ts";
+import type {OperatedStatementAbstractSyntaxTreeNode} from "../../operated-statement/OperatedStatementAbstractSyntaxTreeNode.ts";
+export function* executeStatements(
+	functions: FunctionAbstractSyntaxTreeNodeChildrenFunctions,
+	variables: {readonly [variableName: string]: unknown},
+	statements: readonly [
+		OperatedStatementAbstractSyntaxTreeNode,
+		...(readonly OperatedStatementAbstractSyntaxTreeNode[]),
 	],
-	statements: readonly Statement[],
-): null | {readonly [variableName: string]: unknown} {
+): Generator<{readonly [variableName: string]: unknown}, void, void> {
 	const [firstStatement, ...restStatements] = statements;
-	if (firstStatement === undefined) {
-		return {};
-	} else {
-		const unknowns = firstStatement.execute(functions, knownsStack);
-		if (unknowns === null) {
-			return null;
+	const newVariableses = firstStatement.execute(functions, variables);
+	for (const newVariables of newVariableses) {
+		const [firstRestStatement, ...restRestStatements] = restStatements;
+		const combinedVariables = {...variables, ...newVariables};
+		if (firstRestStatement === undefined) {
+			yield combinedVariables;
 		} else {
-			return executeStatements(
-				functions,
-				[{...knownsStack[0], ...unknowns}, ...knownsStack.slice(1)],
-				restStatements,
-			);
+			const restVariableses = executeStatements(functions, combinedVariables, [
+				firstRestStatement,
+				...restRestStatements,
+			]);
+			yield* restVariableses;
 		}
 	}
 }

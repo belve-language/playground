@@ -15,6 +15,12 @@ export abstract class LeafConcreteSyntaxTreeNode<
 		this.index = index;
 	}
 	public readonly character: CharacterToUse;
+	public override computeSpanIndexesEndingIndex(): Index {
+		return this.index;
+	}
+	public override computeSpanIndexesStartingIndex(): Index {
+		return this.index;
+	}
 	public readonly index: Index;
 	public override *iterateCharacters(): Generator<CharacterToUse, void, void> {
 		yield this.character;

@@ -1,6 +1,5 @@
 import type {WordCharactersBranchConcreteSyntaxTreeNodeChildren} from "./children/WordCharactersBranchConcreteSyntaxTreeNodeChildren.ts";
 import {wordCharactersBranchConcreteSyntaxTreeNodeTypeName} from "./type-name/wordCharactersBranchConcreteSyntaxTreeNodeTypeName.ts";
-import type {SpanIndexes} from "../../../../../span-indexes/SpanIndexes.ts";
 import {BranchConcreteSyntaxTreeNode} from "../../BranchConcreteSyntaxTreeNode.ts";
 export class WordCharactersBranchConcreteSyntaxTreeNode extends BranchConcreteSyntaxTreeNode<
 	WordCharactersBranchConcreteSyntaxTreeNodeChildren,
@@ -8,12 +7,17 @@ export class WordCharactersBranchConcreteSyntaxTreeNode extends BranchConcreteSy
 > {
 	public constructor(
 		children: WordCharactersBranchConcreteSyntaxTreeNodeChildren,
-		spanIndexes: SpanIndexes,
 	) {
-		super(
-			children,
-			spanIndexes,
-			wordCharactersBranchConcreteSyntaxTreeNodeTypeName,
-		);
+		super(children, wordCharactersBranchConcreteSyntaxTreeNodeTypeName);
+	}
+	public abstractify(): string {
+		if (this.children[0] === null) {
+			const wordCharacter = this.children[1].abstractify();
+			return wordCharacter;
+		} else {
+			const restWordCharacters = this.children[0].abstractify();
+			const wordCharacter = this.children[1].abstractify();
+			return `${restWordCharacters}${wordCharacter}`;
+		}
 	}
 }

@@ -1,19 +1,24 @@
 import type {WordFunctionHeaderSegmentBranchConcreteSyntaxTreeNodeChildren} from "./children/WordFunctionHeaderSegmentBranchConcreteSyntaxTreeNodeChildren.ts";
-import type {SpanIndexes} from "../../../../../span-indexes/SpanIndexes.ts";
 import {BranchConcreteSyntaxTreeNode} from "../../BranchConcreteSyntaxTreeNode.ts";
 import {wordFunctionHeaderSegmentBranchConcreteSyntaxTreeNodeTypeName} from "./type-name/wordFunctionHeaderSegmentBranchConcreteSyntaxTreeNodeTypeName.ts";
+import {WordFunctionHeaderSegmentAbstractSyntaxTreeNode} from "../../../../../abstract-syntax-tree-node/implementations/function-header-segment/implementations/word/WordFunctionHeaderSegmentAbstractSyntaxTreeNode.ts";
 export class WordFunctionHeaderSegmentBranchConcreteSyntaxTreeNode extends BranchConcreteSyntaxTreeNode<
 	WordFunctionHeaderSegmentBranchConcreteSyntaxTreeNodeChildren,
 	typeof wordFunctionHeaderSegmentBranchConcreteSyntaxTreeNodeTypeName
 > {
 	public constructor(
 		children: WordFunctionHeaderSegmentBranchConcreteSyntaxTreeNodeChildren,
-		spanIndexes: SpanIndexes,
 	) {
 		super(
 			children,
-			spanIndexes,
 			wordFunctionHeaderSegmentBranchConcreteSyntaxTreeNodeTypeName,
 		);
+	}
+	public abstractify(): WordFunctionHeaderSegmentAbstractSyntaxTreeNode {
+		const node = new WordFunctionHeaderSegmentAbstractSyntaxTreeNode(
+			{word: this.children[0].abstractify()},
+			this.computeSpanIndexes(),
+		);
+		return node;
 	}
 }

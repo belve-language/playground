@@ -5,12 +5,11 @@ import type {UnknownFunctionHeaderSegmentBranchConcreteSyntaxTreeNode} from "../
 import type {EndingWithUnknownFunctionHeaderSegmentsBranchConcreteSyntaxTreeNode} from "../EndingWithUnknownFunctionHeaderSegmentsBranchConcreteSyntaxTreeNode.ts";
 export type EndingWithUnknownFunctionHeaderSegmentsBranchConcreteSyntaxTreeNodeChildren =
 	readonly [
-		(
+		functionHeaderSegments:
 			| EndingWithKnownFunctionHeaderSegmentsBranchConcreteSyntaxTreeNode
 			| EndingWithUnknownFunctionHeaderSegmentsBranchConcreteSyntaxTreeNode
 			| EndingWithWordFunctionHeaderSegmentsBranchConcreteSyntaxTreeNode
 			| null
-			| SeparatedFunctionHeaderSegmentsBranchConcreteSyntaxTreeNode
-		),
-		UnknownFunctionHeaderSegmentBranchConcreteSyntaxTreeNode,
+			| SeparatedFunctionHeaderSegmentsBranchConcreteSyntaxTreeNode,
+		unknownFunctionHeaderSegment: UnknownFunctionHeaderSegmentBranchConcreteSyntaxTreeNode,
 	];

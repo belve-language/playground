@@ -13,17 +13,13 @@ PaddedVariableName -> Whitespace? VariableName Whitespace?
 VariableName -> Word
 SeparatedFunctionHeader -> FunctionHeader Whitespace?
 FunctionHeader -> EndingWithWordFunctionHeaderSegments | EndingWithKnownFunctionHeaderSegments | EndingWithUnknownFunctionHeaderSegments
-EndingWithWordFunctionHeaderSegments -> EndingWithWordFunctionHeaderSegmentsRest? WordFunctionHeaderSegment
-EndingWithWordFunctionHeaderSegmentsRest -> SeparatedFunctionHeaderSegments | EndingWithKnownFunctionHeaderSegments | EndingWithUnknownFunctionHeaderSegments
+EndingWithWordFunctionHeaderSegments -> (SeparatedFunctionHeaderSegments | EndingWithKnownFunctionHeaderSegments | EndingWithUnknownFunctionHeaderSegments)? WordFunctionHeaderSegment
 WordFunctionHeaderSegment -> Word
-SeparatedFunctionHeaderSegments -> SeparatedFunctionHeaderSegmentsRest Whitespace
-SeparatedFunctionHeaderSegmentsRest -> EndingWithWordFunctionHeaderSegments | EndingWithKnownFunctionHeaderSegments | EndingWithUnknownFunctionHeaderSegments
-EndingWithKnownFunctionHeaderSegments -> EndingWithKnownFunctionHeaderSegmentsRest? KnownFunctionHeaderSegment
-EndingWithKnownFunctionHeaderSegmentsRest -> SeparatedFunctionHeaderSegments | EndingWithKnownFunctionHeaderSegments | EndingWithUnknownFunctionHeaderSegments | EndingWithWordFunctionHeaderSegments
+SeparatedFunctionHeaderSegments -> (EndingWithWordFunctionHeaderSegments | EndingWithKnownFunctionHeaderSegments | EndingWithUnknownFunctionHeaderSegments) Whitespace
+EndingWithKnownFunctionHeaderSegments -> (SeparatedFunctionHeaderSegments | EndingWithKnownFunctionHeaderSegments | EndingWithUnknownFunctionHeaderSegments | EndingWithWordFunctionHeaderSegments)? KnownFunctionHeaderSegment
 KnownFunctionHeaderSegment -> "(" KnownFunctionHeaderSegmentContent? ")"
 KnownFunctionHeaderSegmentContent -> Whitespace | PaddedVariableName
-EndingWithUnknownFunctionHeaderSegments -> EndingWithUnknownFunctionHeaderSegmentsRest? UnknownFunctionHeaderSegment
-EndingWithUnknownFunctionHeaderSegmentsRest -> SeparatedFunctionHeaderSegments | EndingWithKnownFunctionHeaderSegments | EndingWithUnknownFunctionHeaderSegments | EndingWithWordFunctionHeaderSegments
+EndingWithUnknownFunctionHeaderSegments -> (SeparatedFunctionHeaderSegments | EndingWithKnownFunctionHeaderSegments | EndingWithUnknownFunctionHeaderSegments | EndingWithWordFunctionHeaderSegments)? UnknownFunctionHeaderSegment
 UnknownFunctionHeaderSegment -> "[" UnknownFunctionHeaderSegmentContent? "]"
 UnknownFunctionHeaderSegmentContent -> Whitespace | PaddedVariableName
 FunctionBody -> Block
@@ -36,18 +32,13 @@ SeparatedStatements -> Statements Whitespace? Operator Whitespace?
 Operator -> "," | "."
 FunctionCallStatement -> FunctionCall
 BlockStatement -> Block
-FunctionCallStatement -> FunctionCallSegments
-FunctionCallSegments -> EndingWithWordFunctionCallSegments | EndingWithKnownFunctionCallSegments | EndingWithUnknownFunctionCallSegments
-EndingWithWordFunctionCallSegments -> EndingWithWordFunctionCallSegmentsRest? WordFunctionCallSegment
-EndingWithWordFunctionCallSegmentsRest -> SeparatedFunctionCallSegments | EndingWithKnownFunctionCallSegments | EndingWithUnknownFunctionCallSegments
+FunctionCallStatement -> EndingWithWordFunctionCallSegments | EndingWithKnownFunctionCallSegments | EndingWithUnknownFunctionCallSegments
+EndingWithWordFunctionCallSegments -> (SeparatedFunctionCallSegments | EndingWithKnownFunctionCallSegments | EndingWithUnknownFunctionCallSegments)? WordFunctionCallSegment
 WordFunctionCallSegment -> Word
-SeparatedFunctionCallSegments -> SeparatedFunctionCallSegmentsRest Whitespace
-SeparatedFunctionCallSegmentsRest -> EndingWithWordFunctionCallSegments | EndingWithKnownFunctionCallSegments | EndingWithUnknownFunctionCallSegments
-EndingWithKnownFunctionCallSegments -> EndingWithKnownFunctionCallSegmentsRest? KnownFunctionCallSegment
-EndingWithKnownFunctionCallSegmentsRest -> SeparatedFunctionCallSegments | EndingWithKnownFunctionCallSegments | EndingWithUnknownFunctionCallSegments | EndingWithWordFunctionCallSegments
+SeparatedFunctionCallSegments -> (EndingWithWordFunctionCallSegments | EndingWithKnownFunctionCallSegments | EndingWithUnknownFunctionCallSegments) Whitespace
+EndingWithKnownFunctionCallSegments -> (SeparatedFunctionCallSegments | EndingWithKnownFunctionCallSegments | EndingWithUnknownFunctionCallSegments | EndingWithWordFunctionCallSegments)? KnownFunctionCallSegment
 KnownFunctionCallSegment -> "(" KnownFunctionCallSegmentContent? ")"
 KnownFunctionCallSegmentContent -> Whitespace | PaddedVariableName
-EndingWithUnknownFunctionCallSegments -> EndingWithUnknownFunctionCallSegmentsRest? UnknownFunctionCallSegment
-EndingWithUnknownFunctionCallSegmentsRest -> SeparatedFunctionCallSegments | EndingWithKnownFunctionCallSegments | EndingWithUnknownFunctionCallSegments | EndingWithWordFunctionCallSegments
+EndingWithUnknownFunctionCallSegments -> (SeparatedFunctionCallSegments | EndingWithKnownFunctionCallSegments | EndingWithUnknownFunctionCallSegments | EndingWithWordFunctionCallSegments)? UnknownFunctionCallSegment
 UnknownFunctionCallSegment -> "[" UnknownFunctionCallSegmentContent? "]"
 UnknownFunctionCallSegmentContent -> Whitespace | PaddedVariableName

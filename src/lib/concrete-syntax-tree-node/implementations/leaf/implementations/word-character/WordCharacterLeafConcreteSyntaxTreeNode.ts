@@ -9,4 +9,7 @@ export class WordCharacterLeafConcreteSyntaxTreeNode extends LeafConcreteSyntaxT
 	public constructor(character: WordCharacter, index: Index) {
 		super(character, index, wordCharacterLeafConcreteSyntaxTreeNodeTypeName);
 	}
+	public abstractify(): string {
+		return this.character;
+	}
 }

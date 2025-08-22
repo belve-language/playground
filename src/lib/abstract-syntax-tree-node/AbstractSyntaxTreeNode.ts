@@ -1,9 +1,9 @@
 import type {SpanIndexes} from "../span-indexes/SpanIndexes.ts";
-export abstract class AbstractSyntaxTreeNode<Data> {
-	protected constructor(data: Data, spanIndexes: SpanIndexes) {
-		this.data = data;
+export abstract class AbstractSyntaxTreeNode<Children> {
+	protected constructor(children: Children, spanIndexes: SpanIndexes) {
+		this.children = children;
 		this.spanIndexes = spanIndexes;
 	}
-	public readonly data: Data;
+	public readonly children: Children;
 	public readonly spanIndexes: SpanIndexes;
 }

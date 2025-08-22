@@ -1,11 +1,11 @@
-import type {FunctionsAbstractSyntaxTreeNodeData} from "./data/FunctionsAbstractSyntaxTreeNodeData.ts";
+import type {FunctionsAbstractSyntaxTreeNodeChildren} from "./children/FunctionsAbstractSyntaxTreeNodeChildren.ts";
 import type {SpanIndexes} from "../../../span-indexes/SpanIndexes.ts";
 import {AbstractSyntaxTreeNode} from "../../AbstractSyntaxTreeNode.ts";
-export class FunctionsAbstractSyntaxTreeNode extends AbstractSyntaxTreeNode<FunctionsAbstractSyntaxTreeNodeData> {
+export class FunctionsAbstractSyntaxTreeNode extends AbstractSyntaxTreeNode<FunctionsAbstractSyntaxTreeNodeChildren> {
 	public constructor(
-		data: FunctionsAbstractSyntaxTreeNodeData,
+		children: FunctionsAbstractSyntaxTreeNodeChildren,
 		spanIndexes: SpanIndexes,
 	) {
-		super(data, spanIndexes);
+		super(children, spanIndexes);
 	}
 }

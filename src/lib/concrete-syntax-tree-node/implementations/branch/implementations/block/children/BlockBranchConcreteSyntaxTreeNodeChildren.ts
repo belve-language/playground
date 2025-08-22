@@ -2,7 +2,7 @@ import type {ClosingCurlyBracketLeafConcreteSyntaxTreeNode} from "../../../../le
 import type {OpeningCurlyBracketLeafConcreteSyntaxTreeNode} from "../../../../leaf/implementations/opening-curly-bracket/OpeningCurlyBracketLeafConcreteSyntaxTreeNode.ts";
 import type {BlockContentBranchConcreteSyntaxTreeNode} from "../../block-content/BlockContentBranchConcreteSyntaxTreeNode.ts";
 export type BlockBranchConcreteSyntaxTreeNodeChildren = readonly [
-	OpeningCurlyBracketLeafConcreteSyntaxTreeNode,
-	BlockContentBranchConcreteSyntaxTreeNode | null,
-	ClosingCurlyBracketLeafConcreteSyntaxTreeNode,
+	openingCurlyBracket: OpeningCurlyBracketLeafConcreteSyntaxTreeNode,
+	blockContent: BlockContentBranchConcreteSyntaxTreeNode | null,
+	closingCurlyBracket: ClosingCurlyBracketLeafConcreteSyntaxTreeNode,
 ];

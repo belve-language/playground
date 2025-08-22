@@ -1,27 +1,24 @@
-import type {BlockAbstractSyntaxTreeNodeData} from "./data/BlockAbstractSyntaxTreeNodeData.ts";
+import type {BlockAbstractSyntaxTreeNodeChildren} from "./children/BlockAbstractSyntaxTreeNodeChildren.ts";
 import type {SpanIndexes} from "../../../span-indexes/SpanIndexes.ts";
 import {AbstractSyntaxTreeNode} from "../../AbstractSyntaxTreeNode.ts";
 import {executeStatements} from "./executing-statements/executeStatements.ts";
-import type {FunctionAbstractSyntaxTreeNodeDataFunctions} from "../functions/data/functions/FunctionAbstractSyntaxTreeNodeDataFunctions.ts";
-export class BlockAbstractSyntaxTreeNode extends AbstractSyntaxTreeNode<BlockAbstractSyntaxTreeNodeData> {
+import type {FunctionAbstractSyntaxTreeNodeChildrenFunctions} from "../functions/children/functions/FunctionAbstractSyntaxTreeNodeChildrenFunctions.ts";
+export class BlockAbstractSyntaxTreeNode extends AbstractSyntaxTreeNode<BlockAbstractSyntaxTreeNodeChildren> {
 	public constructor(
-		data: BlockAbstractSyntaxTreeNodeData,
+		children: BlockAbstractSyntaxTreeNodeChildren,
 		spanIndexes: SpanIndexes,
 	) {
-		super(data, spanIndexes);
+		super(children, spanIndexes);
 	}
-	public execute(
-		functions: FunctionAbstractSyntaxTreeNodeDataFunctions,
-		knownsStack: readonly [
-			{readonly [variableName: string]: unknown},
-			...(readonly {readonly [variableName: string]: unknown}[]),
-		],
-	): null | {readonly [variableName: string]: unknown} {
-		const unknowns_ = executeStatements(
+	public *execute(
+		functions: FunctionAbstractSyntaxTreeNodeChildrenFunctions,
+		variables: {readonly [variableName: string]: unknown},
+	): Generator<{readonly [variableName: string]: unknown}, void, void> {
+		const unknownses = executeStatements(
 			functions,
-			knownsStack,
-			this.data.statements,
+			variables,
+			this.children.statements,
 		);
-		return unknowns_;
+		yield* unknownses;
 	}
 }
