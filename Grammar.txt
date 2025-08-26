@@ -1,4 +1,4 @@
-SourceCode -> PaddedFunctions | Whitespace
+Content -> PaddedFunctions | Whitespace
 Whitespace -> WhitespaceCharacters
 WhitespaceCharacters -> WhitespaceCharacters? WhitespaceCharacter
 WhitespaceCharacter -> " " | "\t" | "\n"

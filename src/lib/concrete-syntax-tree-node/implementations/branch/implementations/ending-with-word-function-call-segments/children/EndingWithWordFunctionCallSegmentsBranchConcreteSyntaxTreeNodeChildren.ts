@@ -4,11 +4,10 @@ import type {SeparatedFunctionCallSegmentsBranchConcreteSyntaxTreeNode} from "..
 import type {WordFunctionCallSegmentBranchConcreteSyntaxTreeNode} from "../../word-function-call-segment/WordFunctionCallSegmentBranchConcreteSyntaxTreeNode.ts";
 export type EndingWithWordFunctionCallSegmentsBranchConcreteSyntaxTreeNodeChildren =
 	readonly [
-		(
+		functionCallSegments:
 			| EndingWithKnownFunctionCallSegmentsBranchConcreteSyntaxTreeNode
 			| EndingWithUnknownFunctionCallSegmentsBranchConcreteSyntaxTreeNode
 			| null
-			| SeparatedFunctionCallSegmentsBranchConcreteSyntaxTreeNode
-		),
-		WordFunctionCallSegmentBranchConcreteSyntaxTreeNode,
+			| SeparatedFunctionCallSegmentsBranchConcreteSyntaxTreeNode,
+		wordFunctionCallSegment: WordFunctionCallSegmentBranchConcreteSyntaxTreeNode,
 	];

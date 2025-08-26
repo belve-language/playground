@@ -20,8 +20,8 @@ export class SeparatedOperatedStatementsBranchConcreteSyntaxTreeNode extends Bra
 		| ErrorAbstractifyingResult
 		| SuccessAbstractifyingResult<
 				readonly [
-					OperatedStatementAbstractSyntaxTreeNode,
 					...(readonly OperatedStatementAbstractSyntaxTreeNode[]),
+					OperatedStatementAbstractSyntaxTreeNode,
 				]
 		  > {
 		const result = this.children[0].abstractify();

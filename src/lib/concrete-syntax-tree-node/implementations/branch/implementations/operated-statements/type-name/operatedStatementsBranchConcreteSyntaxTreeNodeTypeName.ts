@@ -1,2 +1,2 @@
 export const operatedStatementsBranchConcreteSyntaxTreeNodeTypeName =
-	"operatedStatements";
+	"operatedOperatedStatements";

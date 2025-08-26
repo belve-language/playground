@@ -9,7 +9,7 @@ import type {WhitespaceCharacter} from "../../../../../characters/whitespace/Whi
 import type {WordCharacter} from "../../../../../characters/word/WordCharacter.ts";
 import type {BlockBranchConcreteSyntaxTreeNode} from "../../../../../concrete-syntax-tree-node/implementations/branch/implementations/block/BlockBranchConcreteSyntaxTreeNode.ts";
 import {WithOpeningCurlyBracketBlockBranchConcreteSyntaxTreeNodeBuilder} from "../../../../../concrete-syntax-tree-node/implementations/branch/implementations/block/builders/in-stack/InStackBlockBranchConcreteSyntaxTreeNodeBuilder.ts";
-import {WithWhitespace1PaddedOperatedStatementsBranchConcreteSyntaxTreeNodeBuilder} from "../../../../../concrete-syntax-tree-node/implementations/branch/implementations/padded-operated-statements/builders/with-whitespace-1/WithWhitespace1PaddedOperatedStatementsBranchConcreteSyntaxTreeNodeBuilder.ts";
+import {WithWhitespace1PaddedStatementsBranchConcreteSyntaxTreeNodeBuilder} from "../../../../../concrete-syntax-tree-node/implementations/branch/implementations/padded-statements/builders/with-whitespace-1/WithWhitespace1PaddedStatementsBranchConcreteSyntaxTreeNodeBuilder.ts";
 import {WhitespaceCharactersBranchConcreteSyntaxTreeNode} from "../../../../../concrete-syntax-tree-node/implementations/branch/implementations/whitespace-characters/WhitespaceCharactersBranchConcreteSyntaxTreeNode.ts";
 import {ClosingCurlyBracketLeafConcreteSyntaxTreeNode} from "../../../../../concrete-syntax-tree-node/implementations/leaf/implementations/closing-curly-bracket/ClosingCurlyBracketLeafConcreteSyntaxTreeNode.ts";
 import {OpeningCurlyBracketLeafConcreteSyntaxTreeNode} from "../../../../../concrete-syntax-tree-node/implementations/leaf/implementations/opening-curly-bracket/OpeningCurlyBracketLeafConcreteSyntaxTreeNode.ts";
@@ -141,7 +141,7 @@ export class AfterBlockOpeningCurlyBracketCharacterBlockSourceCodeParser extends
 		index: Index,
 	): SuccessFeedingResult {
 		const paddedStatementsBuilder =
-			WithWhitespace1PaddedOperatedStatementsBranchConcreteSyntaxTreeNodeBuilder.create(
+			WithWhitespace1PaddedStatementsBranchConcreteSyntaxTreeNodeBuilder.create(
 				null,
 			);
 		const newParser =
@@ -154,7 +154,7 @@ export class AfterBlockOpeningCurlyBracketCharacterBlockSourceCodeParser extends
 		return result;
 	}
 	public override finalizeFeeding(): ErrorFeedingFinalizingResult {
-		const result = new ErrorFeedingFinalizingResult(
+		const result = ErrorFeedingFinalizingResult.create(
 			`The block starting at index ${this.blockBuilder.computeSpanIndexesStartingIndex().toString(10)} is not closed.`,
 		);
 		return result;

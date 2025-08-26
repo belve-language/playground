@@ -2,10 +2,9 @@ import type {KnownFunctionHeaderSegmentBranchConcreteSyntaxTreeNodeChildren} fro
 import {knownFunctionHeaderSegmentBranchConcreteSyntaxTreeNodeTypeName} from "./type-name/knownFunctionHeaderSegmentBranchConcreteSyntaxTreeNodeTypeName.ts";
 import {KnownFunctionHeaderSegmentAbstractSyntaxTreeNode} from "../../../../../abstract-syntax-tree-node/implementations/function-header-segment/implementations/known/KnownFunctionHeaderSegmentAbstractSyntaxTreeNode.ts";
 import {ErrorAbstractifyingResult} from "../../../../abstractifying/result/implementations/error/ErrorAbstractifyingResult.ts";
-import {errorAbstractifyingResultTypeName} from "../../../../abstractifying/result/implementations/error/type-name/errorAbstractifyingResultTypeName.ts";
 import {SuccessAbstractifyingResult} from "../../../../abstractifying/result/implementations/success/SuccessAbstractifyingResult.ts";
-import {successAbstractifyingResultTypeName} from "../../../../abstractifying/result/implementations/success/type-name/successAbstractifyingResultTypeName.ts";
 import {BranchConcreteSyntaxTreeNode} from "../../BranchConcreteSyntaxTreeNode.ts";
+import {whitespaceBranchConcreteSyntaxTreeNodeTypeName} from "../whitespace/type-name/whitespaceBranchConcreteSyntaxTreeNodeTypeName.ts";
 export class KnownFunctionHeaderSegmentBranchConcreteSyntaxTreeNode extends BranchConcreteSyntaxTreeNode<
 	KnownFunctionHeaderSegmentBranchConcreteSyntaxTreeNodeChildren,
 	typeof knownFunctionHeaderSegmentBranchConcreteSyntaxTreeNodeTypeName
@@ -21,25 +20,22 @@ export class KnownFunctionHeaderSegmentBranchConcreteSyntaxTreeNode extends Bran
 	public abstractify():
 		| ErrorAbstractifyingResult
 		| SuccessAbstractifyingResult<KnownFunctionHeaderSegmentAbstractSyntaxTreeNode> {
-		if (this.children[1] === null) {
+		if (
+			this.children[1] === null
+			|| this.children[1].typeName
+				=== whitespaceBranchConcreteSyntaxTreeNodeTypeName
+		) {
 			const result = new ErrorAbstractifyingResult("No variable name.");
 			return result;
 		} else {
 			const knownFunctionHeaderSegmentContentResult =
 				this.children[1].abstractify();
-			switch (knownFunctionHeaderSegmentContentResult.typeName) {
-				case errorAbstractifyingResultTypeName: {
-					return knownFunctionHeaderSegmentContentResult;
-				}
-				case successAbstractifyingResultTypeName: {
-					const node = new KnownFunctionHeaderSegmentAbstractSyntaxTreeNode(
-						{name: knownFunctionHeaderSegmentContentResult.data},
-						this.computeSpanIndexes(),
-					);
-					const result = new SuccessAbstractifyingResult(node);
-					return result;
-				}
-			}
+			const node = new KnownFunctionHeaderSegmentAbstractSyntaxTreeNode(
+				{name: knownFunctionHeaderSegmentContentResult},
+				this.computeSpanIndexes(),
+			);
+			const result = new SuccessAbstractifyingResult(node);
+			return result;
 		}
 	}
 }

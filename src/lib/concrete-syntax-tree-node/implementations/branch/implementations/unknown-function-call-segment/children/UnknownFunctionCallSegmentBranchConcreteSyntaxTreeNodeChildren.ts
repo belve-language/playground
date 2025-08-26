@@ -3,7 +3,7 @@ import type {OpeningSquareBracketLeafConcreteSyntaxTreeNode} from "../../../../l
 import type {UnknownFunctionCallSegmentContentBranchConcreteSyntaxTreeNode} from "../../unknown-function-call-segment-content/UnknownFunctionCallSegmentContentBranchConcreteSyntaxTreeNode.ts";
 export type UnknownFunctionCallSegmentBranchConcreteSyntaxTreeNodeChildren =
 	readonly [
-		OpeningSquareBracketLeafConcreteSyntaxTreeNode,
-		null | UnknownFunctionCallSegmentContentBranchConcreteSyntaxTreeNode,
-		ClosingSquareBracketLeafConcreteSyntaxTreeNode,
+		openingSquareBracket: OpeningSquareBracketLeafConcreteSyntaxTreeNode,
+		unknownFunctionCallSegmentContent: null | UnknownFunctionCallSegmentContentBranchConcreteSyntaxTreeNode,
+		closingSquareBracket: ClosingSquareBracketLeafConcreteSyntaxTreeNode,
 	];

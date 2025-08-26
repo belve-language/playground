@@ -1,6 +1,6 @@
 import type {OperatorCharacter} from "../../../../characters/operator/OperatorCharacter.ts";
-import type {SupportedStatementAbstractSyntaxTreeNode} from "../../../supported-statement/SupportedStatementAbstractSyntaxTreeNode.ts";
+import type {StatementAbstractSyntaxTreeNode} from "../../statement/StatementAbstractSyntaxTreeNode.ts";
 export type OperatedStatementAbstractSyntaxTreeNodeChildren = {
-	readonly statement: SupportedStatementAbstractSyntaxTreeNode;
+	readonly statement: StatementAbstractSyntaxTreeNode;
 	readonly operator: OperatorCharacter;
 };

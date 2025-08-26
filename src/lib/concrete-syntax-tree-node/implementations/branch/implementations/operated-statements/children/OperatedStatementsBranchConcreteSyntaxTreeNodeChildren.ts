@@ -1,6 +1,8 @@
-import type {OperatedStatementBranchConcreteSyntaxTreeNode} from "../../operated-statement/OperatedStatementBranchConcreteSyntaxTreeNode.ts";
-import type {SeparatedOperatedStatementsBranchConcreteSyntaxTreeNode} from "../../separated-operated-statements/SeparatedOperatedStatementsBranchConcreteSyntaxTreeNode.ts";
+import type {OperatorLeafConcreteSyntaxTreeNode} from "../../../../leaf/implementations/operator/OperatorLeafConcreteSyntaxTreeNode.ts";
+import type {StatementsBranchConcreteSyntaxTreeNode} from "../../statements/StatementsBranchConcreteSyntaxTreeNode.ts";
+import type {WhitespaceBranchConcreteSyntaxTreeNode} from "../../whitespace/WhitespaceBranchConcreteSyntaxTreeNode.ts";
 export type OperatedStatementsBranchConcreteSyntaxTreeNodeChildren = readonly [
-	separatedOperatedStatements: null | SeparatedOperatedStatementsBranchConcreteSyntaxTreeNode,
-	operatedStatement: OperatedStatementBranchConcreteSyntaxTreeNode,
+	statements: StatementsBranchConcreteSyntaxTreeNode,
+	whitespace: null | WhitespaceBranchConcreteSyntaxTreeNode,
+	operator: OperatorLeafConcreteSyntaxTreeNode,
 ];

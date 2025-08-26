@@ -9,7 +9,7 @@ import type {WhitespaceCharacter} from "../../../../../characters/whitespace/Whi
 import type {WordCharacter} from "../../../../../characters/word/WordCharacter.ts";
 import type {BlockBranchConcreteSyntaxTreeNode} from "../../../../../concrete-syntax-tree-node/implementations/branch/implementations/block/BlockBranchConcreteSyntaxTreeNode.ts";
 import type {WithOpeningCurlyBracketBlockBranchConcreteSyntaxTreeNodeBuilder} from "../../../../../concrete-syntax-tree-node/implementations/branch/implementations/block/builders/in-stack/InStackBlockBranchConcreteSyntaxTreeNodeBuilder.ts";
-import type {WithWhitespace1PaddedOperatedStatementsBranchConcreteSyntaxTreeNodeBuilder} from "../../../../../concrete-syntax-tree-node/implementations/branch/implementations/padded-operated-statements/builders/with-whitespace-1/WithWhitespace1PaddedOperatedStatementsBranchConcreteSyntaxTreeNodeBuilder.ts";
+import type {WithWhitespace1PaddedStatementsBranchConcreteSyntaxTreeNodeBuilder} from "../../../../../concrete-syntax-tree-node/implementations/branch/implementations/padded-statements/builders/with-whitespace-1/WithWhitespace1PaddedStatementsBranchConcreteSyntaxTreeNodeBuilder.ts";
 import type {Index} from "../../../../../index/Index.ts";
 import type {SupportedFeedingFinalizingResult} from "../../../../feeding/finalizing/result/supported/SupportedFeedingFinalizingResult.ts";
 import {ErrorFeedingResult} from "../../../../feeding/result/implementations/error/ErrorFeedingResult.ts";
@@ -20,7 +20,7 @@ export class AfterWordFunctionCallSegmentWordCharacterBlockSourceCodeParser exte
 	public constructor(
 		parentParser: ParentBlockSourceCodeParser,
 		blockBuilder: WithOpeningCurlyBracketBlockBranchConcreteSyntaxTreeNodeBuilder,
-		paddedStatementsBuilder: WithWhitespace1PaddedOperatedStatementsBranchConcreteSyntaxTreeNodeBuilder,
+		paddedStatementsBuilder: WithWhitespace1PaddedStatementsBranchConcreteSyntaxTreeNodeBuilder,
 	) {
 		super(parentParser, blockBuilder);
 		this.paddedStatementsBuilder = paddedStatementsBuilder;
@@ -87,7 +87,7 @@ export class AfterWordFunctionCallSegmentWordCharacterBlockSourceCodeParser exte
 	public override finalizeFeeding(): SupportedFeedingFinalizingResult {
 		throw new Error("Method not implemented.");
 	}
-	private readonly paddedStatementsBuilder: WithWhitespace1PaddedOperatedStatementsBranchConcreteSyntaxTreeNodeBuilder;
+	private readonly paddedStatementsBuilder: WithWhitespace1PaddedStatementsBranchConcreteSyntaxTreeNodeBuilder;
 	public override restore(
 		block: BlockBranchConcreteSyntaxTreeNode,
 	): BlockSourceCodeParser {

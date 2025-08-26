@@ -8,4 +8,20 @@ export class FunctionsAbstractSyntaxTreeNode extends AbstractSyntaxTreeNode<Func
 	) {
 		super(children, spanIndexes);
 	}
+	public execute(): boolean | null {
+		const mainFunction = this.children.mainFunction;
+		if (mainFunction === null) {
+			return null;
+		} else {
+			const unknownsValueses = mainFunction.call(
+				this.children.functions,
+				[],
+				0,
+			);
+			for (const unknownsValues of unknownsValueses) {
+				return true;
+			}
+			return false;
+		}
+	}
 }

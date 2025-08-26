@@ -1,7 +1,6 @@
 import type {FunctionAbstractSyntaxTreeNodeChildren} from "./children/FunctionAbstractSyntaxTreeNodeChildren.ts";
 import type {SpanIndexes} from "../../../span-indexes/SpanIndexes.ts";
 import {AbstractSyntaxTreeNode} from "../../AbstractSyntaxTreeNode.ts";
-import {KnownFunctionHeaderSegmentAbstractSyntaxTreeNode} from "../function-header-segment/implementations/known/KnownFunctionHeaderSegmentAbstractSyntaxTreeNode.ts";
 import type {FunctionAbstractSyntaxTreeNodeChildrenFunctions} from "../functions/children/functions/FunctionAbstractSyntaxTreeNodeChildrenFunctions.ts";
 export class FunctionAbstractSyntaxTreeNode extends AbstractSyntaxTreeNode<FunctionAbstractSyntaxTreeNodeChildren> {
 	public constructor(
@@ -13,6 +12,7 @@ export class FunctionAbstractSyntaxTreeNode extends AbstractSyntaxTreeNode<Funct
 	public *call(
 		functions: FunctionAbstractSyntaxTreeNodeChildrenFunctions,
 		knownsValues: readonly unknown[],
+		depth: number,
 	): Generator<readonly unknown[], void, void> {
 		const knowns: {readonly [name: string]: unknown} =
 			this.children.header === null ?
@@ -26,7 +26,7 @@ export class FunctionAbstractSyntaxTreeNode extends AbstractSyntaxTreeNode<Funct
 			this.children.header === null ?
 				[]
 			:	this.children.header.extractUnknownsNames();
-		const unknownses = this.children.body.execute(functions, knowns);
+		const unknownses = this.children.body.execute(functions, knowns, depth);
 		for (const unknowns of unknownses) {
 			const unknownsValues: readonly unknown[] = unknownsNames.map((name) => {
 				return unknowns[name];

@@ -13,12 +13,16 @@ export class BlockAbstractSyntaxTreeNode extends AbstractSyntaxTreeNode<BlockAbs
 	public *execute(
 		functions: FunctionAbstractSyntaxTreeNodeChildrenFunctions,
 		variables: {readonly [variableName: string]: unknown},
+		depth: number,
 	): Generator<{readonly [variableName: string]: unknown}, void, void> {
+		// console.log(`${"\t".repeat(depth)}{`);
 		const unknownses = executeStatements(
 			functions,
 			variables,
-			this.children.statements,
+			this.children,
+			depth + 1,
 		);
 		yield* unknownses;
+		// console.log(`${"\t".repeat(depth)}}`);
 	}
 }

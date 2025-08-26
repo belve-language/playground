@@ -23,17 +23,31 @@ export class FunctionsBranchConcreteSyntaxTreeNode extends BranchConcreteSyntaxT
 					return functionAbstractifyingResult;
 				}
 				case successAbstractifyingResultTypeName: {
-					return new SuccessAbstractifyingResult<FunctionsAbstractSyntaxTreeNode>(
-						new FunctionsAbstractSyntaxTreeNode(
-							{
-								functions: {
-									[functionAbstractifyingResult.data.computeId()]:
-										functionAbstractifyingResult.data,
+					const functionId = functionAbstractifyingResult.data.computeId();
+					if (functionId === "") {
+						return new SuccessAbstractifyingResult(
+							new FunctionsAbstractSyntaxTreeNode(
+								{
+									functions: {},
+									mainFunction: functionAbstractifyingResult.data,
 								},
-							},
-							this.computeSpanIndexes(),
-						),
-					);
+								this.computeSpanIndexes(),
+							),
+						);
+					} else {
+						return new SuccessAbstractifyingResult<FunctionsAbstractSyntaxTreeNode>(
+							new FunctionsAbstractSyntaxTreeNode(
+								{
+									functions: {
+										[functionAbstractifyingResult.data.computeId()]:
+											functionAbstractifyingResult.data,
+									},
+									mainFunction: null,
+								},
+								this.computeSpanIndexes(),
+							),
+						);
+					}
 				}
 			}
 		} else {
@@ -50,28 +64,55 @@ export class FunctionsBranchConcreteSyntaxTreeNode extends BranchConcreteSyntaxT
 							return functionAbstractifyingResult;
 						}
 						case successAbstractifyingResultTypeName: {
-							const alreadyExistingFunctionAbstractSyntaxTreeNode =
-								separatedFunctionsAbstractifyingResult.data.children.functions[
-									functionAbstractifyingResult.data.computeId()
-								];
-							if (alreadyExistingFunctionAbstractSyntaxTreeNode === undefined) {
-								return new SuccessAbstractifyingResult(
-									new FunctionsAbstractSyntaxTreeNode(
-										{
-											functions: {
-												...separatedFunctionsAbstractifyingResult.data.children
-													.functions,
-												[functionAbstractifyingResult.data.computeId()]:
-													functionAbstractifyingResult.data,
+							const functionId = functionAbstractifyingResult.data.computeId();
+							if (functionId === "") {
+								if (
+									separatedFunctionsAbstractifyingResult.data.children
+										.mainFunction === null
+								) {
+									return new SuccessAbstractifyingResult(
+										new FunctionsAbstractSyntaxTreeNode(
+											{
+												functions:
+													separatedFunctionsAbstractifyingResult.data.children
+														.functions,
+												mainFunction: functionAbstractifyingResult.data,
 											},
-										},
-										this.computeSpanIndexes(),
-									),
-								);
+											this.computeSpanIndexes(),
+										),
+									);
+								} else {
+									return new ErrorAbstractifyingResult(
+										`Main function spanning ${separatedFunctionsAbstractifyingResult.data.children.mainFunction.spanIndexes.starting.toString(10)}->${separatedFunctionsAbstractifyingResult.data.children.mainFunction.spanIndexes.ending.toString(10)} has already been defined, so the function spanning ${functionAbstractifyingResult.data.spanIndexes.starting.toString(10)}->${functionAbstractifyingResult.data.spanIndexes.ending.toString(10)} cannot be defined as the main function.`,
+									);
+								}
 							} else {
-								return new ErrorAbstractifyingResult(
-									`Function spanning ${alreadyExistingFunctionAbstractSyntaxTreeNode.spanIndexes.starting.toString(10)}->${alreadyExistingFunctionAbstractSyntaxTreeNode.spanIndexes.ending.toString(10)} has the same header as the function spanning ${functionAbstractifyingResult.data.spanIndexes.starting.toString(10)}->${functionAbstractifyingResult.data.spanIndexes.ending.toString(10)}.`,
-								);
+								const alreadyExistingFunctionAbstractSyntaxTreeNode =
+									separatedFunctionsAbstractifyingResult.data.children
+										.functions[functionId];
+								if (
+									alreadyExistingFunctionAbstractSyntaxTreeNode === undefined
+								) {
+									return new SuccessAbstractifyingResult(
+										new FunctionsAbstractSyntaxTreeNode(
+											{
+												functions: {
+													...separatedFunctionsAbstractifyingResult.data
+														.children.functions,
+													[functionId]: functionAbstractifyingResult.data,
+												},
+												mainFunction:
+													separatedFunctionsAbstractifyingResult.data.children
+														.mainFunction,
+											},
+											this.computeSpanIndexes(),
+										),
+									);
+								} else {
+									return new ErrorAbstractifyingResult(
+										`Function spanning ${alreadyExistingFunctionAbstractSyntaxTreeNode.spanIndexes.starting.toString(10)}->${alreadyExistingFunctionAbstractSyntaxTreeNode.spanIndexes.ending.toString(10)} has the same header as the function spanning ${functionAbstractifyingResult.data.spanIndexes.starting.toString(10)}->${functionAbstractifyingResult.data.spanIndexes.ending.toString(10)}.`,
+									);
+								}
 							}
 						}
 					}

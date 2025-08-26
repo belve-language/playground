@@ -12,14 +12,13 @@ export class OperatedStatementAbstractSyntaxTreeNode extends AbstractSyntaxTreeN
 	public *execute(
 		functions: FunctionAbstractSyntaxTreeNodeChildrenFunctions,
 		variables: {readonly [variableName: string]: unknown},
+		depth: number,
 	): Generator<{readonly [variableName: string]: unknown}, void, void> {
 		const newVariableses = this.children.statement.execute(
 			functions,
 			variables,
+			depth,
 		);
 		yield* newVariableses;
-		if (this.children.operator === ".") {
-			yield {};
-		}
 	}
 }

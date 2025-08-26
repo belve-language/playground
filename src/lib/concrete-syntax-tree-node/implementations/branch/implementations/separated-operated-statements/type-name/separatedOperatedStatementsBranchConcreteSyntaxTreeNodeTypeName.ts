@@ -1,2 +1,2 @@
 export const separatedOperatedStatementsBranchConcreteSyntaxTreeNodeTypeName =
-	"separatedOperatedStatements";
+	"separatedOperatedOperatedStatements";

@@ -5,7 +5,11 @@ export class ErrorFeedingFinalizingResult extends FeedingFinalizingResult<
 	ErrorFeedingFinalizingResultData,
 	typeof errorFeedingFinalizingResultTypeName
 > {
-	public constructor(message: string) {
-		super({message: message}, errorFeedingFinalizingResultTypeName);
+	private constructor(data: ErrorFeedingFinalizingResultData) {
+		super(data, errorFeedingFinalizingResultTypeName);
+	}
+	public static create(message: string): ErrorFeedingFinalizingResult {
+		const result = new ErrorFeedingFinalizingResult({message: message});
+		return result;
 	}
 }

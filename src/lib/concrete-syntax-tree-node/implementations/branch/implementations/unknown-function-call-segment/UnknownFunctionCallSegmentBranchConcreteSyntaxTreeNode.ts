@@ -1,11 +1,10 @@
 import type {UnknownFunctionCallSegmentBranchConcreteSyntaxTreeNodeChildren} from "./children/UnknownFunctionCallSegmentBranchConcreteSyntaxTreeNodeChildren.ts";
-import {unknownFunctionCallSegmentBranchConcreteSyntaxTreeNodeTypeName} from "./type-name/unknownFunctionCallSegmentBranchConcreteSyntaxTreeNodeTypeName.ts";
-import {UnknownFunctionCallSegmentAbstractSyntaxTreeNode} from "../../../../../abstract-syntax-tree-node/implementations/function-call-segment/implementations/unknown/UnknownFunctionCallSegmentAbstractSyntaxTreeNode.ts";
+import {UnknownFunctionHeaderSegmentAbstractSyntaxTreeNode} from "../../../../../abstract-syntax-tree-node/implementations/function-header-segment/implementations/unknown/UnknownFunctionHeaderSegmentAbstractSyntaxTreeNode.ts";
 import {ErrorAbstractifyingResult} from "../../../../abstractifying/result/implementations/error/ErrorAbstractifyingResult.ts";
-import {errorAbstractifyingResultTypeName} from "../../../../abstractifying/result/implementations/error/type-name/errorAbstractifyingResultTypeName.ts";
 import {SuccessAbstractifyingResult} from "../../../../abstractifying/result/implementations/success/SuccessAbstractifyingResult.ts";
-import {successAbstractifyingResultTypeName} from "../../../../abstractifying/result/implementations/success/type-name/successAbstractifyingResultTypeName.ts";
 import {BranchConcreteSyntaxTreeNode} from "../../BranchConcreteSyntaxTreeNode.ts";
+import {unknownFunctionCallSegmentBranchConcreteSyntaxTreeNodeTypeName} from "./type-name/unknownFunctionCallSegmentBranchConcreteSyntaxTreeNodeTypeName.ts";
+import {whitespaceBranchConcreteSyntaxTreeNodeTypeName} from "../whitespace/type-name/whitespaceBranchConcreteSyntaxTreeNodeTypeName.ts";
 export class UnknownFunctionCallSegmentBranchConcreteSyntaxTreeNode extends BranchConcreteSyntaxTreeNode<
 	UnknownFunctionCallSegmentBranchConcreteSyntaxTreeNodeChildren,
 	typeof unknownFunctionCallSegmentBranchConcreteSyntaxTreeNodeTypeName
@@ -20,26 +19,23 @@ export class UnknownFunctionCallSegmentBranchConcreteSyntaxTreeNode extends Bran
 	}
 	public abstractify():
 		| ErrorAbstractifyingResult
-		| SuccessAbstractifyingResult<UnknownFunctionCallSegmentAbstractSyntaxTreeNode> {
-		if (this.children[1] === null) {
+		| SuccessAbstractifyingResult<UnknownFunctionHeaderSegmentAbstractSyntaxTreeNode> {
+		if (
+			this.children[1] === null
+			|| this.children[1].typeName
+				=== whitespaceBranchConcreteSyntaxTreeNodeTypeName
+		) {
 			const result = new ErrorAbstractifyingResult("No variable name.");
 			return result;
 		} else {
-			const unknownFunctionCallSegmentContentResult =
+			const unknownFunctionHeaderSegmentContentResult =
 				this.children[1].abstractify();
-			switch (unknownFunctionCallSegmentContentResult.typeName) {
-				case errorAbstractifyingResultTypeName: {
-					return unknownFunctionCallSegmentContentResult;
-				}
-				case successAbstractifyingResultTypeName: {
-					const node = new UnknownFunctionCallSegmentAbstractSyntaxTreeNode(
-						{name: unknownFunctionCallSegmentContentResult.data},
-						this.computeSpanIndexes(),
-					);
-					const result = new SuccessAbstractifyingResult(node);
-					return result;
-				}
-			}
+			const node = new UnknownFunctionHeaderSegmentAbstractSyntaxTreeNode(
+				{name: unknownFunctionHeaderSegmentContentResult},
+				this.computeSpanIndexes(),
+			);
+			const result = new SuccessAbstractifyingResult(node);
+			return result;
 		}
 	}
 }

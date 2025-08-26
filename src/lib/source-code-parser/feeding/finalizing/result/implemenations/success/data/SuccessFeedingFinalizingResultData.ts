@@ -1,4 +1,4 @@
-import type {SourceCodeBranchConcreteSyntaxTreeNode} from "../../../../../../../concrete-syntax-tree-node/implementations/branch/implementations/source-code/SourceCodeBranchConcreteSyntaxTreeNode.ts";
+import type {ContentBranchConcreteSyntaxTreeNode} from "../../../../../../../concrete-syntax-tree-node/implementations/branch/implementations/content/ContentBranchConcreteSyntaxTreeNode.ts";
 export type SuccessFeedingFinalizingResultData = {
-	readonly concreteSyntaxTree: SourceCodeBranchConcreteSyntaxTreeNode;
+	readonly content: ContentBranchConcreteSyntaxTreeNode;
 };

@@ -2,6 +2,6 @@ import type {OperatedStatementsBranchConcreteSyntaxTreeNode} from "../../operate
 import type {WhitespaceBranchConcreteSyntaxTreeNode} from "../../whitespace/WhitespaceBranchConcreteSyntaxTreeNode.ts";
 export type SeparatedOperatedStatementsBranchConcreteSyntaxTreeNodeChildren =
 	readonly [
-		OperatedStatementsBranchConcreteSyntaxTreeNode,
-		null | WhitespaceBranchConcreteSyntaxTreeNode,
+		operatedStatements: OperatedStatementsBranchConcreteSyntaxTreeNode,
+		whitespace: null | WhitespaceBranchConcreteSyntaxTreeNode,
 	];

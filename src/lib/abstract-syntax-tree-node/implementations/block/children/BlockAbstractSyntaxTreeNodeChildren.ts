@@ -1,7 +1,6 @@
 import type {OperatedStatementAbstractSyntaxTreeNode} from "../../operated-statement/OperatedStatementAbstractSyntaxTreeNode.ts";
+import type {StatementAbstractSyntaxTreeNode} from "../../statement/StatementAbstractSyntaxTreeNode.ts";
 export type BlockAbstractSyntaxTreeNodeChildren = {
-	readonly statements: readonly [
-		OperatedStatementAbstractSyntaxTreeNode,
-		...(readonly OperatedStatementAbstractSyntaxTreeNode[]),
-	];
+	initialOperatedStatements: readonly OperatedStatementAbstractSyntaxTreeNode[];
+	finalStatement: StatementAbstractSyntaxTreeNode;
 };

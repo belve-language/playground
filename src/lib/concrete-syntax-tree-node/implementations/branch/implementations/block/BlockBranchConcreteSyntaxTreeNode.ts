@@ -6,6 +6,7 @@ import {errorAbstractifyingResultTypeName} from "../../../../abstractifying/resu
 import {SuccessAbstractifyingResult} from "../../../../abstractifying/result/implementations/success/SuccessAbstractifyingResult.ts";
 import {successAbstractifyingResultTypeName} from "../../../../abstractifying/result/implementations/success/type-name/successAbstractifyingResultTypeName.ts";
 import {BranchConcreteSyntaxTreeNode} from "../../BranchConcreteSyntaxTreeNode.ts";
+import {whitespaceBranchConcreteSyntaxTreeNodeTypeName} from "../whitespace/type-name/whitespaceBranchConcreteSyntaxTreeNodeTypeName.ts";
 export class BlockBranchConcreteSyntaxTreeNode extends BranchConcreteSyntaxTreeNode<
 	BlockBranchConcreteSyntaxTreeNodeChildren,
 	typeof blockBranchConcreteSyntaxTreeNodeTypeName
@@ -16,7 +17,11 @@ export class BlockBranchConcreteSyntaxTreeNode extends BranchConcreteSyntaxTreeN
 	public abstractify():
 		| ErrorAbstractifyingResult
 		| SuccessAbstractifyingResult<BlockAbstractSyntaxTreeNode> {
-		if (this.children[1] === null) {
+		if (
+			this.children[1] === null
+			|| this.children[1].typeName
+				=== whitespaceBranchConcreteSyntaxTreeNodeTypeName
+		) {
 			const result = new ErrorAbstractifyingResult("Empty block.");
 			return result;
 		} else {
@@ -27,7 +32,7 @@ export class BlockBranchConcreteSyntaxTreeNode extends BranchConcreteSyntaxTreeN
 				}
 				case successAbstractifyingResultTypeName: {
 					const node = new BlockAbstractSyntaxTreeNode(
-						{statements: blockContentResult.data},
+						blockContentResult.data,
 						this.computeSpanIndexes(),
 					);
 					const result = new SuccessAbstractifyingResult(node);

@@ -4,11 +4,10 @@ import type {SeparatedFunctionHeaderSegmentsBranchConcreteSyntaxTreeNode} from "
 import type {WordFunctionHeaderSegmentBranchConcreteSyntaxTreeNode} from "../../word-function-header-segment/WordFunctionHeaderSegmentBranchConcreteSyntaxTreeNode.ts";
 export type EndingWithWordFunctionHeaderSegmentsBranchConcreteSyntaxTreeNodeChildren =
 	readonly [
-		(
+		functionHeaderSegments:
 			| EndingWithKnownFunctionHeaderSegmentsBranchConcreteSyntaxTreeNode
 			| EndingWithUnknownFunctionHeaderSegmentsBranchConcreteSyntaxTreeNode
 			| null
-			| SeparatedFunctionHeaderSegmentsBranchConcreteSyntaxTreeNode
-		),
-		WordFunctionHeaderSegmentBranchConcreteSyntaxTreeNode,
+			| SeparatedFunctionHeaderSegmentsBranchConcreteSyntaxTreeNode,
+		wordFunctionHeaderSegment: WordFunctionHeaderSegmentBranchConcreteSyntaxTreeNode,
 	];

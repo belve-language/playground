@@ -1,8 +1,6 @@
 import type {OperatedStatementsBranchConcreteSyntaxTreeNodeChildren} from "./children/OperatedStatementsBranchConcreteSyntaxTreeNodeChildren.ts";
 import {operatedStatementsBranchConcreteSyntaxTreeNodeTypeName} from "./type-name/operatedStatementsBranchConcreteSyntaxTreeNodeTypeName.ts";
-import type {KnownFunctionHeaderSegmentAbstractSyntaxTreeNode} from "../../../../../abstract-syntax-tree-node/implementations/function-header-segment/implementations/known/KnownFunctionHeaderSegmentAbstractSyntaxTreeNode.ts";
-import type {SupportedFunctionHeaderSegmentAbstractSyntaxTreeNode} from "../../../../../abstract-syntax-tree-node/implementations/function-header-segment/supported/SupportedFunctionHeaderSegmentAbstractSyntaxTreeNode.ts";
-import type {OperatedStatementAbstractSyntaxTreeNode} from "../../../../../abstract-syntax-tree-node/implementations/operated-statement/OperatedStatementAbstractSyntaxTreeNode.ts";
+import {OperatedStatementAbstractSyntaxTreeNode} from "../../../../../abstract-syntax-tree-node/implementations/operated-statement/OperatedStatementAbstractSyntaxTreeNode.ts";
 import type {ErrorAbstractifyingResult} from "../../../../abstractifying/result/implementations/error/ErrorAbstractifyingResult.ts";
 import {errorAbstractifyingResultTypeName} from "../../../../abstractifying/result/implementations/error/type-name/errorAbstractifyingResultTypeName.ts";
 import {SuccessAbstractifyingResult} from "../../../../abstractifying/result/implementations/success/SuccessAbstractifyingResult.ts";
@@ -21,49 +19,36 @@ export class OperatedStatementsBranchConcreteSyntaxTreeNode extends BranchConcre
 		| ErrorAbstractifyingResult
 		| SuccessAbstractifyingResult<
 				readonly [
-					OperatedStatementAbstractSyntaxTreeNode,
 					...(readonly OperatedStatementAbstractSyntaxTreeNode[]),
+					OperatedStatementAbstractSyntaxTreeNode,
 				]
 		  > {
-		if (this.children[0] === null) {
-			const operatedStatementResult = this.children[1].abstractify();
-			switch (operatedStatementResult.typeName) {
-				case errorAbstractifyingResultTypeName: {
-					return operatedStatementResult;
-				}
-				case successAbstractifyingResultTypeName: {
-					const result = new SuccessAbstractifyingResult<
-						readonly [OperatedStatementAbstractSyntaxTreeNode]
-					>([operatedStatementResult.data]);
-					return result;
-				}
+		const statementsResult = this.children[0].abstractify();
+		switch (statementsResult.typeName) {
+			case errorAbstractifyingResultTypeName: {
+				return statementsResult;
 			}
-		} else {
-			const separatedOperatedStatementsResult = this.children[0].abstractify();
-			switch (separatedOperatedStatementsResult.typeName) {
-				case errorAbstractifyingResultTypeName: {
-					return separatedOperatedStatementsResult;
-				}
-				case successAbstractifyingResultTypeName: {
-					const operatedStatementResult = this.children[1].abstractify();
-					switch (operatedStatementResult.typeName) {
-						case errorAbstractifyingResultTypeName: {
-							return operatedStatementResult;
-						}
-						case successAbstractifyingResultTypeName: {
-							const result = new SuccessAbstractifyingResult<
-								readonly [
-									OperatedStatementAbstractSyntaxTreeNode,
-									...(readonly OperatedStatementAbstractSyntaxTreeNode[]),
-								]
-							>([
-								...separatedOperatedStatementsResult.data,
-								operatedStatementResult.data,
-							]);
-							return result;
-						}
-					}
-				}
+			case successAbstractifyingResultTypeName: {
+				const result = new SuccessAbstractifyingResult<
+					readonly [
+						...(readonly OperatedStatementAbstractSyntaxTreeNode[]),
+						OperatedStatementAbstractSyntaxTreeNode,
+					]
+				>([
+					...statementsResult.data.initialOperatedStatements,
+					new OperatedStatementAbstractSyntaxTreeNode(
+						{
+							operator: this.children[2].character,
+							statement: statementsResult.data.finalStatement,
+						},
+						{
+							ending: this.children[2].index,
+							starting:
+								statementsResult.data.finalStatement.spanIndexes.starting,
+						},
+					),
+				]);
+				return result;
 			}
 		}
 	}

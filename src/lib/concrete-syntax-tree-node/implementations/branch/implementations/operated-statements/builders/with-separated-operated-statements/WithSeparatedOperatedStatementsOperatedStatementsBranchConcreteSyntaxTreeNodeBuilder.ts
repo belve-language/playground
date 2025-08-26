@@ -1,9 +1,0 @@
-import type {WithSeparatedOperatedStatementsOperatedStatementsBranchConcreteSyntaxTreeNodeBuilderChildren} from "./children/WithSeparatedOperatedStatementsOperatedStatementsBranchConcreteSyntaxTreeNodeBuilderChildren.ts";
-import {BranchConcreteSyntaxTreeNodeBuilder} from "../../../../builder/BranchConcreteSyntaxTreeNodeBuilder.ts";
-export class WithSeparatedOperatedStatementsOperatedStatementsBranchConcreteSyntaxTreeNodeBuilder extends BranchConcreteSyntaxTreeNodeBuilder<WithSeparatedOperatedStatementsOperatedStatementsBranchConcreteSyntaxTreeNodeBuilderChildren> {
-	public constructor(
-		children: WithSeparatedOperatedStatementsOperatedStatementsBranchConcreteSyntaxTreeNodeBuilderChildren,
-	) {
-		super(children);
-	}
-}
