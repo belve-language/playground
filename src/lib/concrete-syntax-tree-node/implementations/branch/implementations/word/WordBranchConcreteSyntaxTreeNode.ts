@@ -5,7 +5,7 @@ export class WordBranchConcreteSyntaxTreeNode extends BranchConcreteSyntaxTreeNo
 	WordBranchConcreteSyntaxTreeNodeChildren,
 	typeof wordBranchConcreteSyntaxTreeNodeTypeName
 > {
-	public constructor(children: WordBranchConcreteSyntaxTreeNodeChildren) {
+	private constructor(children: WordBranchConcreteSyntaxTreeNodeChildren) {
 		super(children, wordBranchConcreteSyntaxTreeNodeTypeName);
 	}
 	public abstractify(): string {

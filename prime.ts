@@ -522,6 +522,26 @@ function createFunctions(
 	);
 	return functions;
 }
+const sourceCodeAsString = `
+is (dividend) not divisible by (divisor) {
+	(dividend) % (divisor) != (0)
+}
+is (number) prime {
+	(number) > (1),
+	root of degree (2) of (number) = [maximaldivisortocheck],
+	none of the integers between (2) and (maximaldivisortocheck) divide (number)
+}
+none of the integers between (start) and (end) divide (dividend) {
+	(start) > (end).
+	(start) <= (end),
+	is (dividend) not divisible by (start),
+	(start) + (1) = [nextstart],
+	none of the integers between (nextstart) and (end) divide (dividend)
+}
+{
+	is (37) prime
+}
+`;
 for (const numberToCheck of [
 	0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
 	22, 23, 24, 25, 26, 27, 28, 29, 30, 31,

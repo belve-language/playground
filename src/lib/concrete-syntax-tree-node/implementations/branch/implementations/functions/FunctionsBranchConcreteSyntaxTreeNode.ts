@@ -10,7 +10,7 @@ export class FunctionsBranchConcreteSyntaxTreeNode extends BranchConcreteSyntaxT
 	FunctionsBranchConcreteSyntaxTreeNodeChildren,
 	typeof functionsBranchConcreteSyntaxTreeNodeTypeName
 > {
-	public constructor(children: FunctionsBranchConcreteSyntaxTreeNodeChildren) {
+	private constructor(children: FunctionsBranchConcreteSyntaxTreeNodeChildren) {
 		super(children, functionsBranchConcreteSyntaxTreeNodeTypeName);
 	}
 	public abstractify():

@@ -5,13 +5,16 @@ import {ErrorAbstractifyingResult} from "../../../../abstractifying/result/imple
 import {errorAbstractifyingResultTypeName} from "../../../../abstractifying/result/implementations/error/type-name/errorAbstractifyingResultTypeName.ts";
 import {SuccessAbstractifyingResult} from "../../../../abstractifying/result/implementations/success/SuccessAbstractifyingResult.ts";
 import {successAbstractifyingResultTypeName} from "../../../../abstractifying/result/implementations/success/type-name/successAbstractifyingResultTypeName.ts";
+import type {ClosingCurlyBracketLeafConcreteSyntaxTreeNode} from "../../../leaf/implementations/closing-curly-bracket/ClosingCurlyBracketLeafConcreteSyntaxTreeNode.ts";
+import type {OpeningCurlyBracketLeafConcreteSyntaxTreeNode} from "../../../leaf/implementations/opening-curly-bracket/OpeningCurlyBracketLeafConcreteSyntaxTreeNode.ts";
 import {BranchConcreteSyntaxTreeNode} from "../../BranchConcreteSyntaxTreeNode.ts";
+import type {BlockContentBranchConcreteSyntaxTreeNode} from "../block-content/BlockContentBranchConcreteSyntaxTreeNode.ts";
 import {whitespaceBranchConcreteSyntaxTreeNodeTypeName} from "../whitespace/type-name/whitespaceBranchConcreteSyntaxTreeNodeTypeName.ts";
 export class BlockBranchConcreteSyntaxTreeNode extends BranchConcreteSyntaxTreeNode<
 	BlockBranchConcreteSyntaxTreeNodeChildren,
 	typeof blockBranchConcreteSyntaxTreeNodeTypeName
 > {
-	constructor(children: BlockBranchConcreteSyntaxTreeNodeChildren) {
+	private constructor(children: BlockBranchConcreteSyntaxTreeNodeChildren) {
 		super(children, blockBranchConcreteSyntaxTreeNodeTypeName);
 	}
 	public abstractify():
@@ -40,5 +43,18 @@ export class BlockBranchConcreteSyntaxTreeNode extends BranchConcreteSyntaxTreeN
 				}
 			}
 		}
+	}
+	public static create(
+		openingCurlyBracket: OpeningCurlyBracketLeafConcreteSyntaxTreeNode,
+		blockContent: BlockContentBranchConcreteSyntaxTreeNode | null,
+		closingCurlyBracket: ClosingCurlyBracketLeafConcreteSyntaxTreeNode,
+	): BlockBranchConcreteSyntaxTreeNode {
+		const children: BlockBranchConcreteSyntaxTreeNodeChildren = [
+			openingCurlyBracket,
+			blockContent,
+			closingCurlyBracket,
+		];
+		const node = new BlockBranchConcreteSyntaxTreeNode(children);
+		return node;
 	}
 }

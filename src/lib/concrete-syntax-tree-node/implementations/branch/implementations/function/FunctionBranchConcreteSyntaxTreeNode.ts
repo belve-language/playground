@@ -6,11 +6,13 @@ import type {ErrorAbstractifyingResult} from "../../../../abstractifying/result/
 import {errorAbstractifyingResultTypeName} from "../../../../abstractifying/result/implementations/error/type-name/errorAbstractifyingResultTypeName.ts";
 import {SuccessAbstractifyingResult} from "../../../../abstractifying/result/implementations/success/SuccessAbstractifyingResult.ts";
 import {successAbstractifyingResultTypeName} from "../../../../abstractifying/result/implementations/success/type-name/successAbstractifyingResultTypeName.ts";
+import type {FunctionBodyBranchConcreteSyntaxTreeNode} from "../function-body/FunctionBodyBranchConcreteSyntaxTreeNode.ts";
+import type {SeparatedFunctionHeaderBranchConcreteSyntaxTreeNode} from "../separated-function-header/SeparatedFunctionHeaderBranchConcreteSyntaxTreeNode.ts";
 export class FunctionBranchConcreteSyntaxTreeNode extends BranchConcreteSyntaxTreeNode<
 	FunctionBranchConcreteSyntaxTreeNodeChildren,
 	typeof functionBranchConcreteSyntaxTreeNodeTypeName
 > {
-	public constructor(children: FunctionBranchConcreteSyntaxTreeNodeChildren) {
+	private constructor(children: FunctionBranchConcreteSyntaxTreeNodeChildren) {
 		super(children, functionBranchConcreteSyntaxTreeNodeTypeName);
 	}
 	public abstractify():
@@ -64,5 +66,15 @@ export class FunctionBranchConcreteSyntaxTreeNode extends BranchConcreteSyntaxTr
 				}
 			}
 		}
+	}
+	public static create(
+		separatedFunctionHeader: null | SeparatedFunctionHeaderBranchConcreteSyntaxTreeNode,
+		functionBody: FunctionBodyBranchConcreteSyntaxTreeNode,
+	): FunctionBranchConcreteSyntaxTreeNode {
+		const node = new FunctionBranchConcreteSyntaxTreeNode([
+			separatedFunctionHeader,
+			functionBody,
+		]);
+		return node;
 	}
 }
