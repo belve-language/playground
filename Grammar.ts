@@ -1,13 +1,11 @@
-import type {FirstSet} from "./FirstSet.ts";
 import type {FollowSet} from "./FollowSet.ts";
-import type {Rule} from "./Rule.ts";
-import type {RuleByNonTerminal} from "./RuleByNonTerminal.ts";
+import {ParsingTable} from "./ParsingTable.ts";
+import type {RuleRightExpressions} from "./RuleRightExpressions.ts";
+import type {Rules} from "./Rules.ts";
+import {NonTerminalExpression} from "./expression/implementations/non-terminal/NonTerminalExpression.ts";
 export class Grammar {
-	private constructor(
-		ruleByNonTerminal: RuleByNonTerminal,
-		startingNonTerminal: string,
-	) {
-		this.ruleByNonTerminal = ruleByNonTerminal;
+	private constructor(rules: Rules, startingNonTerminal: string) {
+		this.rules = rules;
 		this.startingNonTerminal = startingNonTerminal;
 	}
 	public checkIfGivenNonTerminalCanBeFinal(nonTerminal: string): boolean {
@@ -15,12 +13,12 @@ export class Grammar {
 			return true;
 		} else {
 			return (
-				this.ruleByNonTerminal[this.startingNonTerminal] as Rule
-			).rightExpressions.some((rightExpression) => {
+				this.rules[this.startingNonTerminal] as RuleRightExpressions
+			).some((rightExpression) => {
 				return rightExpression.checkIfGivenNonTerminalCanBeFinalInThisExpression(
 					new Set<string>(),
 					nonTerminal,
-					this.ruleByNonTerminal,
+					this.rules,
 				);
 			});
 		}
@@ -40,58 +38,51 @@ export class Grammar {
 			return new Set<string>();
 		} else {
 			const possibleFollowingTerminalsOfGivenNonTerminal = new Set<string>(
-				(
-					this.ruleByNonTerminal[this.startingNonTerminal] as Rule
-				).rightExpressions.flatMap((rightExpression) => {
-					return Array.from(
-						rightExpression.computePossibleFollowingTerminalsOfGivenNonTerminalInThisExpression(
-							new Set<string>(),
-							nonTerminal,
-							this.ruleByNonTerminal,
-						),
-					);
-				}),
+				(this.rules[this.startingNonTerminal] as RuleRightExpressions).flatMap(
+					(rightExpression) => {
+						return Array.from(
+							rightExpression.computePossibleFollowingTerminalsOfGivenNonTerminalInThisExpression(
+								new Set<string>(),
+								nonTerminal,
+								this.rules,
+							),
+						);
+					},
+				),
 			);
 			return possibleFollowingTerminalsOfGivenNonTerminal;
 		}
 	}
-	public static create(
-		rules: readonly Rule[],
-		startingNonTerminal: string,
-	): Grammar {
-		const ruleByNonTerminal: RuleByNonTerminal =
-			rules.reduce<RuleByNonTerminal>((accumulatedruleByNonTerminal, rule) => {
-				if (accumulatedruleByNonTerminal[rule.leftNonTerminal] === undefined) {
-					return {
-						...accumulatedruleByNonTerminal,
-						[rule.leftNonTerminal]: rule,
-					};
-				} else {
-					throw new Error(
-						`Duplicate definition of non-terminal "${rule.leftNonTerminal}"`,
-					);
-				}
-			}, {});
-		if (ruleByNonTerminal[startingNonTerminal] === undefined) {
+	public static create(rules: Rules, startingNonTerminal: string): Grammar {
+		if (rules[startingNonTerminal] === undefined) {
 			throw new Error(
 				`Starting non-terminal "${startingNonTerminal}" is not defined`,
 			);
 		}
 		const usedNonTerminals = new Set<string>(
-			(ruleByNonTerminal[startingNonTerminal] as Rule).rightExpressions.flatMap(
+			(rules[startingNonTerminal] as RuleRightExpressions).flatMap(
 				(rightExpression) => {
 					return Array.from(
 						rightExpression.computeUniqueUsedNonTerminalsInThisExpression(
 							new Set<string>(),
-							ruleByNonTerminal,
+							rules,
 						),
 					);
 				},
 			),
 		).union(new Set<string>([startingNonTerminal]));
+		if (usedNonTerminals.size !== Object.keys(rules).length) {
+			throw new Error(
+				`Not all non-terminals are used: ${[
+					...Object.keys(rules).filter((nonTerminal) => {
+						return !usedNonTerminals.has(nonTerminal);
+					}),
+				]}`,
+			);
+		}
 		const notDefinedNonTerminals = [...usedNonTerminals].filter(
 			(nonTerminal) => {
-				return ruleByNonTerminal[nonTerminal] === undefined;
+				return rules[nonTerminal] === undefined;
 			},
 		);
 		if (notDefinedNonTerminals.length > 0) {
@@ -99,18 +90,26 @@ export class Grammar {
 				`Some non-terminals are used but not defined: ${notDefinedNonTerminals}`,
 			);
 		}
-		if (usedNonTerminals.size !== rules.length) {
-			throw new Error(
-				`Not all non-terminals are used: ${[
-					...Object.keys(ruleByNonTerminal).filter((nonTerminal) => {
-						return !usedNonTerminals.has(nonTerminal);
-					}),
-				]}`,
-			);
-		}
-		const grammar = new Grammar(ruleByNonTerminal, startingNonTerminal);
+		const grammar = new Grammar(rules, startingNonTerminal);
 		return grammar;
 	}
-	public readonly ruleByNonTerminal: RuleByNonTerminal;
+	public parse(characters: readonly string[]): void {
+		const parsingTable = ParsingTable.create(this);
+		const startingNonTerminalExpression = new NonTerminalExpression(
+			this.startingNonTerminal,
+		);
+		const [firstCharacter, ...restCharacters] = characters;
+		if (firstCharacter === undefined) {
+			startingNonTerminalExpression.finalizeParsing(parsingTable, []);
+		} else {
+			startingNonTerminalExpression.parse(
+				[firstCharacter, ...restCharacters],
+				0,
+				parsingTable,
+				[],
+			);
+		}
+	}
+	public readonly rules: Rules;
 	public readonly startingNonTerminal: string;
 }

@@ -1,4 +1,4 @@
-import type {RuleByNonTerminal} from "../../../RuleByNonTerminal.ts";
+import type {Rules} from "../../../Rules.ts";
 import type {StackItem} from "../../../stack-item/StackItem.ts";
 import {Expression} from "../../Expression.ts";
 export class EmptyExpression extends Expression<"empty"> {
@@ -8,26 +8,26 @@ export class EmptyExpression extends Expression<"empty"> {
 	public override checkIfGivenNonTerminalCanBeFinalInThisExpression(
 		alreadyCheckedNonTerminals: ReadonlySet<string>,
 		nonTerminal: string,
-		ruleByNonTerminal: RuleByNonTerminal,
+		rules: Rules,
 	): boolean {
 		return false;
 	}
 	public override checkIfThisExpressionCanBeEmpty(
 		alreadyCheckedNonTerminals: ReadonlySet<string>,
-		ruleByNonTerminal: RuleByNonTerminal,
+		rules: Rules,
 	): boolean {
 		return true;
 	}
 	public override computePossibleFirstingTerminalsOfThisExpression(
 		alreadyCheckedNonTerminals: ReadonlySet<string>,
-		ruleByNonTerminal: RuleByNonTerminal,
+		rules: Rules,
 	): ReadonlySet<string> {
 		return new Set<string>();
 	}
 	public override computePossibleFollowingTerminalsOfGivenNonTerminalInThisExpression(
 		alreadyCheckedNonTerminals: ReadonlySet<string>,
 		nonTerminal: string,
-		ruleByNonTerminal: RuleByNonTerminal,
+		rules: Rules,
 	): ReadonlySet<string> {
 		return new Set<string>();
 	}
@@ -36,7 +36,7 @@ export class EmptyExpression extends Expression<"empty"> {
 	}
 	public override computeUniqueUsedNonTerminalsInThisExpression(
 		alreadyCheckedNonTerminals: ReadonlySet<string>,
-		ruleByNonTerminal: RuleByNonTerminal,
+		rules: Rules,
 	): ReadonlySet<string> {
 		return new Set<string>();
 	}

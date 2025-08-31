@@ -1,4 +1,4 @@
-import type {RuleByNonTerminal} from "../../../RuleByNonTerminal.ts";
+import type {Rules} from "../../../Rules.ts";
 import type {StackItem} from "../../../stack-item/StackItem.ts";
 import {Expression} from "../../Expression.ts";
 import {NonTerminalExpression} from "../non-terminal/NonTerminalExpression.ts";
@@ -18,59 +18,59 @@ export class ThenExpression extends Expression<"then"> {
 	public override checkIfGivenNonTerminalCanBeFinalInThisExpression(
 		alreadyCheckedNonTerminals: ReadonlySet<string>,
 		nonTerminal: string,
-		ruleByNonTerminal: RuleByNonTerminal,
+		rules: Rules,
 	): boolean {
 		return (
 			this.rightExpression.checkIfGivenNonTerminalCanBeFinalInThisExpression(
 				alreadyCheckedNonTerminals,
 				nonTerminal,
-				ruleByNonTerminal,
+				rules,
 			)
 			|| (this.rightExpression.checkIfThisExpressionCanBeEmpty(
 				new Set<string>(),
-				ruleByNonTerminal,
+				rules,
 			)
 				&& this.leftExpression.checkIfGivenNonTerminalCanBeFinalInThisExpression(
 					alreadyCheckedNonTerminals,
 					nonTerminal,
-					ruleByNonTerminal,
+					rules,
 				))
 		);
 	}
 	public override checkIfThisExpressionCanBeEmpty(
 		alreadyCheckedNonTerminals: ReadonlySet<string>,
-		ruleByNonTerminal: RuleByNonTerminal,
+		rules: Rules,
 	): boolean {
 		return (
 			this.leftExpression.checkIfThisExpressionCanBeEmpty(
 				alreadyCheckedNonTerminals,
-				ruleByNonTerminal,
+				rules,
 			)
 			&& this.rightExpression.checkIfThisExpressionCanBeEmpty(
 				alreadyCheckedNonTerminals,
-				ruleByNonTerminal,
+				rules,
 			)
 		);
 	}
 	public override computePossibleFirstingTerminalsOfThisExpression(
 		alreadyCheckedNonTerminals: ReadonlySet<string>,
-		ruleByNonTerminal: RuleByNonTerminal,
+		rules: Rules,
 	): ReadonlySet<string> {
 		const leftExpressionFirstingTerminals =
 			this.leftExpression.computePossibleFirstingTerminalsOfThisExpression(
 				alreadyCheckedNonTerminals,
-				ruleByNonTerminal,
+				rules,
 			);
 		if (
 			this.leftExpression.checkIfThisExpressionCanBeEmpty(
 				new Set<string>(),
-				ruleByNonTerminal,
+				rules,
 			)
 		) {
 			const rightExpressionFirstingTerminals =
 				this.rightExpression.computePossibleFirstingTerminalsOfThisExpression(
 					alreadyCheckedNonTerminals,
-					ruleByNonTerminal,
+					rules,
 				);
 			return leftExpressionFirstingTerminals.union(
 				rightExpressionFirstingTerminals,
@@ -82,19 +82,19 @@ export class ThenExpression extends Expression<"then"> {
 	public override computePossibleFollowingTerminalsOfGivenNonTerminalInThisExpression(
 		alreadyCheckedNonTerminals: ReadonlySet<string>,
 		nonTerminal: string,
-		ruleByNonTerminal: RuleByNonTerminal,
+		rules: Rules,
 	): ReadonlySet<string> {
 		const possibleFollowingTerminalsOfGivenNonTerminalInLeftExpression =
 			this.leftExpression.computePossibleFollowingTerminalsOfGivenNonTerminalInThisExpression(
 				alreadyCheckedNonTerminals,
 				nonTerminal,
-				ruleByNonTerminal,
+				rules,
 			);
 		const possibleFollowingTerminalsOfGivenNonTerminalInRightExpression =
 			this.rightExpression.computePossibleFollowingTerminalsOfGivenNonTerminalInThisExpression(
 				alreadyCheckedNonTerminals,
 				nonTerminal,
-				ruleByNonTerminal,
+				rules,
 			);
 		const possibleFollowingTerminalsOfGivenNonTerminalInSubExpressions =
 			possibleFollowingTerminalsOfGivenNonTerminalInLeftExpression.union(
@@ -104,13 +104,13 @@ export class ThenExpression extends Expression<"then"> {
 			this.leftExpression.checkIfGivenNonTerminalCanBeFinalInThisExpression(
 				new Set<string>(),
 				nonTerminal,
-				ruleByNonTerminal,
+				rules,
 			)
 		) {
 			const possibleFirstingTerminalsOfRightExpression =
 				this.rightExpression.computePossibleFirstingTerminalsOfThisExpression(
 					alreadyCheckedNonTerminals,
-					ruleByNonTerminal,
+					rules,
 				);
 			const possibleFollowingTerminalsOfGivenNonTerminalInThisExpression =
 				possibleFollowingTerminalsOfGivenNonTerminalInSubExpressions.union(
@@ -129,17 +129,17 @@ export class ThenExpression extends Expression<"then"> {
 	}
 	public override computeUniqueUsedNonTerminalsInThisExpression(
 		alreadyCheckedNonTerminals: ReadonlySet<string>,
-		ruleByNonTerminal: RuleByNonTerminal,
+		rules: Rules,
 	): ReadonlySet<string> {
 		const uniqueUsedNonTerminalsInLeftExpression =
 			this.leftExpression.computeUniqueUsedNonTerminalsInThisExpression(
 				alreadyCheckedNonTerminals,
-				ruleByNonTerminal,
+				rules,
 			);
 		const uniqueUsedNonTerminalsInRightExpression =
 			this.rightExpression.computeUniqueUsedNonTerminalsInThisExpression(
 				alreadyCheckedNonTerminals,
-				ruleByNonTerminal,
+				rules,
 			);
 		return uniqueUsedNonTerminalsInLeftExpression.union(
 			uniqueUsedNonTerminalsInRightExpression,

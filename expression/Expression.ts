@@ -1,5 +1,5 @@
 import type {FirstSet} from "../FirstSet.ts";
-import type {RuleByNonTerminal} from "../RuleByNonTerminal.ts";
+import type {Rules} from "../Rules.ts";
 import type {StackItem} from "../stack-item/StackItem.ts";
 export abstract class Expression<TypeName extends string> {
 	public constructor(typeName: TypeName) {
@@ -8,37 +8,37 @@ export abstract class Expression<TypeName extends string> {
 	public abstract checkIfGivenNonTerminalCanBeFinalInThisExpression(
 		alreadyCheckedNonTerminals: ReadonlySet<string>,
 		nonTerminal: string,
-		ruleByNonTerminal: RuleByNonTerminal,
+		rules: Rules,
 	): boolean;
 	public abstract checkIfThisExpressionCanBeEmpty(
 		alreadyCheckedNonTerminals: ReadonlySet<string>,
-		ruleByNonTerminal: RuleByNonTerminal,
+		rules: Rules,
 	): boolean;
-	public computeFirstSet(ruleByNonTerminal: RuleByNonTerminal): FirstSet {
+	public computeFirstSet(rules: Rules): FirstSet {
 		return {
 			canBeEmpty: this.checkIfThisExpressionCanBeEmpty(
 				new Set<string>(),
-				ruleByNonTerminal,
+				rules,
 			),
 			terminals: this.computePossibleFirstingTerminalsOfThisExpression(
 				new Set<string>(),
-				ruleByNonTerminal,
+				rules,
 			),
 		};
 	}
 	public abstract computePossibleFirstingTerminalsOfThisExpression(
 		alreadyCheckedNonTerminals: ReadonlySet<string>,
-		ruleByNonTerminal: RuleByNonTerminal,
+		rules: Rules,
 	): ReadonlySet<string>;
 	public abstract computePossibleFollowingTerminalsOfGivenNonTerminalInThisExpression(
 		alreadyCheckedNonTerminals: ReadonlySet<string>,
 		nonTerminal: string,
-		ruleByNonTerminal: RuleByNonTerminal,
+		rules: Rules,
 	): ReadonlySet<string>;
 	public abstract computeStackItems(): readonly StackItem[];
 	public abstract computeUniqueUsedNonTerminalsInThisExpression(
 		alreadyCheckedNonTerminals: ReadonlySet<string>,
-		ruleByNonTerminal: RuleByNonTerminal,
+		rules: Rules,
 	): ReadonlySet<string>;
 	public readonly typeName: TypeName;
 }

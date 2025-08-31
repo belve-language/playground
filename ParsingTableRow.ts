@@ -13,9 +13,7 @@ export class ParsingTableRow {
 		let terminals: {readonly [terminal: string]: readonly StackItem[]} = {};
 		let finalization: null | readonly StackItem[] = null;
 		for (const rightExpression of rule.rightExpressions) {
-			const firstSet = rightExpression.computeFirstSet(
-				grammar.ruleByNonTerminal,
-			);
+			const firstSet = rightExpression.computeFirstSet(grammar.rules);
 			const stackItems = rightExpression.computeStackItems();
 			for (const terminal of firstSet.terminals) {
 				if (terminals[terminal] === undefined) {
@@ -35,7 +33,7 @@ export class ParsingTableRow {
 						terminals = {...terminals, [terminal]: stackItems};
 					} else if (terminals[terminal] !== stackItems) {
 						throw new Error(
-							`Grammar is not LL(1): Non-terminal "${rule.leftNonTerminal}" has multiple right expressions that can start with terminal "${terminal}":
+							`Grammar is not LL(1): Non-terminal "${rule.leftNonTerminal}" can be empty so following terminals have been checked an an ambiguity has been detected for terminal "${terminal}":
 - ${JSON.stringify(terminals[terminal])} from ?
 - ${JSON.stringify(stackItems)} from ${JSON.stringify(rightExpression)}`,
 						);
