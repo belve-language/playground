@@ -1,12 +1,21 @@
 import type {ParsingTable} from "../../../ParsingTable.ts";
 import type {Rules} from "../../../Rules.ts";
+import type {ClosingCurlyBracketCharacter} from "../../../src/lib/characters/closing-curly-bracket/ClosingCurlyBracketCharacter.ts";
+import type {LeafConcreteSyntaxTreeNode} from "../../../src/lib/concrete-syntax-tree-node/implementations/leaf/LeafConcreteSyntaxTreeNode.ts";
+import {ClosingCurlyBracketCharacterLeafConcreteSyntaxTreeNode} from "../../../src/lib/concrete-syntax-tree-node/implementations/leaf/implementations/closing-curly-bracket/ClosingCurlyBracketCharacterLeafConcreteSyntaxTreeNode.ts";
+import type {closingCurlyBracketCharacterLeafConcreteSyntaxTreeNodeTypeName} from "../../../src/lib/concrete-syntax-tree-node/implementations/leaf/implementations/closing-curly-bracket/type-name/closingCurlyBracketCharacterLeafConcreteSyntaxTreeNodeTypeName.ts";
 import type {StackItem} from "../../../stack-item/StackItem.ts";
 import {Expression} from "../../Expression.ts";
-export class TerminalExpression extends Expression<"terminal"> {
-	public constructor(terminal: string) {
+export abstract class TerminalExpression<
+	Terminal extends string,
+> extends Expression<"terminal"> {
+	public constructor(terminal: Terminal) {
 		super("terminal");
 		this.terminal = terminal;
 	}
+	public abstract build(
+		index: number,
+	): LeafConcreteSyntaxTreeNode<Terminal, string>;
 	public override checkIfGivenNonTerminalCanBeFinalInThisExpression(
 		alreadyCheckedNonTerminals: ReadonlySet<string>,
 		nonTerminal: string,
@@ -86,5 +95,18 @@ export class TerminalExpression extends Expression<"terminal"> {
 			);
 		}
 	}
-	public readonly terminal: string;
+	public readonly terminal: Terminal;
+}
+export class ClosingCurlyBracketTerminalExpression extends TerminalExpression<ClosingCurlyBracketCharacter> {
+	public constructor(terminal: ClosingCurlyBracketCharacter) {
+		super(terminal);
+	}
+	public override build(
+		index: number,
+	): ClosingCurlyBracketCharacterLeafConcreteSyntaxTreeNode {
+		return new ClosingCurlyBracketCharacterLeafConcreteSyntaxTreeNode(
+			this.terminal,
+			index,
+		);
+	}
 }

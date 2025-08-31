@@ -1,16 +1,16 @@
 import type {OpeningRoundBracketCharacter} from "../../../../../characters/opening-round-bracket/OpeningRoundBracketCharacter.ts";
 import type {Index} from "../../../../../index/Index.ts";
 import {LeafConcreteSyntaxTreeNode} from "../../LeafConcreteSyntaxTreeNode.ts";
-import {openingRoundBracketLeafConcreteSyntaxTreeNodeTypeName} from "./type-name/openingRoundBracketLeafConcreteSyntaxTreeNodeTypeName.ts";
-export class OpeningRoundBracketLeafConcreteSyntaxTreeNode extends LeafConcreteSyntaxTreeNode<
+import {openingRoundBracketCharacterLeafConcreteSyntaxTreeNodeTypeName} from "./type-name/openingRoundBracketCharacterLeafConcreteSyntaxTreeNodeTypeName.ts";
+export class OpeningRoundBracketCharacterLeafConcreteSyntaxTreeNode extends LeafConcreteSyntaxTreeNode<
 	OpeningRoundBracketCharacter,
-	typeof openingRoundBracketLeafConcreteSyntaxTreeNodeTypeName
+	typeof openingRoundBracketCharacterLeafConcreteSyntaxTreeNodeTypeName
 > {
 	public constructor(character: OpeningRoundBracketCharacter, index: Index) {
 		super(
 			character,
 			index,
-			openingRoundBracketLeafConcreteSyntaxTreeNodeTypeName,
+			openingRoundBracketCharacterLeafConcreteSyntaxTreeNodeTypeName,
 		);
 	}
 }
