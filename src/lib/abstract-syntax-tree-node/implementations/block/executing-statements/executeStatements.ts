@@ -7,33 +7,75 @@ export function* executeStatements(
 	children: BlockAbstractSyntaxTreeNodeChildren,
 	depth: number,
 ): Generator<{readonly [variableName: string]: unknown}, void, void> {
-	const [firstInitialOperatedStatement, ...restInitialOperatedStatements] =
-		children.initialOperatedStatements;
-	if (firstInitialOperatedStatement === undefined) {
-		const newVariableses = children.finalStatement.execute(
-			functions,
-			variables,
-			depth,
-		);
+	// const [firstInitialOperatedStatement, ...restInitialOperatedStatements] =
+	// 	children.initialOperatedStatements;
+	// if (firstInitialOperatedStatement === undefined) {
+	// 	const newVariableses = children.finalStatement.execute(
+	// 		functions,
+	// 		variables,
+	// 		depth,
+	// 	);
+	// 	for (const newVariables of newVariableses) {
+	// 		const combinedVariables = {...variables, ...newVariables};
+	// 		yield combinedVariables;
+	// 	}
+	// } else {
+	// 	const newVariableses = firstInitialOperatedStatement.execute(
+	// 		functions,
+	// 		variables,
+	// 		depth,
+	// 	);
+	// 	switch (firstInitialOperatedStatement.children.operator) {
+	// 		case ".": {
+	// 			for (const newVariables of newVariableses) {
+	// 				const combinedVariables = {...variables, ...newVariables};
+	// 				yield combinedVariables;
+	// 			}
+	// 			const newCombinedVariableses = executeStatements(
+	// 				functions,
+	// 				variables,
+	// 				{
+	// 					finalStatement: children.finalStatement,
+	// 					initialOperatedStatements: restInitialOperatedStatements,
+	// 				},
+	// 				depth,
+	// 			);
+	// 			yield* newCombinedVariableses;
+	// 			break;
+	// 		}
+	// 		case ",": {
+	// 			for (const newVariables of newVariableses) {
+	// 				const combinedVariables = {...variables, ...newVariables};
+	// 				const newCombinedVariableses = executeStatements(
+	// 					functions,
+	// 					combinedVariables,
+	// 					{
+	// 						finalStatement: children.finalStatement,
+	// 						initialOperatedStatements: restInitialOperatedStatements,
+	// 					},
+	// 					depth,
+	// 				);
+	// 				yield* newCombinedVariableses;
+	// 			}
+	// 			break;
+	// 		}
+	// 	}
+	// }
+	// refactor because now we get initialStatement and finalOperatedStatements
+	const newVariableses = children.initialStatement.execute(
+		functions,
+		variables,
+		depth,
+	);
+	const [firstFinalOperatedStatement, ...restFinalOperatedStatements] =
+		children.finalOperatedStatements;
+	if (firstFinalOperatedStatement === undefined) {
 		for (const newVariables of newVariableses) {
 			const combinedVariables = {...variables, ...newVariables};
 			yield combinedVariables;
 		}
 	} else {
-		const newVariableses = firstInitialOperatedStatement.execute(
-			functions,
-			variables,
-			depth,
-		);
-		// if (firstInitialOperatedStatement.children.operator === ".") {
-		// 	for (const newVariables of newVariableses) {
-		// 		const combinedVariables = {...variables, ...newVariables};
-		// 		yield combinedVariables;
-		// 	}
-		// }
-		// const combinedVariableses = executeStatements(
-		// 	functions,
-		switch (firstInitialOperatedStatement.children.operator) {
+		switch (firstFinalOperatedStatement.children.operator) {
 			case ".": {
 				for (const newVariables of newVariableses) {
 					const combinedVariables = {...variables, ...newVariables};
@@ -43,8 +85,8 @@ export function* executeStatements(
 					functions,
 					variables,
 					{
-						finalStatement: children.finalStatement,
-						initialOperatedStatements: restInitialOperatedStatements,
+						finalOperatedStatements: restFinalOperatedStatements,
+						initialStatement: firstFinalOperatedStatement.children.statement,
 					},
 					depth,
 				);
@@ -58,8 +100,8 @@ export function* executeStatements(
 						functions,
 						combinedVariables,
 						{
-							finalStatement: children.finalStatement,
-							initialOperatedStatements: restInitialOperatedStatements,
+							finalOperatedStatements: restFinalOperatedStatements,
+							initialStatement: firstFinalOperatedStatement.children.statement,
 						},
 						depth,
 					);
@@ -69,82 +111,4 @@ export function* executeStatements(
 			}
 		}
 	}
-	// const newVariableses = firstStatement.execute(functions, variables, depth);
-	// // for (const newVariables of newVariableses) {
-	// // 	const combinedVariables = {...variables, ...newVariables};
-	// // 	if (firstStatement.children.operator === ".") {
-	// // 		yield combinedVariables;
-	// // 	}
-	// // 	switch (firstStatement.children.operator) {
-	// // 		case ".": {
-	// // 			yield combinedVariables;
-	// // 			break;
-	// // 		}
-	// // 		case ",": {
-	// // 			const [firstRestStatement, ...restRestStatements] = restStatements;
-	// // 			if (firstRestStatement === undefined) {
-	// // 				yield combinedVariables;
-	// // 			} else {
-	// // 				const restVariableses = executeStatements(
-	// // 					functions,
-	// // 					combinedVariables,
-	// // 					[firstRestStatement, ...restRestStatements],
-	// // 					depth,
-	// // 				);
-	// // 				yield* restVariableses;
-	// // 			}
-	// // 			break;
-	// // 		}
-	// // 	}
-	// // }
-	// // if (firstStatement.children.operator === ".") {
-	// // 	const [firstRestStatement, ...restRestStatements] = restStatements;
-	// // 	if (firstRestStatement !== undefined) {
-	// // 		const restVariableses = executeStatements(
-	// // 			functions,
-	// // 			variables,
-	// // 			[firstRestStatement, ...restRestStatements],
-	// // 			depth,
-	// // 		);
-	// // 		yield* restVariableses;
-	// // 	}
-	// // }
-	// switch (firstStatement.children.operator) {
-	// 	// Upewnić się odnośnie logiki
-	// 	// a może nie ma jednak być operatora po każdej instrukcji?
-	// 	case ".": {
-	// 		for (const newVariables of newVariableses) {
-	// 			const combinedVariables = {...variables, ...newVariables};
-	// 			yield combinedVariables;
-	// 		}
-	// 		const [firstRestStatement, ...restRestStatements] = restStatements;
-	// 		if (firstRestStatement !== undefined) {
-	// 			const restVariableses = executeStatements(
-	// 				functions,
-	// 				variables,
-	// 				[firstRestStatement, ...restRestStatements],
-	// 				depth,
-	// 			);
-	// 			yield* restVariableses;
-	// 		}
-	// 		break;
-	// 	}
-	// 	case ",": {
-	// 		for (const newVariables of newVariableses) {
-	// 			const combinedVariables = {...variables, ...newVariables};
-	// 			const [firstRestStatement, ...restRestStatements] = restStatements;
-	// 			if (firstRestStatement === undefined) {
-	// 				yield combinedVariables;
-	// 			} else {
-	// 				const restVariableses = executeStatements(
-	// 					functions,
-	// 					combinedVariables,
-	// 					[firstRestStatement, ...restRestStatements],
-	// 					depth,
-	// 				);
-	// 				yield* restVariableses;
-	// 			}
-	// 		}
-	// 	}
-	// }
 }

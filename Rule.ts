@@ -116,7 +116,6 @@ export abstract class Rule {
 		  >
 		| LeafConcreteSyntaxTreeNode<string>
 	> {
-		console.log("finalizeParsing", this);
 		const parsingTableRow = ParsingTableRow.create(grammar, this);
 		const expression = parsingTableRow.finalization;
 		if (expression === null) {
@@ -124,7 +123,6 @@ export abstract class Rule {
 		} else {
 			const expressionFinalizingParsingResult =
 				expression.finalizeParsing(grammar);
-			console.log({expressionFinalizingParsingResult});
 			const node = this.buildNode(expressionFinalizingParsingResult.node);
 			const finalizingParsingResult: FinalizingParsingResult<
 				| BranchConcreteSyntaxTreeNode<
@@ -154,7 +152,6 @@ export abstract class Rule {
 		  >
 		| LeafConcreteSyntaxTreeNode<string>
 	> {
-		console.log("parse", this);
 		const [firstCharacter, ...restCharacters] = remainingCharacters;
 		const parsingTableRow = ParsingTableRow.create(grammar, this);
 		const expression = parsingTableRow.terminals[firstCharacter];
@@ -168,11 +165,6 @@ export abstract class Rule {
 				...restCharacters,
 			]);
 			const node = this.buildNode(expressionParsingResult.node);
-			// console.log({
-			// 	this: this,
-			// 	"expressionParsingResult.node": expressionParsingResult.node,
-			// 	node: node,
-			// });
 			const parsingResult = {
 				nextIndex: expressionParsingResult.nextIndex,
 				node: node,

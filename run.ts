@@ -1,16 +1,32 @@
 import {Grammar} from "./Grammar.ts";
 import {Parser} from "./Parser.ts";
 import {Rule} from "./Rule.ts";
-import type {Expression} from "./expression/Expression.ts";
 import {EmptyExpression} from "./expression/implementations/empty/EmptyExpression.ts";
 import {NonTerminalExpression} from "./expression/implementations/non-terminal/NonTerminalExpression.ts";
 import {TerminalExpression} from "./expression/implementations/terminal/TerminalExpression.ts";
 import {FinalThenExpression} from "./expression/implementations/then/implementations/final/FinalThenExpression.ts";
 import {IntermediateThenExpression} from "./expression/implementations/then/implementations/intermediate/IntermediateThenExpression.ts";
 import {SingleThenExpression} from "./expression/implementations/then/implementations/single/SingleThenExpression.ts";
+import {BlockAbstractSyntaxTreeNode} from "./src/lib/abstract-syntax-tree-node/implementations/block/BlockAbstractSyntaxTreeNode.ts";
+import type {BlockAbstractSyntaxTreeNodeChildren} from "./src/lib/abstract-syntax-tree-node/implementations/block/children/BlockAbstractSyntaxTreeNodeChildren.ts";
+import {FunctionAbstractSyntaxTreeNode} from "./src/lib/abstract-syntax-tree-node/implementations/function/FunctionAbstractSyntaxTreeNode.ts";
+import {FunctionCallAbstractSyntaxTreeNode} from "./src/lib/abstract-syntax-tree-node/implementations/function-call/FunctionCallAbstractSyntaxTreeNode.ts";
+import {KnownFunctionCallSegmentAbstractSyntaxTreeNode} from "./src/lib/abstract-syntax-tree-node/implementations/function-call-segment/implementations/known/KnownFunctionCallSegmentAbstractSyntaxTreeNode.ts";
+import {UnknownFunctionCallSegmentAbstractSyntaxTreeNode} from "./src/lib/abstract-syntax-tree-node/implementations/function-call-segment/implementations/unknown/UnknownFunctionCallSegmentAbstractSyntaxTreeNode.ts";
+import {WordFunctionCallSegmentAbstractSyntaxTreeNode} from "./src/lib/abstract-syntax-tree-node/implementations/function-call-segment/implementations/word/WordFunctionCallSegmentAbstractSyntaxTreeNode.ts";
+import type {SupportedFunctionCallSegmentAbstractSyntaxTreeNode} from "./src/lib/abstract-syntax-tree-node/implementations/function-call-segment/supported/SupportedFunctionCallSegmentAbstractSyntaxTreeNode.ts";
+import {FunctionHeaderAbstractSyntaxTreeNode} from "./src/lib/abstract-syntax-tree-node/implementations/function-header/FunctionHeaderAbstractSyntaxTreeNode.ts";
+import {KnownFunctionHeaderSegmentAbstractSyntaxTreeNode} from "./src/lib/abstract-syntax-tree-node/implementations/function-header-segment/implementations/known/KnownFunctionHeaderSegmentAbstractSyntaxTreeNode.ts";
+import {UnknownFunctionHeaderSegmentAbstractSyntaxTreeNode} from "./src/lib/abstract-syntax-tree-node/implementations/function-header-segment/implementations/unknown/UnknownFunctionHeaderSegmentAbstractSyntaxTreeNode.ts";
+import {WordFunctionHeaderSegmentAbstractSyntaxTreeNode} from "./src/lib/abstract-syntax-tree-node/implementations/function-header-segment/implementations/word/WordFunctionHeaderSegmentAbstractSyntaxTreeNode.ts";
+import type {SupportedFunctionHeaderSegmentAbstractSyntaxTreeNode} from "./src/lib/abstract-syntax-tree-node/implementations/function-header-segment/supported/SupportedFunctionHeaderSegmentAbstractSyntaxTreeNode.ts";
+import {FunctionsAbstractSyntaxTreeNode} from "./src/lib/abstract-syntax-tree-node/implementations/functions/FunctionsAbstractSyntaxTreeNode.ts";
+import {OperatedStatementAbstractSyntaxTreeNode} from "./src/lib/abstract-syntax-tree-node/implementations/operated-statement/OperatedStatementAbstractSyntaxTreeNode.ts";
+import type {StatementAbstractSyntaxTreeNode} from "./src/lib/abstract-syntax-tree-node/implementations/statement/StatementAbstractSyntaxTreeNode.ts";
 import {BranchConcreteSyntaxTreeNode} from "./src/lib/concrete-syntax-tree-node/implementations/branch/BranchConcreteSyntaxTreeNode.ts";
 import {LeafConcreteSyntaxTreeNode} from "./src/lib/concrete-syntax-tree-node/implementations/leaf/LeafConcreteSyntaxTreeNode.ts";
 import type {Index} from "./src/lib/index/Index.ts";
+import type {SpanIndexes} from "./src/lib/span-indexes/SpanIndexes.ts";
 class BlockRule extends Rule {
 	public constructor() {
 		super();
@@ -2090,24 +2106,7 @@ export type RuleById = {
 };
 const grammar = new Grammar(ruleById, ruleById.OptionalContent);
 
-// const sourceCodeContent = `is (dividend) not divisible by (divisor) {
-// 	(dividend) % (divisor) != (0)
-// }
-// is (number) prime {
-// 	(number) > (1),
-// 	root of degree (2) of (number) = [maximaldivisortocheck],
-// 	none of the integers between (2) and (maximaldivisortocheck) divide (number)
-// }
-// none of the integers between (start) and (end) divide (dividend) {
-// 	(start) > (end).
-// 	(start) <= (end),
-// 	is (dividend) not divisible by (start),
-// 	(start) + (1) = [nextstart],
-// 	none of the integers between (nextstart) and (end) divide (dividend)
-// }
-// {
-// 	is (37) prime
-// }
+//
 // class OpeningCurlyBracketCharacterNode {}
 // class ClosingCurlyBracketCharacterNode {}
 // class OptionalWhitespaceCharactersNode {
@@ -2125,6 +2124,24 @@ type BlockBranchConcreteSyntaxTreeNodeChildren = readonly [
 class BlockBranchConcreteSyntaxTreeNode extends BranchConcreteSyntaxTreeNode<BlockBranchConcreteSyntaxTreeNodeChildren> {
 	public constructor(children: BlockBranchConcreteSyntaxTreeNodeChildren) {
 		super(children);
+	}
+	public abstractify(): BlockAbstractSyntaxTreeNode {
+		const [
+			openingCurlyBracketCharacter,
+			optionalBlockContent,
+			closingCurlyBracketCharacter,
+			optionalWhitespace,
+		] = this.children;
+		const abstractifiedOptionalBlockContent =
+			optionalBlockContent.abstractify();
+		const abstractifiedBlock = new BlockAbstractSyntaxTreeNode(
+			abstractifiedOptionalBlockContent,
+			{
+				ending: closingCurlyBracketCharacter.index,
+				starting: openingCurlyBracketCharacter.index,
+			},
+		);
+		return abstractifiedBlock;
 	}
 }
 type OpeningCurlyBracketCharacterLeafConcreteSyntaxTreeNodeCharacter = "{";
@@ -2153,6 +2170,14 @@ class OptionalBlockContentBranchConcreteSyntaxTreeNode extends BranchConcreteSyn
 		children: OptionalBlockContentBranchConcreteSyntaxTreeNodeChildren,
 	) {
 		super(children);
+	}
+	public abstractify(): BlockAbstractSyntaxTreeNodeChildren {
+		const [blockContent] = this.children;
+		if (blockContent === null) {
+			throw new Error("Block must have content");
+		} else {
+			return blockContent.abstractify();
+		}
 	}
 }
 type OptionalWhitespaceBranchConcreteSyntaxTreeNodeChildren = readonly [
@@ -2203,6 +2228,14 @@ class BlockContentBranchConcreteSyntaxTreeNode extends BranchConcreteSyntaxTreeN
 	) {
 		super(children);
 	}
+	public abstractify(): BlockAbstractSyntaxTreeNodeChildren {
+		const [statementsOrPaddedOptionalStatements] = this.children;
+		const abstractifiedStatementsOrPaddedOptionalStatements =
+			statementsOrPaddedOptionalStatements.abstractify();
+		const abstractifiedBlockContent =
+			abstractifiedStatementsOrPaddedOptionalStatements;
+		return abstractifiedBlockContent;
+	}
 }
 type PaddedOptionalStatementsBranchConcreteSyntaxTreeNodeChildren = readonly [
 	WhitespaceBranchConcreteSyntaxTreeNode,
@@ -2214,6 +2247,13 @@ class PaddedOptionalStatementsBranchConcreteSyntaxTreeNode extends BranchConcret
 	) {
 		super(children);
 	}
+	public abstractify(): BlockAbstractSyntaxTreeNodeChildren {
+		const [whitespace, optionalStatements] = this.children;
+		const abstractifiedOptionalStatements = optionalStatements.abstractify();
+		const abstractifiedPaddedOptionalStatements =
+			abstractifiedOptionalStatements;
+		return abstractifiedPaddedOptionalStatements;
+	}
 }
 type StatementsBranchConcreteSyntaxTreeNodeChildren = readonly [
 	StatementBranchConcreteSyntaxTreeNode,
@@ -2223,6 +2263,17 @@ class StatementsBranchConcreteSyntaxTreeNode extends BranchConcreteSyntaxTreeNod
 	public constructor(children: StatementsBranchConcreteSyntaxTreeNodeChildren) {
 		super(children);
 	}
+	public abstractify(): BlockAbstractSyntaxTreeNodeChildren {
+		const [statement, optionalSeparatedStatements] = this.children;
+		const abstractifiedStatement = statement.abstractify();
+		const abstractifiedOptionalSeparatedStatements =
+			optionalSeparatedStatements.abstractify();
+		const abstractifiedStatements: BlockAbstractSyntaxTreeNodeChildren = {
+			finalOperatedStatements: abstractifiedOptionalSeparatedStatements,
+			initialStatement: abstractifiedStatement,
+		};
+		return abstractifiedStatements;
+	}
 }
 type StatementBranchConcreteSyntaxTreeNodeChildren =
 	| readonly [BlockStatementBranchConcreteSyntaxTreeNode]
@@ -2230,6 +2281,12 @@ type StatementBranchConcreteSyntaxTreeNodeChildren =
 class StatementBranchConcreteSyntaxTreeNode extends BranchConcreteSyntaxTreeNode<StatementBranchConcreteSyntaxTreeNodeChildren> {
 	public constructor(children: StatementBranchConcreteSyntaxTreeNodeChildren) {
 		super(children);
+	}
+	public abstractify(): StatementAbstractSyntaxTreeNode {
+		const [blockStatementOrFunctionCallStatement] = this.children;
+		const abstractifiedStatement =
+			blockStatementOrFunctionCallStatement.abstractify();
+		return abstractifiedStatement;
 	}
 }
 type BlockStatementBranchConcreteSyntaxTreeNodeChildren = readonly [
@@ -2241,6 +2298,11 @@ class BlockStatementBranchConcreteSyntaxTreeNode extends BranchConcreteSyntaxTre
 	) {
 		super(children);
 	}
+	public abstractify(): BlockAbstractSyntaxTreeNode {
+		const [block] = this.children;
+		const abstractifiedBlock = block.abstractify();
+		return abstractifiedBlock;
+	}
 }
 type FunctionCallStatementBranchConcreteSyntaxTreeNodeChildren = readonly [
 	FunctionCallBranchConcreteSyntaxTreeNode,
@@ -2251,6 +2313,11 @@ class FunctionCallStatementBranchConcreteSyntaxTreeNode extends BranchConcreteSy
 	) {
 		super(children);
 	}
+	public abstractify(): FunctionCallAbstractSyntaxTreeNode {
+		const [functionCall] = this.children;
+		const abstractifiedFunctionCall = functionCall.abstractify();
+		return abstractifiedFunctionCall;
+	}
 }
 type FunctionCallBranchConcreteSyntaxTreeNodeChildren = readonly [
 	FunctionCallSegmentsBranchConcreteSyntaxTreeNode,
@@ -2260,6 +2327,23 @@ class FunctionCallBranchConcreteSyntaxTreeNode extends BranchConcreteSyntaxTreeN
 		children: FunctionCallBranchConcreteSyntaxTreeNodeChildren,
 	) {
 		super(children);
+	}
+	public abstractify(): FunctionCallAbstractSyntaxTreeNode {
+		const [functionCallSegments] = this.children;
+		const abstractifiedFunctionCallSegments =
+			functionCallSegments.abstractify();
+		const abstractifiedFunctionCall = new FunctionCallAbstractSyntaxTreeNode(
+			{segments: abstractifiedFunctionCallSegments},
+			{
+				ending: (
+					abstractifiedFunctionCallSegments[
+						abstractifiedFunctionCallSegments.length - 1
+					] as SupportedFunctionCallSegmentAbstractSyntaxTreeNode
+				).spanIndexes.ending,
+				starting: abstractifiedFunctionCallSegments[0].spanIndexes.starting,
+			},
+		);
+		return abstractifiedFunctionCall;
 	}
 }
 type FunctionCallSegmentsBranchConcreteSyntaxTreeNodeChildren =
@@ -2274,6 +2358,17 @@ class FunctionCallSegmentsBranchConcreteSyntaxTreeNode extends BranchConcreteSyn
 	) {
 		super(children);
 	}
+	public abstractify(): readonly [
+		SupportedFunctionCallSegmentAbstractSyntaxTreeNode,
+		...(readonly SupportedFunctionCallSegmentAbstractSyntaxTreeNode[]),
+	] {
+		const [
+			startingWithFunctionCallSegmentsOrStartingWithWordFunctionCallSegmentsOrStartingWithKnownFunctionCallSegments,
+		] = this.children;
+		const abstractifiedStartingWithFunctionCallSegmentsOrStartingWithWordFunctionCallSegmentsOrStartingWithKnownFunctionCallSegments =
+			startingWithFunctionCallSegmentsOrStartingWithWordFunctionCallSegmentsOrStartingWithKnownFunctionCallSegments.abstractify();
+		return abstractifiedStartingWithFunctionCallSegmentsOrStartingWithWordFunctionCallSegmentsOrStartingWithKnownFunctionCallSegments;
+	}
 }
 type OptionalStatementsBranchConcreteSyntaxTreeNodeChildren = readonly [
 	null | StatementsBranchConcreteSyntaxTreeNode,
@@ -2284,6 +2379,15 @@ class OptionalStatementsBranchConcreteSyntaxTreeNode extends BranchConcreteSynta
 	) {
 		super(children);
 	}
+	public abstractify(): BlockAbstractSyntaxTreeNodeChildren {
+		const [statements] = this.children;
+		if (statements === null) {
+			throw new Error("Block must have at least one statement");
+		} else {
+			const abstractifiedStatements = statements.abstractify();
+			return abstractifiedStatements;
+		}
+	}
 }
 type OptionalSeparatedStatementsBranchConcreteSyntaxTreeNodeChildren =
 	readonly [null | SeparatedStatementsBranchConcreteSyntaxTreeNode];
@@ -2292,6 +2396,16 @@ class OptionalSeparatedStatementsBranchConcreteSyntaxTreeNode extends BranchConc
 		children: OptionalSeparatedStatementsBranchConcreteSyntaxTreeNodeChildren,
 	) {
 		super(children);
+	}
+	public abstractify(): readonly OperatedStatementAbstractSyntaxTreeNode[] {
+		const [separatedStatements] = this.children;
+		if (separatedStatements === null) {
+			return [];
+		} else {
+			const abstractifiedSeparatedStatements =
+				separatedStatements.abstractify();
+			return abstractifiedSeparatedStatements;
+		}
 	}
 }
 type SeparatedStatementsBranchConcreteSyntaxTreeNodeChildren = readonly [
@@ -2304,6 +2418,30 @@ class SeparatedStatementsBranchConcreteSyntaxTreeNode extends BranchConcreteSynt
 		children: SeparatedStatementsBranchConcreteSyntaxTreeNodeChildren,
 	) {
 		super(children);
+	}
+	public abstractify(): readonly [
+		OperatedStatementAbstractSyntaxTreeNode,
+		...(readonly OperatedStatementAbstractSyntaxTreeNode[]),
+	] {
+		const [operatorCharacter, optionalWhitespace, statements] = this.children;
+		const abstractifiedStatements = statements.abstractify();
+		const abstractifiedSeparatedStatements: readonly [
+			OperatedStatementAbstractSyntaxTreeNode,
+			...(readonly OperatedStatementAbstractSyntaxTreeNode[]),
+		] = [
+			new OperatedStatementAbstractSyntaxTreeNode(
+				{
+					operator: operatorCharacter.character,
+					statement: abstractifiedStatements.initialStatement,
+				},
+				{
+					ending: abstractifiedStatements.initialStatement.spanIndexes.ending,
+					starting: operatorCharacter.index,
+				},
+			),
+			...abstractifiedStatements.finalOperatedStatements,
+		];
+		return abstractifiedSeparatedStatements;
 	}
 }
 type OperatorCharacterLeafConcreteSyntaxTreeNodeCharacter = "," | ".";
@@ -2326,6 +2464,27 @@ class StartingWithKnownFunctionCallSegmentsBranchConcreteSyntaxTreeNode extends 
 	) {
 		super(children);
 	}
+	public abstractify(): readonly [
+		KnownFunctionCallSegmentAbstractSyntaxTreeNode,
+		...(readonly SupportedFunctionCallSegmentAbstractSyntaxTreeNode[]),
+	] {
+		const [
+			knownFunctionCallSegment,
+			optionalStartingWithKnownFunctionCallSegmentsRest,
+		] = this.children;
+		const abstractifiedKnownFunctionCallSegment =
+			knownFunctionCallSegment.abstractify();
+		const abstractifiedOptionalStartingWithKnownFunctionCallSegmentsRest =
+			optionalStartingWithKnownFunctionCallSegmentsRest.abstractify();
+		const abstractifiedStartingWithKnownFunctionCallSegments: readonly [
+			KnownFunctionCallSegmentAbstractSyntaxTreeNode,
+			...(readonly SupportedFunctionCallSegmentAbstractSyntaxTreeNode[]),
+		] = [
+			abstractifiedKnownFunctionCallSegment,
+			...abstractifiedOptionalStartingWithKnownFunctionCallSegmentsRest,
+		];
+		return abstractifiedStartingWithKnownFunctionCallSegments;
+	}
 }
 type KnownFunctionCallSegmentBranchConcreteSyntaxTreeNodeChildren = readonly [
 	OpeningRoundBracketCharacterLeafConcreteSyntaxTreeNode,
@@ -2337,6 +2496,24 @@ class KnownFunctionCallSegmentBranchConcreteSyntaxTreeNode extends BranchConcret
 		children: KnownFunctionCallSegmentBranchConcreteSyntaxTreeNodeChildren,
 	) {
 		super(children);
+	}
+	public abstractify(): KnownFunctionCallSegmentAbstractSyntaxTreeNode {
+		const [
+			openingRoundBracketCharacter,
+			optionalKnownFunctionCallSegmentContent,
+			closingRoundBracketCharacter,
+		] = this.children;
+		const abstractifiedKnownFunctionCallSegmentContent =
+			optionalKnownFunctionCallSegmentContent.abstractify();
+		const abstractifiedKnownFunctionCallSegment =
+			new KnownFunctionCallSegmentAbstractSyntaxTreeNode(
+				{name: abstractifiedKnownFunctionCallSegmentContent},
+				{
+					ending: closingRoundBracketCharacter.index,
+					starting: openingRoundBracketCharacter.index,
+				},
+			);
+		return abstractifiedKnownFunctionCallSegment;
 	}
 }
 type OpeningRoundBracketCharacterLeafConcreteSyntaxTreeNodeCharacter = "(";
@@ -2365,6 +2542,18 @@ class OptionalKnownFunctionCallSegmentContentBranchConcreteSyntaxTreeNode extend
 	) {
 		super(children);
 	}
+	public abstractify(): string {
+		const [knownFunctionCallSegmentContent] = this.children;
+		if (knownFunctionCallSegmentContent === null) {
+			throw new Error("Known function call segment must have content");
+		} else {
+			const abstractifiedKnownFunctionCallSegmentContent =
+				knownFunctionCallSegmentContent.abstractify();
+			const abstractifiedOptionalKnownFunctionCallSegmentContent =
+				abstractifiedKnownFunctionCallSegmentContent;
+			return abstractifiedOptionalKnownFunctionCallSegmentContent;
+		}
+	}
 }
 type KnownFunctionCallSegmentContentBranchConcreteSyntaxTreeNodeChildren =
 	| readonly [PaddedOptionalPaddedVariableNameBranchConcreteSyntaxTreeNode]
@@ -2374,6 +2563,15 @@ class KnownFunctionCallSegmentContentBranchConcreteSyntaxTreeNode extends Branch
 		children: KnownFunctionCallSegmentContentBranchConcreteSyntaxTreeNodeChildren,
 	) {
 		super(children);
+	}
+	public abstractify(): string {
+		const [paddedOptionalPaddedVariableNameOrPaddedVariableName] =
+			this.children;
+		const abstractifiedPaddedOptionalPaddedVariableNameOrPaddedVariableName =
+			paddedOptionalPaddedVariableNameOrPaddedVariableName.abstractify();
+		const abstractifiedKnownFunctionCallSegmentContent =
+			abstractifiedPaddedOptionalPaddedVariableNameOrPaddedVariableName;
+		return abstractifiedKnownFunctionCallSegmentContent;
 	}
 }
 type PaddedOptionalPaddedVariableNameBranchConcreteSyntaxTreeNodeChildren =
@@ -2387,6 +2585,14 @@ class PaddedOptionalPaddedVariableNameBranchConcreteSyntaxTreeNode extends Branc
 	) {
 		super(children);
 	}
+	public abstractify(): string {
+		const [whitespace, optionalPaddedVariableName] = this.children;
+		const abstractifiedOptionalPaddedVariableName =
+			optionalPaddedVariableName.abstractify();
+		const abstractifiedPaddedOptionalPaddedVariableName =
+			abstractifiedOptionalPaddedVariableName;
+		return abstractifiedPaddedOptionalPaddedVariableName;
+	}
 }
 type PaddedVariableNameBranchConcreteSyntaxTreeNodeChildren = readonly [
 	VariableNameBranchConcreteSyntaxTreeNode,
@@ -2398,6 +2604,12 @@ class PaddedVariableNameBranchConcreteSyntaxTreeNode extends BranchConcreteSynta
 	) {
 		super(children);
 	}
+	public abstractify(): string {
+		const [variableName, optionalWhitespace] = this.children;
+		const abstractifiedVariableName = variableName.abstractify();
+		const abstractifiedPaddedVariableName = abstractifiedVariableName;
+		return abstractifiedPaddedVariableName;
+	}
 }
 type VariableNameBranchConcreteSyntaxTreeNodeChildren = readonly [
 	WordBranchConcreteSyntaxTreeNode,
@@ -2408,6 +2620,12 @@ class VariableNameBranchConcreteSyntaxTreeNode extends BranchConcreteSyntaxTreeN
 	) {
 		super(children);
 	}
+	public abstractify(): string {
+		const [word] = this.children;
+		const abstractifiedWord = word.abstractify();
+		const abstractifiedVariableName = abstractifiedWord;
+		return abstractifiedVariableName;
+	}
 }
 type WordBranchConcreteSyntaxTreeNodeChildren = readonly [
 	WordCharactersBranchConcreteSyntaxTreeNode,
@@ -2415,6 +2633,12 @@ type WordBranchConcreteSyntaxTreeNodeChildren = readonly [
 class WordBranchConcreteSyntaxTreeNode extends BranchConcreteSyntaxTreeNode<WordBranchConcreteSyntaxTreeNodeChildren> {
 	public constructor(children: WordBranchConcreteSyntaxTreeNodeChildren) {
 		super(children);
+	}
+	public abstractify(): string {
+		const [wordCharacters] = this.children;
+		const abstractifiedWordCharacters = wordCharacters.abstractify();
+		const abstractifiedWord = abstractifiedWordCharacters;
+		return abstractifiedWord;
 	}
 }
 type WordCharactersBranchConcreteSyntaxTreeNodeChildren = readonly [
@@ -2426,6 +2650,19 @@ class WordCharactersBranchConcreteSyntaxTreeNode extends BranchConcreteSyntaxTre
 		children: WordCharactersBranchConcreteSyntaxTreeNodeChildren,
 	) {
 		super(children);
+	}
+	public abstractify(): string {
+		const [wordCharacter, optionalWordCharacters] = this.children;
+		const abstractifiedWordCharacter = wordCharacter.abstractify();
+		const abstractifiedOptionalWordCharacters =
+			optionalWordCharacters.abstractify();
+		if (abstractifiedOptionalWordCharacters === null) {
+			const abstractifiedWordCharacters = abstractifiedWordCharacter;
+			return abstractifiedWordCharacters;
+		} else {
+			const abstractifiedWordCharacters = `${abstractifiedWordCharacter}${abstractifiedOptionalWordCharacters}`;
+			return abstractifiedWordCharacters;
+		}
 	}
 }
 type WordCharacterLeafConcreteSyntaxTreeNodeCharacter =
@@ -2483,6 +2720,9 @@ class WordCharacterLeafConcreteSyntaxTreeNode extends LeafConcreteSyntaxTreeNode
 	) {
 		super(character, index);
 	}
+	public abstractify(): string {
+		return this.character;
+	}
 }
 type OptionalWordCharactersBranchConcreteSyntaxTreeNodeChildren = readonly [
 	null | WordCharactersBranchConcreteSyntaxTreeNode,
@@ -2492,6 +2732,17 @@ class OptionalWordCharactersBranchConcreteSyntaxTreeNode extends BranchConcreteS
 		children: OptionalWordCharactersBranchConcreteSyntaxTreeNodeChildren,
 	) {
 		super(children);
+	}
+	public abstractify(): null | string {
+		const [wordCharacters] = this.children;
+		if (wordCharacters === null) {
+			const abstractifiedOptionalWordCharacters = null;
+			return abstractifiedOptionalWordCharacters;
+		} else {
+			const abstractifiedWordCharacters = wordCharacters.abstractify();
+			const abstractifiedOptionalWordCharacters = abstractifiedWordCharacters;
+			return abstractifiedOptionalWordCharacters;
+		}
 	}
 }
 type OptionalPaddedVariableNameBranchConcreteSyntaxTreeNodeChildren = readonly [
@@ -2503,6 +2754,17 @@ class OptionalPaddedVariableNameBranchConcreteSyntaxTreeNode extends BranchConcr
 	) {
 		super(children);
 	}
+	public abstractify(): string {
+		const [paddedVariableName] = this.children;
+		if (paddedVariableName === null) {
+			throw new Error("Variable name is required");
+		} else {
+			const abstractifiedPaddedVariableName = paddedVariableName.abstractify();
+			const abstractifiedOptionalPaddedVariableName =
+				abstractifiedPaddedVariableName;
+			return abstractifiedOptionalPaddedVariableName;
+		}
+	}
 }
 type OptionalStartingWithKnownFunctionCallSegmentsRestBranchConcreteSyntaxTreeNodeChildren =
 	readonly [
@@ -2513,6 +2775,16 @@ class OptionalStartingWithKnownFunctionCallSegmentsRestBranchConcreteSyntaxTreeN
 		children: OptionalStartingWithKnownFunctionCallSegmentsRestBranchConcreteSyntaxTreeNodeChildren,
 	) {
 		super(children);
+	}
+	public abstractify(): readonly SupportedFunctionCallSegmentAbstractSyntaxTreeNode[] {
+		const [startingWithKnownFunctionCallSegmentsRest] = this.children;
+		if (startingWithKnownFunctionCallSegmentsRest === null) {
+			return [];
+		} else {
+			const abstractifiedStartingWithKnownFunctionCallSegmentsRest =
+				startingWithKnownFunctionCallSegmentsRest.abstractify();
+			return abstractifiedStartingWithKnownFunctionCallSegmentsRest;
+		}
 	}
 }
 type StartingWithKnownFunctionCallSegmentsRestBranchConcreteSyntaxTreeNodeChildren =
@@ -2535,6 +2807,14 @@ class StartingWithKnownFunctionCallSegmentsRestBranchConcreteSyntaxTreeNode exte
 	) {
 		super(children);
 	}
+	public abstractify(): readonly SupportedFunctionCallSegmentAbstractSyntaxTreeNode[] {
+		const [
+			separatedOptionalFunctionCallSegmentsBranchConcreteSyntaxTreeNodeOrStartingWithKnownFunctionCallSegmentsBranchConcreteSyntaxTreeNodeOrStartingWithUnknownFunctionCallSegmentsBranchConcreteSyntaxTreeNodeOrStartingWithWordFunctionCallSegmentsBranchConcreteSyntaxTreeNode,
+		] = this.children;
+		const abstractifiedStartingWithKnownFunctionCallSegmentsRest =
+			separatedOptionalFunctionCallSegmentsBranchConcreteSyntaxTreeNodeOrStartingWithKnownFunctionCallSegmentsBranchConcreteSyntaxTreeNodeOrStartingWithUnknownFunctionCallSegmentsBranchConcreteSyntaxTreeNodeOrStartingWithWordFunctionCallSegmentsBranchConcreteSyntaxTreeNode.abstractify();
+		return abstractifiedStartingWithKnownFunctionCallSegmentsRest;
+	}
 }
 type SeparatedOptionalFunctionCallSegmentsBranchConcreteSyntaxTreeNodeChildren =
 	readonly [
@@ -2546,6 +2826,14 @@ class SeparatedOptionalFunctionCallSegmentsBranchConcreteSyntaxTreeNode extends 
 		children: SeparatedOptionalFunctionCallSegmentsBranchConcreteSyntaxTreeNodeChildren,
 	) {
 		super(children);
+	}
+	public abstractify(): readonly SupportedFunctionCallSegmentAbstractSyntaxTreeNode[] {
+		const [whitespace, optionalFunctionCallSegments] = this.children;
+		const abstractifiedOptionalFunctionCallSegments =
+			optionalFunctionCallSegments.abstractify();
+		const separatedOptionalFunctionCallSegments: readonly SupportedFunctionCallSegmentAbstractSyntaxTreeNode[] =
+			abstractifiedOptionalFunctionCallSegments;
+		return separatedOptionalFunctionCallSegments;
 	}
 }
 type WhitespaceBranchConcreteSyntaxTreeNodeChildren = readonly [
@@ -2564,6 +2852,16 @@ class OptionalFunctionCallSegmentsBranchConcreteSyntaxTreeNode extends BranchCon
 	) {
 		super(children);
 	}
+	public abstractify(): readonly SupportedFunctionCallSegmentAbstractSyntaxTreeNode[] {
+		const [functionCallSegments] = this.children;
+		if (functionCallSegments === null) {
+			return [];
+		} else {
+			const abstractifiedFunctionCallSegments =
+				functionCallSegments.abstractify();
+			return abstractifiedFunctionCallSegments;
+		}
+	}
 }
 type StartingWithUnknownFunctionCallSegmentsBranchConcreteSyntaxTreeNodeChildren =
 	readonly [
@@ -2576,6 +2874,27 @@ class StartingWithUnknownFunctionCallSegmentsBranchConcreteSyntaxTreeNode extend
 	) {
 		super(children);
 	}
+	public abstractify(): readonly [
+		UnknownFunctionCallSegmentAbstractSyntaxTreeNode,
+		...(readonly SupportedFunctionCallSegmentAbstractSyntaxTreeNode[]),
+	] {
+		const [
+			unknownFunctionCallSegment,
+			optionalStartingWithUnknownFunctionCallSegmentsRest,
+		] = this.children;
+		const abstractifiedUnknownFunctionCallSegment =
+			unknownFunctionCallSegment.abstractify();
+		const abstractifiedOptionalStartingWithUnknownFunctionCallSegmentsRest =
+			optionalStartingWithUnknownFunctionCallSegmentsRest.abstractify();
+		const abstractifiedStartingWithUnknownFunctionCallSegments: readonly [
+			UnknownFunctionCallSegmentAbstractSyntaxTreeNode,
+			...(readonly SupportedFunctionCallSegmentAbstractSyntaxTreeNode[]),
+		] = [
+			abstractifiedUnknownFunctionCallSegment,
+			...abstractifiedOptionalStartingWithUnknownFunctionCallSegmentsRest,
+		];
+		return abstractifiedStartingWithUnknownFunctionCallSegments;
+	}
 }
 type UnknownFunctionCallSegmentBranchConcreteSyntaxTreeNodeChildren = readonly [
 	OpeningSquareBracketCharacterLeafConcreteSyntaxTreeNode,
@@ -2587,6 +2906,24 @@ class UnknownFunctionCallSegmentBranchConcreteSyntaxTreeNode extends BranchConcr
 		children: UnknownFunctionCallSegmentBranchConcreteSyntaxTreeNodeChildren,
 	) {
 		super(children);
+	}
+	public abstractify(): UnknownFunctionCallSegmentAbstractSyntaxTreeNode {
+		const [
+			openingSquareBracketCharacter,
+			optionalUnknownFunctionCallSegmentContent,
+			closingSquareBracketCharacter,
+		] = this.children;
+		const abstractifiedUnknownFunctionCallSegmentContent =
+			optionalUnknownFunctionCallSegmentContent.abstractify();
+		const abstractifiedUnknownFunctionCallSegment =
+			new UnknownFunctionCallSegmentAbstractSyntaxTreeNode(
+				{name: abstractifiedUnknownFunctionCallSegmentContent},
+				{
+					ending: closingSquareBracketCharacter.index,
+					starting: openingSquareBracketCharacter.index,
+				},
+			);
+		return abstractifiedUnknownFunctionCallSegment;
 	}
 }
 type OpeningSquareBracketCharacterLeafConcreteSyntaxTreeNodeCharacter = "[";
@@ -2617,6 +2954,18 @@ class OptionalUnknownFunctionCallSegmentContentBranchConcreteSyntaxTreeNode exte
 	) {
 		super(children);
 	}
+	public abstractify(): string {
+		const [unknownFunctionCallSegmentContent] = this.children;
+		if (unknownFunctionCallSegmentContent === null) {
+			throw new Error("Unknown function call segment must have content");
+		} else {
+			const abstractifiedUnknownFunctionCallSegmentContent =
+				unknownFunctionCallSegmentContent.abstractify();
+			const abstractifiedOptionalUnknownFunctionCallSegmentContent =
+				abstractifiedUnknownFunctionCallSegmentContent;
+			return abstractifiedOptionalUnknownFunctionCallSegmentContent;
+		}
+	}
 }
 type UnknownFunctionCallSegmentContentBranchConcreteSyntaxTreeNodeChildren =
 	| readonly [PaddedOptionalPaddedVariableNameBranchConcreteSyntaxTreeNode]
@@ -2626,6 +2975,15 @@ class UnknownFunctionCallSegmentContentBranchConcreteSyntaxTreeNode extends Bran
 		children: UnknownFunctionCallSegmentContentBranchConcreteSyntaxTreeNodeChildren,
 	) {
 		super(children);
+	}
+	public abstractify(): string {
+		const [paddedOptionalPaddedVariableNameOrPaddedVariableName] =
+			this.children;
+		const abstractifiedPaddedOptionalPaddedVariableNameOrPaddedVariableName =
+			paddedOptionalPaddedVariableNameOrPaddedVariableName.abstractify();
+		const abstractifiedUnknownFunctionCallSegmentContent =
+			abstractifiedPaddedOptionalPaddedVariableNameOrPaddedVariableName;
+		return abstractifiedUnknownFunctionCallSegmentContent;
 	}
 }
 type OptionalStartingWithUnknownFunctionCallSegmentsRestBranchConcreteSyntaxTreeNodeChildren =
@@ -2637,6 +2995,16 @@ class OptionalStartingWithUnknownFunctionCallSegmentsRestBranchConcreteSyntaxTre
 		children: OptionalStartingWithUnknownFunctionCallSegmentsRestBranchConcreteSyntaxTreeNodeChildren,
 	) {
 		super(children);
+	}
+	public abstractify(): readonly SupportedFunctionCallSegmentAbstractSyntaxTreeNode[] {
+		const [startingWithUnknownFunctionCallSegmentsRest] = this.children;
+		if (startingWithUnknownFunctionCallSegmentsRest === null) {
+			return [];
+		} else {
+			const abstractifiedStartingWithUnknownFunctionCallSegmentsRest =
+				startingWithUnknownFunctionCallSegmentsRest.abstractify();
+			return abstractifiedStartingWithUnknownFunctionCallSegmentsRest;
+		}
 	}
 }
 type StartingWithUnknownFunctionCallSegmentsRestBranchConcreteSyntaxTreeNodeChildren =
@@ -2659,6 +3027,14 @@ class StartingWithUnknownFunctionCallSegmentsRestBranchConcreteSyntaxTreeNode ex
 	) {
 		super(children);
 	}
+	public abstractify(): readonly SupportedFunctionCallSegmentAbstractSyntaxTreeNode[] {
+		const [
+			separatedOptionalFunctionCallSegmentsBranchConcreteSyntaxTreeNodeOrStartingWithKnownFunctionCallSegmentsBranchConcreteSyntaxTreeNodeOrStartingWithUnknownFunctionCallSegmentsBranchConcreteSyntaxTreeNodeOrStartingWithWordFunctionCallSegmentsBranchConcreteSyntaxTreeNode,
+		] = this.children;
+		const abstractifiedStartingWithUnknownFunctionCallSegmentsRest =
+			separatedOptionalFunctionCallSegmentsBranchConcreteSyntaxTreeNodeOrStartingWithKnownFunctionCallSegmentsBranchConcreteSyntaxTreeNodeOrStartingWithUnknownFunctionCallSegmentsBranchConcreteSyntaxTreeNodeOrStartingWithWordFunctionCallSegmentsBranchConcreteSyntaxTreeNode.abstractify();
+		return abstractifiedStartingWithUnknownFunctionCallSegmentsRest;
+	}
 }
 type StartingWithWordFunctionCallSegmentsBranchConcreteSyntaxTreeNodeChildren =
 	readonly [
@@ -2671,6 +3047,27 @@ class StartingWithWordFunctionCallSegmentsBranchConcreteSyntaxTreeNode extends B
 	) {
 		super(children);
 	}
+	public abstractify(): readonly [
+		WordFunctionCallSegmentAbstractSyntaxTreeNode,
+		...(readonly SupportedFunctionCallSegmentAbstractSyntaxTreeNode[]),
+	] {
+		const [
+			wordFunctionCallSegment,
+			optionalStartingWithWordFunctionCallSegmentsRest,
+		] = this.children;
+		const abstractifiedWordFunctionCallSegment =
+			wordFunctionCallSegment.abstractify();
+		const abstractifiedOptionalStartingWithWordFunctionCallSegmentsRest =
+			optionalStartingWithWordFunctionCallSegmentsRest.abstractify();
+		const abstractifiedStartingWithWordFunctionCallSegments: readonly [
+			WordFunctionCallSegmentAbstractSyntaxTreeNode,
+			...(readonly SupportedFunctionCallSegmentAbstractSyntaxTreeNode[]),
+		] = [
+			abstractifiedWordFunctionCallSegment,
+			...abstractifiedOptionalStartingWithWordFunctionCallSegmentsRest,
+		];
+		return abstractifiedStartingWithWordFunctionCallSegments;
+	}
 }
 type WordFunctionCallSegmentBranchConcreteSyntaxTreeNodeChildren = readonly [
 	WordBranchConcreteSyntaxTreeNode,
@@ -2680,6 +3077,16 @@ class WordFunctionCallSegmentBranchConcreteSyntaxTreeNode extends BranchConcrete
 		children: WordFunctionCallSegmentBranchConcreteSyntaxTreeNodeChildren,
 	) {
 		super(children);
+	}
+	public abstractify(): WordFunctionCallSegmentAbstractSyntaxTreeNode {
+		const [word] = this.children;
+		const abstractifiedWord = word.abstractify();
+		const abstractifiedWordFunctionCallSegment =
+			new WordFunctionCallSegmentAbstractSyntaxTreeNode(
+				{word: abstractifiedWord},
+				word.computeSpanIndexes() as SpanIndexes,
+			);
+		return abstractifiedWordFunctionCallSegment;
 	}
 }
 type OptionalStartingWithWordFunctionCallSegmentsRestBranchConcreteSyntaxTreeNodeChildren =
@@ -2691,6 +3098,16 @@ class OptionalStartingWithWordFunctionCallSegmentsRestBranchConcreteSyntaxTreeNo
 		children: OptionalStartingWithWordFunctionCallSegmentsRestBranchConcreteSyntaxTreeNodeChildren,
 	) {
 		super(children);
+	}
+	public abstractify(): readonly SupportedFunctionCallSegmentAbstractSyntaxTreeNode[] {
+		const [startingWithWordFunctionCallSegmentsRest] = this.children;
+		if (startingWithWordFunctionCallSegmentsRest === null) {
+			return [];
+		} else {
+			const abstractifiedStartingWithWordFunctionCallSegmentsRest =
+				startingWithWordFunctionCallSegmentsRest.abstractify();
+			return abstractifiedStartingWithWordFunctionCallSegmentsRest;
+		}
 	}
 }
 type StartingWithWordFunctionCallSegmentsRestBranchConcreteSyntaxTreeNodeChildren =
@@ -2710,6 +3127,14 @@ class StartingWithWordFunctionCallSegmentsRestBranchConcreteSyntaxTreeNode exten
 	) {
 		super(children);
 	}
+	public abstractify(): readonly SupportedFunctionCallSegmentAbstractSyntaxTreeNode[] {
+		const [
+			separatedOptionalFunctionCallSegmentsBranchConcreteSyntaxTreeNodeOrStartingWithKnownFunctionCallSegmentsBranchConcreteSyntaxTreeNodeOrStartingWithUnknownFunctionCallSegmentsBranchConcreteSyntaxTreeNode,
+		] = this.children;
+		const abstractifiedStartingWithWordFunctionCallSegmentsRest =
+			separatedOptionalFunctionCallSegmentsBranchConcreteSyntaxTreeNodeOrStartingWithKnownFunctionCallSegmentsBranchConcreteSyntaxTreeNodeOrStartingWithUnknownFunctionCallSegmentsBranchConcreteSyntaxTreeNode.abstractify();
+		return abstractifiedStartingWithWordFunctionCallSegmentsRest;
+	}
 }
 type ContentBranchConcreteSyntaxTreeNodeChildren =
 	| readonly [FunctionsBranchConcreteSyntaxTreeNode]
@@ -2717,6 +3142,14 @@ type ContentBranchConcreteSyntaxTreeNodeChildren =
 class ContentBranchConcreteSyntaxTreeNode extends BranchConcreteSyntaxTreeNode<ContentBranchConcreteSyntaxTreeNodeChildren> {
 	public constructor(children: ContentBranchConcreteSyntaxTreeNodeChildren) {
 		super(children);
+	}
+	public abstractify(): FunctionsAbstractSyntaxTreeNode | null {
+		const [functionsOrPaddedOptionalFunctions] = this.children;
+		const abstractifiedFunctionsOrPaddedOptionalFunctions =
+			functionsOrPaddedOptionalFunctions.abstractify();
+		const abstractifiedContent =
+			abstractifiedFunctionsOrPaddedOptionalFunctions;
+		return abstractifiedContent;
 	}
 }
 type OptionalContentBranchConcreteSyntaxTreeNodeChildren = readonly [
@@ -2728,6 +3161,14 @@ class OptionalContentBranchConcreteSyntaxTreeNode extends BranchConcreteSyntaxTr
 	) {
 		super(children);
 	}
+	public abstractify(): FunctionsAbstractSyntaxTreeNode | null {
+		const [content] = this.children;
+		if (content === null) {
+			return null;
+		} else {
+			return content.abstractify();
+		}
+	}
 }
 type FunctionsBranchConcreteSyntaxTreeNodeChildren = readonly [
 	FunctionBranchConcreteSyntaxTreeNode,
@@ -2737,6 +3178,70 @@ class FunctionsBranchConcreteSyntaxTreeNode extends BranchConcreteSyntaxTreeNode
 	public constructor(children: FunctionsBranchConcreteSyntaxTreeNodeChildren) {
 		super(children);
 	}
+	public abstractify(): FunctionsAbstractSyntaxTreeNode {
+		const [function_, optionalFunctions] = this.children;
+		const abstractifiedFunction = function_.abstractify();
+		const abstractifiedFunctionId = abstractifiedFunction.computeId();
+		const abstractifiedOptionalFunctions = optionalFunctions.abstractify();
+		if (abstractifiedOptionalFunctions === null) {
+			if (abstractifiedFunctionId === "") {
+				const abstractifiedFunctions = new FunctionsAbstractSyntaxTreeNode(
+					{functions: {}, mainFunction: abstractifiedFunction},
+					abstractifiedFunction.spanIndexes,
+				);
+				return abstractifiedFunctions;
+			} else {
+				const abstractifiedFunctions = new FunctionsAbstractSyntaxTreeNode(
+					{
+						functions: {[abstractifiedFunctionId]: abstractifiedFunction},
+						mainFunction: null,
+					},
+					abstractifiedFunction.spanIndexes,
+				);
+				return abstractifiedFunctions;
+			}
+		} else {
+			if (abstractifiedFunctionId === "") {
+				if (abstractifiedOptionalFunctions.children.mainFunction !== null) {
+					throw new Error("Only one function without an ID is allowed");
+				} else {
+					const abstractifiedFunctions = new FunctionsAbstractSyntaxTreeNode(
+						{
+							...abstractifiedOptionalFunctions.children,
+							mainFunction: abstractifiedFunction,
+						},
+						{
+							ending: abstractifiedOptionalFunctions.spanIndexes.ending,
+							starting: abstractifiedFunction.spanIndexes.starting,
+						},
+					);
+					return abstractifiedFunctions;
+				}
+			} else {
+				if (
+					abstractifiedFunctionId
+					in abstractifiedOptionalFunctions.children.functions
+				) {
+					throw new Error(`Duplicate function ID: ${abstractifiedFunctionId}`);
+				} else {
+					const abstractifiedFunctions = new FunctionsAbstractSyntaxTreeNode(
+						{
+							...abstractifiedOptionalFunctions.children,
+							functions: {
+								...abstractifiedOptionalFunctions.children.functions,
+								[abstractifiedFunctionId]: abstractifiedFunction,
+							},
+						},
+						{
+							ending: abstractifiedOptionalFunctions.spanIndexes.ending,
+							starting: abstractifiedOptionalFunctions.spanIndexes.starting,
+						},
+					);
+					return abstractifiedFunctions;
+				}
+			}
+		}
+	}
 }
 type FunctionBranchConcreteSyntaxTreeNodeChildren = readonly [
 	OptionalFunctionHeaderBranchConcreteSyntaxTreeNode,
@@ -2745,6 +3250,15 @@ type FunctionBranchConcreteSyntaxTreeNodeChildren = readonly [
 class FunctionBranchConcreteSyntaxTreeNode extends BranchConcreteSyntaxTreeNode<FunctionBranchConcreteSyntaxTreeNodeChildren> {
 	public constructor(children: FunctionBranchConcreteSyntaxTreeNodeChildren) {
 		super(children);
+	}
+	public abstractify(): FunctionAbstractSyntaxTreeNode {
+		const [optionalFunctionHeader, functionBody] = this.children;
+		const abstractifiedFunctionHeader = optionalFunctionHeader.abstractify();
+		const abstractifiedFunctionBody = functionBody.abstractify();
+		return new FunctionAbstractSyntaxTreeNode(
+			{body: abstractifiedFunctionBody, header: abstractifiedFunctionHeader},
+			this.computeSpanIndexes() as SpanIndexes,
+		);
 	}
 }
 type OptionalFunctionHeaderBranchConcreteSyntaxTreeNodeChildren = readonly [
@@ -2756,6 +3270,14 @@ class OptionalFunctionHeaderBranchConcreteSyntaxTreeNode extends BranchConcreteS
 	) {
 		super(children);
 	}
+	public abstractify(): FunctionHeaderAbstractSyntaxTreeNode | null {
+		const [functionHeader] = this.children;
+		if (functionHeader === null) {
+			return null;
+		} else {
+			return functionHeader.abstractify();
+		}
+	}
 }
 type FunctionHeaderBranchConcreteSyntaxTreeNodeChildren = readonly [
 	FunctionHeaderSegmentsBranchConcreteSyntaxTreeNode,
@@ -2765,6 +3287,17 @@ class FunctionHeaderBranchConcreteSyntaxTreeNode extends BranchConcreteSyntaxTre
 		children: FunctionHeaderBranchConcreteSyntaxTreeNodeChildren,
 	) {
 		super(children);
+	}
+	public abstractify(): FunctionHeaderAbstractSyntaxTreeNode {
+		const [functionHeaderSegments] = this.children;
+		const abstractifiedFunctionHeaderSegments =
+			functionHeaderSegments.abstractify();
+		const abstractifiedFunctionHeader =
+			new FunctionHeaderAbstractSyntaxTreeNode(
+				{segments: abstractifiedFunctionHeaderSegments},
+				this.computeSpanIndexes() as SpanIndexes,
+			);
+		return abstractifiedFunctionHeader;
 	}
 }
 type FunctionHeaderSegmentsBranchConcreteSyntaxTreeNodeChildren =
@@ -2783,6 +3316,17 @@ class FunctionHeaderSegmentsBranchConcreteSyntaxTreeNode extends BranchConcreteS
 	) {
 		super(children);
 	}
+	public abstractify(): readonly [
+		SupportedFunctionHeaderSegmentAbstractSyntaxTreeNode,
+		...(readonly SupportedFunctionHeaderSegmentAbstractSyntaxTreeNode[]),
+	] {
+		const [
+			startingWithKnownFunctionHeaderSegmentsOrStartingWithUnknownFunctionHeaderSegmentsOrStartingWithWordFunctionHeaderSegments,
+		] = this.children;
+		const abstractifiedFunctionHeaderSegments =
+			startingWithKnownFunctionHeaderSegmentsOrStartingWithUnknownFunctionHeaderSegmentsOrStartingWithWordFunctionHeaderSegments.abstractify();
+		return abstractifiedFunctionHeaderSegments;
+	}
 }
 type FunctionBodyBranchConcreteSyntaxTreeNodeChildren = readonly [
 	BlockBranchConcreteSyntaxTreeNode,
@@ -2792,6 +3336,12 @@ class FunctionBodyBranchConcreteSyntaxTreeNode extends BranchConcreteSyntaxTreeN
 		children: FunctionBodyBranchConcreteSyntaxTreeNodeChildren,
 	) {
 		super(children);
+	}
+	public abstractify(): BlockAbstractSyntaxTreeNode {
+		const [block] = this.children;
+		const abstractifiedBlock = block.abstractify();
+		const abstractifiedFunctionBody = abstractifiedBlock;
+		return abstractifiedFunctionBody;
 	}
 }
 type PaddedOptionalFunctionsBranchConcreteSyntaxTreeNodeChildren = readonly [
@@ -2804,6 +3354,12 @@ class PaddedOptionalFunctionsBranchConcreteSyntaxTreeNode extends BranchConcrete
 	) {
 		super(children);
 	}
+	public abstractify(): FunctionsAbstractSyntaxTreeNode | null {
+		const [whitespace, optionalFunctions] = this.children;
+		const abstractifiedOptionalFunctions = optionalFunctions.abstractify();
+		const abstractifiedPaddedOptionalFunctions = abstractifiedOptionalFunctions;
+		return abstractifiedPaddedOptionalFunctions;
+	}
 }
 type OptionalFunctionsBranchConcreteSyntaxTreeNodeChildren = readonly [
 	FunctionsBranchConcreteSyntaxTreeNode | null,
@@ -2813,6 +3369,15 @@ class OptionalFunctionsBranchConcreteSyntaxTreeNode extends BranchConcreteSyntax
 		children: OptionalFunctionsBranchConcreteSyntaxTreeNodeChildren,
 	) {
 		super(children);
+	}
+	public abstractify(): FunctionsAbstractSyntaxTreeNode | null {
+		const [functions] = this.children;
+		if (functions === null) {
+			return null;
+		} else {
+			const abstractifiedFunctions = functions.abstractify();
+			return abstractifiedFunctions;
+		}
 	}
 }
 type StartingWithKnownFunctionHeaderSegmentsBranchConcreteSyntaxTreeNodeChildren =
@@ -2826,6 +3391,27 @@ class StartingWithKnownFunctionHeaderSegmentsBranchConcreteSyntaxTreeNode extend
 	) {
 		super(children);
 	}
+	public abstractify(): readonly [
+		KnownFunctionHeaderSegmentAbstractSyntaxTreeNode,
+		...(readonly SupportedFunctionHeaderSegmentAbstractSyntaxTreeNode[]),
+	] {
+		const [
+			knownFunctionHeaderSegment,
+			optionalStartingWithKnownFunctionHeaderSegmentsRest,
+		] = this.children;
+		const abstractifiedKnownFunctionHeaderSegment =
+			knownFunctionHeaderSegment.abstractify();
+		const abstractifiedOptionalStartingWithKnownFunctionHeaderSegmentsRest =
+			optionalStartingWithKnownFunctionHeaderSegmentsRest.abstractify();
+		const abstractifiedStartingWithKnownFunctionHeaderSegments: readonly [
+			KnownFunctionHeaderSegmentAbstractSyntaxTreeNode,
+			...(readonly SupportedFunctionHeaderSegmentAbstractSyntaxTreeNode[]),
+		] = [
+			abstractifiedKnownFunctionHeaderSegment,
+			...abstractifiedOptionalStartingWithKnownFunctionHeaderSegmentsRest,
+		];
+		return abstractifiedStartingWithKnownFunctionHeaderSegments;
+	}
 }
 type KnownFunctionHeaderSegmentBranchConcreteSyntaxTreeNodeChildren = readonly [
 	OpeningRoundBracketCharacterLeafConcreteSyntaxTreeNode,
@@ -2838,6 +3424,24 @@ class KnownFunctionHeaderSegmentBranchConcreteSyntaxTreeNode extends BranchConcr
 	) {
 		super(children);
 	}
+	public abstractify(): KnownFunctionHeaderSegmentAbstractSyntaxTreeNode {
+		const [
+			openingRoundBracketCharacter,
+			optionalKnownFunctionHeaderSegmentContent,
+			closingRoundBracketCharacter,
+		] = this.children;
+		const abstractifiedKnownFunctionHeaderSegmentContent =
+			optionalKnownFunctionHeaderSegmentContent.abstractify();
+		const abstractifiedKnownFunctionHeaderSegment =
+			new KnownFunctionHeaderSegmentAbstractSyntaxTreeNode(
+				{name: abstractifiedKnownFunctionHeaderSegmentContent},
+				{
+					ending: closingRoundBracketCharacter.index,
+					starting: openingRoundBracketCharacter.index,
+				},
+			);
+		return abstractifiedKnownFunctionHeaderSegment;
+	}
 }
 type OptionalKnownFunctionHeaderSegmentContentBranchConcreteSyntaxTreeNodeChildren =
 	readonly [
@@ -2849,6 +3453,18 @@ class OptionalKnownFunctionHeaderSegmentContentBranchConcreteSyntaxTreeNode exte
 	) {
 		super(children);
 	}
+	public abstractify(): string {
+		const [knownFunctionHeaderSegmentContent] = this.children;
+		if (knownFunctionHeaderSegmentContent === null) {
+			throw new Error("Known function header segment must have content");
+		} else {
+			const abstractifiedKnownFunctionHeaderSegmentContent =
+				knownFunctionHeaderSegmentContent.abstractify();
+			const abstractifiedOptionalKnownFunctionHeaderSegmentContent =
+				abstractifiedKnownFunctionHeaderSegmentContent;
+			return abstractifiedOptionalKnownFunctionHeaderSegmentContent;
+		}
+	}
 }
 type KnownFunctionHeaderSegmentContentBranchConcreteSyntaxTreeNodeChildren =
 	| readonly [PaddedOptionalPaddedVariableNameBranchConcreteSyntaxTreeNode]
@@ -2858,6 +3474,15 @@ class KnownFunctionHeaderSegmentContentBranchConcreteSyntaxTreeNode extends Bran
 		children: KnownFunctionHeaderSegmentContentBranchConcreteSyntaxTreeNodeChildren,
 	) {
 		super(children);
+	}
+	public abstractify(): string {
+		const [paddedOptionalPaddedVariableNameOrPaddedVariableName] =
+			this.children;
+		const abstractifiedPaddedOptionalPaddedVariableNameOrPaddedVariableName =
+			paddedOptionalPaddedVariableNameOrPaddedVariableName.abstractify();
+		const abstractifiedKnownFunctionHeaderSegmentContent =
+			abstractifiedPaddedOptionalPaddedVariableNameOrPaddedVariableName;
+		return abstractifiedKnownFunctionHeaderSegmentContent;
 	}
 }
 type OptionalStartingWithKnownFunctionHeaderSegmentsRestBranchConcreteSyntaxTreeNodeChildren =
@@ -2869,6 +3494,16 @@ class OptionalStartingWithKnownFunctionHeaderSegmentsRestBranchConcreteSyntaxTre
 		children: OptionalStartingWithKnownFunctionHeaderSegmentsRestBranchConcreteSyntaxTreeNodeChildren,
 	) {
 		super(children);
+	}
+	public abstractify(): readonly SupportedFunctionHeaderSegmentAbstractSyntaxTreeNode[] {
+		const [startingWithKnownFunctionHeaderSegmentsRest] = this.children;
+		if (startingWithKnownFunctionHeaderSegmentsRest === null) {
+			return [];
+		} else {
+			const abstractifiedStartingWithKnownFunctionHeaderSegmentsRest =
+				startingWithKnownFunctionHeaderSegmentsRest.abstractify();
+			return abstractifiedStartingWithKnownFunctionHeaderSegmentsRest;
+		}
 	}
 }
 type StartingWithKnownFunctionHeaderSegmentsRestBranchConcreteSyntaxTreeNodeChildren =
@@ -2891,6 +3526,14 @@ class StartingWithKnownFunctionHeaderSegmentsRestBranchConcreteSyntaxTreeNode ex
 	) {
 		super(children);
 	}
+	public abstractify(): readonly SupportedFunctionHeaderSegmentAbstractSyntaxTreeNode[] {
+		const [
+			separatedOptionalFunctionHeaderSegmentsBranchConcreteSyntaxTreeNodeOrStartingWithKnownFunctionHeaderSegmentsBranchConcreteSyntaxTreeNodeOrStartingWithUnknownFunctionHeaderSegmentsBranchConcreteSyntaxTreeNodeOrStartingWithWordFunctionHeaderSegmentsBranchConcreteSyntaxTreeNode,
+		] = this.children;
+		const abstractifiedStartingWithKnownFunctionHeaderSegmentsRest =
+			separatedOptionalFunctionHeaderSegmentsBranchConcreteSyntaxTreeNodeOrStartingWithKnownFunctionHeaderSegmentsBranchConcreteSyntaxTreeNodeOrStartingWithUnknownFunctionHeaderSegmentsBranchConcreteSyntaxTreeNodeOrStartingWithWordFunctionHeaderSegmentsBranchConcreteSyntaxTreeNode.abstractify();
+		return abstractifiedStartingWithKnownFunctionHeaderSegmentsRest;
+	}
 }
 type SeparatedOptionalFunctionHeaderSegmentsBranchConcreteSyntaxTreeNodeChildren =
 	readonly [
@@ -2903,6 +3546,14 @@ class SeparatedOptionalFunctionHeaderSegmentsBranchConcreteSyntaxTreeNode extend
 	) {
 		super(children);
 	}
+	public abstractify(): readonly SupportedFunctionHeaderSegmentAbstractSyntaxTreeNode[] {
+		const [whitespace, optionalFunctionHeaderSegments] = this.children;
+		const abstractifiedOptionalFunctionHeaderSegments =
+			optionalFunctionHeaderSegments.abstractify();
+		const separatedOptionalFunctionHeaderSegments: readonly SupportedFunctionHeaderSegmentAbstractSyntaxTreeNode[] =
+			abstractifiedOptionalFunctionHeaderSegments;
+		return separatedOptionalFunctionHeaderSegments;
+	}
 }
 type OptionalFunctionHeaderSegmentsBranchConcreteSyntaxTreeNodeChildren =
 	readonly [FunctionHeaderSegmentsBranchConcreteSyntaxTreeNode | null];
@@ -2911,6 +3562,16 @@ class OptionalFunctionHeaderSegmentsBranchConcreteSyntaxTreeNode extends BranchC
 		children: OptionalFunctionHeaderSegmentsBranchConcreteSyntaxTreeNodeChildren,
 	) {
 		super(children);
+	}
+	public abstractify(): readonly SupportedFunctionHeaderSegmentAbstractSyntaxTreeNode[] {
+		const [functionHeaderSegments] = this.children;
+		if (functionHeaderSegments === null) {
+			return [];
+		} else {
+			const abstractifiedFunctionHeaderSegments =
+				functionHeaderSegments.abstractify();
+			return abstractifiedFunctionHeaderSegments;
+		}
 	}
 }
 type StartingWithUnknownFunctionHeaderSegmentsBranchConcreteSyntaxTreeNodeChildren =
@@ -2923,6 +3584,27 @@ class StartingWithUnknownFunctionHeaderSegmentsBranchConcreteSyntaxTreeNode exte
 		children: StartingWithUnknownFunctionHeaderSegmentsBranchConcreteSyntaxTreeNodeChildren,
 	) {
 		super(children);
+	}
+	public abstractify(): readonly [
+		UnknownFunctionHeaderSegmentAbstractSyntaxTreeNode,
+		...(readonly SupportedFunctionHeaderSegmentAbstractSyntaxTreeNode[]),
+	] {
+		const [
+			unknownFunctionHeaderSegment,
+			optionalStartingWithUnknownFunctionHeaderSegmentsRest,
+		] = this.children;
+		const abstractifiedUnknownFunctionHeaderSegment =
+			unknownFunctionHeaderSegment.abstractify();
+		const abstractifiedOptionalStartingWithUnknownFunctionHeaderSegmentsRest =
+			optionalStartingWithUnknownFunctionHeaderSegmentsRest.abstractify();
+		const abstractifiedStartingWithUnknownFunctionHeaderSegments: readonly [
+			UnknownFunctionHeaderSegmentAbstractSyntaxTreeNode,
+			...(readonly SupportedFunctionHeaderSegmentAbstractSyntaxTreeNode[]),
+		] = [
+			abstractifiedUnknownFunctionHeaderSegment,
+			...abstractifiedOptionalStartingWithUnknownFunctionHeaderSegmentsRest,
+		];
+		return abstractifiedStartingWithUnknownFunctionHeaderSegments;
 	}
 }
 type UnknownFunctionHeaderSegmentBranchConcreteSyntaxTreeNodeChildren =
@@ -2937,6 +3619,21 @@ class UnknownFunctionHeaderSegmentBranchConcreteSyntaxTreeNode extends BranchCon
 	) {
 		super(children);
 	}
+	public abstractify(): UnknownFunctionHeaderSegmentAbstractSyntaxTreeNode {
+		const [openingSquareBracket, optionalContent, closingSquareBracket] =
+			this.children;
+		const abstractifiedOptionalUnknownFunctionHeaderSegmentContent =
+			optionalContent.abstractify();
+		const abstractifiedUnknownFunctionHeaderSegment =
+			new UnknownFunctionHeaderSegmentAbstractSyntaxTreeNode(
+				{name: abstractifiedOptionalUnknownFunctionHeaderSegmentContent},
+				{
+					ending: closingSquareBracket.index,
+					starting: openingSquareBracket.index,
+				},
+			);
+		return abstractifiedUnknownFunctionHeaderSegment;
+	}
 }
 type OptionalUnknownFunctionHeaderSegmentContentBranchConcreteSyntaxTreeNodeChildren =
 	readonly [
@@ -2948,6 +3645,18 @@ class OptionalUnknownFunctionHeaderSegmentContentBranchConcreteSyntaxTreeNode ex
 	) {
 		super(children);
 	}
+	public abstractify(): string {
+		const [unknownFunctionHeaderSegmentContent] = this.children;
+		if (unknownFunctionHeaderSegmentContent === null) {
+			throw new Error("Unknown function header segment must have content");
+		} else {
+			const abstractifiedUnknownFunctionHeaderSegmentContent =
+				unknownFunctionHeaderSegmentContent.abstractify();
+			const abstractifiedOptionalUnknownFunctionHeaderSegmentContent =
+				abstractifiedUnknownFunctionHeaderSegmentContent;
+			return abstractifiedOptionalUnknownFunctionHeaderSegmentContent;
+		}
+	}
 }
 type UnknownFunctionHeaderSegmentContentBranchConcreteSyntaxTreeNodeChildren =
 	| readonly [PaddedOptionalPaddedVariableNameBranchConcreteSyntaxTreeNode]
@@ -2957,6 +3666,15 @@ class UnknownFunctionHeaderSegmentContentBranchConcreteSyntaxTreeNode extends Br
 		children: UnknownFunctionHeaderSegmentContentBranchConcreteSyntaxTreeNodeChildren,
 	) {
 		super(children);
+	}
+	public abstractify(): string {
+		const [paddedOptionalPaddedVariableNameOrPaddedVariableName] =
+			this.children;
+		const abstractifiedPaddedOptionalPaddedVariableNameOrPaddedVariableName =
+			paddedOptionalPaddedVariableNameOrPaddedVariableName.abstractify();
+		const abstractifiedUnknownFunctionHeaderSegmentContent =
+			abstractifiedPaddedOptionalPaddedVariableNameOrPaddedVariableName;
+		return abstractifiedUnknownFunctionHeaderSegmentContent;
 	}
 }
 type OptionalStartingWithUnknownFunctionHeaderSegmentsRestBranchConcreteSyntaxTreeNodeChildren =
@@ -2968,6 +3686,16 @@ class OptionalStartingWithUnknownFunctionHeaderSegmentsRestBranchConcreteSyntaxT
 		children: OptionalStartingWithUnknownFunctionHeaderSegmentsRestBranchConcreteSyntaxTreeNodeChildren,
 	) {
 		super(children);
+	}
+	public abstractify(): readonly SupportedFunctionHeaderSegmentAbstractSyntaxTreeNode[] {
+		const [startingWithUnknownFunctionHeaderSegmentsRest] = this.children;
+		if (startingWithUnknownFunctionHeaderSegmentsRest === null) {
+			return [];
+		} else {
+			const abstractifiedStartingWithUnknownFunctionHeaderSegmentsRest =
+				startingWithUnknownFunctionHeaderSegmentsRest.abstractify();
+			return abstractifiedStartingWithUnknownFunctionHeaderSegmentsRest;
+		}
 	}
 }
 type StartingWithUnknownFunctionHeaderSegmentsRestBranchConcreteSyntaxTreeNodeChildren =
@@ -2990,6 +3718,14 @@ class StartingWithUnknownFunctionHeaderSegmentsRestBranchConcreteSyntaxTreeNode 
 	) {
 		super(children);
 	}
+	public abstractify(): readonly SupportedFunctionHeaderSegmentAbstractSyntaxTreeNode[] {
+		const [
+			separatedOptionalFunctionHeaderSegmentsBranchConcreteSyntaxTreeNodeOrStartingWithKnownFunctionHeaderSegmentsBranchConcreteSyntaxTreeNodeOrStartingWithUnknownFunctionHeaderSegmentsBranchConcreteSyntaxTreeNodeOrStartingWithWordFunctionHeaderSegmentsBranchConcreteSyntaxTreeNode,
+		] = this.children;
+		const abstractifiedStartingWithUnknownFunctionHeaderSegmentsRest =
+			separatedOptionalFunctionHeaderSegmentsBranchConcreteSyntaxTreeNodeOrStartingWithKnownFunctionHeaderSegmentsBranchConcreteSyntaxTreeNodeOrStartingWithUnknownFunctionHeaderSegmentsBranchConcreteSyntaxTreeNodeOrStartingWithWordFunctionHeaderSegmentsBranchConcreteSyntaxTreeNode.abstractify();
+		return abstractifiedStartingWithUnknownFunctionHeaderSegmentsRest;
+	}
 }
 type StartingWithWordFunctionHeaderSegmentsBranchConcreteSyntaxTreeNodeChildren =
 	readonly [
@@ -3002,6 +3738,27 @@ class StartingWithWordFunctionHeaderSegmentsBranchConcreteSyntaxTreeNode extends
 	) {
 		super(children);
 	}
+	public abstractify(): readonly [
+		WordFunctionHeaderSegmentAbstractSyntaxTreeNode,
+		...(readonly SupportedFunctionHeaderSegmentAbstractSyntaxTreeNode[]),
+	] {
+		const [
+			wordFunctionHeaderSegment,
+			optionalStartingWithWordFunctionHeaderSegmentsRest,
+		] = this.children;
+		const abstractifiedWordFunctionHeaderSegment =
+			wordFunctionHeaderSegment.abstractify();
+		const abstractifiedOptionalStartingWithWordFunctionHeaderSegmentsRest =
+			optionalStartingWithWordFunctionHeaderSegmentsRest.abstractify();
+		const abstractifiedStartingWithWordFunctionHeaderSegments: readonly [
+			WordFunctionHeaderSegmentAbstractSyntaxTreeNode,
+			...(readonly SupportedFunctionHeaderSegmentAbstractSyntaxTreeNode[]),
+		] = [
+			abstractifiedWordFunctionHeaderSegment,
+			...abstractifiedOptionalStartingWithWordFunctionHeaderSegmentsRest,
+		];
+		return abstractifiedStartingWithWordFunctionHeaderSegments;
+	}
 }
 type WordFunctionHeaderSegmentBranchConcreteSyntaxTreeNodeChildren = readonly [
 	WordBranchConcreteSyntaxTreeNode,
@@ -3011,6 +3768,16 @@ class WordFunctionHeaderSegmentBranchConcreteSyntaxTreeNode extends BranchConcre
 		children: WordFunctionHeaderSegmentBranchConcreteSyntaxTreeNodeChildren,
 	) {
 		super(children);
+	}
+	public abstractify(): WordFunctionHeaderSegmentAbstractSyntaxTreeNode {
+		const [word] = this.children;
+		const abstractifiedWord = word.abstractify();
+		const abstractifiedWordFunctionHeaderSegment =
+			new WordFunctionHeaderSegmentAbstractSyntaxTreeNode(
+				{word: abstractifiedWord},
+				word.computeSpanIndexes() as SpanIndexes,
+			);
+		return abstractifiedWordFunctionHeaderSegment;
 	}
 }
 type OptionalStartingWithWordFunctionHeaderSegmentsRestBranchConcreteSyntaxTreeNodeChildren =
@@ -3022,6 +3789,16 @@ class OptionalStartingWithWordFunctionHeaderSegmentsRestBranchConcreteSyntaxTree
 		children: OptionalStartingWithWordFunctionHeaderSegmentsRestBranchConcreteSyntaxTreeNodeChildren,
 	) {
 		super(children);
+	}
+	public abstractify(): readonly SupportedFunctionHeaderSegmentAbstractSyntaxTreeNode[] {
+		const [startingWithWordFunctionHeaderSegmentsRest] = this.children;
+		if (startingWithWordFunctionHeaderSegmentsRest === null) {
+			return [];
+		} else {
+			const abstractifiedStartingWithWordFunctionHeaderSegmentsRest =
+				startingWithWordFunctionHeaderSegmentsRest.abstractify();
+			return abstractifiedStartingWithWordFunctionHeaderSegmentsRest;
+		}
 	}
 }
 type StartingWithWordFunctionHeaderSegmentsRestBranchConcreteSyntaxTreeNodeChildren =
@@ -3040,6 +3817,14 @@ class StartingWithWordFunctionHeaderSegmentsRestBranchConcreteSyntaxTreeNode ext
 		children: StartingWithWordFunctionHeaderSegmentsRestBranchConcreteSyntaxTreeNodeChildren,
 	) {
 		super(children);
+	}
+	public abstractify(): readonly SupportedFunctionHeaderSegmentAbstractSyntaxTreeNode[] {
+		const [
+			separatedOptionalFunctionHeaderSegmentsBranchConcreteSyntaxTreeNodeOrStartingWithKnownFunctionHeaderSegmentsBranchConcreteSyntaxTreeNodeOrStartingWithUnknownFunctionHeaderSegmentsBranchConcreteSyntaxTreeNode,
+		] = this.children;
+		const abstractifiedStartingWithWordFunctionHeaderSegmentsRest =
+			separatedOptionalFunctionHeaderSegmentsBranchConcreteSyntaxTreeNodeOrStartingWithKnownFunctionHeaderSegmentsBranchConcreteSyntaxTreeNodeOrStartingWithUnknownFunctionHeaderSegmentsBranchConcreteSyntaxTreeNode.abstractify();
+		return abstractifiedStartingWithWordFunctionHeaderSegmentsRest;
 	}
 }
 const sourceCodeContent = ` `;
@@ -3071,6 +3856,45 @@ const parser = new Parser(grammar);
 // 	),
 // );
 
-debugger;
-const parsingResult = parser.parse(sourceCodeContentCharacters);
-console.dir(parsingResult, {depth: null});
+// debugger;
+// console.dir(parsingResult, {depth: null});
+
+for (const number of [
+	-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+	23, 24, 25, 26, 29, 30, 31, 32,
+]) {
+	const sourceCodeContent = `is (dividend) not divisible by (divisor) {
+	(dividend) % (divisor) != (0)
+}
+
+is (number) prime {
+	(number) > (1),
+	root of degree (2) of (number) = [maximaldivisortocheck],
+	none of the integers between (2) and (maximaldivisortocheck) divide (number)
+}
+
+none of the integers between (start) and (end) divide (dividend) {
+	(start) > (end).
+	(start) <= (end),
+	is (dividend) not divisible by (start),
+	(start) + (1) = [nextstart],
+	none of the integers between (nextstart) and (end) divide (dividend)
+}
+
+{
+	is (${number}) prime
+}`;
+	const sourceCodeContentCharacters: readonly string[] =
+		sourceCodeContent.split("");
+	const parsingResult = parser.parse(sourceCodeContentCharacters);
+	const ast = (
+		parsingResult as OptionalContentBranchConcreteSyntaxTreeNode
+	).abstractify();
+	if (ast === null) {
+		throw new Error("AST is null");
+	} else {
+		debugger;
+		const executionResult = ast.execute();
+		console.log({number, executionResult});
+	}
+}
