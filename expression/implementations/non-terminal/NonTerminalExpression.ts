@@ -1,187 +1,105 @@
-import type {ParsingTable} from "../../../ParsingTable.ts";
-import type {ParsingTableRow} from "../../../ParsingTableRow.ts";
-import type {RuleRightExpressions} from "../../../RuleRightExpressions.ts";
-import type {Rules} from "../../../Rules.ts";
-import type {StackItem} from "../../../stack-item/StackItem.ts";
+import type {FinalizingParsingResult} from "../../../FinalizingParsingResult.ts";
+import type {Grammar} from "../../../Grammar.ts";
+import type {ParsingResult} from "../../../ParsingResult.ts";
+import type {Rule} from "../../../Rule.ts";
+import type {RuleById} from "../../../run.ts";
+import type {ConcreteSyntaxTreeNode} from "../../../src/lib/concrete-syntax-tree-node/ConcreteSyntaxTreeNode.ts";
+import {BranchConcreteSyntaxTreeNode} from "../../../src/lib/concrete-syntax-tree-node/implementations/branch/BranchConcreteSyntaxTreeNode.ts";
+import type {LeafConcreteSyntaxTreeNode} from "../../../src/lib/concrete-syntax-tree-node/implementations/leaf/LeafConcreteSyntaxTreeNode.ts";
+import type {Index} from "../../../src/lib/index/Index.ts";
 import {Expression} from "../../Expression.ts";
 export class NonTerminalExpression extends Expression<"nonTerminal"> {
-	public constructor(nonTerminal: string) {
+	public constructor(rule: Rule) {
 		super("nonTerminal");
-		this.nonTerminal = nonTerminal;
+		this.rule = rule;
 	}
-	public override checkIfGivenNonTerminalCanBeFinalInThisExpression(
-		alreadyCheckedNonTerminals: ReadonlySet<string>,
-		nonTerminal: string,
-		rules: Rules,
+	public override checkIfRuleCanBeFinalInThisExpression(
+		alreadyCheckedRules: ReadonlySet<Rule>,
+		rule: Rule,
+		ruleById: RuleById,
 	): boolean {
-		if (this.nonTerminal === nonTerminal) {
+		if (this.rule === rule) {
 			return true;
-		} else if (alreadyCheckedNonTerminals.has(this.nonTerminal)) {
-			return false;
 		} else {
-			return (rules[this.nonTerminal] as RuleRightExpressions).some(
-				(rightExpression) => {
-					return rightExpression.checkIfGivenNonTerminalCanBeFinalInThisExpression(
-						alreadyCheckedNonTerminals.union(
-							new Set<string>([this.nonTerminal]),
-						),
-						nonTerminal,
-						rules,
-					);
-				},
+			return this.rule.checkIfRuleCanBeFinalInThisRule(
+				alreadyCheckedRules,
+				rule,
+				ruleById,
 			);
 		}
 	}
 	public override checkIfThisExpressionCanBeEmpty(
-		alreadyCheckedNonTerminals: ReadonlySet<string>,
-		rules: Rules,
+		alreadyCheckedRules: ReadonlySet<Rule>,
+		ruleById: RuleById,
 	): boolean {
-		if (alreadyCheckedNonTerminals.has(this.nonTerminal)) {
-			return false;
-		} else {
-			return (rules[this.nonTerminal] as RuleRightExpressions).some(
-				(rightExpression) => {
-					return rightExpression.checkIfThisExpressionCanBeEmpty(
-						alreadyCheckedNonTerminals.union(
-							new Set<string>([this.nonTerminal]),
-						),
-						rules,
-					);
-				},
-			);
-		}
+		return this.rule.checkIfCanBeEmpty(alreadyCheckedRules, ruleById);
 	}
 	public override computePossibleFirstingTerminalsOfThisExpression(
-		alreadyCheckedNonTerminals: ReadonlySet<string>,
-		rules: Rules,
+		alreadyCheckedRules: ReadonlySet<Rule>,
+		ruleById: RuleById,
 	): ReadonlySet<string> {
-		if (alreadyCheckedNonTerminals.has(this.nonTerminal)) {
-			return new Set<string>();
-		} else {
-			const possibleFirstingTerminalsOfThisExpression = new Set<string>(
-				(rules[this.nonTerminal] as RuleRightExpressions).flatMap(
-					(rightExpression) => {
-						return Array.from(
-							rightExpression.computePossibleFirstingTerminalsOfThisExpression(
-								alreadyCheckedNonTerminals.union(
-									new Set<string>([this.nonTerminal]),
-								),
-								rules,
-							),
-						);
-					},
-				),
+		const possibleFirstingTerminalsOfThisExpression =
+			this.rule.computePossibleFirstingTerminalOfThisRule(
+				alreadyCheckedRules,
+				ruleById,
 			);
-			return possibleFirstingTerminalsOfThisExpression;
-		}
+		return possibleFirstingTerminalsOfThisExpression;
 	}
-	public override computePossibleFollowingTerminalsOfGivenNonTerminalInThisExpression(
-		alreadyCheckedNonTerminals: ReadonlySet<string>,
-		nonTerminal: string,
-		rules: Rules,
+	public override computePossibleFollowingTerminalsOfRuleInThisExpression(
+		alreadyCheckedRules: ReadonlySet<Rule>,
+		rule: Rule,
+		ruleById: RuleById,
 	): ReadonlySet<string> {
-		if (alreadyCheckedNonTerminals.has(this.nonTerminal)) {
-			return new Set<string>();
-		} else {
-			const possibleFollowingTerminalsOfGivenNonTerminalInThisExpression =
-				new Set<string>(
-					(rules[this.nonTerminal] as RuleRightExpressions).flatMap(
-						(rightExpression) => {
-							return Array.from(
-								rightExpression.computePossibleFollowingTerminalsOfGivenNonTerminalInThisExpression(
-									alreadyCheckedNonTerminals.union(
-										new Set<string>([this.nonTerminal]),
-									),
-									nonTerminal,
-									rules,
-								),
-							);
-						},
-					),
-				);
-			return possibleFollowingTerminalsOfGivenNonTerminalInThisExpression;
-		}
-	}
-	public override computeStackItems(): readonly StackItem[] {
-		return [this];
-	}
-	public override computeUniqueUsedNonTerminalsInThisExpression(
-		alreadyCheckedNonTerminals: ReadonlySet<string>,
-		rules: Rules,
-	): ReadonlySet<string> {
-		if (alreadyCheckedNonTerminals.has(this.nonTerminal)) {
-			return new Set<string>();
-		} else {
-			const rule = rules[this.nonTerminal];
-			if (rule === undefined) {
-				return new Set<string>([this.nonTerminal]);
-			} else {
-				const uniqueUsedNonTerminalsInThisExpression = new Set<string>(
-					(rules[this.nonTerminal] as RuleRightExpressions).flatMap(
-						(rightExpression) => {
-							return Array.from(
-								rightExpression.computeUniqueUsedNonTerminalsInThisExpression(
-									alreadyCheckedNonTerminals.union(
-										new Set<string>([this.nonTerminal]),
-									),
-									rules,
-								),
-							);
-						},
-					),
-				).union(new Set<string>([this.nonTerminal]));
-				return uniqueUsedNonTerminalsInThisExpression;
-			}
-		}
-	}
-	public finalizeParsing(
-		parsingTable: ParsingTable,
-		stack: readonly StackItem[],
-	): void {
-		const newStackItems = (
-			parsingTable.rows[this.nonTerminal] as ParsingTableRow
-		).finalization;
-		if (newStackItems === null) {
-			throw new Error(`Parsing failed: unexpected end of input`);
-		} else {
-			const newStack = [...newStackItems, ...stack];
-			const [firstNewStackItem, ...restNewStackItems] = newStack;
-			if (firstNewStackItem === undefined) {
-				return;
-			} else {
-				firstNewStackItem.finalizeParsing(parsingTable, restNewStackItems);
-			}
-		}
-	}
-	public readonly nonTerminal: string;
-	public parse(
-		charactersLeft: readonly [string, ...(readonly string[])],
-		index: number,
-		parsingTable: ParsingTable,
-		stack: readonly StackItem[],
-	): void {
-		const [firstCharacter, ...restCharacters] = charactersLeft;
-		const row = parsingTable.rows[this.nonTerminal] as ParsingTableRow;
-		const newStackItems = row.terminals[firstCharacter];
-		if (newStackItems === undefined) {
-			throw new Error(
-				`Parsing failed: Unexpected character ${JSON.stringify(firstCharacter)} at index ${index.toString()}`,
+		const possibleFollowingTerminalsOfRuleInThisExpression =
+			this.rule.computePossibleFollowingTerminalsOfGivenRuleInThisRule(
+				alreadyCheckedRules,
+				rule,
+				ruleById,
 			);
-		} else {
-			const newStack = [...newStackItems, ...stack];
-			const [firstNewStackItem, ...restNewStackItems] = newStack;
-			if (firstNewStackItem === undefined) {
-				throw new Error(
-					`Parsing failed: Unexpected character ${JSON.stringify(firstCharacter)} at index ${index.toString()}`,
-				);
-			} else {
-				firstNewStackItem.parse(
-					[firstCharacter, ...restCharacters],
-					index,
-					parsingTable,
-					restNewStackItems,
-				);
-			}
-		}
+		return possibleFollowingTerminalsOfRuleInThisExpression;
 	}
+	public override finalizeParsing(
+		grammar: Grammar,
+	): FinalizingParsingResult<
+		| BranchConcreteSyntaxTreeNode<
+				readonly [
+					ConcreteSyntaxTreeNode | null,
+					...(readonly (ConcreteSyntaxTreeNode | null)[]),
+				]
+		  >
+		| LeafConcreteSyntaxTreeNode<string>
+	> {
+		const finalizingParsingResult = this.rule.finalizeParsing(grammar);
+		return finalizingParsingResult;
+	}
+	public override parse(
+		grammar: Grammar,
+		index: Index,
+		remainingCharacters: readonly [string, ...(readonly string[])],
+	): ParsingResult<
+		| BranchConcreteSyntaxTreeNode<
+				readonly [
+					ConcreteSyntaxTreeNode | null,
+					...(readonly (ConcreteSyntaxTreeNode | null)[]),
+				]
+		  >
+		| LeafConcreteSyntaxTreeNode<string>
+	> {
+		const ruleParsingResult = this.rule.parse(
+			grammar,
+			index,
+			remainingCharacters,
+		);
+		const parsingResult: ParsingResult<
+			| BranchConcreteSyntaxTreeNode<
+					readonly [
+						ConcreteSyntaxTreeNode | null,
+						...(readonly (ConcreteSyntaxTreeNode | null)[]),
+					]
+			  >
+			| LeafConcreteSyntaxTreeNode<string>
+		> = ruleParsingResult;
+		return parsingResult;
+	}
+	private readonly rule: Rule;
 }

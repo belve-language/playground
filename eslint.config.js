@@ -45,7 +45,11 @@ export default [
 				"warn",
 				{
 					customGroups: [],
-					groups: ["constructor", "unknown"],
+					groups: [
+						["static-method", "static-property"],
+						["constructor"],
+						["unknown"],
+					],
 					ignoreCase: true,
 					newlinesBetween: "never",
 					order: "asc",

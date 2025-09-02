@@ -1,42 +1,53 @@
-import type {Index} from "../../../index/Index.ts";
 import type {SpanIndexes} from "../../../span-indexes/SpanIndexes.ts";
 import {ConcreteSyntaxTreeNode} from "../../ConcreteSyntaxTreeNode.ts";
-export abstract class BranchConcreteSyntaxTreeNode<
-	Children extends readonly (ConcreteSyntaxTreeNode<string> | null)[],
-	TypeName extends string,
-> extends ConcreteSyntaxTreeNode<TypeName> {
-	protected constructor(children: Children, typeName: TypeName) {
-		super(typeName);
+export class BranchConcreteSyntaxTreeNode<
+	ChildrenToUse extends readonly [
+		ConcreteSyntaxTreeNode | null,
+		...(readonly (ConcreteSyntaxTreeNode | null)[]),
+	],
+> extends ConcreteSyntaxTreeNode {
+	public constructor(children: ChildrenToUse) {
+		super();
 		this.children = children;
 	}
-	public readonly children: Children;
-	public computeSpanIndexes(): SpanIndexes {
-		const startingIndex = this.computeSpanIndexesStartingIndex();
-		const endingIndex = this.computeSpanIndexesEndingIndex();
-		return {ending: endingIndex, starting: startingIndex};
-	}
-	public override computeSpanIndexesEndingIndex(): Index {
-		for (const child of this.children.toReversed()) {
-			if (child !== null) {
-				return child.computeSpanIndexesEndingIndex();
-			}
-		}
-		throw new Error("No children found to compute span indexes ending index.");
-	}
-	public override computeSpanIndexesStartingIndex(): Index {
-		for (const child of this.children) {
-			if (child !== null) {
-				return child.computeSpanIndexesStartingIndex();
-			}
-		}
-		throw new Error(
-			"No children found to compute span indexes starting index.",
+	public readonly children: ChildrenToUse;
+	public computeSpanIndexes(): null | SpanIndexes {
+		const childrenSpanIndexes: readonly SpanIndexes[] = this.children.flatMap(
+			(child) => {
+				if (child === null) {
+					return [];
+				} else {
+					const spanIndexes = child.computeSpanIndexes();
+					if (spanIndexes === null) {
+						return [];
+					} else {
+						return [spanIndexes];
+					}
+				}
+			},
 		);
+		const [firstChildSpanIndexes, ...restChildSpanIndexeses] =
+			childrenSpanIndexes;
+		if (firstChildSpanIndexes === undefined) {
+			return null;
+		} else {
+			const startingIndex = firstChildSpanIndexes.starting;
+			const lastChildSpanIndexes =
+				restChildSpanIndexeses[restChildSpanIndexeses.length - 1];
+			if (lastChildSpanIndexes === undefined) {
+				const endingIndex = firstChildSpanIndexes.ending;
+				return {ending: endingIndex, starting: startingIndex};
+			} else {
+				const endingIndex = lastChildSpanIndexes.ending;
+				return {ending: endingIndex, starting: startingIndex};
+			}
+		}
 	}
 	public override *iterateCharacters(): Generator<string, void, void> {
 		for (const child of this.children) {
 			if (child !== null) {
-				yield* child.iterateCharacters();
+				const childCharacters = child.iterateCharacters();
+				yield* childCharacters;
 			}
 		}
 	}

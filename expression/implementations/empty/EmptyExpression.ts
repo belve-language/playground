@@ -1,43 +1,56 @@
-import type {Rules} from "../../../Rules.ts";
-import type {StackItem} from "../../../stack-item/StackItem.ts";
+import type {FinalizingParsingResult} from "../../../FinalizingParsingResult.ts";
+import type {Grammar} from "../../../Grammar.ts";
+import type {ParsingResult} from "../../../ParsingResult.ts";
+import type {Rule} from "../../../Rule.ts";
+import type {RuleById} from "../../../run.ts";
+import type {ConcreteSyntaxTreeNode} from "../../../src/lib/concrete-syntax-tree-node/ConcreteSyntaxTreeNode.ts";
 import {Expression} from "../../Expression.ts";
 export class EmptyExpression extends Expression<"empty"> {
 	public constructor() {
 		super("empty");
 	}
-	public override checkIfGivenNonTerminalCanBeFinalInThisExpression(
-		alreadyCheckedNonTerminals: ReadonlySet<string>,
-		nonTerminal: string,
-		rules: Rules,
+	public override checkIfRuleCanBeFinalInThisExpression(
+		alreadyCheckedRules: ReadonlySet<Rule>,
+		rule: Rule,
+		ruleById: RuleById,
 	): boolean {
 		return false;
 	}
 	public override checkIfThisExpressionCanBeEmpty(
-		alreadyCheckedNonTerminals: ReadonlySet<string>,
-		rules: Rules,
+		alreadyCheckedRules: ReadonlySet<Rule>,
+		ruleById: RuleById,
 	): boolean {
 		return true;
 	}
 	public override computePossibleFirstingTerminalsOfThisExpression(
-		alreadyCheckedNonTerminals: ReadonlySet<string>,
-		rules: Rules,
+		alreadyCheckedRules: ReadonlySet<Rule>,
+		ruleById: RuleById,
 	): ReadonlySet<string> {
 		return new Set<string>();
 	}
-	public override computePossibleFollowingTerminalsOfGivenNonTerminalInThisExpression(
-		alreadyCheckedNonTerminals: ReadonlySet<string>,
-		nonTerminal: string,
-		rules: Rules,
+	public override computePossibleFollowingTerminalsOfRuleInThisExpression(
+		alreadyCheckedRules: ReadonlySet<Rule>,
+		rule: Rule,
+		ruleById: RuleById,
 	): ReadonlySet<string> {
 		return new Set<string>();
 	}
-	public override computeStackItems(): readonly StackItem[] {
-		return [];
+	public override finalizeParsing(
+		grammar: Grammar,
+	): FinalizingParsingResult<ConcreteSyntaxTreeNode | null> {
+		const finalizingParsingResult: FinalizingParsingResult<null> = {node: null};
+		return finalizingParsingResult;
 	}
-	public override computeUniqueUsedNonTerminalsInThisExpression(
-		alreadyCheckedNonTerminals: ReadonlySet<string>,
-		rules: Rules,
-	): ReadonlySet<string> {
-		return new Set<string>();
+	public override parse(
+		grammar: Grammar,
+		index: number,
+		remainingCharacters: readonly [string, ...(readonly string[])],
+	): ParsingResult<null> {
+		const parsingResult: ParsingResult<null> = {
+			nextIndex: index,
+			node: null,
+			remainingCharacters,
+		};
+		return parsingResult;
 	}
 }

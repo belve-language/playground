@@ -1,11 +1,7 @@
 import type {Character} from "../character/Character.ts";
-import type {Index} from "../index/Index.ts";
-export abstract class ConcreteSyntaxTreeNode<TypeName extends string> {
-	protected constructor(typeName: TypeName) {
-		this.typeName = typeName;
-	}
-	public abstract computeSpanIndexesEndingIndex(): Index;
-	public abstract computeSpanIndexesStartingIndex(): Index;
-	public abstract iterateCharacters(): Generator<Character, void, void>;
-	public readonly typeName: TypeName;
+import type {SpanIndexes} from "../span-indexes/SpanIndexes.ts";
+export abstract class ConcreteSyntaxTreeNode {
+	protected constructor() {}
+	public abstract computeSpanIndexes(): null | SpanIndexes;
+	public abstract iterateCharacters(): Iterable<Character, void, void>;
 }
