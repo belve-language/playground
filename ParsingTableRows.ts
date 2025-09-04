@@ -1,4 +1,3 @@
 import type {ParsingTableRow} from "./ParsingTableRow.ts";
-export type ParsingTableRows = {
-	readonly [nonTerminal: string]: ParsingTableRow;
-};
+import type {Rule} from "./Rule.ts";
+export type ParsingTableRows = ReadonlyMap<Rule, ParsingTableRow>;

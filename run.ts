@@ -3830,7 +3830,7 @@ class StartingWithWordFunctionHeaderSegmentsRestBranchConcreteSyntaxTreeNode ext
 const sourceCodeContent = ` `;
 const sourceCodeContentCharacters: readonly string[] =
 	sourceCodeContent.split("");
-const parser = new Parser(grammar);
+const parser = Parser.create(grammar);
 // for (const [ruleName1, rule1] of Object.entries(grammar.ruleById)) {
 // 	console.log(ruleName1, grammar.computeFollowSetOfRule(rule1));
 // }
@@ -3883,18 +3883,19 @@ none of the integers between (start) and (end) divide (dividend) {
 
 {
 	is (${number}) prime
-}`;
+}
+`;
 	const sourceCodeContentCharacters: readonly string[] =
 		sourceCodeContent.split("");
 	const parsingResult = parser.parse(sourceCodeContentCharacters);
-	const ast = (
+	const abstractSyntaxTree = (
 		parsingResult as OptionalContentBranchConcreteSyntaxTreeNode
 	).abstractify();
-	if (ast === null) {
+	if (abstractSyntaxTree === null) {
 		throw new Error("AST is null");
 	} else {
 		debugger;
-		const executionResult = ast.execute();
+		const executionResult = abstractSyntaxTree.execute();
 		console.log({number, executionResult});
 	}
 }

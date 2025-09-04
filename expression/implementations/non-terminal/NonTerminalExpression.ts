@@ -1,6 +1,7 @@
 import type {FinalizingParsingResult} from "../../../FinalizingParsingResult.ts";
 import type {Grammar} from "../../../Grammar.ts";
 import type {ParsingResult} from "../../../ParsingResult.ts";
+import type {ParsingTableRows} from "../../../ParsingTableRows.ts";
 import type {Rule} from "../../../Rule.ts";
 import type {RuleById} from "../../../run.ts";
 import type {ConcreteSyntaxTreeNode} from "../../../src/lib/concrete-syntax-tree-node/ConcreteSyntaxTreeNode.ts";
@@ -60,6 +61,7 @@ export class NonTerminalExpression extends Expression<"nonTerminal"> {
 	}
 	public override finalizeParsing(
 		grammar: Grammar,
+		parsingTableRows: ParsingTableRows,
 	): FinalizingParsingResult<
 		| BranchConcreteSyntaxTreeNode<
 				readonly [
@@ -69,12 +71,16 @@ export class NonTerminalExpression extends Expression<"nonTerminal"> {
 		  >
 		| LeafConcreteSyntaxTreeNode<string>
 	> {
-		const finalizingParsingResult = this.rule.finalizeParsing(grammar);
+		const finalizingParsingResult = this.rule.finalizeParsing(
+			grammar,
+			parsingTableRows,
+		);
 		return finalizingParsingResult;
 	}
 	public override parse(
 		grammar: Grammar,
 		index: Index,
+		parsingTableRows: ParsingTableRows,
 		remainingCharacters: readonly [string, ...(readonly string[])],
 	): ParsingResult<
 		| BranchConcreteSyntaxTreeNode<
@@ -88,6 +94,7 @@ export class NonTerminalExpression extends Expression<"nonTerminal"> {
 		const ruleParsingResult = this.rule.parse(
 			grammar,
 			index,
+			parsingTableRows,
 			remainingCharacters,
 		);
 		const parsingResult: ParsingResult<

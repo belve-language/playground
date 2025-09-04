@@ -1,5 +1,6 @@
 import type {Grammar} from "../../../Grammar.ts";
 import type {ParsingResult} from "../../../ParsingResult.ts";
+import type {ParsingTableRows} from "../../../ParsingTableRows.ts";
 import type {Rule} from "../../../Rule.ts";
 import type {RuleById} from "../../../run.ts";
 import {LeafConcreteSyntaxTreeNode} from "../../../src/lib/concrete-syntax-tree-node/implementations/leaf/LeafConcreteSyntaxTreeNode.ts";
@@ -31,12 +32,16 @@ export class TerminalExpression<
 	): ReadonlySet<string> {
 		return new Set<string>();
 	}
-	public override finalizeParsing(): never {
+	public override finalizeParsing(
+		grammar: Grammar,
+		parsingTableRows: ParsingTableRows,
+	): never {
 		throw new Error("Parsing error: Unexpected end of input");
 	}
 	public override parse(
 		grammar: Grammar,
 		index: number,
+		parsingTableRows: ParsingTableRows,
 		remainingCharacters: readonly [string, ...(readonly string[])],
 	): ParsingResult<LeafConcreteSyntaxTreeNode<Terminal>> {
 		const [firstRemainingCharacter, ...restRemainingCharacters] =

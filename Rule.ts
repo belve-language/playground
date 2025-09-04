@@ -2,6 +2,7 @@ import type {FinalizingParsingResult} from "./FinalizingParsingResult.ts";
 import type {Grammar} from "./Grammar.ts";
 import type {ParsingResult} from "./ParsingResult.ts";
 import {ParsingTableRow} from "./ParsingTableRow.ts";
+import type {ParsingTableRows} from "./ParsingTableRows.ts";
 import type {Expression} from "./expression/Expression.ts";
 import type {ThenExpression} from "./expression/implementations/then/ThenExpression.ts";
 import type {RuleById} from "./run.ts";
@@ -107,6 +108,7 @@ export abstract class Rule {
 	}
 	public finalizeParsing(
 		grammar: Grammar,
+		parsingTableRows: ParsingTableRows,
 	): FinalizingParsingResult<
 		| BranchConcreteSyntaxTreeNode<
 				readonly [
@@ -116,13 +118,15 @@ export abstract class Rule {
 		  >
 		| LeafConcreteSyntaxTreeNode<string>
 	> {
-		const parsingTableRow = ParsingTableRow.create(grammar, this);
+		const parsingTableRow = parsingTableRows.get(this) as ParsingTableRow;
 		const expression = parsingTableRow.finalization;
 		if (expression === null) {
 			throw new Error(`Unexpected end of input when parsing rule "${this}"`);
 		} else {
-			const expressionFinalizingParsingResult =
-				expression.finalizeParsing(grammar);
+			const expressionFinalizingParsingResult = expression.finalizeParsing(
+				grammar,
+				parsingTableRows,
+			);
 			const node = this.buildNode(expressionFinalizingParsingResult.node);
 			const finalizingParsingResult: FinalizingParsingResult<
 				| BranchConcreteSyntaxTreeNode<
@@ -142,6 +146,7 @@ export abstract class Rule {
 	public parse(
 		grammar: Grammar,
 		index: Index,
+		parsingTableRows: ParsingTableRows,
 		remainingCharacters: readonly [string, ...(readonly string[])],
 	): ParsingResult<
 		| BranchConcreteSyntaxTreeNode<
@@ -153,17 +158,19 @@ export abstract class Rule {
 		| LeafConcreteSyntaxTreeNode<string>
 	> {
 		const [firstCharacter, ...restCharacters] = remainingCharacters;
-		const parsingTableRow = ParsingTableRow.create(grammar, this);
+		const parsingTableRow = parsingTableRows.get(this) as ParsingTableRow;
 		const expression = parsingTableRow.terminals[firstCharacter];
 		if (expression === undefined) {
 			throw new Error(
 				`Unexpected character "${firstCharacter}" at index ${index.toString(10)}`,
 			);
 		} else {
-			const expressionParsingResult = expression.parse(grammar, index, [
-				firstCharacter,
-				...restCharacters,
-			]);
+			const expressionParsingResult = expression.parse(
+				grammar,
+				index,
+				parsingTableRows,
+				[firstCharacter, ...restCharacters],
+			);
 			const node = this.buildNode(expressionParsingResult.node);
 			const parsingResult = {
 				nextIndex: expressionParsingResult.nextIndex,

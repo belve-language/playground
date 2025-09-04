@@ -2,6 +2,7 @@ import type {FinalizingParsingResult} from "../FinalizingParsingResult.ts";
 import type {FirstSet} from "../FirstSet.ts";
 import type {Grammar} from "../Grammar.ts";
 import type {ParsingResult} from "../ParsingResult.ts";
+import type {ParsingTableRows} from "../ParsingTableRows.ts";
 import type {Rule} from "../Rule.ts";
 import type {RuleById} from "../run.ts";
 import type {ConcreteSyntaxTreeNode} from "../src/lib/concrete-syntax-tree-node/ConcreteSyntaxTreeNode.ts";
@@ -41,10 +42,12 @@ export abstract class Expression<TypeName extends string> {
 	): ReadonlySet<string>;
 	public abstract finalizeParsing(
 		grammar: Grammar,
+		parsingTableRows: ParsingTableRows,
 	): FinalizingParsingResult<ConcreteSyntaxTreeNode | null>;
 	public abstract parse(
 		grammar: Grammar,
 		index: number,
+		parsingTableRows: ParsingTableRows,
 		remainingCharacters: readonly [string, ...(readonly string[])],
 	): ParsingResult<ConcreteSyntaxTreeNode | null>;
 	public readonly typeName: TypeName;

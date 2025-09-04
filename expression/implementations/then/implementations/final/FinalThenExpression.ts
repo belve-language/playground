@@ -1,6 +1,7 @@
 import type {FinalizingParsingResult} from "../../../../../FinalizingParsingResult.ts";
 import type {Grammar} from "../../../../../Grammar.ts";
 import type {ParsingResult} from "../../../../../ParsingResult.ts";
+import type {ParsingTableRows} from "../../../../../ParsingTableRows.ts";
 import type {Rule} from "../../../../../Rule.ts";
 import type {RuleById} from "../../../../../run.ts";
 import type {ConcreteSyntaxTreeNode} from "../../../../../src/lib/concrete-syntax-tree-node/ConcreteSyntaxTreeNode.ts";
@@ -141,15 +142,16 @@ export class FinalThenExpression extends ThenExpression<"final"> {
 	}
 	public override finalizeParsing(
 		grammar: Grammar,
+		parsingTableRows: ParsingTableRows,
 	): FinalizingParsingResult<
 		BranchConcreteSyntaxTreeNode<
 			readonly [ConcreteSyntaxTreeNode | null, ConcreteSyntaxTreeNode | null]
 		>
 	> {
 		const finalizingParsingResultOfLeftExpression =
-			this.leftExpression.finalizeParsing(grammar);
+			this.leftExpression.finalizeParsing(grammar, parsingTableRows);
 		const finalizingParsingResultOfRightExpression =
-			this.rightExpression.finalizeParsing(grammar);
+			this.rightExpression.finalizeParsing(grammar, parsingTableRows);
 		const finalizingParsingResult: FinalizingParsingResult<
 			BranchConcreteSyntaxTreeNode<
 				readonly [ConcreteSyntaxTreeNode | null, ConcreteSyntaxTreeNode | null]
@@ -169,6 +171,7 @@ export class FinalThenExpression extends ThenExpression<"final"> {
 	public override parse(
 		grammar: Grammar,
 		index: number,
+		parsingTableRows: ParsingTableRows,
 		remainingCharacters: readonly [string, ...(readonly string[])],
 	): ParsingResult<
 		BranchConcreteSyntaxTreeNode<
@@ -178,6 +181,7 @@ export class FinalThenExpression extends ThenExpression<"final"> {
 		const parsingResultOfLeftExpression = this.leftExpression.parse(
 			grammar,
 			index,
+			parsingTableRows,
 			remainingCharacters,
 		);
 		const [
@@ -186,7 +190,7 @@ export class FinalThenExpression extends ThenExpression<"final"> {
 		] = parsingResultOfLeftExpression.remainingCharacters;
 		if (firstRemainingCharacterOfParsingResultOfLeftExpression === undefined) {
 			const finalizingParsingResultOfRightExpression =
-				this.rightExpression.finalizeParsing(grammar);
+				this.rightExpression.finalizeParsing(grammar, parsingTableRows);
 			return {
 				nextIndex: parsingResultOfLeftExpression.nextIndex,
 				node: new BranchConcreteSyntaxTreeNode([
@@ -199,6 +203,7 @@ export class FinalThenExpression extends ThenExpression<"final"> {
 			const parsingResultOfRightExpression = this.rightExpression.parse(
 				grammar,
 				parsingResultOfLeftExpression.nextIndex,
+				parsingTableRows,
 				[
 					firstRemainingCharacterOfParsingResultOfLeftExpression,
 					...restRemainingCharactersOfParsingResultOfLeftExpression,

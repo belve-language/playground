@@ -1,6 +1,7 @@
 import type {FinalizingParsingResult} from "../../../FinalizingParsingResult.ts";
 import type {Grammar} from "../../../Grammar.ts";
 import type {ParsingResult} from "../../../ParsingResult.ts";
+import type {ParsingTableRows} from "../../../ParsingTableRows.ts";
 import type {Rule} from "../../../Rule.ts";
 import type {RuleById} from "../../../run.ts";
 import type {ConcreteSyntaxTreeNode} from "../../../src/lib/concrete-syntax-tree-node/ConcreteSyntaxTreeNode.ts";
@@ -37,6 +38,7 @@ export class EmptyExpression extends Expression<"empty"> {
 	}
 	public override finalizeParsing(
 		grammar: Grammar,
+		parsingTableRows: ParsingTableRows,
 	): FinalizingParsingResult<ConcreteSyntaxTreeNode | null> {
 		const finalizingParsingResult: FinalizingParsingResult<null> = {node: null};
 		return finalizingParsingResult;
@@ -44,6 +46,7 @@ export class EmptyExpression extends Expression<"empty"> {
 	public override parse(
 		grammar: Grammar,
 		index: number,
+		parsingTableRows: ParsingTableRows,
 		remainingCharacters: readonly [string, ...(readonly string[])],
 	): ParsingResult<null> {
 		const parsingResult: ParsingResult<null> = {

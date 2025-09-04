@@ -1,6 +1,7 @@
 import type {FinalizingParsingResult} from "../../../../../FinalizingParsingResult.ts";
 import type {Grammar} from "../../../../../Grammar.ts";
 import type {ParsingResult} from "../../../../../ParsingResult.ts";
+import type {ParsingTableRows} from "../../../../../ParsingTableRows.ts";
 import type {Rule} from "../../../../../Rule.ts";
 import type {RuleById} from "../../../../../run.ts";
 import type {ConcreteSyntaxTreeNode} from "../../../../../src/lib/concrete-syntax-tree-node/ConcreteSyntaxTreeNode.ts";
@@ -73,11 +74,14 @@ export class SingleThenExpression extends ThenExpression<"single"> {
 		| TerminalExpression<string>;
 	public override finalizeParsing(
 		grammar: Grammar,
+		parsingTableRows: ParsingTableRows,
 	): FinalizingParsingResult<
 		BranchConcreteSyntaxTreeNode<readonly [ConcreteSyntaxTreeNode | null]>
 	> {
-		const finalizingParsingResultOfExpression =
-			this.expression.finalizeParsing(grammar);
+		const finalizingParsingResultOfExpression = this.expression.finalizeParsing(
+			grammar,
+			parsingTableRows,
+		);
 		const finalizingParsingResult: FinalizingParsingResult<
 			BranchConcreteSyntaxTreeNode<readonly [ConcreteSyntaxTreeNode | null]>
 		> = {
@@ -90,6 +94,7 @@ export class SingleThenExpression extends ThenExpression<"single"> {
 	public override parse(
 		grammar: Grammar,
 		index: number,
+		parsingTableRows: ParsingTableRows,
 		remainingCharacters: readonly [string, ...(readonly string[])],
 	): ParsingResult<
 		BranchConcreteSyntaxTreeNode<readonly [ConcreteSyntaxTreeNode | null]>
@@ -97,6 +102,7 @@ export class SingleThenExpression extends ThenExpression<"single"> {
 		const parsingResultOfExpression = this.expression.parse(
 			grammar,
 			index,
+			parsingTableRows,
 			remainingCharacters,
 		);
 		const parsingResult: ParsingResult<
