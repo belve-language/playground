@@ -273,4 +273,9 @@ const builtInFunctions: FunctionAbstractSyntaxTreeNodeChildrenFunctions = {
 			yield [value];
 		},
 	},
+	"placeholder": {
+		*call(): Generator<readonly [], void, void> {
+			yield [];
+		},
+	},
 };
