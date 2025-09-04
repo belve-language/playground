@@ -168,4 +168,109 @@ const builtInFunctions: FunctionAbstractSyntaxTreeNodeChildrenFunctions = {
 			yield [radicand ** (1 / degree)];
 		},
 	},
+	"a [] between () and ()": {
+		*call(
+			functions: FunctionAbstractSyntaxTreeNodeChildrenFunctions,
+			knownsValues: readonly [number, number],
+		): Generator<readonly [number], void, void> {
+			const [minimalNumber, maximalNumber] = knownsValues;
+			for (
+				let number = minimalNumber;
+				number <= maximalNumber;
+				number = number + 1
+			) {
+				yield [number];
+			}
+		},
+	},
+	"pair of () and () is []": {
+		*call(
+			functions: FunctionAbstractSyntaxTreeNodeChildrenFunctions,
+			knownsValues: readonly [unknown, unknown],
+		): Generator<readonly [readonly [unknown, unknown]], void, void> {
+			const [firstElement, secondElement] = knownsValues;
+			yield [[firstElement, secondElement]];
+		},
+	},
+	"head of () is []": {
+		*call(
+			functions: FunctionAbstractSyntaxTreeNodeChildrenFunctions,
+			knownsValues: readonly [readonly unknown[]],
+		): Generator<readonly [unknown], void, void> {
+			const [[firstElement, secondElement]] = knownsValues;
+			yield [firstElement];
+		},
+	},
+	"tail of () is []": {
+		*call(
+			functions: FunctionAbstractSyntaxTreeNodeChildrenFunctions,
+			knownsValues: readonly [readonly unknown[]],
+		): Generator<readonly [unknown], void, void> {
+			const [[firstElement, secondElement]] = knownsValues;
+			yield [secondElement];
+		},
+	},
+	"is () pair": {
+		*call(
+			functions: FunctionAbstractSyntaxTreeNodeChildrenFunctions,
+			knownsValues: readonly [unknown],
+		): Generator<readonly never[], void, void> {
+			const [value] = knownsValues;
+			if (Array.isArray(value) && value.length === 2) {
+				yield [];
+			}
+		},
+	},
+	"is not () pair": {
+		*call(
+			functions: FunctionAbstractSyntaxTreeNodeChildrenFunctions,
+			knownsValues: readonly [unknown],
+		): Generator<readonly never[], void, void> {
+			const [value] = knownsValues;
+			if (!Array.isArray(value) || value.length !== 2) {
+				yield [];
+			}
+		},
+	},
+	"log ()": {
+		*call(
+			functions: FunctionAbstractSyntaxTreeNodeChildrenFunctions,
+			knownsValues: readonly [unknown],
+		): Generator<readonly never[], void, void> {
+			const [value] = knownsValues;
+			console.dir(value, {depth: Infinity});
+			yield [];
+		},
+	},
+	"() < ()": {
+		*call(
+			functions: FunctionAbstractSyntaxTreeNodeChildrenFunctions,
+			knownsValues: readonly [number, number],
+		): Generator<readonly never[], void, void> {
+			const [number1, number2] = knownsValues;
+			if (number1 < number2) {
+				yield [];
+			}
+		},
+	},
+	"() >= ()": {
+		*call(
+			functions: FunctionAbstractSyntaxTreeNodeChildrenFunctions,
+			knownsValues: readonly [number, number],
+		): Generator<readonly never[], void, void> {
+			const [number1, number2] = knownsValues;
+			if (number1 >= number2) {
+				yield [];
+			}
+		},
+	},
+	"[] = ()": {
+		*call(
+			functions: FunctionAbstractSyntaxTreeNodeChildrenFunctions,
+			knownsValues: readonly [unknown],
+		): Generator<readonly [unknown], void, void> {
+			const [value] = knownsValues;
+			yield [value];
+		},
+	},
 };

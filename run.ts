@@ -27,6 +27,8 @@ import {BranchConcreteSyntaxTreeNode} from "./src/lib/concrete-syntax-tree-node/
 import {LeafConcreteSyntaxTreeNode} from "./src/lib/concrete-syntax-tree-node/implementations/leaf/LeafConcreteSyntaxTreeNode.ts";
 import type {Index} from "./src/lib/index/Index.ts";
 import type {SpanIndexes} from "./src/lib/span-indexes/SpanIndexes.ts";
+import * as path from "path";
+import {readFile} from "fs/promises";
 class BlockRule extends Rule {
 	public constructor() {
 		super();
@@ -3859,43 +3861,89 @@ const parser = Parser.create(grammar);
 // debugger;
 // console.dir(parsingResult, {depth: null});
 
-for (const number of [
-	-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-	23, 24, 25, 26, 29, 30, 31, 32,
-]) {
-	const sourceCodeContent = `is (dividend) not divisible by (divisor) {
-	(dividend) % (divisor) != (0)
-}
+// for (const number of [
+// 	-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+// 	23, 24, 25, 26, 29, 30, 31, 32,
+// ]) {
+// 	// 	const sourceCodeContent = `is (dividend) not divisible by (divisor) {
+// 	// 	(dividend) % (divisor) != (0)
+// 	// }
 
-is (number) prime {
-	(number) > (1),
-	root of degree (2) of (number) = [maximaldivisortocheck],
-	none of the integers between (2) and (maximaldivisortocheck) divide (number)
-}
+// 	// is (number) prime {
+// 	// 	(number) > (1),
+// 	// 	root of degree (2) of (number) = [maximaldivisortocheck],
+// 	// 	none of the integers between (2) and (maximaldivisortocheck) divide (number)
+// 	// }
 
-none of the integers between (start) and (end) divide (dividend) {
-	(start) > (end).
-	(start) <= (end),
-	is (dividend) not divisible by (start),
-	(start) + (1) = [nextstart],
-	none of the integers between (nextstart) and (end) divide (dividend)
-}
+// 	// none of the integers between (start) and (end) divide (dividend) {
+// 	// 	(start) > (end).
+// 	// 	(start) <= (end),
+// 	// 	is (dividend) not divisible by (start),
+// 	// 	(start) + (1) = [nextstart],
+// 	// 	none of the integers between (nextstart) and (end) divide (dividend)
+// 	// }
 
-{
-	is (${number}) prime
-}
-`;
-	const sourceCodeContentCharacters: readonly string[] =
-		sourceCodeContent.split("");
-	const parsingResult = parser.parse(sourceCodeContentCharacters);
+// 	// {
+// 	// 	is (${number}) prime
+// 	// }
+// 	// `;
+// 	const sourceCodeContent = `is (dividend) not divisible by (divisor) {
+// 	(dividend) % (divisor) != (0)
+// }
+
+// is (number) prime {
+// 	(number) > (1),
+// 	root of degree (2) of (number) = [maximaldivisortocheck],
+// 	none of the integers between (2) and (maximaldivisortocheck) divide (number)
+// }
+
+// none of the integers between (start) and (end) divide (dividend) {
+// 	(start) > (end).
+// 	(start) <= (end),
+// 	is (dividend) not divisible by (start),
+// 	(start) + (1) = [nextstart],
+// 	none of the integers between (nextstart) and (end) divide (dividend)
+// }
+
+// {
+// 	is (${number}) prime
+// }
+// `;
+// 	const sourceCodeContentCharacters: readonly string[] =
+// 		sourceCodeContent.split("");
+// 	const parsingResult = parser.parse(sourceCodeContentCharacters);
+// 	const abstractSyntaxTree = (
+// 		parsingResult as OptionalContentBranchConcreteSyntaxTreeNode
+// 	).abstractify();
+// 	if (abstractSyntaxTree === null) {
+// 		throw new Error("AST is null");
+// 	} else {
+// 		debugger;
+// 		const executionResult = abstractSyntaxTree.execute();
+// 		console.log({number, executionResult});
+// 	}
+// }
+
+// readfile name from the command line
+const [, , fileName] = process.argv;
+if (fileName === undefined) {
+	throw new Error("No file name provided");
+} else {
+	const filePath = path.resolve(process.cwd(), "examples", `${fileName}.bel`);
+	const fileContent = await readFile(filePath, "utf-8");
+	const fileContentCharacters: readonly string[] = fileContent.split("");
+	const parsingResult = parser.parse(fileContentCharacters);
 	const abstractSyntaxTree = (
 		parsingResult as OptionalContentBranchConcreteSyntaxTreeNode
 	).abstractify();
 	if (abstractSyntaxTree === null) {
 		throw new Error("AST is null");
 	} else {
-		debugger;
 		const executionResult = abstractSyntaxTree.execute();
-		console.log({number, executionResult});
+		if (executionResult === null) {
+			throw new Error("No main function found");
+		} else {
+			console.log(executionResult);
+		}
 	}
 }
