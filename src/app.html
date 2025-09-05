@@ -11,19 +11,18 @@
 			*::before {
 				box-sizing: border-box;
 			}
+			.sveltekit-body,
+			body,
+			.html {
+				display: grid;
+				grid-template-columns: 1fr;
+				grid-template-rows: 1fr;
+			}
 			body {
 				margin: 0;
 			}
 			html {
-				display: flex;
-				flex-direction: column;
 				min-height: 100%;
-			}
-			body,
-			.sveltekit-body {
-				flex: 1;
-				display: flex;
-				flex-direction: column;
 			}
 		</style>
 		%sveltekit.head%

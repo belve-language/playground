@@ -20,3 +20,4 @@ ENV NPM_PACKAGE_VERSION=${NPM_PACKAGE_VERSION}
 RUN pacman -U --noconfirm /tmp/npm.pkg.tar.zst
 RUN groupadd -g 969 docker && usermod -aG docker developer && pacman -S --noconfirm docker docker-compose
 USER developer
+EXPOSE 5173
