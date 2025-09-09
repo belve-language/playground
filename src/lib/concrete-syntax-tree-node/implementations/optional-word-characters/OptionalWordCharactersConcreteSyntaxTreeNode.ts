@@ -7,28 +7,16 @@ export class OptionalWordCharactersConcreteSyntaxTreeNode extends ConcreteSyntax
 	public constructor(atom: OptionalWordCharactersConcreteSyntaxTreeNodeAtom) {
 		super(atom);
 	}
-	public abstractify():
-		| ErrorAbstractifyingResult
-		| SuccessAbstractifyingResult<string> {
+	public abstractify(): null | string {
 		const wordCharacters = this.atom.node;
 		const wordCharactersAbstractifyingResult = wordCharacters.abstractify();
 		switch (wordCharactersAbstractifyingResult.typeName) {
 			case successAbstractifyingResultTypeName: {
 				const abstractifiedWordCharacters =
 					wordCharactersAbstractifyingResult.data;
-				if (abstractifiedWordCharacters === null) {
-					const optionalWordCharactersAbstractifyingResult: ErrorAbstractifyingResult =
-						new ErrorAbstractifyingResult(
-							"Optional word characters cannot be empty.",
-						);
-					return optionalWordCharactersAbstractifyingResult;
-				} else {
-					const optionalWordCharactersAbstractifyingResult: SuccessAbstractifyingResult<string> =
-						new SuccessAbstractifyingResult<string>(
-							abstractifiedWordCharacters,
-						);
-					return optionalWordCharactersAbstractifyingResult;
-				}
+				const abstractifiedOptionalWordCharacters: null | string =
+					abstractifiedWordCharacters;
+				return abstractifiedOptionalWordCharacters;
 			}
 		}
 	}

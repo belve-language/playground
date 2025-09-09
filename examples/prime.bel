@@ -1,10 +1,11 @@
 is (dividend) not divisible by (divisor) {
-	(dividend) % (divisor) != (0)
+	(dividend) % (divisor) = [remainder],
+	(remainder) != (0)
 }
 
 is (number) prime {
 	(number) > (1),
-	root of degree (2) of (number) = [maximaldivisortocheck],
+	(number) ^ (0.5) = [maximaldivisortocheck],
 	none of the integers between (2) and (maximaldivisortocheck) divide (number)
 }
 

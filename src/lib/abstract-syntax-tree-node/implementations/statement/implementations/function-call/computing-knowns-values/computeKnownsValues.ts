@@ -7,7 +7,12 @@ export function computeKnownsValues(
 		if (name in variables) {
 			return variables[name];
 		} else {
-			throw new Error(`Variable with name "${name}" not found.`);
+			const nameAsNumber = parseFloat(name);
+			if (isNaN(nameAsNumber)) {
+				throw new Error(`Variable with name "${name}" not found.`);
+			} else {
+				return nameAsNumber;
+			}
 		}
 	});
 	return knownsValues;

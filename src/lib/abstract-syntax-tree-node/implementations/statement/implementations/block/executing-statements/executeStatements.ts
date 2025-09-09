@@ -6,7 +6,6 @@ import {stepStatementExecutingResultTypeName} from "../../../../../../statement-
 import {successStatementExecutingResultTypeName} from "../../../../../../statement-executing-result/implementations/success/type-name/successStatementExecutingResultTypeName.ts";
 import type {SupportedStatementExecutingResult} from "../../../../../../statement-executing-result/supported/SupportedStatementExecutingResult.ts";
 import type {Variables} from "../../../../../../variables/Variables.ts";
-import type {BlockAbstractSyntaxTreeNodeChildren} from "../children/BlockAbstractSyntaxTreeNodeChildren.ts";
 export function* executeStatements(
 	functions: Functions,
 	variables: Variables,

@@ -4,6 +4,10 @@
 	import {extraCharactersParsingResultTypeName} from "../lib/parsing-result/implementations/extra-characters/type-name/extraCharactersParsingResultTypeName.ts";
 	import {unexpectedCharacterParsingResultTypeName} from "../lib/parsing-result/implementations/unexpected-character/type-name/unexpectedCharacterParsingResultTypeName.ts";
 	import {unexpectedFinalizingParsingResultTypeName} from "../lib/parsing-result/implementations/unexpected-finalizing/type-name/unexpectedFinalizingParsingResultTypeName.ts";
+	import {successParsingResultTypeName} from "../lib/parsing-result/implementations/success/type-name/successParsingResultTypeName.ts";
+	import {successAbstractifyingResultTypeName} from "../lib/concrete-syntax-tree-node/abstractifying/result/implementations/success/type-name/successAbstractifyingResultTypeName.ts";
+	import {errorAbstractifyingResultTypeName} from "../lib/concrete-syntax-tree-node/abstractifying/result/implementations/error/type-name/errorAbstractifyingResultTypeName.ts";
+	import {builtInFunctions} from "../lib/built-in-functions/builtInFunctions.ts";
 	abstract class ParsingStatus<TypeName extends string> {
 		public readonly typeName: TypeName;
 		protected constructor(typeName: TypeName) {
@@ -37,14 +41,15 @@
 			this.typeName = typeName;
 		}
 	}
-	const successAbstractifyingStatusTypeName = "success";
-	class SuccessfulAbstractifyingStatus extends AbstractifyingStatus<
-		typeof successAbstractifyingStatusTypeName
+	const withFunctionsSuccessAbstractifyingStatusTypeName =
+		"withFunctionsSuccess";
+	class WithFunctionsSuccessfulAbstractifyingStatus extends AbstractifyingStatus<
+		typeof withFunctionsSuccessAbstractifyingStatusTypeName
 	> {
 		public constructor(
 			steps: Generator<SupportedFunctionCallingResult, void, void>,
 		) {
-			super(successAbstractifyingStatusTypeName);
+			super(withFunctionsSuccessAbstractifyingStatusTypeName);
 			this.steps = steps;
 		}
 		public readonly steps: Generator<
@@ -52,6 +57,15 @@
 			void,
 			void
 		>;
+	}
+	const withoutFunctionsSuccessAbstractifyingStatusTypeName =
+		"withoutFunctionsSuccess";
+	class WithoutFunctionsSuccessfulAbstractifyingStatus extends AbstractifyingStatus<
+		typeof withoutFunctionsSuccessAbstractifyingStatusTypeName
+	> {
+		public constructor() {
+			super(withoutFunctionsSuccessAbstractifyingStatusTypeName);
+		}
 	}
 	const errorAbstractifyingStatusTypeName = "error";
 	class ErrorAbstractifyingStatus extends AbstractifyingStatus<
@@ -64,7 +78,8 @@
 		}
 	}
 	type SupportedAbstractifyingStatus =
-		| SuccessfulAbstractifyingStatus
+		| WithFunctionsSuccessfulAbstractifyingStatus
+		| WithoutFunctionsSuccessfulAbstractifyingStatus
 		| ErrorAbstractifyingStatus;
 	// type SupportedParsingStatus =
 	// 	| {
@@ -96,21 +111,35 @@
 		const sourceCodeCharacters = sourceCode.split("");
 		const parsingResult = parser.parse(sourceCodeCharacters);
 		switch (parsingResult.typeName) {
-			case successParsingStatusTypeName: {
+			case successParsingResultTypeName: {
 				const parsedSourceCode = parsingResult.node;
 				const abstractifyingResult = parsedSourceCode.abstractify();
 				switch (abstractifyingResult.typeName) {
-					case successAbstractifyingStatusTypeName: {
-						const steps = abstractifyingResult.data.executeComplexly();
-						const state = new State(
-							new SuccessfulParsingStatus(
-								new SuccessfulAbstractifyingStatus(steps),
-							),
-							sourceCode,
-						);
-						return state;
+					case successAbstractifyingResultTypeName: {
+						const abstractifiedParsedSourceCode = abstractifyingResult.data;
+						if (abstractifiedParsedSourceCode === null) {
+							const state = new State(
+								new SuccessfulParsingStatus(
+									new WithoutFunctionsSuccessfulAbstractifyingStatus(),
+								),
+								sourceCode,
+							);
+							return state;
+						} else {
+							const steps =
+								abstractifiedParsedSourceCode.executeComplexly(
+									builtInFunctions,
+								);
+							const state = new State(
+								new SuccessfulParsingStatus(
+									new WithFunctionsSuccessfulAbstractifyingStatus(steps),
+								),
+								sourceCode,
+							);
+							return state;
+						}
 					}
-					case errorAbstractifyingStatusTypeName: {
+					case errorAbstractifyingResultTypeName: {
 						const state = new State(
 							new SuccessfulParsingStatus(
 								new ErrorAbstractifyingStatus(abstractifyingResult.message),
@@ -136,15 +165,28 @@
 		state = createState(event.currentTarget.value);
 	}
 	function handleStepButtonClick(): void {
-		// TODO
+		if (
+			state.parsingStatus.typeName === successParsingStatusTypeName
+			&& state.parsingStatus.abstractifyingStatus.typeName
+				=== withFunctionsSuccessAbstractifyingStatusTypeName
+		) {
+			const step = state.parsingStatus.abstractifyingStatus.steps.next();
+			if (step.done) {
+				console.log("No more steps.");
+			} else {
+				console.log({step: step});
+			}
+		}
 	}
 </script>
 
 <main>
 	<div class="status">
 		{#if state.parsingStatus.typeName === successParsingStatusTypeName}
-			{#if state.parsingStatus.abstractifyingStatus.typeName === successAbstractifyingStatusTypeName}
+			{#if state.parsingStatus.abstractifyingStatus.typeName === withFunctionsSuccessAbstractifyingStatusTypeName}
 				✔️ Ready to be executed
+			{:else if state.parsingStatus.abstractifyingStatus.typeName === withoutFunctionsSuccessAbstractifyingStatusTypeName}
+				❓ Nothing to execute
 			{:else if state.parsingStatus.abstractifyingStatus.typeName === errorAbstractifyingStatusTypeName}
 				❌ Abstractifying error: {state.parsingStatus.abstractifyingStatus
 					.message}
@@ -157,7 +199,7 @@
 			onclick={handleStepButtonClick}
 			disabled={state.parsingStatus.typeName !== successParsingStatusTypeName
 				|| state.parsingStatus.abstractifyingStatus.typeName
-					!== successAbstractifyingStatusTypeName}>👣</button
+					!== withFunctionsSuccessAbstractifyingStatusTypeName}>👣</button
 		>
 	</div>
 	<div class="editor">
