@@ -21,14 +21,12 @@
 		"url": "https://github.com/belve-language/belve-explorer.git"
 	},
 	"scripts": {
-		"dev": "vite dev",
+		"dev": "vite dev --host 0.0.0.0",
 		"eslint:check": "svelte-kit sync && eslint --max-warnings=0 .",
 		"eslint:fix": "svelte-kit sync && eslint --fix --max-warnings=0 .",
 		"prettier:check": "prettier --check .",
 		"prettier:fix": "prettier --write .",
-		"svelte:check": "svelte-kit sync && svelte-check",
-		"test:check:e2e": "DOCKER_AUTH_CONFIG='{}' node --test --experimental-strip-types --experimental-test-coverage --test-concurrency=1 '**/*.e2e.test.ts'",
-		"test:check:unit": "DOCKER_AUTH_CONFIG='{}' node --test --experimental-strip-types --experimental-test-coverage '**/*.unit.test.ts'"
+		"svelte:check": "svelte-kit sync && svelte-check"
 	},
 	"type": "module",
 	"version": "0.0.0"

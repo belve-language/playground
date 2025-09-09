@@ -3,13 +3,18 @@ import type {SpanIndexes} from "../../../../../span-indexes/SpanIndexes.ts";
 import type {WordFunctionHeaderSegmentAbstractSyntaxTreeNodeChildren} from "../../../function-header-segment/implementations/word/children/WordFunctionHeaderSegmentAbstractSyntaxTreeNodeChildren.ts";
 import {FunctionCallSegmentAbstractSyntaxTreeNode} from "../../FunctionCallSegmentAbstractSyntaxTreeNode.ts";
 export class WordFunctionCallSegmentAbstractSyntaxTreeNode extends FunctionCallSegmentAbstractSyntaxTreeNode<WordFunctionHeaderSegmentAbstractSyntaxTreeNodeChildren> {
-	public constructor(
+	public static create(
 		children: WordFunctionCallSegmentAbstractSyntaxTreeNodeChildren,
 		spanIndexes: SpanIndexes,
-	) {
-		super(children, spanIndexes);
+	): WordFunctionCallSegmentAbstractSyntaxTreeNode {
+		const node = new this(children, children.word, spanIndexes);
+		return node;
 	}
-	public override computeId(): string {
-		return this.children.word;
+	private constructor(
+		children: WordFunctionCallSegmentAbstractSyntaxTreeNodeChildren,
+		id: string,
+		spanIndexes: SpanIndexes,
+	) {
+		super(children, id, spanIndexes);
 	}
 }

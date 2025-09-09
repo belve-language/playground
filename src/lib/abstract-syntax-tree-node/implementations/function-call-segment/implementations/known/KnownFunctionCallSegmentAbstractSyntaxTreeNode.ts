@@ -2,16 +2,20 @@ import type {KnownFunctionCallSegmentAbstractSyntaxTreeNodeChildren} from "./chi
 import type {SpanIndexes} from "../../../../../span-indexes/SpanIndexes.ts";
 import {FunctionCallSegmentAbstractSyntaxTreeNode} from "../../FunctionCallSegmentAbstractSyntaxTreeNode.ts";
 export class KnownFunctionCallSegmentAbstractSyntaxTreeNode extends FunctionCallSegmentAbstractSyntaxTreeNode<KnownFunctionCallSegmentAbstractSyntaxTreeNodeChildren> {
-	public constructor(
+	public static create(
 		children: KnownFunctionCallSegmentAbstractSyntaxTreeNodeChildren,
 		spanIndexes: SpanIndexes,
+	): KnownFunctionCallSegmentAbstractSyntaxTreeNode {
+		const node = new this(children, children.name, spanIndexes);
+		return node;
+	}
+	private constructor(
+		children: KnownFunctionCallSegmentAbstractSyntaxTreeNodeChildren,
+		name: string,
+		spanIndexes: SpanIndexes,
 	) {
-		super(children, spanIndexes);
+		super(children, "()", spanIndexes);
+		this.name = name;
 	}
-	public override computeId(): "()" {
-		return "()";
-	}
-	public getVariableName(): string {
-		return this.children.name;
-	}
+	public readonly name: string;
 }

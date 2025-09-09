@@ -2,16 +2,21 @@ import type {UnknownFunctionHeaderSegmentAbstractSyntaxTreeNodeChildren} from ".
 import type {SpanIndexes} from "../../../../../span-indexes/SpanIndexes.ts";
 import {FunctionHeaderSegmentAbstractSyntaxTreeNode} from "../../FunctionHeaderSegmentAbstractSyntaxTreeNode.ts";
 export class UnknownFunctionHeaderSegmentAbstractSyntaxTreeNode extends FunctionHeaderSegmentAbstractSyntaxTreeNode<UnknownFunctionHeaderSegmentAbstractSyntaxTreeNodeChildren> {
-	public constructor(
+	public static create(
 		children: UnknownFunctionHeaderSegmentAbstractSyntaxTreeNodeChildren,
 		spanIndexes: SpanIndexes,
+	): UnknownFunctionHeaderSegmentAbstractSyntaxTreeNode {
+		const node = new this(children, "[]", children.name, spanIndexes);
+		return node;
+	}
+	private constructor(
+		children: UnknownFunctionHeaderSegmentAbstractSyntaxTreeNodeChildren,
+		id: string,
+		name: string,
+		spanIndexes: SpanIndexes,
 	) {
-		super(children, spanIndexes);
+		super(children, id, spanIndexes);
+		this.name = name;
 	}
-	public override computeId(): "[]" {
-		return "[]";
-	}
-	public getVariableName(): string {
-		return this.children.name;
-	}
+	public readonly name: string;
 }

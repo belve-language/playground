@@ -1,7 +1,7 @@
-import type {Character} from "../character/Character.ts";
-import type {SpanIndexes} from "../span-indexes/SpanIndexes.ts";
-export abstract class ConcreteSyntaxTreeNode {
-	protected constructor() {}
-	public abstract computeSpanIndexes(): null | SpanIndexes;
-	public abstract iterateCharacters(): Iterable<Character, void, void>;
+import type {Atom} from "../atom/Atom.ts";
+export abstract class ConcreteSyntaxTreeNode<AtomToUse extends Atom> {
+	protected constructor(atom: AtomToUse) {
+		this.atom = atom;
+	}
+	public readonly atom: AtomToUse;
 }

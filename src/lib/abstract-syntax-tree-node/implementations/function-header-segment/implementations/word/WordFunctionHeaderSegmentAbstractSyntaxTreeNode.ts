@@ -2,13 +2,22 @@ import type {WordFunctionHeaderSegmentAbstractSyntaxTreeNodeChildren} from "./ch
 import type {SpanIndexes} from "../../../../../span-indexes/SpanIndexes.ts";
 import {FunctionHeaderSegmentAbstractSyntaxTreeNode} from "../../FunctionHeaderSegmentAbstractSyntaxTreeNode.ts";
 export class WordFunctionHeaderSegmentAbstractSyntaxTreeNode extends FunctionHeaderSegmentAbstractSyntaxTreeNode<WordFunctionHeaderSegmentAbstractSyntaxTreeNodeChildren> {
-	public constructor(
+	public static create(
 		children: WordFunctionHeaderSegmentAbstractSyntaxTreeNodeChildren,
 		spanIndexes: SpanIndexes,
-	) {
-		super(children, spanIndexes);
+	): WordFunctionHeaderSegmentAbstractSyntaxTreeNode {
+		const node = new WordFunctionHeaderSegmentAbstractSyntaxTreeNode(
+			children,
+			children.word,
+			spanIndexes,
+		);
+		return node;
 	}
-	public override computeId(): string {
-		return this.children.word;
+	private constructor(
+		children: WordFunctionHeaderSegmentAbstractSyntaxTreeNodeChildren,
+		id: string,
+		spanIndexes: SpanIndexes,
+	) {
+		super(children, id, spanIndexes);
 	}
 }

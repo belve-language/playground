@@ -1,6 +1,9 @@
-import type {BlockAbstractSyntaxTreeNode} from "../../block/BlockAbstractSyntaxTreeNode.ts";
 import type {FunctionHeaderAbstractSyntaxTreeNode} from "../../function-header/FunctionHeaderAbstractSyntaxTreeNode.ts";
-export type FunctionAbstractSyntaxTreeNodeChildren = {
-	readonly header: FunctionHeaderAbstractSyntaxTreeNode | null;
-	readonly body: BlockAbstractSyntaxTreeNode;
+import type {BlockStatementAbstractSyntaxTreeNode} from "../../statement/implementations/block/BlockAbstractSyntaxTreeNode.ts";
+export type FunctionAbstractSyntaxTreeNodeChildren<
+	FunctionHeaderAbstractSyntaxTreeNodeToUse extends
+		FunctionHeaderAbstractSyntaxTreeNode | null,
+> = {
+	readonly body: BlockStatementAbstractSyntaxTreeNode;
+	readonly header: FunctionHeaderAbstractSyntaxTreeNodeToUse;
 };

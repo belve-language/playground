@@ -1,6 +1,6 @@
 import type {FunctionAbstractSyntaxTreeNodeChildrenFunctions} from "./functions/FunctionAbstractSyntaxTreeNodeChildrenFunctions.ts";
-import type {FunctionAbstractSyntaxTreeNode} from "../../function/FunctionAbstractSyntaxTreeNode.ts";
+import type {MainFunctionAbstractSyntaxTreeNode} from "../../function/implementations/main/MainFunctionAbstractSyntaxTreeNode.ts";
 export type FunctionsAbstractSyntaxTreeNodeChildren = {
 	readonly functions: FunctionAbstractSyntaxTreeNodeChildrenFunctions;
-	readonly mainFunction: FunctionAbstractSyntaxTreeNode | null;
+	readonly mainFunction: MainFunctionAbstractSyntaxTreeNode | null;
 };

@@ -3,8 +3,9 @@ import {AbstractSyntaxTreeNode} from "../../AbstractSyntaxTreeNode.ts";
 export abstract class FunctionCallSegmentAbstractSyntaxTreeNode<
 	Children,
 > extends AbstractSyntaxTreeNode<Children> {
-	public constructor(children: Children, spanIndexes: SpanIndexes) {
+	public constructor(children: Children, id: string, spanIndexes: SpanIndexes) {
 		super(children, spanIndexes);
+		this.id = id;
 	}
-	public abstract computeId(): string;
+	public readonly id: string;
 }

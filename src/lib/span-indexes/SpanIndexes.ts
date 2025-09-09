@@ -1,2 +1,9 @@
 import type {Index} from "../index/Index.ts";
-export type SpanIndexes = {readonly starting: Index; readonly ending: Index};
+export class SpanIndexes {
+	public constructor(from: Index, until: Index) {
+		this.from = from;
+		this.until = until;
+	}
+	public readonly from: Index;
+	public readonly until: Index;
+}

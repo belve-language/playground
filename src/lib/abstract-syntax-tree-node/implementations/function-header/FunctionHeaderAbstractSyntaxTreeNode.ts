@@ -1,46 +1,39 @@
 import type {FunctionHeaderAbstractSyntaxTreeNodeChildren} from "./children/FunctionHeaderAbstractSyntaxTreeNodeChildren.ts";
 import type {SpanIndexes} from "../../../span-indexes/SpanIndexes.ts";
 import {AbstractSyntaxTreeNode} from "../../AbstractSyntaxTreeNode.ts";
-import {KnownFunctionHeaderSegmentAbstractSyntaxTreeNode} from "../function-header-segment/implementations/known/KnownFunctionHeaderSegmentAbstractSyntaxTreeNode.ts";
-import {UnknownFunctionHeaderSegmentAbstractSyntaxTreeNode} from "../function-header-segment/implementations/unknown/UnknownFunctionHeaderSegmentAbstractSyntaxTreeNode.ts";
+import {computeId} from "./computing-id/computeId.ts";
+import {computeKnownsNames} from "./computing-knowns-names/computeKnownsNames.ts";
+import {computeUnknownsNames} from "./computing-unknowns-names/computeUnknownsNames.ts";
 export class FunctionHeaderAbstractSyntaxTreeNode extends AbstractSyntaxTreeNode<FunctionHeaderAbstractSyntaxTreeNodeChildren> {
-	public constructor(
+	public static create(
 		children: FunctionHeaderAbstractSyntaxTreeNodeChildren,
 		spanIndexes: SpanIndexes,
+	): FunctionHeaderAbstractSyntaxTreeNode {
+		const id = computeId(children.segments);
+		const knownsNames = computeKnownsNames(children.segments);
+		const unknownsNames = computeUnknownsNames(children.segments);
+		const node = new this(
+			children,
+			id,
+			knownsNames,
+			spanIndexes,
+			unknownsNames,
+		);
+		return node;
+	}
+	private constructor(
+		children: FunctionHeaderAbstractSyntaxTreeNodeChildren,
+		id: string,
+		knownsNames: readonly string[],
+		spanIndexes: SpanIndexes,
+		unknownsNames: readonly string[],
 	) {
 		super(children, spanIndexes);
+		this.id = id;
+		this.knownsNames = knownsNames;
+		this.unknownsNames = unknownsNames;
 	}
-	public computeId(): string {
-		const id = this.children.segments
-			.map((segment) => {
-				const segmentId = segment.computeId();
-				return segmentId;
-			})
-			.join(" ");
-		return id;
-	}
-	public extractKnownsNames(): readonly string[] {
-		return this.children.segments
-			.filter((segment) => {
-				return (
-					segment instanceof KnownFunctionHeaderSegmentAbstractSyntaxTreeNode
-				);
-			})
-			.map((segment) => {
-				const name = segment.getVariableName();
-				return name;
-			});
-	}
-	public extractUnknownsNames(): readonly string[] {
-		return this.children.segments
-			.filter((segment) => {
-				return (
-					segment instanceof UnknownFunctionHeaderSegmentAbstractSyntaxTreeNode
-				);
-			})
-			.map((segment) => {
-				const name = segment.getVariableName();
-				return name;
-			});
-	}
+	public readonly id: string;
+	public readonly knownsNames: readonly string[];
+	public readonly unknownsNames: readonly string[];
 }

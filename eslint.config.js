@@ -72,6 +72,20 @@ export default [
 					type: "natural",
 				},
 			],
+			"perfectionist/sort-object-types": [
+				"warn",
+				{
+					customGroups: [],
+					groups: ["unknown"],
+					ignoreCase: true,
+					newlinesBetween: "never",
+					order: "asc",
+					partitionByComment: false,
+					partitionByNewLine: false,
+					specialCharacters: "keep",
+					type: "natural",
+				},
+			],
 			"perfectionist/sort-union-types": [
 				"warn",
 				{

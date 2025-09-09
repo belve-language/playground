@@ -1,45 +1,69 @@
 import type {FunctionAbstractSyntaxTreeNodeChildren} from "./children/FunctionAbstractSyntaxTreeNodeChildren.ts";
+import {ReturnFunctionCallingResult} from "../../../function-calling-result/implementations/return/ReturnFunctionCallingResult.ts";
+import {StepFunctionCallingResult} from "../../../function-calling-result/implementations/step/StepFunctionCallingResult.ts";
+import {SuccessFunctionCallingResult} from "../../../function-calling-result/implementations/success/SuccessFunctionCallingResult.ts";
+import type {SupportedFunctionCallingResult} from "../../../function-calling-result/supported/SupportedFunctionCallingResult.ts";
 import type {SpanIndexes} from "../../../span-indexes/SpanIndexes.ts";
 import {AbstractSyntaxTreeNode} from "../../AbstractSyntaxTreeNode.ts";
-import type {FunctionAbstractSyntaxTreeNodeChildrenFunctions} from "../functions/children/functions/FunctionAbstractSyntaxTreeNodeChildrenFunctions.ts";
-export class FunctionAbstractSyntaxTreeNode extends AbstractSyntaxTreeNode<FunctionAbstractSyntaxTreeNodeChildren> {
+import {computeKnowns} from "./computing-knowns/computeKnowns.ts";
+import type {Functions} from "../../../functions/Functions.ts";
+import {returnStatementExecutingResultTypeName} from "../../../statement-executing-result/implementations/return/type-name/returnStatementExecutingResultTypeName.ts";
+import {stepStatementExecutingResultTypeName} from "../../../statement-executing-result/implementations/step/type-name/stepStatementExecutingResultTypeName.ts";
+import {successStatementExecutingResultTypeName} from "../../../statement-executing-result/implementations/success/type-name/successStatementExecutingResultTypeName.ts";
+import type {SupportedStatementExecutingResult} from "../../../statement-executing-result/supported/SupportedStatementExecutingResult.ts";
+import type {Variables} from "../../../variables/Variables.ts";
+import type {FunctionHeaderAbstractSyntaxTreeNode} from "../function-header/FunctionHeaderAbstractSyntaxTreeNode.ts";
+import type {FunctionsAbstractSyntaxTreeNode} from "../functions/FunctionsAbstractSyntaxTreeNode.ts";
+export abstract class FunctionAbstractSyntaxTreeNode<
+	FunctionHeaderAbstractSyntaxTreeNodeToUse extends
+		FunctionHeaderAbstractSyntaxTreeNode | null,
+> extends AbstractSyntaxTreeNode<
+	FunctionAbstractSyntaxTreeNodeChildren<FunctionHeaderAbstractSyntaxTreeNodeToUse>
+> {
 	public constructor(
-		children: FunctionAbstractSyntaxTreeNodeChildren,
+		children: FunctionAbstractSyntaxTreeNodeChildren<FunctionHeaderAbstractSyntaxTreeNodeToUse>,
 		spanIndexes: SpanIndexes,
 	) {
 		super(children, spanIndexes);
 	}
 	public *call(
-		functions: FunctionAbstractSyntaxTreeNodeChildrenFunctions,
+		functions: Functions,
 		knownsValues: readonly unknown[],
-		depth: number,
-	): Generator<readonly unknown[], void, void> {
-		const knowns: {readonly [name: string]: unknown} =
-			this.children.header === null ?
-				{}
-			:	Object.fromEntries(
-					this.children.header.extractKnownsNames().map((name, index) => {
-						return [name, knownsValues[index]];
-					}),
-				);
-		const unknownsNames: readonly string[] =
-			this.children.header === null ?
-				[]
-			:	this.children.header.extractUnknownsNames();
-		const unknownses = this.children.body.execute(functions, knowns, depth);
-		for (const unknowns of unknownses) {
-			const unknownsValues: readonly unknown[] = unknownsNames.map((name) => {
-				return unknowns[name];
-			});
-			yield unknownsValues;
+	): Generator<SupportedFunctionCallingResult, void, void> {
+		const knowns = computeKnowns(this.children.header, knownsValues);
+		const bodyExecutingResults = this.children.body.execute(functions, knowns);
+		for (const bodyExecutingResult of bodyExecutingResults) {
+			switch (bodyExecutingResult.typeName) {
+				case stepStatementExecutingResultTypeName: {
+					const functionCallingResult: StepFunctionCallingResult =
+						new StepFunctionCallingResult(bodyExecutingResult.data.node);
+					yield functionCallingResult;
+					break;
+				}
+				case successStatementExecutingResultTypeName: {
+					const functionCallingResult: SuccessFunctionCallingResult =
+						new SuccessFunctionCallingResult(bodyExecutingResult.data.node);
+					yield functionCallingResult;
+					break;
+				}
+				case returnStatementExecutingResultTypeName: {
+					const unknownsValues = this.computeUnknownsValues(
+						bodyExecutingResult.data.variables,
+					);
+					const functionCallingResult: ReturnFunctionCallingResult =
+						new ReturnFunctionCallingResult(unknownsValues);
+					yield functionCallingResult;
+					break;
+				}
+			}
+			continue;
 		}
 	}
-	public computeId(): string {
-		if (this.children.header === null) {
-			return "";
-		} else {
-			const id = this.children.header.computeId();
-			return id;
-		}
-	}
+	public abstract computeUnknownsValues(
+		variables: Variables,
+	): readonly unknown[];
+	public abstract createFunctions(): FunctionsAbstractSyntaxTreeNode;
+	public abstract putIntoFunctions(
+		functions: FunctionsAbstractSyntaxTreeNode,
+	): FunctionsAbstractSyntaxTreeNode;
 }

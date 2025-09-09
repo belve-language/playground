@@ -1,0 +1,89 @@
+import type {FunctionConcreteSyntaxTreeNodeAtom} from "./atom/FunctionConcreteSyntaxTreeNodeAtom.ts";
+import {MainFunctionAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree-node/implementations/function/implementations/main/MainFunctionAbstractSyntaxTreeNode.ts";
+import {NonMainFunctionAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree-node/implementations/function/implementations/non-main/NonMainFunctionAbstractSyntaxTreeNode.ts";
+import {SpanIndexes} from "../../../span-indexes/SpanIndexes.ts";
+import {ConcreteSyntaxTreeNode} from "../../ConcreteSyntaxTreeNode.ts";
+import {ErrorAbstractifyingResult} from "../../abstractifying/result/implementations/error/ErrorAbstractifyingResult.ts";
+import {errorAbstractifyingResultTypeName} from "../../abstractifying/result/implementations/error/type-name/errorAbstractifyingResultTypeName.ts";
+import {SuccessAbstractifyingResult} from "../../abstractifying/result/implementations/success/SuccessAbstractifyingResult.ts";
+import {successAbstractifyingResultTypeName} from "../../abstractifying/result/implementations/success/type-name/successAbstractifyingResultTypeName.ts";
+export class FunctionConcreteSyntaxTreeNode extends ConcreteSyntaxTreeNode<FunctionConcreteSyntaxTreeNodeAtom> {
+	public constructor(atom: FunctionConcreteSyntaxTreeNodeAtom) {
+		super(atom);
+	}
+	public abstractify():
+		| ErrorAbstractifyingResult
+		| SuccessAbstractifyingResult<MainFunctionAbstractSyntaxTreeNode>
+		| SuccessAbstractifyingResult<NonMainFunctionAbstractSyntaxTreeNode> {
+		const optionalFunctionHeader = this.atom.leftSubAtom.node;
+		const functionBody = this.atom.rightSubAtom.node;
+		const functionHeaderAbstractifyingResult =
+			optionalFunctionHeader.abstractify();
+		switch (functionHeaderAbstractifyingResult.typeName) {
+			case errorAbstractifyingResultTypeName: {
+				const functionAbstractifyingResult: ErrorAbstractifyingResult =
+					new ErrorAbstractifyingResult(
+						functionHeaderAbstractifyingResult.message,
+					);
+				return functionAbstractifyingResult;
+			}
+			case successAbstractifyingResultTypeName: {
+				const abstractifiedFunctionHeader =
+					functionHeaderAbstractifyingResult.data;
+				if (abstractifiedFunctionHeader === null) {
+					const functionBodyAbstractifyingResult = functionBody.abstractify();
+					switch (functionBodyAbstractifyingResult.typeName) {
+						case errorAbstractifyingResultTypeName: {
+							const functionAbstractifyingResult: ErrorAbstractifyingResult =
+								new ErrorAbstractifyingResult(
+									functionBodyAbstractifyingResult.message,
+								);
+							return functionAbstractifyingResult;
+						}
+						case successAbstractifyingResultTypeName: {
+							const abstractifiedFunctionBody =
+								functionBodyAbstractifyingResult.data;
+							const abstractifiedFunction: MainFunctionAbstractSyntaxTreeNode =
+								new MainFunctionAbstractSyntaxTreeNode(
+									{body: abstractifiedFunctionBody, header: null},
+									abstractifiedFunctionBody.spanIndexes,
+								);
+							const functionAbstractifyingResult: SuccessAbstractifyingResult<MainFunctionAbstractSyntaxTreeNode> =
+								new SuccessAbstractifyingResult(abstractifiedFunction);
+							return functionAbstractifyingResult;
+						}
+					}
+				} else {
+					const functionBodyAbstractifyingResult = functionBody.abstractify();
+					switch (functionBodyAbstractifyingResult.typeName) {
+						case errorAbstractifyingResultTypeName: {
+							const functionAbstractifyingResult: ErrorAbstractifyingResult =
+								new ErrorAbstractifyingResult(
+									functionBodyAbstractifyingResult.message,
+								);
+							return functionAbstractifyingResult;
+						}
+						case successAbstractifyingResultTypeName: {
+							const abstractifiedFunctionBody =
+								functionBodyAbstractifyingResult.data;
+							const abstractifiedFunction: NonMainFunctionAbstractSyntaxTreeNode =
+								NonMainFunctionAbstractSyntaxTreeNode.create(
+									{
+										body: abstractifiedFunctionBody,
+										header: abstractifiedFunctionHeader,
+									},
+									new SpanIndexes(
+										abstractifiedFunctionHeader.spanIndexes.from,
+										abstractifiedFunctionBody.spanIndexes.until,
+									),
+								);
+							const functionAbstractifyingResult: SuccessAbstractifyingResult<NonMainFunctionAbstractSyntaxTreeNode> =
+								new SuccessAbstractifyingResult(abstractifiedFunction);
+							return functionAbstractifyingResult;
+						}
+					}
+				}
+			}
+		}
+	}
+}
