@@ -25,6 +25,7 @@
 		"eslint:check": "svelte-kit sync && eslint --max-warnings=0 .",
 		"eslint:fix": "svelte-kit sync && eslint --fix --max-warnings=0 .",
 		"prettier:check": "prettier --check .",
+		"build": "vite build",
 		"prettier:fix": "prettier --write .",
 		"svelte:check": "svelte-kit sync && svelte-check"
 	},
