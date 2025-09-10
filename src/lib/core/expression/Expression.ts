@@ -52,4 +52,5 @@ export abstract class Expression<AtomToUse extends Atom> {
 		parsingTable: ParsingTable,
 		remainingCharacters: readonly [Character, ...(readonly Character[])],
 	): SupportedExpressionParsingResult<AtomToUse>;
+	public abstract partify(): readonly string[];
 }

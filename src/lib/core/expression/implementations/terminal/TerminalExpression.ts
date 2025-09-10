@@ -6,8 +6,6 @@ import {UnexpectedFinalizingExpressionFinalizingParsingResult} from "../../../ex
 import {SuccessExpressionParsingResult} from "../../../expression-parsing-result/implementations/success/SuccessExpressionParsingResult.ts";
 import {UnexpectedCharacterExpressionParsingResult} from "../../../expression-parsing-result/implementations/unexpected-character/UnexpectedCharacterExpressionParsingResult.ts";
 import type {Grammar} from "../../../grammar/Grammar.ts";
-import type {ParsingResult} from "../../../parsing-result/ParsingResult.ts";
-import type {SuccessParsingResult} from "../../../parsing-result/implementations/success/SuccessParsingResult.ts";
 import type {ParsingTable} from "../../../parsing-table/ParsingTable.ts";
 import type {Rule} from "../../../rule/Rule.ts";
 import type {RuleById} from "../../../rule-by-id/RuleById.ts";
@@ -82,5 +80,8 @@ export class TerminalExpression<
 				new UnexpectedCharacterExpressionParsingResult(index);
 			return result;
 		}
+	}
+	public override partify(): readonly string[] {
+		return [`${JSON.stringify(this.character)}`];
 	}
 }

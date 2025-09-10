@@ -447,4 +447,15 @@
 	ul.variables > li {
 		color: hsl(0, 0%, 100%);
 	}
+	:global {
+		.sveltekit-body,
+		body,
+		html {
+			height: 100%;
+		}
+		body {
+			margin: 0;
+			background-color: hsl(0, 0%, 0%);
+		}
+	}
 </style>

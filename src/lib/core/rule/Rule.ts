@@ -210,4 +210,49 @@ export abstract class Rule<NodeToUse extends ConcreteSyntaxTreeNode<Atom>> {
 			}
 		}
 	}
+	public stringify(ruleById: RuleById): string {
+		const rightExpressions = this.getRightExpressions(ruleById);
+		const [firstRightExpression, ...restRightExpressions] = rightExpressions;
+		const parts: readonly string[] = [
+			...firstRightExpression.partify(),
+			...restRightExpressions.flatMap((expression) => {
+				return ["|", ...expression.partify()];
+			}),
+		];
+		function smartStringify(
+			currentLineWidth: number,
+			maximalLineWidth: number,
+			parts: readonly string[],
+			tabWidth: number,
+		): string {
+			const [firstPart, ...restParts] = parts;
+			if (firstPart === undefined) {
+				return "";
+			} else {
+				const partWidth = firstPart.length;
+				if (currentLineWidth + 1 + partWidth > maximalLineWidth) {
+					return `
+	${firstPart}${smartStringify(tabWidth + partWidth, maximalLineWidth, restParts, tabWidth)}`;
+				} else {
+					return ` ${firstPart}${smartStringify(
+						currentLineWidth + 1 + partWidth,
+						maximalLineWidth,
+						restParts,
+						tabWidth,
+					)}`;
+				}
+			}
+		}
+		// TODO SEPARATE FUNCTION
+		function naurifyName(name: string): string {
+			return name.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase();
+		}
+		const ruleName = naurifyName(
+			this.constructor.name.slice(0, -"Rule".length),
+		);
+		const partifiedRuleName = `<${ruleName}>`;
+		const ruleHeader = `${partifiedRuleName} ::=`;
+		const ruleBody = smartStringify(ruleHeader.length, 77, parts, 8);
+		return `${ruleHeader}${ruleBody}`;
+	}
 }

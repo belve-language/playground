@@ -64,4 +64,7 @@ export class EmptyExpression extends Expression<EmptyAtom> {
 			new SuccessExpressionParsingResult(atom, index, remainingCharacters);
 		return parsingResult;
 	}
+	public override partify(): readonly string[] {
+		return ['""'];
+	}
 }

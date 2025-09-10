@@ -1,0 +1,63 @@
+<script lang="ts">
+	import AutomaticPages from "../../lib/core/automatic-pages/AutomaticPages.svelte";
+	import MainPageContent from "../../lib/core/main-page-content/MainPageContent.svelte";
+	import {ruleById} from "../../lib/instances/rule-by-id/ruleById.ts";
+</script>
+
+{#snippet titlePageContent()}
+	<MainPageContent />
+{/snippet}
+{#snippet gramatykaSectionTitle()}
+	<h2>Gramatyka</h2>
+{/snippet}
+{#snippet pre(text: string)}
+	<pre>{text}</pre>
+	<style lang="scss">
+		pre {
+			margin-block: 0;
+		}
+	</style>
+{/snippet}
+
+<AutomaticPages
+	parts={[
+		titlePageContent,
+		gramatykaSectionTitle,
+		...Object.values(ruleById).map((rule, i) => {
+			return (node) => {
+				return pre(node, () => {
+					return rule.stringify(ruleById);
+				});
+			};
+		}),
+	]}
+/>
+
+<!-- <MainPage />
+	<Page>
+		{#snippet content()}
+			test
+		{/snippet}
+	</Page> -->
+<!-- <main>
+		<section>
+			<h2>Gramatyka</h2>
+			<pre>{
+					.join("\n")}</pre>
+		</section>
+	</main> -->
+
+<style lang="scss">
+	:global {
+		html {
+			background-color: black;
+			min-height: 100%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+		body {
+			margin: 0;
+		}
+	}
+</style>

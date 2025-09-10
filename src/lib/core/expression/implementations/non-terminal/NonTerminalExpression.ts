@@ -148,5 +148,14 @@ export class NonTerminalExpression<
 			}
 		}
 	}
+	public override partify(): readonly string[] {
+		function naurifyName(name: string): string {
+			return name.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase();
+		}
+		const ruleName = naurifyName(
+			this.rule.constructor.name.slice(0, -"Rule".length),
+		);
+		return [`<${ruleName}>`];
+	}
 	private readonly rule: Rule<NodeToUse>;
 }

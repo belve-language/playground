@@ -292,5 +292,11 @@ export class ThenExpression<
 			}
 		}
 	}
+	public override partify(): readonly string[] {
+		return [
+			...this.leftSubExpression.partify(),
+			...this.rightSubExpression.partify(),
+		];
+	}
 	public readonly rightSubExpression: Expression<RightSubExpressionAtom>;
 }
