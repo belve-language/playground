@@ -14,7 +14,6 @@
 	} = $props();
 	let contentElement: HTMLElement;
 	function check(): void {
-		console.log("check", number);
 		if (contentElement.scrollHeight > contentElement.clientHeight) {
 			onOverflowReportedEvent();
 		} else {

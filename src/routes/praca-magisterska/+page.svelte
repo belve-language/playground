@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type {Snippet} from "svelte";
 	import AutomaticPages from "../../lib/core/automatic-pages/AutomaticPages.svelte";
 	import MainPageContent from "../../lib/core/main-page-content/MainPageContent.svelte";
 	import {ruleById} from "../../lib/instances/rule-by-id/ruleById.ts";
@@ -23,12 +24,17 @@
 	parts={[
 		titlePageContent,
 		gramatykaSectionTitle,
-		...Object.values(ruleById).map((rule, i) => {
-			return (node) => {
-				return pre(node, () => {
+		...Object.values(ruleById).map((rule): Snippet<[]> => {
+			return ((node: Text): ReturnType<Snippet<[]>> => {
+				return (
+					pre as unknown as (
+						node: Text,
+						textGetter: () => string,
+					) => ReturnType<Snippet<[]>>
+				)(node, () => {
 					return rule.stringify(ruleById);
 				});
-			};
+			}) as Snippet<[]>;
 		}),
 	]}
 />
