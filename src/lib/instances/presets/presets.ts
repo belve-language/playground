@@ -35,12 +35,12 @@ none of the integers between (start) and (end) divide (dividend) {
 		extract min from (tail) to [sub-min] and leave [sub-rest],
 		{
 			(head) < (sub-min),
-			[min] = (head),
+			(head) = [min],
 			pair of (sub-min) and (sub-rest) is [rest]
 		}.
 		{
 			(head) >= (sub-min),
-			[min] = (sub-min),
+			(sub-min) = [min],
 			pair of (head) and (sub-rest) is [rest]
 		}
 	}.
@@ -48,13 +48,13 @@ none of the integers between (start) and (end) divide (dividend) {
 		is not (tail) pair,
 		{
 			(head) < (tail),
-			[min] = (head),
-			[rest] = (tail)
+			(head) = [min],
+			(tail) = [rest]
 		}.
 		{
 			(head) >= (tail),
-			[min] = (tail),
-			[rest] = (head)
+			(tail) = [min],
+			(head) = [rest]
 		}
 	}
 }
@@ -62,7 +62,7 @@ none of the integers between (start) and (end) divide (dividend) {
 sort (list) to [sorted] {
 	{
 		is not (list) pair,
-		[sorted] = (list)
+		(list) = [sorted]
 	}.
 	{
 		is (list) pair,
@@ -78,6 +78,31 @@ sort (list) to [sorted] {
 	pair of (1) and (list2) is [list3],
 	pair of (4) and (list3) is [list4],
 	sort (list4) to [sorted]
+}
+`,
+	},
+	{
+		name: "Fibonacci sequence",
+		sourceCode: `fib (a) (b) {
+	(b) + (a) = [next-b],
+	fib (b) (next-b)
+}
+
+{
+	fib (0) (1)
+}
+`,
+	},
+	{
+		name: "Factorial",
+		sourceCode: `fact (n) (a) {
+	(n) + (1) = [next-n],
+	(a) * (n) = [next-a],
+	fact (next-n) (next-a)
+}
+
+{
+	fact (1) (1)
 }
 `,
 	},

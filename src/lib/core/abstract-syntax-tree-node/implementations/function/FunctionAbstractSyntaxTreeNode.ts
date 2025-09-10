@@ -38,13 +38,19 @@ export abstract class FunctionAbstractSyntaxTreeNode<
 			switch (bodyExecutingResult.typeName) {
 				case stepStatementExecutingResultTypeName: {
 					const functionCallingResult: StepFunctionCallingResult =
-						new StepFunctionCallingResult(bodyExecutingResult.data.node);
+						new StepFunctionCallingResult(
+							bodyExecutingResult.data.node,
+							bodyExecutingResult.data.variables,
+						);
 					yield functionCallingResult;
 					break;
 				}
 				case successStatementExecutingResultTypeName: {
 					const functionCallingResult: SuccessFunctionCallingResult =
-						new SuccessFunctionCallingResult(bodyExecutingResult.data.node);
+						new SuccessFunctionCallingResult(
+							bodyExecutingResult.data.node,
+							bodyExecutingResult.data.variables,
+						);
 					yield functionCallingResult;
 					break;
 				}
@@ -53,13 +59,17 @@ export abstract class FunctionAbstractSyntaxTreeNode<
 						bodyExecutingResult.data.variables,
 					);
 					const functionCallingResult: ReturnFunctionCallingResult =
-						new ReturnFunctionCallingResult(unknownsValues);
+						new ReturnFunctionCallingResult(
+							unknownsValues,
+							bodyExecutingResult.data.variables,
+						);
 					yield functionCallingResult;
 					break;
 				}
 				case failureStatementExecutingResultTypeName: {
 					const functionCallingResult = new FailureFunctionCallingResult(
 						bodyExecutingResult.data.node,
+						bodyExecutingResult.data.variables,
 					);
 					yield functionCallingResult;
 					break;

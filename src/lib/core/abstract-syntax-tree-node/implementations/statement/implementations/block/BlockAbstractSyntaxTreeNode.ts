@@ -24,7 +24,7 @@ export class BlockStatementAbstractSyntaxTreeNode extends StatementAbstractSynta
 		functions: Functions,
 		variables: Variables,
 	): Generator<SupportedStatementExecutingResult, void, void> {
-		yield new StepStatementExecutingResult(this);
+		yield new StepStatementExecutingResult(this, variables);
 		const statements: Statements = this.children.statements;
 		const statementsExecutingResults = executeStatements(
 			functions,
@@ -44,7 +44,10 @@ export class BlockStatementAbstractSyntaxTreeNode extends StatementAbstractSynta
 				}
 				case returnStatementExecutingResultTypeName: {
 					hasFailed = false;
-					yield new SuccessStatementExecutingResult(this);
+					yield new SuccessStatementExecutingResult(
+						this,
+						statementsExecutingResult.data.variables,
+					);
 					yield statementsExecutingResult;
 					break;
 				}
@@ -55,7 +58,7 @@ export class BlockStatementAbstractSyntaxTreeNode extends StatementAbstractSynta
 			}
 		}
 		if (hasFailed) {
-			yield new FailureStatementExecutingResult(this);
+			yield new FailureStatementExecutingResult(this, variables);
 		}
 	}
 }

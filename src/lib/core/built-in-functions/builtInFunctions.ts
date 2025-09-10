@@ -8,7 +8,7 @@ class GreaterThanFunction implements Function {
 		knownsValues: readonly [number, number],
 	): Generator<ReturnFunctionCallingResult, void, void> {
 		if (knownsValues[0] > knownsValues[1]) {
-			yield new ReturnFunctionCallingResult([]);
+			yield new ReturnFunctionCallingResult([], {});
 		}
 	}
 }
@@ -19,7 +19,7 @@ class LessThanFunction implements Function {
 		knownsValues: readonly [number, number],
 	): Generator<ReturnFunctionCallingResult, void, void> {
 		if (knownsValues[0] < knownsValues[1]) {
-			yield new ReturnFunctionCallingResult([]);
+			yield new ReturnFunctionCallingResult([], {});
 		}
 	}
 }
@@ -30,7 +30,7 @@ class GreaterThanOrEqualFunction implements Function {
 		knownsValues: readonly [number, number],
 	): Generator<ReturnFunctionCallingResult, void, void> {
 		if (knownsValues[0] >= knownsValues[1]) {
-			yield new ReturnFunctionCallingResult([]);
+			yield new ReturnFunctionCallingResult([], {});
 		}
 	}
 }
@@ -41,7 +41,7 @@ class LessThanOrEqualFunction implements Function {
 		knownsValues: readonly [number, number],
 	): Generator<ReturnFunctionCallingResult, void, void> {
 		if (knownsValues[0] <= knownsValues[1]) {
-			yield new ReturnFunctionCallingResult([]);
+			yield new ReturnFunctionCallingResult([], {});
 		}
 	}
 }
@@ -52,7 +52,7 @@ class EqualFunction implements Function {
 		knownsValues: readonly [unknown, unknown],
 	): Generator<ReturnFunctionCallingResult, void, void> {
 		if (knownsValues[0] === knownsValues[1]) {
-			yield new ReturnFunctionCallingResult([]);
+			yield new ReturnFunctionCallingResult([], {});
 		}
 	}
 }
@@ -63,7 +63,7 @@ class AdditionFunction implements Function {
 		knownsValues: readonly [number, number],
 	): Generator<ReturnFunctionCallingResult, void, void> {
 		const [number1, number2] = knownsValues;
-		yield new ReturnFunctionCallingResult([number1 + number2]);
+		yield new ReturnFunctionCallingResult([number1 + number2], {});
 	}
 }
 class SubtractionFunction implements Function {
@@ -73,7 +73,7 @@ class SubtractionFunction implements Function {
 		knownsValues: readonly [number, number],
 	): Generator<ReturnFunctionCallingResult, void, void> {
 		const [number1, number2] = knownsValues;
-		yield new ReturnFunctionCallingResult([number1 - number2]);
+		yield new ReturnFunctionCallingResult([number1 - number2], {});
 	}
 }
 class ModulusFunction implements Function {
@@ -83,7 +83,7 @@ class ModulusFunction implements Function {
 		knownsValues: readonly [number, number],
 	): Generator<ReturnFunctionCallingResult, void, void> {
 		const [number1, number2] = knownsValues;
-		yield new ReturnFunctionCallingResult([number1 % number2]);
+		yield new ReturnFunctionCallingResult([number1 % number2], {});
 	}
 }
 class IsPairFunction implements Function {
@@ -94,7 +94,7 @@ class IsPairFunction implements Function {
 	): Generator<ReturnFunctionCallingResult, void, void> {
 		const [value] = knownsValues;
 		if (Array.isArray(value)) {
-			yield new ReturnFunctionCallingResult([]);
+			yield new ReturnFunctionCallingResult([], {});
 		}
 	}
 }
@@ -106,7 +106,7 @@ class IsNotPairFunction implements Function {
 	): Generator<ReturnFunctionCallingResult, void, void> {
 		const [value] = knownsValues;
 		if (!Array.isArray(value)) {
-			yield new ReturnFunctionCallingResult([]);
+			yield new ReturnFunctionCallingResult([], {});
 		}
 	}
 }
@@ -117,7 +117,7 @@ class AssemblingPairFunction implements Function {
 		knownsValues: readonly [unknown, unknown],
 	): Generator<ReturnFunctionCallingResult, void, void> {
 		const [firstElement, secondElement] = knownsValues;
-		yield new ReturnFunctionCallingResult([[firstElement, secondElement]]);
+		yield new ReturnFunctionCallingResult([[firstElement, secondElement]], {});
 	}
 }
 class DisassemblingPairFunction implements Function {
@@ -127,7 +127,7 @@ class DisassemblingPairFunction implements Function {
 		knownsValues: readonly [readonly [unknown, unknown]],
 	): Generator<ReturnFunctionCallingResult, void, void> {
 		const [[firstElement, secondElement]] = knownsValues;
-		yield new ReturnFunctionCallingResult([firstElement, secondElement]);
+		yield new ReturnFunctionCallingResult([firstElement, secondElement], {});
 	}
 }
 class NotEqualFunction implements Function {
@@ -137,7 +137,7 @@ class NotEqualFunction implements Function {
 		knownsValues: readonly [unknown, unknown],
 	): Generator<ReturnFunctionCallingResult, void, void> {
 		if (knownsValues[0] !== knownsValues[1]) {
-			yield new ReturnFunctionCallingResult([]);
+			yield new ReturnFunctionCallingResult([], {});
 		}
 	}
 }
@@ -148,17 +148,40 @@ class PowerFunction implements Function {
 		knownsValues: readonly [number, number],
 	): Generator<ReturnFunctionCallingResult, void, void> {
 		const [base, exponent] = knownsValues;
-		yield new ReturnFunctionCallingResult([base ** exponent]);
+		yield new ReturnFunctionCallingResult([base ** exponent], {});
 	}
 }
+class AssigningFunction implements Function {
+	public constructor() {}
+	public *call(
+		functions: Functions,
+		knownsValues: readonly [unknown],
+	): Generator<ReturnFunctionCallingResult, void, void> {
+		const [value] = knownsValues;
+		yield new ReturnFunctionCallingResult([value], {});
+	}
+}
+class MultiplicationFunction implements Function {
+	public constructor() {}
+	public *call(
+		functions: Functions,
+		knownsValues: readonly [number, number],
+	): Generator<ReturnFunctionCallingResult, void, void> {
+		const [number1, number2] = knownsValues;
+		yield new ReturnFunctionCallingResult([number1 * number2], {});
+	}
+}
+// TODO SPLIT INTO FILES
 export const builtInFunctions = {
 	"() != ()": new NotEqualFunction(),
 	"() % () = []": new ModulusFunction(),
+	"() * () = []": new MultiplicationFunction(),
 	"() + () = []": new AdditionFunction(),
 	"() - () = []": new SubtractionFunction(),
 	"() < ()": new LessThanFunction(),
 	"() <= ()": new LessThanOrEqualFunction(),
 	"() = ()": new EqualFunction(),
+	"() = []": new AssigningFunction(),
 	"() > ()": new GreaterThanFunction(),
 	"() >= ()": new GreaterThanOrEqualFunction(),
 	"() ^ () = []": new PowerFunction(),

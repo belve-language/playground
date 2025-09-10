@@ -17,6 +17,7 @@
 	import type {Preset} from "../lib/core/preset/Preset.ts";
 	import {presets} from "../lib/instances/presets/presets.ts";
 	import PresetItemList from "../lib/core/preset-item-list/PresetItemList.svelte";
+	import type {Variables} from "../lib/core/variables/Variables.ts";
 	abstract class ParsingStatus<TypeName extends string> {
 		public readonly typeName: TypeName;
 		protected constructor(typeName: TypeName) {
@@ -76,6 +77,11 @@
 		readonly spanIndexes: SpanIndexes;
 		readonly actionName: "step" | "success" | "failure" | "return";
 	};
+	// TODO CLASS FOR WITH MAIN FUNCTIONS?
+	// TODO MOVE TO SEPARATE FILE
+	// TODO MAKE CLASSES OF MARKING ETC
+	// TODO BETTER FIELDS OF THE WithFunctionsSuccessfulAbstractifyingStatus
+	// ABOVE BECAUSE FIELDS ARE RELATED
 	class WithFunctionsSuccessfulAbstractifyingStatus extends AbstractifyingStatus<
 		typeof withFunctionsSuccessAbstractifyingStatusTypeName
 	> {
@@ -83,11 +89,13 @@
 			isDone: boolean,
 			marking: Marking | null,
 			steps: Generator<SupportedFunctionCallingResult, void, void>,
+			variables: null | Variables,
 		) {
 			super(withFunctionsSuccessAbstractifyingStatusTypeName);
 			this.isDone = isDone;
 			this.marking = marking;
 			this.steps = steps;
+			this.variables = variables;
 		}
 		public readonly isDone: boolean;
 		public readonly marking: Marking | null;
@@ -96,6 +104,7 @@
 			void,
 			void
 		>;
+		public readonly variables: null | Variables;
 		public next(): WithFunctionsSuccessfulAbstractifyingStatus {
 			const step = this.steps.next();
 			if (step.done) {
@@ -103,6 +112,7 @@
 					true,
 					null,
 					this.steps,
+					null,
 				);
 			} else {
 				const functionCallingResult = step.value;
@@ -115,6 +125,7 @@
 								actionName: "success",
 							},
 							this.steps,
+							functionCallingResult.data.variables,
 						);
 					}
 					case stepFunctionCallingResultTypeName: {
@@ -125,6 +136,7 @@
 								actionName: "step",
 							},
 							this.steps,
+							functionCallingResult.data.variables,
 						);
 					}
 					case returnFunctionCallingResultTypeName: {
@@ -132,6 +144,7 @@
 							false,
 							null,
 							this.steps,
+							functionCallingResult.data.variables,
 						);
 					}
 					case failureFunctionCallingResultTypeName: {
@@ -142,6 +155,7 @@
 								actionName: "failure",
 							},
 							this.steps,
+							functionCallingResult.data.variables,
 						);
 					}
 				}
@@ -208,6 +222,7 @@
 										false,
 										null,
 										steps,
+										null,
 									),
 								),
 								sourceCode,
@@ -370,6 +385,13 @@
 								.until}>{character}</span
 				>{/each}</pre>
 	</div>
+	<ul class="variables">
+		{#if state_.parsingStatus.typeName === successParsingStatusTypeName && state_.parsingStatus.abstractifyingStatus.typeName === withFunctionsSuccessAbstractifyingStatusTypeName && state_.parsingStatus.abstractifyingStatus.variables !== null}
+			{#each Object.entries(state_.parsingStatus.abstractifyingStatus.variables) as [name, value] (name)}
+				<li>{name}: {JSON.stringify(value)}</li>
+			{/each}
+		{/if}
+	</ul>
 </main>
 
 <style lang="scss">
@@ -377,7 +399,7 @@
 		height: 100%;
 		display: grid;
 		grid-template-columns: 1fr;
-		grid-template-rows: min-content 1fr;
+		grid-template-rows: min-content 2fr 1fr;
 	}
 	.step {
 		background-color: hsl(240, 100%, 50%);
@@ -420,6 +442,9 @@
 		margin-block: 0;
 		pointer-events: none;
 		font-size: inherit;
+		color: hsl(0, 0%, 100%);
+	}
+	ul.variables > li {
 		color: hsl(0, 0%, 100%);
 	}
 </style>

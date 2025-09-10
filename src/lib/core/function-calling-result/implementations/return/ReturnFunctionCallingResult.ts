@@ -6,9 +6,9 @@ export class ReturnFunctionCallingResult extends FunctionCallingResult<
 	ReturnFunctionCallingResultData,
 	typeof returnFunctionCallingResultTypeName
 > {
-	public constructor(unknownsValues: readonly unknown[]) {
+	public constructor(unknownsValues: readonly unknown[], variables: Variables) {
 		super(
-			{unknownsValues: unknownsValues},
+			{unknownsValues: unknownsValues, variables: variables},
 			returnFunctionCallingResultTypeName,
 		);
 	}

@@ -52,7 +52,7 @@ export class FunctionCallStatementAbstractSyntaxTreeNode extends StatementAbstra
 		functions: Functions,
 		variables: Variables,
 	): Generator<SupportedStatementExecutingResult, void, void> {
-		yield new StepStatementExecutingResult(this);
+		yield new StepStatementExecutingResult(this, variables);
 		const function_ = functions[this.id];
 		if (function_ === undefined) {
 			throw new Error(`Function "${this.id}" not found.`);
@@ -65,6 +65,7 @@ export class FunctionCallStatementAbstractSyntaxTreeNode extends StatementAbstra
 					case stepFunctionCallingResultTypeName: {
 						const statementExecutingResult = new StepStatementExecutingResult(
 							functionCallingResult.data.node,
+							functionCallingResult.data.variables,
 						);
 						yield statementExecutingResult;
 						break;
@@ -73,6 +74,7 @@ export class FunctionCallStatementAbstractSyntaxTreeNode extends StatementAbstra
 						const statementExecutingResult =
 							new SuccessStatementExecutingResult(
 								functionCallingResult.data.node,
+								functionCallingResult.data.variables,
 							);
 						yield statementExecutingResult;
 						break;
@@ -86,7 +88,8 @@ export class FunctionCallStatementAbstractSyntaxTreeNode extends StatementAbstra
 						const statementExecutingResult = new ReturnStatementExecutingResult(
 							unknowns,
 						);
-						yield new SuccessStatementExecutingResult(this);
+						const combinedVariables: Variables = {...variables, ...unknowns};
+						yield new SuccessStatementExecutingResult(this, combinedVariables);
 						yield statementExecutingResult;
 						break;
 					}
@@ -94,6 +97,7 @@ export class FunctionCallStatementAbstractSyntaxTreeNode extends StatementAbstra
 						const statementExecutingResult =
 							new FailureStatementExecutingResult(
 								functionCallingResult.data.node,
+								functionCallingResult.data.variables,
 							);
 						yield statementExecutingResult;
 						break;
@@ -101,7 +105,7 @@ export class FunctionCallStatementAbstractSyntaxTreeNode extends StatementAbstra
 				}
 			}
 			if (hasFailed) {
-				yield new FailureStatementExecutingResult(this);
+				yield new FailureStatementExecutingResult(this, variables);
 			}
 		}
 	}
