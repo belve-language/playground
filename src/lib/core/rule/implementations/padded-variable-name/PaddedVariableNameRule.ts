@@ -9,7 +9,7 @@ import type {RuleById} from "../../../rule-by-id/RuleById.ts";
 import {Rule} from "../../Rule.ts";
 export class PaddedVariableNameRule extends Rule<PaddedVariableNameConcreteSyntaxTreeNode> {
 	public constructor() {
-		super();
+		super("PaddedVariableName");
 	}
 	public override buildNode(
 		atom: PaddedVariableNameConcreteSyntaxTreeNodeAtom,

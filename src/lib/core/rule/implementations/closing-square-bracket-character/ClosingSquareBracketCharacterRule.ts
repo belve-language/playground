@@ -5,7 +5,7 @@ import type {RuleById} from "../../../rule-by-id/RuleById.ts";
 import {Rule} from "../../Rule.ts";
 export class ClosingSquareBracketCharacterRule extends Rule<ClosingSquareBracketCharacterConcreteSyntaxTreeNode> {
 	public constructor() {
-		super();
+		super("ClosingSquareBracketCharacter");
 	}
 	public override buildNode(
 		atom: ClosingSquareBracketCharacterConcreteSyntaxTreeNodeAtom,

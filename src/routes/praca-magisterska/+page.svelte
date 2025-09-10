@@ -39,20 +39,6 @@
 	]}
 />
 
-<!-- <MainPage />
-	<Page>
-		{#snippet content()}
-			test
-		{/snippet}
-	</Page> -->
-<!-- <main>
-		<section>
-			<h2>Gramatyka</h2>
-			<pre>{
-					.join("\n")}</pre>
-		</section>
-	</main> -->
-
 <style lang="scss">
 	:global {
 		html {

@@ -6,7 +6,7 @@ import type {RuleById} from "../../../rule-by-id/RuleById.ts";
 import {Rule} from "../../Rule.ts";
 export class WordFunctionCallSegmentRule extends Rule<WordFunctionCallSegmentConcreteSyntaxTreeNode> {
 	public constructor() {
-		super();
+		super("WordFunctionCallSegment");
 	}
 	public override buildNode(
 		atom: WordFunctionCallSegmentConcreteSyntaxTreeNodeAtom,

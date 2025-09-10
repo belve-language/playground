@@ -6,7 +6,7 @@ import type {RuleById} from "../../../rule-by-id/RuleById.ts";
 import {Rule} from "../../Rule.ts";
 export class WordFunctionHeaderSegmentRule extends Rule<WordFunctionHeaderSegmentConcreteSyntaxTreeNode> {
 	public constructor() {
-		super();
+		super("WordFunctionHeaderSegment");
 	}
 	public override buildNode(
 		atom: WordFunctionHeaderSegmentConcreteSyntaxTreeNodeAtom,

@@ -8,7 +8,7 @@ import type {RuleById} from "../../../rule-by-id/RuleById.ts";
 import {Rule} from "../../Rule.ts";
 export class OptionalContentRule extends Rule<OptionalContentConcreteSyntaxTreeNode> {
 	public constructor() {
-		super();
+		super("OptionalContent");
 	}
 	public override buildNode(
 		atom: OptionalContentConcreteSyntaxTreeNodeAtom,

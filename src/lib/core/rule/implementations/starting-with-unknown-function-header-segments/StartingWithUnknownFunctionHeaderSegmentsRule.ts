@@ -9,7 +9,7 @@ import type {RuleById} from "../../../rule-by-id/RuleById.ts";
 import {Rule} from "../../Rule.ts";
 export class StartingWithUnknownFunctionHeaderSegmentsRule extends Rule<StartingWithUnknownFunctionHeaderSegmentsConcreteSyntaxTreeNode> {
 	public constructor() {
-		super();
+		super("StartingWithUnknownFunctionHeaderSegments");
 	}
 	public override buildNode(
 		atom: StartingWithUnknownFunctionHeaderSegmentsConcreteSyntaxTreeNodeAtom,

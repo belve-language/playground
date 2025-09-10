@@ -8,7 +8,7 @@ import type {RuleById} from "../../../rule-by-id/RuleById.ts";
 import {Rule} from "../../Rule.ts";
 export class OptionalStartingWithWordFunctionHeaderSegmentsRestRule extends Rule<OptionalStartingWithWordFunctionHeaderSegmentsRestConcreteSyntaxTreeNode> {
 	public constructor() {
-		super();
+		super("OptionalStartingWithWordFunctionHeaderSegmentsRest");
 	}
 	public override buildNode(
 		atom: OptionalStartingWithWordFunctionHeaderSegmentsRestConcreteSyntaxTreeNodeAtom,

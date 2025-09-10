@@ -5,7 +5,7 @@ import type {RuleById} from "../../../rule-by-id/RuleById.ts";
 import {Rule} from "../../Rule.ts";
 export class VariableNameCharacterRule extends Rule<VariableNameCharacterConcreteSyntaxTreeNode> {
 	public constructor() {
-		super();
+		super("VariableNameCharacter");
 	}
 	public override buildNode(
 		atom: VariableNameCharacterConcreteSyntaxTreeNodeAtom,

@@ -11,7 +11,7 @@ import type {RuleById} from "../../../rule-by-id/RuleById.ts";
 import {Rule} from "../../Rule.ts";
 export class SeparatedOptionalFunctionHeaderSegmentsRule extends Rule<SeparatedOptionalFunctionHeaderSegmentsConcreteSyntaxTreeNode> {
 	public constructor() {
-		super();
+		super("SeparatedOptionalFunctionHeaderSegments");
 	}
 	public override buildNode(
 		atom: SeparatedOptionalFunctionHeaderSegmentsConcreteSyntaxTreeNodeAtom,

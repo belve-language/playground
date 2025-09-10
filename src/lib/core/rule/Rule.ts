@@ -20,7 +20,9 @@ import {UnexpectedCharacterRuleParsingResult} from "../rule-parsing-result/imple
 import {UnexpectedFinalizingRuleParsingResult} from "../rule-parsing-result/implementations/unexpected-finalizing/UnexpectedFinalizingRuleParsingResult.ts";
 import type {SupportedRuleParsingResult} from "../rule-parsing-result/supported/SupportedRuleParsingResult.ts";
 export abstract class Rule<NodeToUse extends ConcreteSyntaxTreeNode<Atom>> {
-	protected constructor() {}
+	protected constructor(name: string) {
+		this.name = name;
+	}
 	public abstract buildNode(
 		atom: NodeToUse extends ConcreteSyntaxTreeNode<infer AtomToUse> ? AtomToUse
 		:	never,
@@ -161,6 +163,7 @@ export abstract class Rule<NodeToUse extends ConcreteSyntaxTreeNode<Atom>> {
 			:	never
 		>[]),
 	];
+	public readonly name: string;
 	public parse(
 		grammar: Grammar<ConcreteSyntaxTreeNode<Atom>>,
 		index: Index,
@@ -247,9 +250,7 @@ export abstract class Rule<NodeToUse extends ConcreteSyntaxTreeNode<Atom>> {
 		function naurifyName(name: string): string {
 			return name.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase();
 		}
-		const ruleName = naurifyName(
-			this.constructor.name.slice(0, -"Rule".length),
-		);
+		const ruleName = naurifyName(this.name);
 		const partifiedRuleName = `<${ruleName}>`;
 		const ruleHeader = `${partifiedRuleName} ::=`;
 		const ruleBody = smartStringify(ruleHeader.length, 77, parts, 8);

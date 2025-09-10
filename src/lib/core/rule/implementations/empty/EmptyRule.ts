@@ -5,7 +5,7 @@ import type {RuleById} from "../../../rule-by-id/RuleById.ts";
 import {Rule} from "../../Rule.ts";
 export class EmptyRule extends Rule<EmptyConcreteSyntaxTreeNode> {
 	public constructor() {
-		super();
+		super("Empty");
 	}
 	public override buildNode(atom: EmptyAtom): EmptyConcreteSyntaxTreeNode {
 		const node = new EmptyConcreteSyntaxTreeNode(atom);

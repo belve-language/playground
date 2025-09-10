@@ -5,7 +5,7 @@ import type {RuleById} from "../../../rule-by-id/RuleById.ts";
 import {Rule} from "../../Rule.ts";
 export class ThenOperatorRule extends Rule<ThenOperatorConcreteSyntaxTreeNode> {
 	public constructor() {
-		super();
+		super("ThenOperator");
 	}
 	public override buildNode(
 		atom: ThenOperatorConcreteSyntaxTreeNodeAtom,

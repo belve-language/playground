@@ -6,15 +6,14 @@
 		$props();
 	type Candidates = readonly [Part, ...(readonly Part[])];
 	type Status = {
-		readonly candidates: readonly [Candidates, ...(readonly Candidates[])];
+		readonly candidates: readonly Candidates[];
 		readonly remainingParts: readonly Part[];
 		readonly whereTo: "last" | "new";
 	};
-	const [firstPart, ...restParts] = parts;
 	let status: Status = $state.raw({
-		candidates: [[firstPart]],
-		remainingParts: restParts,
-		whereTo: "last",
+		candidates: [],
+		remainingParts: parts,
+		whereTo: "new",
 	});
 	async function wait(seconds: number): Promise<void> {
 		await new Promise((resolve) => {
@@ -36,25 +35,30 @@
 				}
 				case "last": {
 					const [firstCandidate, ...restCandidate] = status.candidates;
-					const lastCandidate = restCandidate[restCandidate.length - 1];
-					if (lastCandidate === undefined) {
-						status = {
-							candidates: [[...firstCandidate, firstRemainingPart]],
-							remainingParts: restRemainingParts,
-							whereTo: "last",
-						};
+					if (firstCandidate === undefined) {
+						throw new Error("Should not happen");
 					} else {
-						status = {
-							candidates: [
-								firstCandidate,
-								...restCandidate.slice(0, -1),
-								[...lastCandidate, firstRemainingPart],
-							],
-							remainingParts: restRemainingParts,
-							whereTo: "last",
-						};
+						const lastCandidate = restCandidate[restCandidate.length - 1];
+						if (lastCandidate === undefined) {
+							status = {
+								candidates: [[...firstCandidate, firstRemainingPart]],
+								remainingParts: restRemainingParts,
+								whereTo: "last",
+							};
+							return;
+						} else {
+							status = {
+								candidates: [
+									firstCandidate,
+									...restCandidate.slice(0, -1),
+									[...lastCandidate, firstRemainingPart],
+								],
+								remainingParts: restRemainingParts,
+								whereTo: "last",
+							};
+							return;
+						}
 					}
-					return;
 				}
 			}
 		}
@@ -62,77 +66,103 @@
 	async function handleOverflowReportedEvent() {
 		await wait(0.01);
 		const [firstCandidate, ...restCandidates] = status.candidates;
-		const lastCandidate = restCandidates[restCandidates.length - 1];
-		switch (status.whereTo) {
-			case "last": {
-				if (lastCandidate === undefined) {
-					const [firstFirstCandidatePart, ...restFirstCandidateParts] =
-						firstCandidate;
-					const lastFirstCandidatePart =
-						restFirstCandidateParts[restFirstCandidateParts.length - 1];
-					if (lastFirstCandidatePart === undefined) {
-						const [firstRemainingPart, ...restRemainingParts] =
-							status.remainingParts;
-						if (firstRemainingPart !== undefined) {
+		if (firstCandidate === undefined) {
+			throw new Error("Should not happen");
+		} else {
+			const lastCandidate = restCandidates[restCandidates.length - 1];
+			switch (status.whereTo) {
+				case "last": {
+					if (lastCandidate === undefined) {
+						const [firstFirstCandidatePart, ...restFirstCandidateParts] =
+							firstCandidate;
+						const lastFirstCandidatePart =
+							restFirstCandidateParts[restFirstCandidateParts.length - 1];
+						if (lastFirstCandidatePart === undefined) {
+							const [firstRemainingPart, ...restRemainingParts] =
+								status.remainingParts;
+							if (firstRemainingPart === undefined) {
+								return;
+							} else {
+								status = {
+									candidates: [firstCandidate, [firstRemainingPart]],
+									whereTo: "last",
+									remainingParts: restRemainingParts,
+								};
+								return;
+							}
+						} else {
 							status = {
-								candidates: [firstCandidate, [firstRemainingPart]],
-								whereTo: "last",
-								remainingParts: restRemainingParts,
+								candidates: [
+									[
+										firstFirstCandidatePart,
+										...restFirstCandidateParts.slice(0, -1),
+									],
+								],
+								remainingParts: [
+									lastFirstCandidatePart,
+									...status.remainingParts,
+								],
+								whereTo: "new",
 							};
+							return;
 						}
 					} else {
-						status = {
-							candidates: [
-								[
-									firstFirstCandidatePart,
-									...restFirstCandidateParts.slice(0, -1),
-								],
-							],
-							remainingParts: [
-								lastFirstCandidatePart,
-								...status.remainingParts,
-							],
-							whereTo: "new",
-						};
-					}
-				} else {
-					const [firstLastCandidatePart, ...restLastCandidateParts] =
-						lastCandidate;
-					const lastLastCandidatePart =
-						restLastCandidateParts[restLastCandidateParts.length - 1];
-					if (lastLastCandidatePart === undefined) {
-						alert("Cannot handle overflow - only 1 overflowing part");
-						const [firstRemainingPart, ...restRemainingParts] =
-							status.remainingParts;
-						if (firstRemainingPart !== undefined) {
+						const [firstLastCandidatePart, ...restLastCandidateParts] =
+							lastCandidate;
+						const lastLastCandidatePart =
+							restLastCandidateParts[restLastCandidateParts.length - 1];
+						if (lastLastCandidatePart === undefined) {
+							alert("Cannot handle overflow - only 1 overflowing part");
+							const [firstRemainingPart, ...restRemainingParts] =
+								status.remainingParts;
+							if (firstRemainingPart === undefined) {
+								return;
+							} else {
+								status = {
+									candidates: [...status.candidates, [firstRemainingPart]],
+									remainingParts: restRemainingParts,
+									whereTo: "last",
+								};
+								return;
+							}
+						} else {
 							status = {
-								candidates: [...status.candidates, [firstRemainingPart]],
-								remainingParts: restRemainingParts,
-								whereTo: "last",
-							};
-						}
-					} else {
-						status = {
-							candidates: [
-								firstCandidate,
-								...restCandidates.slice(0, -1),
-								[
-									firstLastCandidatePart,
-									...restLastCandidateParts.slice(0, -1),
+								candidates: [
+									firstCandidate,
+									...restCandidates.slice(0, -1),
+									[
+										firstLastCandidatePart,
+										...restLastCandidateParts.slice(0, -1),
+									],
 								],
-							],
-							remainingParts: [lastLastCandidatePart, ...status.remainingParts],
-							whereTo: "new",
-						};
+								remainingParts: [
+									lastLastCandidatePart,
+									...status.remainingParts,
+								],
+								whereTo: "new",
+							};
+							return;
+						}
 					}
 				}
-				return;
-			}
-			case "new": {
-				throw new Error("Should not happen");
+				case "new": {
+					throw new Error("Should not happen");
+				}
 			}
 		}
 	}
+	$effect(() => {
+		const [firstPart, ...restParts] = parts;
+		if (firstPart === undefined) {
+			status = {remainingParts: [], candidates: [], whereTo: status.whereTo};
+		} else {
+			status = {
+				remainingParts: restParts,
+				candidates: [[firstPart]],
+				whereTo: "last",
+			};
+		}
+	});
 </script>
 
 <div class="pages">

@@ -9,7 +9,7 @@ import type {RuleById} from "../../../rule-by-id/RuleById.ts";
 import {Rule} from "../../Rule.ts";
 export class StartingWithWordFunctionCallSegmentsRule extends Rule<StartingWithWordFunctionCallSegmentsConcreteSyntaxTreeNode> {
 	public constructor() {
-		super();
+		super("StartingWithWordFunctionCallSegments");
 	}
 	public override buildNode(
 		atom: StartingWithWordFunctionCallSegmentsConcreteSyntaxTreeNodeAtom,

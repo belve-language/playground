@@ -12,7 +12,7 @@ import type {RuleById} from "../../../rule-by-id/RuleById.ts";
 import {Rule} from "../../Rule.ts";
 export class UnknownFunctionCallSegmentRule extends Rule<UnknownFunctionCallSegmentConcreteSyntaxTreeNode> {
 	public constructor() {
-		super();
+		super("UnknownFunctionCallSegment");
 	}
 	public override buildNode(
 		atom: UnknownFunctionCallSegmentConcreteSyntaxTreeNodeAtom,

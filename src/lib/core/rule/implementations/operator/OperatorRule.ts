@@ -7,7 +7,7 @@ import type {RuleById} from "../../../rule-by-id/RuleById.ts";
 import {Rule} from "../../Rule.ts";
 export class OperatorRule extends Rule<OperatorConcreteSyntaxTreeNode> {
 	public constructor() {
-		super();
+		super("Operator");
 	}
 	public override buildNode(
 		atom: OperatorConcreteSyntaxTreeNodeAtom,

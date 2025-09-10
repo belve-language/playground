@@ -6,7 +6,7 @@ import type {RuleById} from "../../../rule-by-id/RuleById.ts";
 import {Rule} from "../../Rule.ts";
 export class FunctionCallStatementRule extends Rule<FunctionCallStatementConcreteSyntaxTreeNode> {
 	public constructor() {
-		super();
+		super("FunctionCallStatement");
 	}
 	public override buildNode(
 		atom: FunctionCallStatementConcreteSyntaxTreeNodeAtom,

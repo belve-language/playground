@@ -9,7 +9,7 @@ import type {RuleById} from "../../../rule-by-id/RuleById.ts";
 import {Rule} from "../../Rule.ts";
 export class WhitespaceCharactersRule extends Rule<WhitespaceCharactersConcreteSyntaxTreeNode> {
 	public constructor() {
-		super();
+		super("WhitespaceCharacters");
 	}
 	public override buildNode(
 		atom: WhitespaceCharactersConcreteSyntaxTreeNodeAtom,

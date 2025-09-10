@@ -9,7 +9,7 @@ import type {RuleById} from "../../../rule-by-id/RuleById.ts";
 import {Rule} from "../../Rule.ts";
 export class PaddedOptionalStatementsRule extends Rule<PaddedOptionalStatementsConcreteSyntaxTreeNode> {
 	public constructor() {
-		super();
+		super("PaddedOptionalStatements");
 	}
 	public override buildNode(
 		atom: PaddedOptionalStatementsConcreteSyntaxTreeNodeAtom,

@@ -9,7 +9,7 @@ import type {RuleById} from "../../../rule-by-id/RuleById.ts";
 import {Rule} from "../../Rule.ts";
 export class StartingWithWordFunctionHeaderSegmentsRule extends Rule<StartingWithWordFunctionHeaderSegmentsConcreteSyntaxTreeNode> {
 	public constructor() {
-		super();
+		super("StartingWithWordFunctionHeaderSegments");
 	}
 	public override buildNode(
 		atom: StartingWithWordFunctionHeaderSegmentsConcreteSyntaxTreeNodeAtom,

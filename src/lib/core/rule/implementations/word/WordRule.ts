@@ -6,7 +6,7 @@ import type {RuleById} from "../../../rule-by-id/RuleById.ts";
 import {Rule} from "../../Rule.ts";
 export class WordRule extends Rule<WordConcreteSyntaxTreeNode> {
 	public constructor() {
-		super();
+		super("Word");
 	}
 	public override buildNode(
 		atom: WordConcreteSyntaxTreeNodeAtom,

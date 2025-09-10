@@ -8,7 +8,7 @@ import type {RuleById} from "../../../rule-by-id/RuleById.ts";
 import {Rule} from "../../Rule.ts";
 export class StartingWithWordFunctionCallSegmentsRestRule extends Rule<StartingWithWordFunctionCallSegmentsRestConcreteSyntaxTreeNode> {
 	public constructor() {
-		super();
+		super("StartingWithWordFunctionCallSegmentsRest");
 	}
 	public override buildNode(
 		atom: StartingWithWordFunctionCallSegmentsRestConcreteSyntaxTreeNodeAtom,

@@ -11,7 +11,7 @@ import type {RuleById} from "../../../rule-by-id/RuleById.ts";
 import {Rule} from "../../Rule.ts";
 export class SeparatedStatementsRule extends Rule<SeparatedStatementsConcreteSyntaxTreeNode> {
 	public constructor() {
-		super();
+		super("SeparatedStatements");
 	}
 	public override buildNode(
 		atom: SeparatedStatementsConcreteSyntaxTreeNodeAtom,

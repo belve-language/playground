@@ -8,7 +8,7 @@ import type {RuleById} from "../../../rule-by-id/RuleById.ts";
 import {Rule} from "../../Rule.ts";
 export class OptionalWhitespaceRule extends Rule<OptionalWhitespaceConcreteSyntaxTreeNode> {
 	public constructor() {
-		super();
+		super("OptionalWhitespace");
 	}
 	public override buildNode(
 		atom: OptionalWhitespaceConcreteSyntaxTreeNodeAtom,

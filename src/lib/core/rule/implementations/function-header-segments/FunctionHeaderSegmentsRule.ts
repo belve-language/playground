@@ -8,7 +8,7 @@ import type {RuleById} from "../../../rule-by-id/RuleById.ts";
 import {Rule} from "../../Rule.ts";
 export class FunctionHeaderSegmentsRule extends Rule<FunctionHeaderSegmentsConcreteSyntaxTreeNode> {
 	public constructor() {
-		super();
+		super("FunctionHeaderSegments");
 	}
 	public override buildNode(
 		atom: FunctionHeaderSegmentsConcreteSyntaxTreeNodeAtom,

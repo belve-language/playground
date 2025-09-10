@@ -5,7 +5,7 @@ import type {RuleById} from "../../../rule-by-id/RuleById.ts";
 import {Rule} from "../../Rule.ts";
 export class OrOperatorRule extends Rule<OrOperatorConcreteSyntaxTreeNode> {
 	public constructor() {
-		super();
+		super("OrOperator");
 	}
 	public override buildNode(
 		atom: OrOperatorConcreteSyntaxTreeNodeAtom,

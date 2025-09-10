@@ -9,7 +9,7 @@ import type {RuleById} from "../../../rule-by-id/RuleById.ts";
 import {Rule} from "../../Rule.ts";
 export class StatementsRule extends Rule<StatementsConcreteSyntaxTreeNode> {
 	public constructor() {
-		super();
+		super("Statements");
 	}
 	public override buildNode(
 		atom: StatementsConcreteSyntaxTreeNodeAtom,

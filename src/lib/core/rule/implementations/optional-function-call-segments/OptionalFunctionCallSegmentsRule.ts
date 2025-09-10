@@ -8,7 +8,7 @@ import type {RuleById} from "../../../rule-by-id/RuleById.ts";
 import {Rule} from "../../Rule.ts";
 export class OptionalFunctionCallSegmentsRule extends Rule<OptionalFunctionCallSegmentsConcreteSyntaxTreeNode> {
 	public constructor() {
-		super();
+		super("OptionalFunctionCallSegments");
 	}
 	public override buildNode(
 		atom: OptionalFunctionCallSegmentsConcreteSyntaxTreeNodeAtom,

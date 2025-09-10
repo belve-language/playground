@@ -12,7 +12,7 @@ import type {RuleById} from "../../../rule-by-id/RuleById.ts";
 import {Rule} from "../../Rule.ts";
 export class KnownFunctionHeaderSegmentRule extends Rule<KnownFunctionHeaderSegmentConcreteSyntaxTreeNode> {
 	public constructor() {
-		super();
+		super("KnownFunctionHeaderSegment");
 	}
 	public override buildNode(
 		atom: KnownFunctionHeaderSegmentConcreteSyntaxTreeNodeAtom,

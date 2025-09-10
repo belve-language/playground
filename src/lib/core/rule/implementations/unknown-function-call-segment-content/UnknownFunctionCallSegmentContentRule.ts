@@ -9,7 +9,7 @@ import type {PaddedOptionalPaddedVariableNameRule} from "../padded-optional-padd
 import type {PaddedVariableNameRule} from "../padded-variable-name/PaddedVariableNameRule.ts";
 export class UnknownFunctionCallSegmentContentRule extends Rule<UnknownFunctionCallSegmentContentConcreteSyntaxTreeNode> {
 	public constructor() {
-		super();
+		super("UnknownFunctionCallSegmentContent");
 	}
 	public override buildNode(
 		atom: UnknownFunctionCallSegmentContentConcreteSyntaxTreeNodeAtom,

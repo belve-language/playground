@@ -5,7 +5,7 @@ import type {RuleById} from "../../../rule-by-id/RuleById.ts";
 import {Rule} from "../../Rule.ts";
 export class WhitespaceCharacterRule extends Rule<WhitespaceCharacterConcreteSyntaxTreeNode> {
 	public constructor() {
-		super();
+		super("WhitespaceCharacter");
 	}
 	public override buildNode(
 		atom: WhitespaceCharacterConcreteSyntaxTreeNodeAtom,

@@ -9,7 +9,7 @@ import type {RuleById} from "../../../rule-by-id/RuleById.ts";
 import {Rule} from "../../Rule.ts";
 export class WordCharactersRule extends Rule<WordCharactersConcreteSyntaxTreeNode> {
 	public constructor() {
-		super();
+		super("WordCharacters");
 	}
 	public override buildNode(
 		atom: WordCharactersConcreteSyntaxTreeNodeAtom,

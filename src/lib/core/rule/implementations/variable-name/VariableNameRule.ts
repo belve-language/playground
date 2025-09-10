@@ -6,7 +6,7 @@ import type {RuleById} from "../../../rule-by-id/RuleById.ts";
 import {Rule} from "../../Rule.ts";
 export class VariableNameRule extends Rule<VariableNameConcreteSyntaxTreeNode> {
 	public constructor() {
-		super();
+		super("VariableName");
 	}
 	public override buildNode(
 		atom: VariableNameConcreteSyntaxTreeNodeAtom,

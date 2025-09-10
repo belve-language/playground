@@ -12,7 +12,7 @@ import type {RuleById} from "../../../rule-by-id/RuleById.ts";
 import {Rule} from "../../Rule.ts";
 export class BlockRule extends Rule<BlockConcreteSyntaxTreeNode> {
 	public constructor() {
-		super();
+		super("Block");
 	}
 	public override buildNode(
 		atom: BlockConcreteSyntaxTreeNodeAtom,

@@ -9,7 +9,7 @@ import type {RuleById} from "../../../rule-by-id/RuleById.ts";
 import {Rule} from "../../Rule.ts";
 export class FunctionRule extends Rule<FunctionConcreteSyntaxTreeNode> {
 	public constructor() {
-		super();
+		super("Function");
 	}
 	public override buildNode(
 		atom: FunctionConcreteSyntaxTreeNodeAtom,

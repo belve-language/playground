@@ -9,7 +9,7 @@ import type {RuleById} from "../../../rule-by-id/RuleById.ts";
 import {Rule} from "../../Rule.ts";
 export class StartingWithKnownFunctionCallSegmentsRestRule extends Rule<StartingWithKnownFunctionCallSegmentsRestConcreteSyntaxTreeNode> {
 	public constructor() {
-		super();
+		super("StartingWithKnownFunctionCallSegmentsRest");
 	}
 	public override buildNode(
 		atom: StartingWithKnownFunctionCallSegmentsRestConcreteSyntaxTreeNodeAtom,

@@ -11,7 +11,7 @@ import type {RuleById} from "../../../rule-by-id/RuleById.ts";
 import {Rule} from "../../Rule.ts";
 export class StartingWithWordFunctionHeaderSegmentsRestRule extends Rule<StartingWithWordFunctionHeaderSegmentsRestConcreteSyntaxTreeNode> {
 	public constructor() {
-		super();
+		super("StartingWithWordFunctionHeaderSegmentsRest");
 	}
 	public override buildNode(
 		atom: StartingWithWordFunctionHeaderSegmentsRestConcreteSyntaxTreeNodeAtom,

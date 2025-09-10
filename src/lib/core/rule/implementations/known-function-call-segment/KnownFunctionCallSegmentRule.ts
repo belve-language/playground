@@ -11,7 +11,7 @@ import type {RuleById} from "../../../rule-by-id/RuleById.ts";
 import {Rule} from "../../Rule.ts";
 export class KnownFunctionCallSegmentRule extends Rule<KnownFunctionCallSegmentConcreteSyntaxTreeNode> {
 	public constructor() {
-		super();
+		super("KnownFunctionCallSegment");
 	}
 	public override buildNode(
 		atom: KnownFunctionCallSegmentConcreteSyntaxTreeNodeAtom,

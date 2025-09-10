@@ -7,7 +7,7 @@ import type {RuleById} from "../../../rule-by-id/RuleById.ts";
 import {Rule} from "../../Rule.ts";
 export class OptionalUnknownFunctionHeaderSegmentContentRule extends Rule<OptionalUnknownFunctionHeaderSegmentContentConcreteSyntaxTreeNode> {
 	public constructor() {
-		super();
+		super("OptionalUnknownFunctionHeaderSegmentContent");
 	}
 	public override buildNode(
 		atom: OptionalUnknownFunctionHeaderSegmentContentConcreteSyntaxTreeNodeAtom,

@@ -7,7 +7,7 @@ import type {RuleById} from "../../../rule-by-id/RuleById.ts";
 import {Rule} from "../../Rule.ts";
 export class OptionalWordCharactersRule extends Rule<OptionalWordCharactersConcreteSyntaxTreeNode> {
 	public constructor() {
-		super();
+		super("OptionalWordCharacters");
 	}
 	public override buildNode(
 		atom: OptionalWordCharactersConcreteSyntaxTreeNodeAtom,
