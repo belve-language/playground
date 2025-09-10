@@ -1,4 +1,34 @@
-extract min from (list) to [min] and leave [rest] {
+import type {Preset} from "../../core/preset/Preset.ts";
+export const presets = [
+	{
+		name: "Primality test",
+		sourceCode: `is (dividend) not divisible by (divisor) {
+	(dividend) % (divisor) = [remainder],
+	(remainder) != (0)
+}
+
+is (number) prime {
+	(number) > (1),
+	(number) ^ (0.5) = [maximaldivisortocheck],
+	none of the integers between (2) and (maximaldivisortocheck) divide (number)
+}
+
+none of the integers between (start) and (end) divide (dividend) {
+	(start) > (end).
+	(start) <= (end),
+	is (dividend) not divisible by (start),
+	(start) + (1) = [nextstart],
+	none of the integers between (nextstart) and (end) divide (dividend)
+}
+
+{
+	is (11) prime
+}
+`,
+	},
+	{
+		name: "Insertion sort",
+		sourceCode: `extract min from (list) to [min] and leave [rest] {
 	pair of [head] and [tail] is (list),
 	{
 		is (tail) pair,
@@ -49,3 +79,6 @@ sort (list) to [sorted] {
 	pair of (4) and (list3) is [list4],
 	sort (list4) to [sorted]
 }
+`,
+	},
+] as const satisfies readonly Preset[];

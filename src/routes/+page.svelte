@@ -1,19 +1,22 @@
 <script lang="ts">
-	import type {SupportedFunctionCallingResult} from "../lib/function-calling-result/supported/SupportedFunctionCallingResult.ts";
+	import type {SupportedFunctionCallingResult} from "../lib/core/function-calling-result/supported/SupportedFunctionCallingResult.ts";
 	import {parser} from "../lib/instances/parser/parser.ts";
-	import {extraCharactersParsingResultTypeName} from "../lib/parsing-result/implementations/extra-characters/type-name/extraCharactersParsingResultTypeName.ts";
-	import {unexpectedCharacterParsingResultTypeName} from "../lib/parsing-result/implementations/unexpected-character/type-name/unexpectedCharacterParsingResultTypeName.ts";
-	import {unexpectedFinalizingParsingResultTypeName} from "../lib/parsing-result/implementations/unexpected-finalizing/type-name/unexpectedFinalizingParsingResultTypeName.ts";
-	import {successParsingResultTypeName} from "../lib/parsing-result/implementations/success/type-name/successParsingResultTypeName.ts";
-	import {successAbstractifyingResultTypeName} from "../lib/concrete-syntax-tree-node/abstractifying/result/implementations/success/type-name/successAbstractifyingResultTypeName.ts";
-	import {errorAbstractifyingResultTypeName} from "../lib/concrete-syntax-tree-node/abstractifying/result/implementations/error/type-name/errorAbstractifyingResultTypeName.ts";
-	import {builtInFunctions} from "../lib/built-in-functions/builtInFunctions.ts";
-	import {SpanIndexes} from "../lib/span-indexes/SpanIndexes.ts";
-	import {successFunctionCallingResultTypeName} from "../lib/function-calling-result/implementations/success/type-name/successFunctionCallingResultTypeName.ts";
-	import {stepFunctionCallingResultTypeName} from "../lib/function-calling-result/implementations/step/type-name/stepFunctionCallingResultTypeName.ts";
-	import {returnFunctionCallingResultTypeName} from "../lib/function-calling-result/implementations/return/type-name/returnFunctionCallingResultTypeName.ts";
-	import {failureFunctionCallingResultTypeName} from "../lib/function-calling-result/implementations/failure/type-name/failureFunctionCallingResultTypeName.ts";
-	import type {Index} from "../lib/index/Index.ts";
+	import {extraCharactersParsingResultTypeName} from "../lib/core/parsing-result/implementations/extra-characters/type-name/extraCharactersParsingResultTypeName.ts";
+	import {unexpectedCharacterParsingResultTypeName} from "../lib/core/parsing-result/implementations/unexpected-character/type-name/unexpectedCharacterParsingResultTypeName.ts";
+	import {unexpectedFinalizingParsingResultTypeName} from "../lib/core/parsing-result/implementations/unexpected-finalizing/type-name/unexpectedFinalizingParsingResultTypeName.ts";
+	import {successParsingResultTypeName} from "../lib/core/parsing-result/implementations/success/type-name/successParsingResultTypeName.ts";
+	import {successAbstractifyingResultTypeName} from "../lib/core/concrete-syntax-tree-node/abstractifying/result/implementations/success/type-name/successAbstractifyingResultTypeName.ts";
+	import {errorAbstractifyingResultTypeName} from "../lib/core/concrete-syntax-tree-node/abstractifying/result/implementations/error/type-name/errorAbstractifyingResultTypeName.ts";
+	import {builtInFunctions} from "../lib/core/built-in-functions/builtInFunctions.ts";
+	import {SpanIndexes} from "../lib/core/span-indexes/SpanIndexes.ts";
+	import {successFunctionCallingResultTypeName} from "../lib/core/function-calling-result/implementations/success/type-name/successFunctionCallingResultTypeName.ts";
+	import {stepFunctionCallingResultTypeName} from "../lib/core/function-calling-result/implementations/step/type-name/stepFunctionCallingResultTypeName.ts";
+	import {returnFunctionCallingResultTypeName} from "../lib/core/function-calling-result/implementations/return/type-name/returnFunctionCallingResultTypeName.ts";
+	import {failureFunctionCallingResultTypeName} from "../lib/core/function-calling-result/implementations/failure/type-name/failureFunctionCallingResultTypeName.ts";
+	import type {Index} from "../lib/core/index/Index.ts";
+	import type {Preset} from "../lib/core/preset/Preset.ts";
+	import {presets} from "../lib/instances/presets/presets.ts";
+	import PresetItemList from "../lib/core/preset-item-list/PresetItemList.svelte";
 	abstract class ParsingStatus<TypeName extends string> {
 		public readonly typeName: TypeName;
 		protected constructor(typeName: TypeName) {
@@ -190,16 +193,16 @@
 					case successAbstractifyingResultTypeName: {
 						const abstractifiedParsedSourceCode = abstractifyingResult.data;
 						if (abstractifiedParsedSourceCode === null) {
-							const state = new State(
+							const state_ = new State(
 								new SuccessfulParsingStatus(
 									new WithoutFunctionsSuccessfulAbstractifyingStatus(),
 								),
 								sourceCode,
 							);
-							return state;
+							return state_;
 						} else {
 							const steps = abstractifiedParsedSourceCode.run(builtInFunctions);
-							const state = new State(
+							const state_ = new State(
 								new SuccessfulParsingStatus(
 									new WithFunctionsSuccessfulAbstractifyingStatus(
 										false,
@@ -209,129 +212,161 @@
 								),
 								sourceCode,
 							);
-							return state;
+							return state_;
 						}
 					}
 					case errorAbstractifyingResultTypeName: {
-						const state = new State(
+						const state_ = new State(
 							new SuccessfulParsingStatus(
 								new ErrorAbstractifyingStatus(abstractifyingResult.message),
 							),
 							sourceCode,
 						);
-						return state;
+						return state_;
 					}
 				}
 			}
 			case unexpectedCharacterParsingResultTypeName: {
-				const state = new State(
+				const state_ = new State(
 					new UnexpectedCharacterParsingStatus(parsingResult.index),
 					sourceCode,
 				);
-				return state;
+				return state_;
 			}
 			case unexpectedFinalizingParsingResultTypeName: {
-				const state = new State(
+				const state_ = new State(
 					new UnexpectedFinalizingParsingStatus(),
 					sourceCode,
 				);
-				return state;
+				return state_;
 			}
 			case extraCharactersParsingResultTypeName: {
-				const state = new State(new ExtraCharactersParsingStatus(), sourceCode);
-				return state;
+				const state_ = new State(
+					new ExtraCharactersParsingStatus(),
+					sourceCode,
+				);
+				return state_;
 			}
 		}
 	}
-	let state: State = createState("");
+	let state_ = $state.raw<State>(createState(""));
 	function handleTextareaInput(
 		event: Event & {readonly currentTarget: HTMLTextAreaElement},
 	): void {
-		state = createState(event.currentTarget.value);
+		state_ = createState(event.currentTarget.value);
 	}
 	function handleStepButtonClick(): void {
 		if (
-			state.parsingStatus.typeName === successParsingStatusTypeName
-			&& state.parsingStatus.abstractifyingStatus.typeName
+			state_.parsingStatus.typeName === successParsingStatusTypeName
+			&& state_.parsingStatus.abstractifyingStatus.typeName
 				=== withFunctionsSuccessAbstractifyingStatusTypeName
 		) {
-			state = new State(
+			state_ = new State(
 				new SuccessfulParsingStatus(
-					state.parsingStatus.abstractifyingStatus.next(),
+					state_.parsingStatus.abstractifyingStatus.next(),
 				),
-				state.sourceCode,
+				state_.sourceCode,
 			);
 		}
+	}
+	let isPresetModalOpen = $state.raw<boolean>(false);
+	function handleOpeningPresetModalButtonClick(): void {
+		isPresetModalOpen = true;
+	}
+	function handleClosingPresetModalButtonClick(): void {
+		isPresetModalOpen = false;
+	}
+	function handlePresetSet(preset: Preset): void {
+		state_ = createState(preset.sourceCode);
+		isPresetModalOpen = false;
 	}
 </script>
 
 <main>
 	<div class="status">
-		{#if state.parsingStatus.typeName === successParsingStatusTypeName}
-			{#if state.parsingStatus.abstractifyingStatus.typeName === withFunctionsSuccessAbstractifyingStatusTypeName}
+		{#if state_.parsingStatus.typeName === successParsingStatusTypeName}
+			{#if state_.parsingStatus.abstractifyingStatus.typeName === withFunctionsSuccessAbstractifyingStatusTypeName}
 				✔️ Valid <button
 					type="button"
 					onclick={handleStepButtonClick}
-					disabled={state.parsingStatus.abstractifyingStatus.isDone}
+					disabled={state_.parsingStatus.abstractifyingStatus.isDone}
 					>👣 Do a step</button
 				>
-			{:else if state.parsingStatus.abstractifyingStatus.typeName === withoutFunctionsSuccessAbstractifyingStatusTypeName}
+			{:else if state_.parsingStatus.abstractifyingStatus.typeName === withoutFunctionsSuccessAbstractifyingStatusTypeName}
 				❓ Nothing to run
-			{:else if state.parsingStatus.abstractifyingStatus.typeName === errorAbstractifyingStatusTypeName}
-				❌ {state.parsingStatus.abstractifyingStatus.message}
+			{:else if state_.parsingStatus.abstractifyingStatus.typeName === errorAbstractifyingStatusTypeName}
+				❌ {state_.parsingStatus.abstractifyingStatus.message}
 			{/if}
-		{:else if state.parsingStatus.typeName === unexpectedCharacterParsingStatusTypeName}
-			❌ Unexpected character at index {state.parsingStatus.index}
-		{:else if state.parsingStatus.typeName === unexpectedFinalizingParsingStatusTypeName}
+		{:else if state_.parsingStatus.typeName === unexpectedCharacterParsingStatusTypeName}
+			❌ Unexpected character at index {state_.parsingStatus.index}
+		{:else if state_.parsingStatus.typeName === unexpectedFinalizingParsingStatusTypeName}
 			❌ Unexpected end of the source code
-		{:else if state.parsingStatus.typeName === extraCharactersParsingStatusTypeName}
+		{:else if state_.parsingStatus.typeName === extraCharactersParsingStatusTypeName}
 			❌ Extra characters at the end of the source code
 		{/if}
+		<span>
+			<button type="button" onclick={handleOpeningPresetModalButtonClick}
+				>🌱 Apply a preset</button
+			>
+			{#if isPresetModalOpen}
+				<dialog open>
+					<ul>
+						{#each presets as preset}
+							<PresetItemList {preset} onPresetSet={handlePresetSet} />
+						{/each}
+					</ul>
+					<button type="button" onclick={handleClosingPresetModalButtonClick}
+						>✖️ Close</button
+					>
+				</dialog>
+			{/if}
+		</span>
 	</div>
 	<div class="editor">
-		<textarea value={state.sourceCode} oninput={handleTextareaInput}></textarea>
-		<pre>{#each state.sourceCode.split("") as character, index}<span
-					class:unexpected={state.parsingStatus.typeName
+		<textarea value={state_.sourceCode} oninput={handleTextareaInput}
+		></textarea>
+		<pre>{#each state_.sourceCode.split("") as character, index}<span
+					class:unexpected={state_.parsingStatus.typeName
 						=== unexpectedCharacterParsingStatusTypeName
-						&& state.parsingStatus.index === index}
-					class:step={state.parsingStatus.typeName
+						&& state_.parsingStatus.index === index}
+					class:step={state_.parsingStatus.typeName
 						=== successParsingStatusTypeName
-						&& state.parsingStatus.abstractifyingStatus.typeName
+						&& state_.parsingStatus.abstractifyingStatus.typeName
 							=== withFunctionsSuccessAbstractifyingStatusTypeName
-						&& state.parsingStatus.abstractifyingStatus.marking !== null
-						&& state.parsingStatus.abstractifyingStatus.marking.actionName
+						&& state_.parsingStatus.abstractifyingStatus.marking !== null
+						&& state_.parsingStatus.abstractifyingStatus.marking.actionName
 							=== "step"
 						&& index
-							>= state.parsingStatus.abstractifyingStatus.marking.spanIndexes
+							>= state_.parsingStatus.abstractifyingStatus.marking.spanIndexes
 								.from
 						&& index
-							< state.parsingStatus.abstractifyingStatus.marking.spanIndexes
+							< state_.parsingStatus.abstractifyingStatus.marking.spanIndexes
 								.until}
-					class:success={state.parsingStatus.typeName
+					class:success={state_.parsingStatus.typeName
 						=== successParsingStatusTypeName
-						&& state.parsingStatus.abstractifyingStatus.typeName
+						&& state_.parsingStatus.abstractifyingStatus.typeName
 							=== withFunctionsSuccessAbstractifyingStatusTypeName
-						&& state.parsingStatus.abstractifyingStatus.marking !== null
-						&& state.parsingStatus.abstractifyingStatus.marking.actionName
+						&& state_.parsingStatus.abstractifyingStatus.marking !== null
+						&& state_.parsingStatus.abstractifyingStatus.marking.actionName
 							=== "success"
 						&& index
-							>= state.parsingStatus.abstractifyingStatus.marking.spanIndexes
+							>= state_.parsingStatus.abstractifyingStatus.marking.spanIndexes
 								.from
 						&& index
-							< state.parsingStatus.abstractifyingStatus.marking.spanIndexes
+							< state_.parsingStatus.abstractifyingStatus.marking.spanIndexes
 								.until}
-					class:failure={state.parsingStatus.typeName
+					class:failure={state_.parsingStatus.typeName
 						=== successParsingStatusTypeName
-						&& state.parsingStatus.abstractifyingStatus.typeName
+						&& state_.parsingStatus.abstractifyingStatus.typeName
 							=== withFunctionsSuccessAbstractifyingStatusTypeName
-						&& state.parsingStatus.abstractifyingStatus.marking !== null
-						&& state.parsingStatus.abstractifyingStatus.marking.actionName
+						&& state_.parsingStatus.abstractifyingStatus.marking !== null
+						&& state_.parsingStatus.abstractifyingStatus.marking.actionName
 							=== "failure"
 						&& index
-							>= state.parsingStatus.abstractifyingStatus.marking.spanIndexes
+							>= state_.parsingStatus.abstractifyingStatus.marking.spanIndexes
 								.from
 						&& index
-							< state.parsingStatus.abstractifyingStatus.marking.spanIndexes
+							< state_.parsingStatus.abstractifyingStatus.marking.spanIndexes
 								.until}>{character}</span
 				>{/each}</pre>
 	</div>
@@ -339,6 +374,7 @@
 
 <style lang="scss">
 	main {
+		height: 100%;
 		display: grid;
 		grid-template-columns: 1fr;
 		grid-template-rows: min-content 1fr;
@@ -377,6 +413,7 @@
 		color: transparent;
 		caret-color: hsl(0, 0%, 100%);
 		background-color: hsl(0, 0%, 10%);
+		overflow: hidden;
 	}
 	pre {
 		grid-area: 1 / 1 / 2 / 2;
