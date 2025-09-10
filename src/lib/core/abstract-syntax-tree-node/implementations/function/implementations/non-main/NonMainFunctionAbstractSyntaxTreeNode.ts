@@ -1,7 +1,19 @@
+import type {Functions} from "../../../../../functions/Functions.ts";
 import {SpanIndexes} from "../../../../../span-indexes/SpanIndexes.ts";
 import type {Variables} from "../../../../../variables/Variables.ts";
+import {WordFunctionCallSegmentAbstractSyntaxTreeNode} from "../../../function-call-segment/implementations/word/WordFunctionCallSegmentAbstractSyntaxTreeNode.ts";
 import type {FunctionHeaderAbstractSyntaxTreeNode} from "../../../function-header/FunctionHeaderAbstractSyntaxTreeNode.ts";
-import {FunctionsAbstractSyntaxTreeNode} from "../../../functions/FunctionsAbstractSyntaxTreeNode.ts";
+import {
+	FunctionsAbstractSyntaxTreeNode,
+	pickBfslyFromInfiniteGenerators,
+} from "../../../functions/FunctionsAbstractSyntaxTreeNode.ts";
+import {OperatedStatementAbstractSyntaxTreeNode} from "../../../operated-statement/OperatedStatementAbstractSyntaxTreeNode.ts";
+import {OrOperatorAbstractSyntaxTreeNode} from "../../../operator/implementations/or/OrOperatorAbstractSyntaxTreeNode.ts";
+import {ThenOperatorAbstractSyntaxTreeNode} from "../../../operator/implementations/then/ThenOperatorAbstractSyntaxTreeNode.ts";
+import {BlockStatementAbstractSyntaxTreeNode} from "../../../statement/implementations/block/BlockStatementAbstractSyntaxTreeNode.ts";
+import {FunctionCallStatementAbstractSyntaxTreeNode} from "../../../statement/implementations/function-call/FunctionCallStatementAbstractSyntaxTreeNode.ts";
+import type {SupportedStatementAbstractSyntaxTreeNode} from "../../../statement/supported/SupportedStatementAbstractSyntaxTreeNode.ts";
+import {StatementsAbstractSyntaxTreeNode} from "../../../statements/StatementsAbstractSyntaxTreeNode.ts";
 import {FunctionAbstractSyntaxTreeNode} from "../../FunctionAbstractSyntaxTreeNode.ts";
 import type {FunctionAbstractSyntaxTreeNodeChildren} from "../../children/FunctionAbstractSyntaxTreeNodeChildren.ts";
 import {computeUnknownsValues} from "../../computing-unknowns-values/computeUnknownsValues.ts";
@@ -39,6 +51,17 @@ export class NonMainFunctionAbstractSyntaxTreeNode extends FunctionAbstractSynta
 		return functions;
 	}
 	public readonly id: string;
+	public *mutate(
+		functions: Functions,
+	): Generator<NonMainFunctionAbstractSyntaxTreeNode, void, void> {
+		const mutatedBodies = this.children.body.mutate(functions);
+		for (const mutatedBody of mutatedBodies) {
+			yield NonMainFunctionAbstractSyntaxTreeNode.create(
+				{...this.children, body: mutatedBody},
+				new SpanIndexes(0, 0),
+			);
+		}
+	}
 	public override putIntoFunctions(
 		functions: FunctionsAbstractSyntaxTreeNode,
 	): FunctionsAbstractSyntaxTreeNode {

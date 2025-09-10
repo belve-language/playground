@@ -1,6 +1,7 @@
 import type {StatementsConcreteSyntaxTreeNodeAtom} from "./atom/StatementsConcreteSyntaxTreeNodeAtom.ts";
 import type {Statements} from "../../../../../statements/Statements.ts";
 import {OperatedStatementAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree-node/implementations/operated-statement/OperatedStatementAbstractSyntaxTreeNode.ts";
+import {StatementsAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree-node/implementations/statements/StatementsAbstractSyntaxTreeNode.ts";
 import {SpanIndexes} from "../../../span-indexes/SpanIndexes.ts";
 import {ConcreteSyntaxTreeNode} from "../../ConcreteSyntaxTreeNode.ts";
 import {ErrorAbstractifyingResult} from "../../abstractifying/result/implementations/error/ErrorAbstractifyingResult.ts";
@@ -13,7 +14,7 @@ export class StatementsConcreteSyntaxTreeNode extends ConcreteSyntaxTreeNode<Sta
 	}
 	public abstractify():
 		| ErrorAbstractifyingResult
-		| SuccessAbstractifyingResult<Statements> {
+		| SuccessAbstractifyingResult<StatementsAbstractSyntaxTreeNode> {
 		const statement = this.atom.leftSubAtom.node;
 		const optionalSeparatedStatements = this.atom.rightSubAtom.node;
 		const statementAbstractifyingResult = statement.abstractify();
@@ -39,38 +40,49 @@ export class StatementsConcreteSyntaxTreeNode extends ConcreteSyntaxTreeNode<Sta
 						const abstractifiedOptionalSeparatedStatements =
 							optionalSeparatedStatementsAbstractifyingResult.data;
 						if (abstractifiedOptionalSeparatedStatements === null) {
-							const abstractifiedStatements: Statements = {
-								initialOperatedStatements: [],
-								lastStatement: abstractifiedStatement,
-							};
-							const statementsAbstractifyingResult: SuccessAbstractifyingResult<Statements> =
-								new SuccessAbstractifyingResult<Statements>(
+							const abstractifiedStatements: StatementsAbstractSyntaxTreeNode =
+								new StatementsAbstractSyntaxTreeNode(
+									{
+										finalStatement: abstractifiedStatement,
+										initialOperatedStatements: [],
+									},
+									abstractifiedStatement.spanIndexes,
+								);
+							const statementsAbstractifyingResult: SuccessAbstractifyingResult<StatementsAbstractSyntaxTreeNode> =
+								new SuccessAbstractifyingResult<StatementsAbstractSyntaxTreeNode>(
 									abstractifiedStatements,
 								);
 							return statementsAbstractifyingResult;
 						} else {
-							const abstractifiedStatements: Statements = {
-								initialOperatedStatements: [
-									new OperatedStatementAbstractSyntaxTreeNode(
-										{
-											operator:
-												abstractifiedOptionalSeparatedStatements.operator,
-											statement: abstractifiedStatement,
-										},
-										new SpanIndexes(
-											abstractifiedStatement.spanIndexes.from,
-											abstractifiedOptionalSeparatedStatements.operator.spanIndexes.until,
-										),
+							const abstractifiedStatements: StatementsAbstractSyntaxTreeNode =
+								new StatementsAbstractSyntaxTreeNode(
+									{
+										finalStatement:
+											abstractifiedOptionalSeparatedStatements.statements
+												.children.finalStatement,
+										initialOperatedStatements: [
+											new OperatedStatementAbstractSyntaxTreeNode(
+												{
+													operator:
+														abstractifiedOptionalSeparatedStatements.operator,
+													statement: abstractifiedStatement,
+												},
+												new SpanIndexes(
+													abstractifiedStatement.spanIndexes.from,
+													abstractifiedOptionalSeparatedStatements.operator.spanIndexes.until,
+												),
+											),
+											...abstractifiedOptionalSeparatedStatements.statements
+												.children.initialOperatedStatements,
+										],
+									},
+									new SpanIndexes(
+										abstractifiedStatement.spanIndexes.from,
+										abstractifiedOptionalSeparatedStatements.statements.children.finalStatement.spanIndexes.until,
 									),
-									...abstractifiedOptionalSeparatedStatements.statements
-										.initialOperatedStatements,
-								],
-								lastStatement:
-									abstractifiedOptionalSeparatedStatements.statements
-										.lastStatement,
-							};
-							const statementsAbstractifyingResult: SuccessAbstractifyingResult<Statements> =
-								new SuccessAbstractifyingResult<Statements>(
+								);
+							const statementsAbstractifyingResult: SuccessAbstractifyingResult<StatementsAbstractSyntaxTreeNode> =
+								new SuccessAbstractifyingResult<StatementsAbstractSyntaxTreeNode>(
 									abstractifiedStatements,
 								);
 							return statementsAbstractifyingResult;

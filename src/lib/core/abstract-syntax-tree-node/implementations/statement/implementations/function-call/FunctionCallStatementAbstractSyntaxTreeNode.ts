@@ -1,4 +1,4 @@
-import type {FunctionCallAbstractSyntaxTreeNodeChildren} from "./children/FunctionCallAbstractSyntaxTreeNodeChildren.ts";
+import type {FunctionCallStatementAbstractSyntaxTreeNodeChildren} from "./children/FunctionCallStatementAbstractSyntaxTreeNodeChildren.ts";
 import {computeUnknowns} from "./computing-unknowns/computeUnknowns.ts";
 import {SuccessAbstractifyingResult} from "../../../../../concrete-syntax-tree-node/abstractifying/result/implementations/success/SuccessAbstractifyingResult.ts";
 import {returnFunctionCallingResultTypeName} from "../../../../../function-calling-result/implementations/return/type-name/returnFunctionCallingResultTypeName.ts";
@@ -10,7 +10,6 @@ import {failureStatementExecutingResultTypeName} from "../../../../../statement-
 import {StepStatementExecutingResult} from "../../../../../statement-executing-result/implementations/step/StepStatementExecutingResult.ts";
 import type {SupportedStatementExecutingResult} from "../../../../../statement-executing-result/supported/SupportedStatementExecutingResult.ts";
 import type {Variables} from "../../../../../variables/Variables.ts";
-import type {FunctionAbstractSyntaxTreeNodeChildrenFunctions} from "../../../functions/children/functions/FunctionAbstractSyntaxTreeNodeChildrenFunctions.ts";
 import {StatementAbstractSyntaxTreeNode} from "../../StatementAbstractSyntaxTreeNode.ts";
 import {computeId} from "./computing-id/computeId.ts";
 import {computeKnownsNames} from "./computing-knowns-names/computeKnownsNames.ts";
@@ -19,9 +18,10 @@ import {computeUnknownsNames} from "./computing-unknowns-names/computeUnknownsNa
 import type {Functions} from "../../../../../functions/Functions.ts";
 import {ReturnStatementExecutingResult} from "../../../../../statement-executing-result/implementations/return/ReturnStatementExecutingResult.ts";
 import {SuccessStatementExecutingResult} from "../../../../../statement-executing-result/implementations/success/SuccessStatementExecutingResult.ts";
-export class FunctionCallStatementAbstractSyntaxTreeNode extends StatementAbstractSyntaxTreeNode<FunctionCallAbstractSyntaxTreeNodeChildren> {
+import type {SupportedStatementAbstractSyntaxTreeNode} from "../../supported/SupportedStatementAbstractSyntaxTreeNode.ts";
+export class FunctionCallStatementAbstractSyntaxTreeNode extends StatementAbstractSyntaxTreeNode<FunctionCallStatementAbstractSyntaxTreeNodeChildren> {
 	public static create(
-		children: FunctionCallAbstractSyntaxTreeNodeChildren,
+		children: FunctionCallStatementAbstractSyntaxTreeNodeChildren,
 		spanIndexes: SpanIndexes,
 	): FunctionCallStatementAbstractSyntaxTreeNode {
 		const id = computeId(children.segments);
@@ -37,7 +37,7 @@ export class FunctionCallStatementAbstractSyntaxTreeNode extends StatementAbstra
 		return node;
 	}
 	private constructor(
-		children: FunctionCallAbstractSyntaxTreeNodeChildren,
+		children: FunctionCallStatementAbstractSyntaxTreeNodeChildren,
 		id: string,
 		knownsNames: readonly string[],
 		spanIndexes: SpanIndexes,
@@ -111,5 +111,8 @@ export class FunctionCallStatementAbstractSyntaxTreeNode extends StatementAbstra
 	}
 	private readonly id: string;
 	private readonly knownsNames: readonly string[];
+	public override *mutate(
+		functions: Functions,
+	): Generator<SupportedStatementAbstractSyntaxTreeNode, void, void> {}
 	private readonly unknownsNames: readonly string[];
 }

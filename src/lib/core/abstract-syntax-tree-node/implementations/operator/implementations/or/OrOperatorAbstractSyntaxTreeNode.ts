@@ -1,19 +1,26 @@
-import type {Statements} from "../../../../../../../statements/Statements.ts";
 import type {Functions} from "../../../../../functions/Functions.ts";
-import type {SpanIndexes} from "../../../../../span-indexes/SpanIndexes.ts";
+import {SpanIndexes} from "../../../../../span-indexes/SpanIndexes.ts";
 import type {SupportedStatementExecutingResult} from "../../../../../statement-executing-result/supported/SupportedStatementExecutingResult.ts";
 import type {Variables} from "../../../../../variables/Variables.ts";
-import {executeStatements} from "../../../statement/implementations/block/executing-statements/executeStatements.ts";
 import type {SupportedStatementAbstractSyntaxTreeNode} from "../../../statement/supported/SupportedStatementAbstractSyntaxTreeNode.ts";
+import type {StatementsAbstractSyntaxTreeNode} from "../../../statements/StatementsAbstractSyntaxTreeNode.ts";
 import {OperatorAbstractSyntaxTreeNode} from "../../OperatorAbstractSyntaxTreeNode.ts";
+import {ThenOperatorAbstractSyntaxTreeNode} from "../then/ThenOperatorAbstractSyntaxTreeNode.ts";
 export class OrOperatorAbstractSyntaxTreeNode extends OperatorAbstractSyntaxTreeNode {
 	public constructor(spanIndexes: SpanIndexes) {
 		super(spanIndexes);
 	}
+	public override *mutate(): Generator<
+		ThenOperatorAbstractSyntaxTreeNode,
+		void,
+		void
+	> {
+		yield new ThenOperatorAbstractSyntaxTreeNode(new SpanIndexes(0, 0));
+	}
 	public override *operate(
 		firstStatement: SupportedStatementAbstractSyntaxTreeNode,
 		functions: Functions,
-		restStatements: Statements,
+		restStatements: StatementsAbstractSyntaxTreeNode,
 		variables: Variables,
 	): Generator<SupportedStatementExecutingResult, void, void> {
 		const firstStatementExecutingResults = firstStatement.execute(
@@ -21,10 +28,9 @@ export class OrOperatorAbstractSyntaxTreeNode extends OperatorAbstractSyntaxTree
 			variables,
 		);
 		yield* firstStatementExecutingResults;
-		const restStatementsExecutingResults = executeStatements(
+		const restStatementsExecutingResults = restStatements.execute(
 			functions,
 			variables,
-			restStatements,
 		);
 		yield* restStatementsExecutingResults;
 	}

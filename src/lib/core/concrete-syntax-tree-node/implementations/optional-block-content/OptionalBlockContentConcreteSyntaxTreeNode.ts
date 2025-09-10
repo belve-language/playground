@@ -1,5 +1,5 @@
 import type {OptionalBlockContentConcreteSyntaxTreeNodeAtom} from "./atom/OptionalBlockContentConcreteSyntaxTreeNodeAtom.ts";
-import type {BlockAbstractSyntaxTreeNodeChildren} from "../../../abstract-syntax-tree-node/implementations/statement/implementations/block/children/BlockAbstractSyntaxTreeNodeChildren.ts";
+import type {BlockStatementAbstractSyntaxTreeNodeChildren} from "../../../abstract-syntax-tree-node/implementations/statement/implementations/block/children/BlockStatementAbstractSyntaxTreeNodeChildren.ts";
 import {ConcreteSyntaxTreeNode} from "../../ConcreteSyntaxTreeNode.ts";
 import {ErrorAbstractifyingResult} from "../../abstractifying/result/implementations/error/ErrorAbstractifyingResult.ts";
 import {errorAbstractifyingResultTypeName} from "../../abstractifying/result/implementations/error/type-name/errorAbstractifyingResultTypeName.ts";
@@ -11,7 +11,7 @@ export class OptionalBlockContentConcreteSyntaxTreeNode extends ConcreteSyntaxTr
 	}
 	public abstractify():
 		| ErrorAbstractifyingResult
-		| SuccessAbstractifyingResult<BlockAbstractSyntaxTreeNodeChildren> {
+		| SuccessAbstractifyingResult<BlockStatementAbstractSyntaxTreeNodeChildren> {
 		const blockContent = this.atom.node;
 		const blockContentAbstractifyingResult = blockContent.abstractify();
 		switch (blockContentAbstractifyingResult.typeName) {
@@ -32,7 +32,7 @@ export class OptionalBlockContentConcreteSyntaxTreeNode extends ConcreteSyntaxTr
 						);
 					return result;
 				} else {
-					const optionalBlockContentAbstractifyingResult: SuccessAbstractifyingResult<BlockAbstractSyntaxTreeNodeChildren> =
+					const optionalBlockContentAbstractifyingResult: SuccessAbstractifyingResult<BlockStatementAbstractSyntaxTreeNodeChildren> =
 						new SuccessAbstractifyingResult(abstractifiedOptionalBlockContent);
 					return optionalBlockContentAbstractifyingResult;
 				}

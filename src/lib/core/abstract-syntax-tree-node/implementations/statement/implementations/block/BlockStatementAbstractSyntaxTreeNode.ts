@@ -1,8 +1,6 @@
-import type {BlockAbstractSyntaxTreeNodeChildren} from "./children/BlockAbstractSyntaxTreeNodeChildren.ts";
-import {executeStatements} from "./executing-statements/executeStatements.ts";
-import type {Statements} from "../../../../../../../statements/Statements.ts";
+import type {BlockStatementAbstractSyntaxTreeNodeChildren} from "./children/BlockStatementAbstractSyntaxTreeNodeChildren.ts";
 import type {Functions} from "../../../../../functions/Functions.ts";
-import type {SpanIndexes} from "../../../../../span-indexes/SpanIndexes.ts";
+import {SpanIndexes} from "../../../../../span-indexes/SpanIndexes.ts";
 import {FailureStatementExecutingResult} from "../../../../../statement-executing-result/implementations/failure/FailureStatementExecutingResult.ts";
 import {failureStatementExecutingResultTypeName} from "../../../../../statement-executing-result/implementations/failure/type-name/failureStatementExecutingResultTypeName.ts";
 import {returnStatementExecutingResultTypeName} from "../../../../../statement-executing-result/implementations/return/type-name/returnStatementExecutingResultTypeName.ts";
@@ -12,10 +10,12 @@ import {SuccessStatementExecutingResult} from "../../../../../statement-executin
 import {successStatementExecutingResultTypeName} from "../../../../../statement-executing-result/implementations/success/type-name/successStatementExecutingResultTypeName.ts";
 import type {SupportedStatementExecutingResult} from "../../../../../statement-executing-result/supported/SupportedStatementExecutingResult.ts";
 import type {Variables} from "../../../../../variables/Variables.ts";
+import type {StatementsAbstractSyntaxTreeNode} from "../../../statements/StatementsAbstractSyntaxTreeNode.ts";
 import {StatementAbstractSyntaxTreeNode} from "../../StatementAbstractSyntaxTreeNode.ts";
-export class BlockStatementAbstractSyntaxTreeNode extends StatementAbstractSyntaxTreeNode<BlockAbstractSyntaxTreeNodeChildren> {
+import type {SupportedStatementAbstractSyntaxTreeNode} from "../../supported/SupportedStatementAbstractSyntaxTreeNode.ts";
+export class BlockStatementAbstractSyntaxTreeNode extends StatementAbstractSyntaxTreeNode<BlockStatementAbstractSyntaxTreeNodeChildren> {
 	public constructor(
-		children: BlockAbstractSyntaxTreeNodeChildren,
+		children: BlockStatementAbstractSyntaxTreeNodeChildren,
 		spanIndexes: SpanIndexes,
 	) {
 		super(children, spanIndexes);
@@ -25,12 +25,9 @@ export class BlockStatementAbstractSyntaxTreeNode extends StatementAbstractSynta
 		variables: Variables,
 	): Generator<SupportedStatementExecutingResult, void, void> {
 		yield new StepStatementExecutingResult(this, variables);
-		const statements: Statements = this.children.statements;
-		const statementsExecutingResults = executeStatements(
-			functions,
-			variables,
-			statements,
-		);
+		const statements: StatementsAbstractSyntaxTreeNode =
+			this.children.statements;
+		const statementsExecutingResults = statements.execute(functions, variables);
 		let hasFailed = true;
 		for (const statementsExecutingResult of statementsExecutingResults) {
 			switch (statementsExecutingResult.typeName) {
@@ -59,6 +56,17 @@ export class BlockStatementAbstractSyntaxTreeNode extends StatementAbstractSynta
 		}
 		if (hasFailed) {
 			yield new FailureStatementExecutingResult(this, variables);
+		}
+	}
+	public override *mutate(
+		functions: Functions,
+	): Generator<BlockStatementAbstractSyntaxTreeNode, void, void> {
+		const mutatedStatements = this.children.statements.mutate(functions);
+		for (const mutatedStatement of mutatedStatements) {
+			yield new BlockStatementAbstractSyntaxTreeNode(
+				{statements: mutatedStatement},
+				new SpanIndexes(0, 0),
+			);
 		}
 	}
 }

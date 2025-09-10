@@ -1,5 +1,5 @@
 import type {FunctionCallConcreteSyntaxTreeNodeAtom} from "./atom/FunctionCallConcreteSyntaxTreeNodeAtom.ts";
-import {FunctionCallStatementAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree-node/implementations/statement/implementations/function-call/FunctionCallAbstractSyntaxTreeNode.ts";
+import {FunctionCallStatementAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree-node/implementations/statement/implementations/function-call/FunctionCallStatementAbstractSyntaxTreeNode.ts";
 import {SpanIndexes} from "../../../span-indexes/SpanIndexes.ts";
 import {ConcreteSyntaxTreeNode} from "../../ConcreteSyntaxTreeNode.ts";
 import {ErrorAbstractifyingResult} from "../../abstractifying/result/implementations/error/ErrorAbstractifyingResult.ts";

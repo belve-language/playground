@@ -1,5 +1,5 @@
 import type {BlockConcreteSyntaxTreeNodeAtom} from "./atom/BlockConcreteSyntaxTreeNodeAtom.ts";
-import {BlockStatementAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree-node/implementations/statement/implementations/block/BlockAbstractSyntaxTreeNode.ts";
+import {BlockStatementAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree-node/implementations/statement/implementations/block/BlockStatementAbstractSyntaxTreeNode.ts";
 import {SpanIndexes} from "../../../span-indexes/SpanIndexes.ts";
 import {ConcreteSyntaxTreeNode} from "../../ConcreteSyntaxTreeNode.ts";
 import {ErrorAbstractifyingResult} from "../../abstractifying/result/implementations/error/ErrorAbstractifyingResult.ts";

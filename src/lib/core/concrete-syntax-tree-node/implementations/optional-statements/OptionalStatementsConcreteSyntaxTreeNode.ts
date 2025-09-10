@@ -1,5 +1,6 @@
 import type {OptionalStatementsConcreteSyntaxTreeNodeAtom} from "./atom/OptionalStatementsConcreteSyntaxTreeNodeAtom.ts";
 import type {Statements} from "../../../../../statements/Statements.ts";
+import type {StatementsAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree-node/implementations/statements/StatementsAbstractSyntaxTreeNode.ts";
 import {ConcreteSyntaxTreeNode} from "../../ConcreteSyntaxTreeNode.ts";
 import {ErrorAbstractifyingResult} from "../../abstractifying/result/implementations/error/ErrorAbstractifyingResult.ts";
 import {errorAbstractifyingResultTypeName} from "../../abstractifying/result/implementations/error/type-name/errorAbstractifyingResultTypeName.ts";
@@ -11,7 +12,7 @@ export class OptionalStatementsConcreteSyntaxTreeNode extends ConcreteSyntaxTree
 	}
 	public abstractify():
 		| ErrorAbstractifyingResult
-		| SuccessAbstractifyingResult<Statements> {
+		| SuccessAbstractifyingResult<StatementsAbstractSyntaxTreeNode> {
 		const statements = this.atom.node;
 		const statementsAbstractifyingResult = statements.abstractify();
 		switch (statementsAbstractifyingResult.typeName) {
@@ -22,8 +23,8 @@ export class OptionalStatementsConcreteSyntaxTreeNode extends ConcreteSyntaxTree
 						new ErrorAbstractifyingResult("Expected statements to be present.");
 					return optionalStatementsAbstractifyingResult;
 				} else {
-					const optionalStatementsAbstractifyingResult: SuccessAbstractifyingResult<Statements> =
-						new SuccessAbstractifyingResult<Statements>(
+					const optionalStatementsAbstractifyingResult: SuccessAbstractifyingResult<StatementsAbstractSyntaxTreeNode> =
+						new SuccessAbstractifyingResult<StatementsAbstractSyntaxTreeNode>(
 							abstractifiedStatements,
 						);
 					return optionalStatementsAbstractifyingResult;

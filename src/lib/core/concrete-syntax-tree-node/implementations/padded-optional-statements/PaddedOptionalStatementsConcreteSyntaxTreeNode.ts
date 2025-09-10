@@ -1,5 +1,5 @@
 import type {PaddedOptionalStatementsConcreteSyntaxTreeNodeAtom} from "./atom/PaddedOptionalStatementsConcreteSyntaxTreeNodeAtom.ts";
-import type {Statements} from "../../../../../statements/Statements.ts";
+import type {StatementsAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree-node/implementations/statements/StatementsAbstractSyntaxTreeNode.ts";
 import {ConcreteSyntaxTreeNode} from "../../ConcreteSyntaxTreeNode.ts";
 import {ErrorAbstractifyingResult} from "../../abstractifying/result/implementations/error/ErrorAbstractifyingResult.ts";
 import {errorAbstractifyingResultTypeName} from "../../abstractifying/result/implementations/error/type-name/errorAbstractifyingResultTypeName.ts";
@@ -11,7 +11,7 @@ export class PaddedOptionalStatementsConcreteSyntaxTreeNode extends ConcreteSynt
 	}
 	public abstractify():
 		| ErrorAbstractifyingResult
-		| SuccessAbstractifyingResult<Statements> {
+		| SuccessAbstractifyingResult<StatementsAbstractSyntaxTreeNode> {
 		const whitespace = this.atom.leftSubAtom.node;
 		const optionalStatements = this.atom.rightSubAtom.node;
 		const optionalStatementsAbstractifyingResult =
@@ -27,9 +27,9 @@ export class PaddedOptionalStatementsConcreteSyntaxTreeNode extends ConcreteSynt
 			case successAbstractifyingResultTypeName: {
 				const abstractifiedOptionalStatements =
 					optionalStatementsAbstractifyingResult.data;
-				const abstractifiedPaddedOptionalStatements: Statements =
+				const abstractifiedPaddedOptionalStatements: StatementsAbstractSyntaxTreeNode =
 					abstractifiedOptionalStatements;
-				const paddedOptionalStatementsAbstractifyingResult: SuccessAbstractifyingResult<Statements> =
+				const paddedOptionalStatementsAbstractifyingResult: SuccessAbstractifyingResult<StatementsAbstractSyntaxTreeNode> =
 					new SuccessAbstractifyingResult(
 						abstractifiedPaddedOptionalStatements,
 					);

@@ -1,6 +1,7 @@
 import type {OptionalSeparatedStatementsConcreteSyntaxTreeNodeAtom} from "./atom/OptionalSeparatedStatementsConcreteSyntaxTreeNodeAtom.ts";
 import type {Statements} from "../../../../../statements/Statements.ts";
 import type {OperatorAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree-node/implementations/operator/OperatorAbstractSyntaxTreeNode.ts";
+import type {StatementsAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree-node/implementations/statements/StatementsAbstractSyntaxTreeNode.ts";
 import {ConcreteSyntaxTreeNode} from "../../ConcreteSyntaxTreeNode.ts";
 import {ErrorAbstractifyingResult} from "../../abstractifying/result/implementations/error/ErrorAbstractifyingResult.ts";
 import {errorAbstractifyingResultTypeName} from "../../abstractifying/result/implementations/error/type-name/errorAbstractifyingResultTypeName.ts";
@@ -17,7 +18,7 @@ export class OptionalSeparatedStatementsConcreteSyntaxTreeNode extends ConcreteS
 		| SuccessAbstractifyingResult<null>
 		| SuccessAbstractifyingResult<{
 				readonly operator: OperatorAbstractSyntaxTreeNode;
-				readonly statements: Statements;
+				readonly statements: StatementsAbstractSyntaxTreeNode;
 		  }> {
 		const separatedStatements = this.atom.node;
 		const separatedStatementsAbstractifyingResult =
@@ -43,11 +44,11 @@ export class OptionalSeparatedStatementsConcreteSyntaxTreeNode extends ConcreteS
 				} else {
 					const abstractifiedOptionalSeparatedStatements: {
 						readonly operator: OperatorAbstractSyntaxTreeNode;
-						readonly statements: Statements;
+						readonly statements: StatementsAbstractSyntaxTreeNode;
 					} = abstractifiedSeparatedStatements;
 					const optionalSeparatedStatementsAbstractifyingResult: SuccessAbstractifyingResult<{
 						readonly operator: OperatorAbstractSyntaxTreeNode;
-						readonly statements: Statements;
+						readonly statements: StatementsAbstractSyntaxTreeNode;
 					}> = new SuccessAbstractifyingResult(
 						abstractifiedOptionalSeparatedStatements,
 					);
