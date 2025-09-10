@@ -24,11 +24,11 @@ jobs:
       - name: "Upload artifact"
         uses: "actions/upload-pages-artifact@v3"
         with:
-          name: "github-pages-2"
+          name: "github-pages"
           path: "./build"
   deploy:
     environment:
-      name: "github-pages"
+      name: "github-pages-2"
     name: "Deploy"
     needs:
       - "build"
