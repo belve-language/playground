@@ -1,5 +1,6 @@
 import type {Statements} from "../../../../../../../statements/Statements.ts";
 import type {Functions} from "../../../../../../functions/Functions.ts";
+import {failureStatementExecutingResultTypeName} from "../../../../../../statement-executing-result/implementations/failure/type-name/failureStatementExecutingResultTypeName.ts";
 import {ReturnStatementExecutingResult} from "../../../../../../statement-executing-result/implementations/return/ReturnStatementExecutingResult.ts";
 import {returnStatementExecutingResultTypeName} from "../../../../../../statement-executing-result/implementations/return/type-name/returnStatementExecutingResultTypeName.ts";
 import {stepStatementExecutingResultTypeName} from "../../../../../../statement-executing-result/implementations/step/type-name/stepStatementExecutingResultTypeName.ts";
@@ -36,6 +37,10 @@ export function* executeStatements(
 						combinedVariables,
 					);
 					yield statementsExecutingResult;
+					break;
+				}
+				case failureStatementExecutingResultTypeName: {
+					yield lastStatementExecutingResult;
 					break;
 				}
 			}

@@ -14,6 +14,7 @@ import {successRuleFinalizingParsingResultTypeName} from "../rule-finalizing-par
 import {unexpectedFinalizingRuleFinalizingParsingResultTypeName} from "../rule-finalizing-parsing-result/implementations/unexpected-finalizing/type-name/unexpectedFinalizingRuleFinalizingParsingResultTypeName.ts";
 import {successRuleParsingResultTypeName} from "../rule-parsing-result/implementations/success/type-name/successRuleParsingResultTypeName.ts";
 import {unexpectedCharacterRuleParsingResultTypeName} from "../rule-parsing-result/implementations/unexpected-character/type-name/unexpectedCharacterRuleParsingResultTypeName.ts";
+import {unexpectedFinalizingRuleParsingResultTypeName} from "../rule-parsing-result/implementations/unexpected-finalizing/type-name/unexpectedFinalizingRuleParsingResultTypeName.ts";
 export class Parser<StartingRuleNode extends ConcreteSyntaxTreeNode<Atom>> {
 	public static create<StartingRuleNode extends ConcreteSyntaxTreeNode<Atom>>(
 		grammar: Grammar<StartingRuleNode>,
@@ -65,7 +66,9 @@ export class Parser<StartingRuleNode extends ConcreteSyntaxTreeNode<Atom>> {
 			switch (startingRuleParsingResult.typeName) {
 				case unexpectedCharacterRuleParsingResultTypeName: {
 					const parsingResult: UnexpectedCharacterParsingResult =
-						new UnexpectedCharacterParsingResult();
+						new UnexpectedCharacterParsingResult(
+							startingRuleParsingResult.index,
+						);
 					return parsingResult;
 				}
 				case successRuleParsingResultTypeName: {
@@ -80,6 +83,11 @@ export class Parser<StartingRuleNode extends ConcreteSyntaxTreeNode<Atom>> {
 							new ExtraCharactersParsingResult();
 						return parsingResult;
 					}
+				}
+				case unexpectedFinalizingRuleParsingResultTypeName: {
+					const parsingResult: UnexpectedFinalizingParsingResult =
+						new UnexpectedFinalizingParsingResult();
+					return parsingResult;
 				}
 			}
 		}

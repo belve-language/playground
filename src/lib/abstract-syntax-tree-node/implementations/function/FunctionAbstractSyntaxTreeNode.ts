@@ -1,4 +1,5 @@
 import type {FunctionAbstractSyntaxTreeNodeChildren} from "./children/FunctionAbstractSyntaxTreeNodeChildren.ts";
+import {FailureFunctionCallingResult} from "../../../function-calling-result/implementations/failure/FailureFunctionCallingResult.ts";
 import {ReturnFunctionCallingResult} from "../../../function-calling-result/implementations/return/ReturnFunctionCallingResult.ts";
 import {StepFunctionCallingResult} from "../../../function-calling-result/implementations/step/StepFunctionCallingResult.ts";
 import {SuccessFunctionCallingResult} from "../../../function-calling-result/implementations/success/SuccessFunctionCallingResult.ts";
@@ -7,6 +8,7 @@ import type {SpanIndexes} from "../../../span-indexes/SpanIndexes.ts";
 import {AbstractSyntaxTreeNode} from "../../AbstractSyntaxTreeNode.ts";
 import {computeKnowns} from "./computing-knowns/computeKnowns.ts";
 import type {Functions} from "../../../functions/Functions.ts";
+import {failureStatementExecutingResultTypeName} from "../../../statement-executing-result/implementations/failure/type-name/failureStatementExecutingResultTypeName.ts";
 import {returnStatementExecutingResultTypeName} from "../../../statement-executing-result/implementations/return/type-name/returnStatementExecutingResultTypeName.ts";
 import {stepStatementExecutingResultTypeName} from "../../../statement-executing-result/implementations/step/type-name/stepStatementExecutingResultTypeName.ts";
 import {successStatementExecutingResultTypeName} from "../../../statement-executing-result/implementations/success/type-name/successStatementExecutingResultTypeName.ts";
@@ -52,6 +54,13 @@ export abstract class FunctionAbstractSyntaxTreeNode<
 					);
 					const functionCallingResult: ReturnFunctionCallingResult =
 						new ReturnFunctionCallingResult(unknownsValues);
+					yield functionCallingResult;
+					break;
+				}
+				case failureStatementExecutingResultTypeName: {
+					const functionCallingResult = new FailureFunctionCallingResult(
+						bodyExecutingResult.data.node,
+					);
 					yield functionCallingResult;
 					break;
 				}

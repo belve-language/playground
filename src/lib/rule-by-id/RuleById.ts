@@ -42,6 +42,7 @@ import type {OptionalStartingWithWordFunctionHeaderSegmentsRestRule} from "../ru
 import type {OptionalStatementsRule} from "../rule/implementations/optional-statements/OptionalStatementsRule.ts";
 import type {OptionalUnknownFunctionCallSegmentContentRule} from "../rule/implementations/optional-unknown-function-call-segment-content/OptionalUnknownFunctionCallSegmentContentRule.ts";
 import type {OptionalUnknownFunctionHeaderSegmentContentRule} from "../rule/implementations/optional-unknown-function-header-segment-content/OptionalUnknownFunctionHeaderSegmentContentRule.ts";
+import type {OptionalVariableNameCharactersRule} from "../rule/implementations/optional-variable-name-characters/OptionalVariableNameCharactersRule.ts";
 import type {OptionalWhitespaceRule} from "../rule/implementations/optional-whitespace/OptionalWhitespaceRule.ts";
 import type {OptionalWhitespaceCharactersRule} from "../rule/implementations/optional-whitespace-characters/OptionalWhitespaceCharactersRule.ts";
 import type {OptionalWordCharactersRule} from "../rule/implementations/optional-word-characters/OptionalWordCharactersRule.ts";
@@ -73,6 +74,8 @@ import type {UnknownFunctionCallSegmentContentRule} from "../rule/implementation
 import type {UnknownFunctionHeaderSegmentRule} from "../rule/implementations/unknown-function-header-segment/UnknownFunctionHeaderSegmentRule.ts";
 import type {UnknownFunctionHeaderSegmentContentRule} from "../rule/implementations/unknown-function-header-segment-content/UnknownFunctionHeaderSegmentContentRule.ts";
 import type {VariableNameRule} from "../rule/implementations/variable-name/VariableNameRule.ts";
+import type {VariableNameCharacterRule} from "../rule/implementations/variable-name-character/VariableNameCharacterRule.ts";
+import type {VariableNameCharactersRule} from "../rule/implementations/variable-name-characters/VariableNameCharactersRule.ts";
 import type {WhitespaceRule} from "../rule/implementations/whitespace/WhitespaceRule.ts";
 import type {WhitespaceCharacterRule} from "../rule/implementations/whitespace-character/WhitespaceCharacterRule.ts";
 import type {WhitespaceCharactersRule} from "../rule/implementations/whitespace-characters/WhitespaceCharactersRule.ts";
@@ -125,6 +128,7 @@ export type RuleById = {
 	readonly OptionalStatements: OptionalStatementsRule;
 	readonly OptionalUnknownFunctionCallSegmentContent: OptionalUnknownFunctionCallSegmentContentRule;
 	readonly OptionalUnknownFunctionHeaderSegmentContent: OptionalUnknownFunctionHeaderSegmentContentRule;
+	readonly OptionalVariableNameCharacters: OptionalVariableNameCharactersRule;
 	readonly OptionalWhitespace: OptionalWhitespaceRule;
 	readonly OptionalWhitespaceCharacters: OptionalWhitespaceCharactersRule;
 	readonly OptionalWordCharacters: OptionalWordCharactersRule;
@@ -156,6 +160,8 @@ export type RuleById = {
 	readonly UnknownFunctionHeaderSegment: UnknownFunctionHeaderSegmentRule;
 	readonly UnknownFunctionHeaderSegmentContent: UnknownFunctionHeaderSegmentContentRule;
 	readonly VariableName: VariableNameRule;
+	readonly VariableNameCharacter: VariableNameCharacterRule;
+	readonly VariableNameCharacters: VariableNameCharactersRule;
 	readonly Whitespace: WhitespaceRule;
 	readonly WhitespaceCharacter: WhitespaceCharacterRule;
 	readonly WhitespaceCharacters: WhitespaceCharactersRule;

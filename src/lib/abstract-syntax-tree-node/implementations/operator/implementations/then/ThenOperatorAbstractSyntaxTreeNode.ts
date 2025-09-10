@@ -1,6 +1,7 @@
 import type {Statements} from "../../../../../../statements/Statements.ts";
 import type {Functions} from "../../../../../functions/Functions.ts";
 import type {SpanIndexes} from "../../../../../span-indexes/SpanIndexes.ts";
+import {failureStatementExecutingResultTypeName} from "../../../../../statement-executing-result/implementations/failure/type-name/failureStatementExecutingResultTypeName.ts";
 import {returnStatementExecutingResultTypeName} from "../../../../../statement-executing-result/implementations/return/type-name/returnStatementExecutingResultTypeName.ts";
 import {stepStatementExecutingResultTypeName} from "../../../../../statement-executing-result/implementations/step/type-name/stepStatementExecutingResultTypeName.ts";
 import {successStatementExecutingResultTypeName} from "../../../../../statement-executing-result/implementations/success/type-name/successStatementExecutingResultTypeName.ts";
@@ -43,6 +44,10 @@ export class ThenOperatorAbstractSyntaxTreeNode extends OperatorAbstractSyntaxTr
 						restStatements,
 					);
 					yield* restStatementsExecutingResults;
+					break;
+				}
+				case failureStatementExecutingResultTypeName: {
+					yield firstStatementExecutingResult;
 					break;
 				}
 			}

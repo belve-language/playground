@@ -79,7 +79,7 @@ export class TerminalExpression<
 			return character;
 		} else {
 			const result: UnexpectedCharacterExpressionParsingResult =
-				new UnexpectedCharacterExpressionParsingResult();
+				new UnexpectedCharacterExpressionParsingResult(index);
 			return result;
 		}
 	}

@@ -13,6 +13,8 @@ import type {SupportedExpressionFinalizingParsingResult} from "../../../expressi
 import {SuccessExpressionParsingResult} from "../../../expression-parsing-result/implementations/success/SuccessExpressionParsingResult.ts";
 import {successExpressionParsingResultTypeName} from "../../../expression-parsing-result/implementations/success/type-name/successExpressionParsingResultTypeName.ts";
 import {UnexpectedCharacterExpressionParsingResult} from "../../../expression-parsing-result/implementations/unexpected-character/UnexpectedCharacterExpressionParsingResult.ts";
+import {UnexpectedFinalizingExpressionParsingResult} from "../../../expression-parsing-result/implementations/unexpected-finalizing/UnexpectedFinalizingExpressionParsingResult.ts";
+import {unexpectedFinalizingExpressionParsingResultTypeName} from "../../../expression-parsing-result/implementations/unexpected-finalizing/type-name/unexpectedFinalizingExpressionParsingResultTypeName.ts";
 import type {SupportedExpressionParsingResult} from "../../../expression-parsing-result/supported/SupportedExpressionParsingResult.ts";
 import type {Grammar} from "../../../grammar/Grammar.ts";
 import {unexpectedCharacterParsingResultTypeName} from "../../../parsing-result/implementations/unexpected-character/type-name/unexpectedCharacterParsingResultTypeName.ts";
@@ -199,7 +201,14 @@ export class ThenExpression<
 		switch (parsingResultOfLeftExpression.typeName) {
 			case unexpectedCharacterParsingResultTypeName: {
 				const parsingResult: UnexpectedCharacterExpressionParsingResult =
-					new UnexpectedCharacterExpressionParsingResult();
+					new UnexpectedCharacterExpressionParsingResult(
+						parsingResultOfLeftExpression.index,
+					);
+				return parsingResult;
+			}
+			case unexpectedFinalizingExpressionParsingResultTypeName: {
+				const parsingResult: UnexpectedFinalizingExpressionParsingResult =
+					new UnexpectedFinalizingExpressionParsingResult();
 				return parsingResult;
 			}
 			case successExpressionParsingResultTypeName: {
@@ -218,8 +227,8 @@ export class ThenExpression<
 						);
 					switch (finalizingParsingResultOfRightExpression.typeName) {
 						case unexpectedFinalizingExpressionFinalizingParsingResultTypeName: {
-							const expressionParsingResult: UnexpectedCharacterExpressionParsingResult =
-								new UnexpectedCharacterExpressionParsingResult();
+							const expressionParsingResult: UnexpectedFinalizingExpressionParsingResult =
+								new UnexpectedFinalizingExpressionParsingResult();
 							return expressionParsingResult;
 						}
 						case successExpressionFinalizingParsingResultTypeName: {
@@ -252,7 +261,14 @@ export class ThenExpression<
 					switch (parsingResultOfRightExpression.typeName) {
 						case unexpectedCharacterParsingResultTypeName: {
 							const expressionParsingResult: UnexpectedCharacterExpressionParsingResult =
-								new UnexpectedCharacterExpressionParsingResult();
+								new UnexpectedCharacterExpressionParsingResult(
+									parsingResultOfRightExpression.index,
+								);
+							return expressionParsingResult;
+						}
+						case unexpectedFinalizingExpressionParsingResultTypeName: {
+							const expressionParsingResult: UnexpectedFinalizingExpressionParsingResult =
+								new UnexpectedFinalizingExpressionParsingResult();
 							return expressionParsingResult;
 						}
 						case successExpressionParsingResultTypeName: {

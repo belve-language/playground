@@ -5,6 +5,8 @@ import {returnFunctionCallingResultTypeName} from "../../../../../function-calli
 import {stepFunctionCallingResultTypeName} from "../../../../../function-calling-result/implementations/step/type-name/stepFunctionCallingResultTypeName.ts";
 import {successFunctionCallingResultTypeName} from "../../../../../function-calling-result/implementations/success/type-name/successFunctionCallingResultTypeName.ts";
 import type {SpanIndexes} from "../../../../../span-indexes/SpanIndexes.ts";
+import {FailureStatementExecutingResult} from "../../../../../statement-executing-result/implementations/failure/FailureStatementExecutingResult.ts";
+import {failureStatementExecutingResultTypeName} from "../../../../../statement-executing-result/implementations/failure/type-name/failureStatementExecutingResultTypeName.ts";
 import {StepStatementExecutingResult} from "../../../../../statement-executing-result/implementations/step/StepStatementExecutingResult.ts";
 import type {SupportedStatementExecutingResult} from "../../../../../statement-executing-result/supported/SupportedStatementExecutingResult.ts";
 import type {Variables} from "../../../../../variables/Variables.ts";
@@ -57,6 +59,7 @@ export class FunctionCallStatementAbstractSyntaxTreeNode extends StatementAbstra
 		} else {
 			const knownsValues = computeKnownsValues(this.knownsNames, variables);
 			const functionCallingResults = function_.call(functions, knownsValues);
+			let hasFailed = true;
 			for (const functionCallingResult of functionCallingResults) {
 				switch (functionCallingResult.typeName) {
 					case stepFunctionCallingResultTypeName: {
@@ -75,6 +78,7 @@ export class FunctionCallStatementAbstractSyntaxTreeNode extends StatementAbstra
 						break;
 					}
 					case returnFunctionCallingResultTypeName: {
+						hasFailed = false;
 						const unknowns: Variables = computeUnknowns(
 							this.unknownsNames,
 							functionCallingResult.data.unknownsValues,
@@ -82,10 +86,22 @@ export class FunctionCallStatementAbstractSyntaxTreeNode extends StatementAbstra
 						const statementExecutingResult = new ReturnStatementExecutingResult(
 							unknowns,
 						);
+						yield new SuccessStatementExecutingResult(this);
+						yield statementExecutingResult;
+						break;
+					}
+					case failureStatementExecutingResultTypeName: {
+						const statementExecutingResult =
+							new FailureStatementExecutingResult(
+								functionCallingResult.data.node,
+							);
 						yield statementExecutingResult;
 						break;
 					}
 				}
+			}
+			if (hasFailed) {
+				yield new FailureStatementExecutingResult(this);
 			}
 		}
 	}

@@ -6,6 +6,7 @@ import {successExpressionFinalizingParsingResultTypeName} from "../expression-fi
 import {unexpectedFinalizingExpressionFinalizingParsingResultTypeName} from "../expression-finalizing-parsing-result/implementations/unexpected-finalizing/type-name/unexpectedFinalizingExpressionFinalizingParsingResultTypeName.ts";
 import {successExpressionParsingResultTypeName} from "../expression-parsing-result/implementations/success/type-name/successExpressionParsingResultTypeName.ts";
 import {unexpectedCharacterExpressionParsingResultTypeName} from "../expression-parsing-result/implementations/unexpected-character/type-name/unexpectedCharacterExpressionParsingResultTypeName.ts";
+import {unexpectedFinalizingExpressionParsingResultTypeName} from "../expression-parsing-result/implementations/unexpected-finalizing/type-name/unexpectedFinalizingExpressionParsingResultTypeName.ts";
 import type {Grammar} from "../grammar/Grammar.ts";
 import type {Index} from "../index/Index.ts";
 import type {ParsingTable} from "../parsing-table/ParsingTable.ts";
@@ -16,6 +17,7 @@ import {UnexpectedFinalizingRuleFinalizingParsingResult} from "../rule-finalizin
 import type {SupportedRuleFinalizingParsingResult} from "../rule-finalizing-parsing-result/supported/SupportedRuleFinalizingParsingResult.ts";
 import {SuccessRuleParsingResult} from "../rule-parsing-result/implementations/success/SuccessRuleParsingResult.ts";
 import {UnexpectedCharacterRuleParsingResult} from "../rule-parsing-result/implementations/unexpected-character/UnexpectedCharacterRuleParsingResult.ts";
+import {UnexpectedFinalizingRuleParsingResult} from "../rule-parsing-result/implementations/unexpected-finalizing/UnexpectedFinalizingRuleParsingResult.ts";
 import type {SupportedRuleParsingResult} from "../rule-parsing-result/supported/SupportedRuleParsingResult.ts";
 export abstract class Rule<NodeToUse extends ConcreteSyntaxTreeNode<Atom>> {
 	protected constructor() {}
@@ -173,7 +175,7 @@ export abstract class Rule<NodeToUse extends ConcreteSyntaxTreeNode<Atom>> {
 		const expression = parsingTableRow.terminals[firstCharacter];
 		if (expression === undefined) {
 			const parsingResult: UnexpectedCharacterRuleParsingResult =
-				new UnexpectedCharacterRuleParsingResult();
+				new UnexpectedCharacterRuleParsingResult(index);
 			return parsingResult;
 		} else {
 			const expressionParsingResult = expression.parse(
@@ -195,8 +197,15 @@ export abstract class Rule<NodeToUse extends ConcreteSyntaxTreeNode<Atom>> {
 				}
 				case unexpectedCharacterExpressionParsingResultTypeName: {
 					const parsingResult: UnexpectedCharacterRuleParsingResult =
-						new UnexpectedCharacterRuleParsingResult();
+						new UnexpectedCharacterRuleParsingResult(
+							expressionParsingResult.index,
+						);
 					return parsingResult;
+				}
+				case unexpectedFinalizingExpressionParsingResultTypeName: {
+					const finalizingParsingResult: UnexpectedFinalizingRuleParsingResult =
+						new UnexpectedFinalizingRuleParsingResult();
+					return finalizingParsingResult;
 				}
 			}
 		}

@@ -1,0 +1,2 @@
+export const unexpectedFinalizingExpressionParsingResultTypeName =
+	"unexpectedFinalizing";

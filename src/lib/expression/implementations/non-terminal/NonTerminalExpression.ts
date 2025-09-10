@@ -6,6 +6,8 @@ import {SuccessExpressionFinalizingParsingResult} from "../../../expression-fina
 import {UnexpectedFinalizingExpressionFinalizingParsingResult} from "../../../expression-finalizing-parsing-result/implementations/unexpected-finalizing/UnexpectedFinalizingExpressionFinalizingParsingResult.ts";
 import {SuccessExpressionParsingResult} from "../../../expression-parsing-result/implementations/success/SuccessExpressionParsingResult.ts";
 import {UnexpectedCharacterExpressionParsingResult} from "../../../expression-parsing-result/implementations/unexpected-character/UnexpectedCharacterExpressionParsingResult.ts";
+import {UnexpectedFinalizingExpressionParsingResult} from "../../../expression-parsing-result/implementations/unexpected-finalizing/UnexpectedFinalizingExpressionParsingResult.ts";
+import {unexpectedFinalizingExpressionParsingResultTypeName} from "../../../expression-parsing-result/implementations/unexpected-finalizing/type-name/unexpectedFinalizingExpressionParsingResultTypeName.ts";
 import type {Grammar} from "../../../grammar/Grammar.ts";
 import type {Index} from "../../../index/Index.ts";
 import type {ParsingTable} from "../../../parsing-table/ParsingTable.ts";
@@ -109,7 +111,8 @@ export class NonTerminalExpression<
 		remainingCharacters: readonly [Character, ...(readonly Character[])],
 	):
 		| SuccessExpressionParsingResult<NonTerminalAtom<NodeToUse>>
-		| UnexpectedCharacterExpressionParsingResult {
+		| UnexpectedCharacterExpressionParsingResult
+		| UnexpectedFinalizingExpressionParsingResult {
 		const ruleParsingResult = this.rule.parse(
 			grammar,
 			index,
@@ -117,9 +120,16 @@ export class NonTerminalExpression<
 			remainingCharacters,
 		);
 		switch (ruleParsingResult.typeName) {
+			case unexpectedFinalizingExpressionParsingResultTypeName: {
+				const parsingResult: UnexpectedFinalizingExpressionParsingResult =
+					new UnexpectedFinalizingExpressionParsingResult();
+				return parsingResult;
+			}
 			case unexpectedCharacterRuleParsingResultTypeName: {
 				const parsingResult: UnexpectedCharacterExpressionParsingResult =
-					new UnexpectedCharacterExpressionParsingResult();
+					new UnexpectedCharacterExpressionParsingResult(
+						ruleParsingResult.index,
+					);
 				return parsingResult;
 			}
 			case successRuleParsingResultTypeName: {

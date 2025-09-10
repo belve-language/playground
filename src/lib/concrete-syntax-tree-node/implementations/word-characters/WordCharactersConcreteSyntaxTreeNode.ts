@@ -1,6 +1,7 @@
 import type {WordCharactersConcreteSyntaxTreeNodeAtom} from "./atom/WordCharactersConcreteSyntaxTreeNodeAtom.ts";
 import {ConcreteSyntaxTreeNode} from "../../ConcreteSyntaxTreeNode.ts";
 import {SuccessAbstractifyingResult} from "../../abstractifying/result/implementations/success/SuccessAbstractifyingResult.ts";
+import {successAbstractifyingResultTypeName} from "../../abstractifying/result/implementations/success/type-name/successAbstractifyingResultTypeName.ts";
 export class WordCharactersConcreteSyntaxTreeNode extends ConcreteSyntaxTreeNode<WordCharactersConcreteSyntaxTreeNodeAtom> {
 	public constructor(atom: WordCharactersConcreteSyntaxTreeNodeAtom) {
 		super(atom);
@@ -9,18 +10,29 @@ export class WordCharactersConcreteSyntaxTreeNode extends ConcreteSyntaxTreeNode
 		const wordCharacter = this.atom.leftSubAtom.node;
 		const optionalWordCharacters = this.atom.rightSubAtom.node;
 		const abstractifiedWordCharacter = wordCharacter.abstractify();
-		const abstractifiedOptionalWordCharacters =
+		const optionalWordCharactersAbstractifyingResult =
 			optionalWordCharacters.abstractify();
-		if (abstractifiedOptionalWordCharacters === null) {
-			const abstractifiedWordCharacters = abstractifiedWordCharacter;
-			const wordCharactersAbstractifyingResult: SuccessAbstractifyingResult<string> =
-				new SuccessAbstractifyingResult<string>(abstractifiedWordCharacters);
-			return wordCharactersAbstractifyingResult;
-		} else {
-			const abstractifiedWordCharacters = `${abstractifiedWordCharacter}${abstractifiedOptionalWordCharacters}`;
-			const wordCharactersAbstractifyingResult: SuccessAbstractifyingResult<string> =
-				new SuccessAbstractifyingResult<string>(abstractifiedWordCharacters);
-			return wordCharactersAbstractifyingResult;
+		switch (optionalWordCharactersAbstractifyingResult.typeName) {
+			case successAbstractifyingResultTypeName: {
+				const abstractifiedOptionalWordCharacters =
+					optionalWordCharactersAbstractifyingResult.data;
+				if (abstractifiedOptionalWordCharacters === null) {
+					const abstractifiedWordCharacters: string =
+						abstractifiedWordCharacter;
+					const wordCharactersAbstractifyingResult: SuccessAbstractifyingResult<string> =
+						new SuccessAbstractifyingResult<string>(
+							abstractifiedWordCharacters,
+						);
+					return wordCharactersAbstractifyingResult;
+				} else {
+					const abstractifiedWordCharacters: string = `${abstractifiedWordCharacter}${abstractifiedOptionalWordCharacters}`;
+					const wordCharactersAbstractifyingResult: SuccessAbstractifyingResult<string> =
+						new SuccessAbstractifyingResult<string>(
+							abstractifiedWordCharacters,
+						);
+					return wordCharactersAbstractifyingResult;
+				}
+			}
 		}
 	}
 }

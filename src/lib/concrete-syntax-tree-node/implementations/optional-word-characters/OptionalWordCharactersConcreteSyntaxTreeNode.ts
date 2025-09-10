@@ -7,7 +7,7 @@ export class OptionalWordCharactersConcreteSyntaxTreeNode extends ConcreteSyntax
 	public constructor(atom: OptionalWordCharactersConcreteSyntaxTreeNodeAtom) {
 		super(atom);
 	}
-	public abstractify(): null | string {
+	public abstractify(): SuccessAbstractifyingResult<null | string> {
 		const wordCharacters = this.atom.node;
 		const wordCharactersAbstractifyingResult = wordCharacters.abstractify();
 		switch (wordCharactersAbstractifyingResult.typeName) {
@@ -16,7 +16,12 @@ export class OptionalWordCharactersConcreteSyntaxTreeNode extends ConcreteSyntax
 					wordCharactersAbstractifyingResult.data;
 				const abstractifiedOptionalWordCharacters: null | string =
 					abstractifiedWordCharacters;
-				return abstractifiedOptionalWordCharacters;
+				const optionalWordCharactersAbstractifyingResult: SuccessAbstractifyingResult<
+					null | string
+				> = new SuccessAbstractifyingResult<null | string>(
+					abstractifiedOptionalWordCharacters,
+				);
+				return optionalWordCharactersAbstractifyingResult;
 			}
 		}
 	}

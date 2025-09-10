@@ -3,7 +3,13 @@ import {executeStatements} from "./executing-statements/executeStatements.ts";
 import type {Statements} from "../../../../../../statements/Statements.ts";
 import type {Functions} from "../../../../../functions/Functions.ts";
 import type {SpanIndexes} from "../../../../../span-indexes/SpanIndexes.ts";
+import {FailureStatementExecutingResult} from "../../../../../statement-executing-result/implementations/failure/FailureStatementExecutingResult.ts";
+import {failureStatementExecutingResultTypeName} from "../../../../../statement-executing-result/implementations/failure/type-name/failureStatementExecutingResultTypeName.ts";
+import {returnStatementExecutingResultTypeName} from "../../../../../statement-executing-result/implementations/return/type-name/returnStatementExecutingResultTypeName.ts";
 import {StepStatementExecutingResult} from "../../../../../statement-executing-result/implementations/step/StepStatementExecutingResult.ts";
+import {stepStatementExecutingResultTypeName} from "../../../../../statement-executing-result/implementations/step/type-name/stepStatementExecutingResultTypeName.ts";
+import {SuccessStatementExecutingResult} from "../../../../../statement-executing-result/implementations/success/SuccessStatementExecutingResult.ts";
+import {successStatementExecutingResultTypeName} from "../../../../../statement-executing-result/implementations/success/type-name/successStatementExecutingResultTypeName.ts";
 import type {SupportedStatementExecutingResult} from "../../../../../statement-executing-result/supported/SupportedStatementExecutingResult.ts";
 import type {Variables} from "../../../../../variables/Variables.ts";
 import {StatementAbstractSyntaxTreeNode} from "../../StatementAbstractSyntaxTreeNode.ts";
@@ -25,6 +31,31 @@ export class BlockStatementAbstractSyntaxTreeNode extends StatementAbstractSynta
 			variables,
 			statements,
 		);
-		yield* statementsExecutingResults;
+		let hasFailed = true;
+		for (const statementsExecutingResult of statementsExecutingResults) {
+			switch (statementsExecutingResult.typeName) {
+				case stepStatementExecutingResultTypeName: {
+					yield statementsExecutingResult;
+					break;
+				}
+				case successStatementExecutingResultTypeName: {
+					yield statementsExecutingResult;
+					break;
+				}
+				case returnStatementExecutingResultTypeName: {
+					hasFailed = false;
+					yield new SuccessStatementExecutingResult(this);
+					yield statementsExecutingResult;
+					break;
+				}
+				case failureStatementExecutingResultTypeName: {
+					yield statementsExecutingResult;
+					break;
+				}
+			}
+		}
+		if (hasFailed) {
+			yield new FailureStatementExecutingResult(this);
+		}
 	}
 }

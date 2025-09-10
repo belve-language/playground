@@ -42,6 +42,7 @@ import {OptionalStartingWithWordFunctionHeaderSegmentsRestRule} from "../../rule
 import {OptionalStatementsRule} from "../../rule/implementations/optional-statements/OptionalStatementsRule.ts";
 import {OptionalUnknownFunctionCallSegmentContentRule} from "../../rule/implementations/optional-unknown-function-call-segment-content/OptionalUnknownFunctionCallSegmentContentRule.ts";
 import {OptionalUnknownFunctionHeaderSegmentContentRule} from "../../rule/implementations/optional-unknown-function-header-segment-content/OptionalUnknownFunctionHeaderSegmentContentRule.ts";
+import {OptionalVariableNameCharactersRule} from "../../rule/implementations/optional-variable-name-characters/OptionalVariableNameCharactersRule.ts";
 import {OptionalWhitespaceRule} from "../../rule/implementations/optional-whitespace/OptionalWhitespaceRule.ts";
 import {OptionalWhitespaceCharactersRule} from "../../rule/implementations/optional-whitespace-characters/OptionalWhitespaceCharactersRule.ts";
 import {OptionalWordCharactersRule} from "../../rule/implementations/optional-word-characters/OptionalWordCharactersRule.ts";
@@ -73,6 +74,8 @@ import {UnknownFunctionCallSegmentContentRule} from "../../rule/implementations/
 import {UnknownFunctionHeaderSegmentRule} from "../../rule/implementations/unknown-function-header-segment/UnknownFunctionHeaderSegmentRule.ts";
 import {UnknownFunctionHeaderSegmentContentRule} from "../../rule/implementations/unknown-function-header-segment-content/UnknownFunctionHeaderSegmentContentRule.ts";
 import {VariableNameRule} from "../../rule/implementations/variable-name/VariableNameRule.ts";
+import {VariableNameCharacterRule} from "../../rule/implementations/variable-name-character/VariableNameCharacterRule.ts";
+import {VariableNameCharactersRule} from "../../rule/implementations/variable-name-characters/VariableNameCharactersRule.ts";
 import {WhitespaceRule} from "../../rule/implementations/whitespace/WhitespaceRule.ts";
 import {WhitespaceCharacterRule} from "../../rule/implementations/whitespace-character/WhitespaceCharacterRule.ts";
 import {WhitespaceCharactersRule} from "../../rule/implementations/whitespace-characters/WhitespaceCharactersRule.ts";
@@ -137,6 +140,7 @@ export const ruleById: RuleById = {
 		new OptionalUnknownFunctionCallSegmentContentRule(),
 	OptionalUnknownFunctionHeaderSegmentContent:
 		new OptionalUnknownFunctionHeaderSegmentContentRule(),
+	OptionalVariableNameCharacters: new OptionalVariableNameCharactersRule(),
 	OptionalWhitespace: new OptionalWhitespaceRule(),
 	OptionalWhitespaceCharacters: new OptionalWhitespaceCharactersRule(),
 	OptionalWordCharacters: new OptionalWordCharactersRule(),
@@ -184,6 +188,8 @@ export const ruleById: RuleById = {
 	UnknownFunctionHeaderSegmentContent:
 		new UnknownFunctionHeaderSegmentContentRule(),
 	VariableName: new VariableNameRule(),
+	VariableNameCharacter: new VariableNameCharacterRule(),
+	VariableNameCharacters: new VariableNameCharactersRule(),
 	Whitespace: new WhitespaceRule(),
 	WhitespaceCharacter: new WhitespaceCharacterRule(),
 	WhitespaceCharacters: new WhitespaceCharactersRule(),

@@ -1,6 +1,6 @@
 import {VariableNameConcreteSyntaxTreeNode} from "../../../concrete-syntax-tree-node/implementations/variable-name/VariableNameConcreteSyntaxTreeNode.ts";
 import type {VariableNameConcreteSyntaxTreeNodeAtom} from "../../../concrete-syntax-tree-node/implementations/variable-name/atom/VariableNameConcreteSyntaxTreeNodeAtom.ts";
-import type {WordConcreteSyntaxTreeNode} from "../../../concrete-syntax-tree-node/implementations/word/WordConcreteSyntaxTreeNode.ts";
+import type {VariableNameCharactersConcreteSyntaxTreeNode} from "../../../concrete-syntax-tree-node/implementations/variable-name-characters/VariableNameCharactersConcreteSyntaxTreeNode.ts";
 import {NonTerminalExpression} from "../../../expression/implementations/non-terminal/NonTerminalExpression.ts";
 import type {RuleById} from "../../../rule-by-id/RuleById.ts";
 import {Rule} from "../../Rule.ts";
@@ -16,10 +16,12 @@ export class VariableNameRule extends Rule<VariableNameConcreteSyntaxTreeNode> {
 	}
 	public override getRightExpressions(
 		ruleById: RuleById,
-	): readonly [NonTerminalExpression<WordConcreteSyntaxTreeNode>] {
+	): readonly [
+		NonTerminalExpression<VariableNameCharactersConcreteSyntaxTreeNode>,
+	] {
 		const rightExpressions: readonly [
-			NonTerminalExpression<WordConcreteSyntaxTreeNode>,
-		] = [new NonTerminalExpression(ruleById.Word)];
+			NonTerminalExpression<VariableNameCharactersConcreteSyntaxTreeNode>,
+		] = [new NonTerminalExpression(ruleById.VariableNameCharacters)];
 		return rightExpressions;
 	}
 }

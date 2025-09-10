@@ -10,7 +10,7 @@ export class FunctionsAbstractSyntaxTreeNode extends AbstractSyntaxTreeNode<Func
 	) {
 		super(children, spanIndexes);
 	}
-	public *executeComplexly(
+	public *run(
 		builtInFunctions: Functions,
 	): Generator<SupportedFunctionCallingResult, void, void> {
 		const mainFunction = this.children.mainFunction;
@@ -23,18 +23,6 @@ export class FunctionsAbstractSyntaxTreeNode extends AbstractSyntaxTreeNode<Func
 			};
 			const executingResults = mainFunction.call(combinedFunctions, []);
 			yield* executingResults;
-		}
-	}
-	public executeSimply(): boolean | null {
-		const mainFunction = this.children.mainFunction;
-		if (mainFunction === null) {
-			return null;
-		} else {
-			const unknownsValueses = mainFunction.call(this.children.functions, []);
-			for (const unknownsValues of unknownsValueses) {
-				return true;
-			}
-			return false;
 		}
 	}
 }

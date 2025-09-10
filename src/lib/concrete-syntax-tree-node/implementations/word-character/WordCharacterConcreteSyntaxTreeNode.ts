@@ -5,6 +5,7 @@ export class WordCharacterConcreteSyntaxTreeNode extends ConcreteSyntaxTreeNode<
 		super(atom);
 	}
 	public abstractify(): string {
-		return this.atom.character;
+		const abstractifiedWordCharacter: string = this.atom.character;
+		return abstractifiedWordCharacter;
 	}
 }
