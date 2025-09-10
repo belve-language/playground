@@ -1,3 +1,6 @@
+
+# TODO: FIX
+# TODO: NAPISAĆ ROZDZIAŁ PRACY
 name: "Deploy to GitHub Pages"
 on:
   workflow_dispatch:
