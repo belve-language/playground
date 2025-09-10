@@ -27,6 +27,8 @@ jobs:
           name: "github-pages"
           path: "./build"
   deploy:
+    environment:
+      name: "github-pages"
     name: "Deploy"
     needs:
       - "build"
