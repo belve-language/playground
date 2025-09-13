@@ -19,4 +19,7 @@ export class UnknownFunctionHeaderSegmentAbstractSyntaxTreeNode extends Function
 		this.name = name;
 	}
 	public readonly name: string;
+	public stringify(): string {
+		return `[${this.name}]`;
+	}
 }

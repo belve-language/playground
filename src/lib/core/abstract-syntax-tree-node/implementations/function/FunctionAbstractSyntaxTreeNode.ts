@@ -12,7 +12,6 @@ import {failureStatementExecutingResultTypeName} from "../../../statement-execut
 import {returnStatementExecutingResultTypeName} from "../../../statement-executing-result/implementations/return/type-name/returnStatementExecutingResultTypeName.ts";
 import {stepStatementExecutingResultTypeName} from "../../../statement-executing-result/implementations/step/type-name/stepStatementExecutingResultTypeName.ts";
 import {successStatementExecutingResultTypeName} from "../../../statement-executing-result/implementations/success/type-name/successStatementExecutingResultTypeName.ts";
-import type {SupportedStatementExecutingResult} from "../../../statement-executing-result/supported/SupportedStatementExecutingResult.ts";
 import type {Variables} from "../../../variables/Variables.ts";
 import type {FunctionHeaderAbstractSyntaxTreeNode} from "../function-header/FunctionHeaderAbstractSyntaxTreeNode.ts";
 import type {FunctionsAbstractSyntaxTreeNode} from "../functions/FunctionsAbstractSyntaxTreeNode.ts";
@@ -85,4 +84,5 @@ export abstract class FunctionAbstractSyntaxTreeNode<
 	public abstract putIntoFunctions(
 		functions: FunctionsAbstractSyntaxTreeNode,
 	): FunctionsAbstractSyntaxTreeNode;
+	public abstract stringify(): string;
 }

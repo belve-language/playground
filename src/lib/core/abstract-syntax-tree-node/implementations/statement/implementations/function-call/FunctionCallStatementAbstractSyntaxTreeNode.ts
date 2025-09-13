@@ -1,6 +1,5 @@
 import type {FunctionCallStatementAbstractSyntaxTreeNodeChildren} from "./children/FunctionCallStatementAbstractSyntaxTreeNodeChildren.ts";
 import {computeUnknowns} from "./computing-unknowns/computeUnknowns.ts";
-import {SuccessAbstractifyingResult} from "../../../../../concrete-syntax-tree-node/abstractifying/result/implementations/success/SuccessAbstractifyingResult.ts";
 import {returnFunctionCallingResultTypeName} from "../../../../../function-calling-result/implementations/return/type-name/returnFunctionCallingResultTypeName.ts";
 import {stepFunctionCallingResultTypeName} from "../../../../../function-calling-result/implementations/step/type-name/stepFunctionCallingResultTypeName.ts";
 import {successFunctionCallingResultTypeName} from "../../../../../function-calling-result/implementations/success/type-name/successFunctionCallingResultTypeName.ts";
@@ -18,7 +17,7 @@ import {computeUnknownsNames} from "./computing-unknowns-names/computeUnknownsNa
 import type {Functions} from "../../../../../functions/Functions.ts";
 import {ReturnStatementExecutingResult} from "../../../../../statement-executing-result/implementations/return/ReturnStatementExecutingResult.ts";
 import {SuccessStatementExecutingResult} from "../../../../../statement-executing-result/implementations/success/SuccessStatementExecutingResult.ts";
-import type {SupportedStatementAbstractSyntaxTreeNode} from "../../supported/SupportedStatementAbstractSyntaxTreeNode.ts";
+import type {FunctionHeaderAbstractSyntaxTreeNode} from "../../../function-header/FunctionHeaderAbstractSyntaxTreeNode.ts";
 export class FunctionCallStatementAbstractSyntaxTreeNode extends StatementAbstractSyntaxTreeNode<FunctionCallStatementAbstractSyntaxTreeNodeChildren> {
 	public static create(
 		children: FunctionCallStatementAbstractSyntaxTreeNodeChildren,
@@ -112,7 +111,27 @@ export class FunctionCallStatementAbstractSyntaxTreeNode extends StatementAbstra
 	private readonly id: string;
 	private readonly knownsNames: readonly string[];
 	public override *mutate(
-		functions: Functions,
-	): Generator<SupportedStatementAbstractSyntaxTreeNode, void, void> {}
+		functionsHeaders: readonly [
+			FunctionHeaderAbstractSyntaxTreeNode,
+			...FunctionHeaderAbstractSyntaxTreeNode[],
+		],
+		unknownsNames: readonly string[],
+		userVariablesNames: readonly string[],
+	): Generator<FunctionCallStatementAbstractSyntaxTreeNode, void, void> {
+		// TODO
+	}
+	public override scanSetUnknowns(
+		unknownsNamesToSet: ReadonlySet<string>,
+	): ReadonlySet<string> {
+		return unknownsNamesToSet.difference(new Set(this.unknownsNames));
+	}
+	public stringify(identationLevel: number): string {
+		const identation = "\t".repeat(identationLevel);
+		return `${identation}${this.children.segments
+			.map((segment) => {
+				return segment.stringify();
+			})
+			.join(" ")}`;
+	}
 	private readonly unknownsNames: readonly string[];
 }

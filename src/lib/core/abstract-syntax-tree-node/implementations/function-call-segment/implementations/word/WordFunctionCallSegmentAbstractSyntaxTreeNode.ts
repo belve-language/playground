@@ -17,4 +17,7 @@ export class WordFunctionCallSegmentAbstractSyntaxTreeNode extends FunctionCallS
 	) {
 		super(children, id, spanIndexes);
 	}
+	public stringify(): string {
+		return this.children.word;
+	}
 }

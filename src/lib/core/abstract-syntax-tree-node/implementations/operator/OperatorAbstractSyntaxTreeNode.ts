@@ -22,4 +22,5 @@ export abstract class OperatorAbstractSyntaxTreeNode extends AbstractSyntaxTreeN
 		restStatements: StatementsAbstractSyntaxTreeNode,
 		variables: Variables,
 	): Generator<SupportedStatementExecutingResult, void, void>;
+	public abstract stringify(): string;
 }

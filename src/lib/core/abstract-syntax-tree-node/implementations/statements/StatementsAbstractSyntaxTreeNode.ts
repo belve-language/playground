@@ -1,6 +1,4 @@
 import type {StatementsAbstractSyntaxTreeNodeChildren} from "./children/StatementsAbstractSyntaxTreeNodeChildren.ts";
-import type {Statements} from "../../../../../statements/Statements.ts";
-import {builtInFunctions} from "../../../built-in-functions/builtInFunctions.ts";
 import type {Functions} from "../../../functions/Functions.ts";
 import {SpanIndexes} from "../../../span-indexes/SpanIndexes.ts";
 import {failureStatementExecutingResultTypeName} from "../../../statement-executing-result/implementations/failure/type-name/failureStatementExecutingResultTypeName.ts";
@@ -11,14 +9,7 @@ import {successStatementExecutingResultTypeName} from "../../../statement-execut
 import type {SupportedStatementExecutingResult} from "../../../statement-executing-result/supported/SupportedStatementExecutingResult.ts";
 import type {Variables} from "../../../variables/Variables.ts";
 import {AbstractSyntaxTreeNode} from "../../AbstractSyntaxTreeNode.ts";
-import {WordFunctionCallSegmentAbstractSyntaxTreeNode} from "../function-call-segment/implementations/word/WordFunctionCallSegmentAbstractSyntaxTreeNode.ts";
-import {pickBfslyFromInfiniteGenerators} from "../functions/FunctionsAbstractSyntaxTreeNode.ts";
-import {OperatedStatementAbstractSyntaxTreeNode} from "../operated-statement/OperatedStatementAbstractSyntaxTreeNode.ts";
-import {OrOperatorAbstractSyntaxTreeNode} from "../operator/implementations/or/OrOperatorAbstractSyntaxTreeNode.ts";
-import {ThenOperatorAbstractSyntaxTreeNode} from "../operator/implementations/then/ThenOperatorAbstractSyntaxTreeNode.ts";
-import {BlockStatementAbstractSyntaxTreeNode} from "../statement/implementations/block/BlockStatementAbstractSyntaxTreeNode.ts";
-import {FunctionCallStatementAbstractSyntaxTreeNode} from "../statement/implementations/function-call/FunctionCallStatementAbstractSyntaxTreeNode.ts";
-import type {SupportedStatementAbstractSyntaxTreeNode} from "../statement/supported/SupportedStatementAbstractSyntaxTreeNode.ts";
+import type {FunctionHeaderAbstractSyntaxTreeNode} from "../function-header/FunctionHeaderAbstractSyntaxTreeNode.ts";
 export class StatementsAbstractSyntaxTreeNode extends AbstractSyntaxTreeNode<StatementsAbstractSyntaxTreeNodeChildren> {
 	public constructor(
 		children: StatementsAbstractSyntaxTreeNodeChildren,
@@ -85,65 +76,38 @@ export class StatementsAbstractSyntaxTreeNode extends AbstractSyntaxTreeNode<Sta
 		}
 	}
 	public *mutate(
-		functions: Functions,
+		functionsHeaders: readonly FunctionHeaderAbstractSyntaxTreeNode[],
+		unknownsNames: readonly string[],
+		userVariablesNames: readonly string[],
 	): Generator<StatementsAbstractSyntaxTreeNode, void, void> {
-		const [firstInitialOperatedStatement, ...restInitialOperatedStatements] =
-			this.children.initialOperatedStatements;
-		if (firstInitialOperatedStatement === undefined) {
-			for (const mutatedFinalStatement of this.children.finalStatement.mutate(
-				functions,
-			)) {
-				yield new StatementsAbstractSyntaxTreeNode(
-					{
-						finalStatement: mutatedFinalStatement,
-						initialOperatedStatements: [],
-					},
-					this.spanIndexes,
-				);
-			}
-		} else {
-			const children = this.children;
-			yield* pickBfslyFromInfiniteGenerators(
-				(function* () {
-					for (const mutatedFirstInitialOperatedStatement of firstInitialOperatedStatement.mutate(
-						functions,
-					)) {
-						yield new StatementsAbstractSyntaxTreeNode(
-							{
-								finalStatement: children.finalStatement,
-								initialOperatedStatements: [
-									mutatedFirstInitialOperatedStatement,
-									...restInitialOperatedStatements,
-								],
-							},
-							new SpanIndexes(0, 0),
-						);
-					}
-				})(),
-				(function* () {
-					const restStatements = new StatementsAbstractSyntaxTreeNode(
-						{
-							finalStatement: children.finalStatement,
-							initialOperatedStatements: restInitialOperatedStatements,
-						},
-						new SpanIndexes(0, 0),
+		// TODO
+	}
+	public scanSetUnknowns(
+		unknownsToSetNames: ReadonlySet<string>,
+	): ReadonlySet<string> {
+		const unknownsToSetNamesAfterInitialOperatedStatements =
+			this.children.initialOperatedStatements.reduce<ReadonlySet<string>>(
+				(
+					accumulatedUnknownsToSetNamesAfterInitialOperatedStatements,
+					operatedStatement,
+				) => {
+					return operatedStatement.scanSetUnknowns(
+						accumulatedUnknownsToSetNamesAfterInitialOperatedStatements,
 					);
-					for (const mutatedRestStatements of restStatements.mutate(
-						functions,
-					)) {
-						yield new StatementsAbstractSyntaxTreeNode(
-							{
-								finalStatement: mutatedRestStatements.children.finalStatement,
-								initialOperatedStatements: [
-									firstInitialOperatedStatement,
-									...mutatedRestStatements.children.initialOperatedStatements,
-								],
-							},
-							new SpanIndexes(0, 0),
-						);
-					}
-				})(),
+				},
+				unknownsToSetNames,
 			);
-		}
+		const unknownsToSetNamesAfterFinalStatement =
+			this.children.finalStatement.scanSetUnknowns(
+				unknownsToSetNamesAfterInitialOperatedStatements,
+			);
+		return unknownsToSetNamesAfterFinalStatement;
+	}
+	public stringify(indentationLevel: number): string {
+		return `${this.children.initialOperatedStatements
+			.map((statement) => {
+				return `${statement.stringify(indentationLevel)}\n`;
+			})
+			.join("")}${this.children.finalStatement.stringify(indentationLevel)}\n`;
 	}
 }

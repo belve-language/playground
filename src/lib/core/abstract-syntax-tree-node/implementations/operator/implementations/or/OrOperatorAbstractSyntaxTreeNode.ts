@@ -34,4 +34,7 @@ export class OrOperatorAbstractSyntaxTreeNode extends OperatorAbstractSyntaxTree
 		);
 		yield* restStatementsExecutingResults;
 	}
+	public override stringify(): string {
+		return ".";
+	}
 }

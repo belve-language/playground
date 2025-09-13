@@ -1,6 +1,5 @@
 import type {SeparatedStatementsConcreteSyntaxTreeNodeAtom} from "./atom/SeparatedStatementsConcreteSyntaxTreeNodeAtom.ts";
-import type {Statements} from "../../../../../statements/Statements.ts";
-import type {OperatorAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree-node/implementations/operator/OperatorAbstractSyntaxTreeNode.ts";
+import type {SupportedOperatorAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree-node/implementations/operator/supported/SupportedOperatorAbstractSyntaxTreeNode.ts";
 import type {StatementsAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree-node/implementations/statements/StatementsAbstractSyntaxTreeNode.ts";
 import {ConcreteSyntaxTreeNode} from "../../ConcreteSyntaxTreeNode.ts";
 import {ErrorAbstractifyingResult} from "../../abstractifying/result/implementations/error/ErrorAbstractifyingResult.ts";
@@ -14,7 +13,7 @@ export class SeparatedStatementsConcreteSyntaxTreeNode extends ConcreteSyntaxTre
 	public abstractify():
 		| ErrorAbstractifyingResult
 		| SuccessAbstractifyingResult<{
-				readonly operator: OperatorAbstractSyntaxTreeNode;
+				readonly operator: SupportedOperatorAbstractSyntaxTreeNode;
 				readonly statements: StatementsAbstractSyntaxTreeNode;
 		  }> {
 		const operator = this.atom.leftSubAtom.node;
@@ -36,14 +35,14 @@ export class SeparatedStatementsConcreteSyntaxTreeNode extends ConcreteSyntaxTre
 					case successAbstractifyingResultTypeName: {
 						const abstractifiedStatements = statementsAbstractifyingResult.data;
 						const abstractifiedSeparatedStatements: {
-							readonly operator: OperatorAbstractSyntaxTreeNode;
+							readonly operator: SupportedOperatorAbstractSyntaxTreeNode;
 							readonly statements: StatementsAbstractSyntaxTreeNode;
 						} = {
 							operator: abstractifiedOperator,
 							statements: abstractifiedStatements,
 						};
 						const separatedStatementsAbstractifyingResult: SuccessAbstractifyingResult<{
-							readonly operator: OperatorAbstractSyntaxTreeNode;
+							readonly operator: SupportedOperatorAbstractSyntaxTreeNode;
 							readonly statements: StatementsAbstractSyntaxTreeNode;
 						}> = new SuccessAbstractifyingResult(
 							abstractifiedSeparatedStatements,

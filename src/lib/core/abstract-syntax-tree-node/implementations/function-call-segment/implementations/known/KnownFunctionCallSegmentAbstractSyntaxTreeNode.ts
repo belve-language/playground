@@ -18,4 +18,7 @@ export class KnownFunctionCallSegmentAbstractSyntaxTreeNode extends FunctionCall
 		this.name = name;
 	}
 	public readonly name: string;
+	public stringify(): string {
+		return `(${this.name})`;
+	}
 }

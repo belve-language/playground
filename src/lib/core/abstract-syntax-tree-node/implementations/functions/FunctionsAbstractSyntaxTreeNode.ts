@@ -1,19 +1,12 @@
 import type {FunctionsAbstractSyntaxTreeNodeChildren} from "./children/FunctionsAbstractSyntaxTreeNodeChildren.ts";
+import {combineDependentGeneratorsProducting} from "../../../../combineDependentGeneratorsProducting.ts";
+import {combineIndependentGeneratorsInterleaving} from "../../../../combining-independent-generators-interleaving/combineIndependentGeneratorsInterleaving.ts";
 import type {SupportedFunctionCallingResult} from "../../../function-calling-result/supported/SupportedFunctionCallingResult.ts";
 import type {Functions} from "../../../functions/Functions.ts";
+import {generateNewFunction} from "../../../generating-new-function/generateNewFunction.ts";
 import {SpanIndexes} from "../../../span-indexes/SpanIndexes.ts";
 import {AbstractSyntaxTreeNode} from "../../AbstractSyntaxTreeNode.ts";
-import type {FunctionAbstractSyntaxTreeNode} from "../function/FunctionAbstractSyntaxTreeNode.ts";
-import {NonMainFunctionAbstractSyntaxTreeNode} from "../function/implementations/non-main/NonMainFunctionAbstractSyntaxTreeNode.ts";
-import {WordFunctionCallSegmentAbstractSyntaxTreeNode} from "../function-call-segment/implementations/word/WordFunctionCallSegmentAbstractSyntaxTreeNode.ts";
-import {FunctionHeaderAbstractSyntaxTreeNode} from "../function-header/FunctionHeaderAbstractSyntaxTreeNode.ts";
-import {KnownFunctionHeaderSegmentAbstractSyntaxTreeNode} from "../function-header-segment/implementations/known/KnownFunctionHeaderSegmentAbstractSyntaxTreeNode.ts";
-import {UnknownFunctionHeaderSegmentAbstractSyntaxTreeNode} from "../function-header-segment/implementations/unknown/UnknownFunctionHeaderSegmentAbstractSyntaxTreeNode.ts";
-import {WordFunctionHeaderSegmentAbstractSyntaxTreeNode} from "../function-header-segment/implementations/word/WordFunctionHeaderSegmentAbstractSyntaxTreeNode.ts";
-import type {SupportedFunctionHeaderSegmentAbstractSyntaxTreeNode} from "../function-header-segment/supported/SupportedFunctionHeaderSegmentAbstractSyntaxTreeNode.ts";
-import {BlockStatementAbstractSyntaxTreeNode} from "../statement/implementations/block/BlockStatementAbstractSyntaxTreeNode.ts";
-import {FunctionCallStatementAbstractSyntaxTreeNode} from "../statement/implementations/function-call/FunctionCallStatementAbstractSyntaxTreeNode.ts";
-import {StatementsAbstractSyntaxTreeNode} from "../statements/StatementsAbstractSyntaxTreeNode.ts";
+import type {FunctionHeaderAbstractSyntaxTreeNode} from "../function-header/FunctionHeaderAbstractSyntaxTreeNode.ts";
 export class FunctionsAbstractSyntaxTreeNode extends AbstractSyntaxTreeNode<FunctionsAbstractSyntaxTreeNodeChildren> {
 	public constructor(
 		children: FunctionsAbstractSyntaxTreeNodeChildren,
@@ -22,62 +15,108 @@ export class FunctionsAbstractSyntaxTreeNode extends AbstractSyntaxTreeNode<Func
 		super(children, spanIndexes);
 	}
 	public *mutate(
-		builtInFunctions: Functions,
+		builtInFunctionsHeaders: readonly FunctionHeaderAbstractSyntaxTreeNode[],
+		maximalUserFunctionsCount: number,
 	): Generator<FunctionsAbstractSyntaxTreeNode, void, void> {
-		yield* pickBfslyFromInfiniteGenerators(
-			this.mutateByAddingFunction(builtInFunctions),
-			this.mutateByMutatingFunction(builtInFunctions),
-		);
+		for (const mutatedFunctions of combineIndependentGeneratorsInterleaving(
+			this.mutateByAddingFunction(
+				builtInFunctionsHeaders,
+				maximalUserFunctionsCount,
+			),
+			this.mutateByMutatingFunction(
+				builtInFunctionsHeaders,
+				maximalUserFunctionsCount,
+			),
+		)) {
+			yield mutatedFunctions;
+		}
 	}
 	private *mutateByAddingFunction(
-		builtInFunctions: Functions,
+		builtInFunctionsHeaders: readonly FunctionHeaderAbstractSyntaxTreeNode[],
+		maximalUserFunctionsCount: number,
 	): Generator<FunctionsAbstractSyntaxTreeNode, void, void> {
-		const newFunctions = generateNewFunctions(
-			builtInFunctions,
-			this.children.functions,
+		const userFunctionsHeaders = Object.values(this.children.functions).map(
+			(function_) => {
+				return function_.children.header;
+			},
 		);
-		for (const newFunction of newFunctions) {
-			const newFunctions_ = new FunctionsAbstractSyntaxTreeNode(
-				{
-					functions: {
-						...this.children.functions,
-						[newFunction.id]: newFunction,
-					},
-					mainFunction: this.children.mainFunction,
+		if (userFunctionsHeaders.length >= maximalUserFunctionsCount) {
+			return;
+		} else {
+			const combinedFunctionsHeaders = [
+				...builtInFunctionsHeaders,
+				...userFunctionsHeaders,
+			];
+			const this_ = this;
+			for (const mutatedFunctions of combineDependentGeneratorsProducting(
+				generateNewFunction("", 0, combinedFunctionsHeaders),
+				function* (mutatedFunction) {
+					const mutatedFunctions = new FunctionsAbstractSyntaxTreeNode(
+						{
+							functions: {
+								...this_.children.functions,
+								[mutatedFunction.id]: mutatedFunction,
+							},
+							mainFunction: this_.children.mainFunction,
+						},
+						new SpanIndexes(0, 0),
+					);
+					yield mutatedFunctions;
+					for (const deeperMutatedFunctions of mutatedFunctions.mutate(
+						builtInFunctionsHeaders,
+						maximalUserFunctionsCount,
+					)) {
+						yield deeperMutatedFunctions;
+					}
 				},
-				new SpanIndexes(0, 0),
-			);
-			yield newFunctions_;
+			)) {
+				yield mutatedFunctions;
+			}
 		}
 	}
 	public *mutateByMutatingFunction(
-		builtInFunctions: Functions,
+		builtInFunctionsHeaders: readonly FunctionHeaderAbstractSyntaxTreeNode[],
+		maximalUserFunctionsCount: number,
 	): Generator<FunctionsAbstractSyntaxTreeNode, void, void> {
-		yield* pickBfslyFromInfiniteGenerators(
+		const userFunctionsHeaders = Object.values(this.children.functions).map(
+			(function_) => {
+				return function_.children.header;
+			},
+		);
+		const combinedFunctionsHeaders = [
+			...builtInFunctionsHeaders,
+			...userFunctionsHeaders,
+		];
+		for (const mutatedFunctions of combineIndependentGeneratorsInterleaving<FunctionsAbstractSyntaxTreeNode>(
 			...Object.values(this.children.functions).map((function_) => {
-				const combinedFunctions: Functions = {
-					...builtInFunctions,
-					...this.children.functions,
-				};
-				const newFunctions = function_.mutate(combinedFunctions);
-				const children = this.children;
+				const this_ = this;
 				return (function* () {
-					for (const newFunction of newFunctions) {
-						const newFunctions_ = new FunctionsAbstractSyntaxTreeNode(
+					for (const mutatedFunction of function_.mutate(
+						combinedFunctionsHeaders,
+					)) {
+						const mutatedFunctions = new FunctionsAbstractSyntaxTreeNode(
 							{
 								functions: {
-									...children.functions,
-									[newFunction.id]: newFunction,
+									...this_.children.functions,
+									[mutatedFunction.id]: mutatedFunction,
 								},
-								mainFunction: children.mainFunction,
+								mainFunction: this_.children.mainFunction,
 							},
 							new SpanIndexes(0, 0),
 						);
-						yield newFunctions_;
+						yield mutatedFunctions;
+						for (const deeperMutatedFunctions of mutatedFunctions.mutate(
+							builtInFunctionsHeaders,
+							maximalUserFunctionsCount,
+						)) {
+							yield deeperMutatedFunctions;
+						}
 					}
 				})();
 			}),
-		);
+		)) {
+			yield mutatedFunctions;
+		}
 	}
 	public *run(
 		builtInFunctions: Functions,
@@ -94,121 +133,16 @@ export class FunctionsAbstractSyntaxTreeNode extends AbstractSyntaxTreeNode<Func
 			yield* executingResults;
 		}
 	}
-}
-function* generateNewFunctions(
-	builtInFunctions: Functions,
-	existingFunctions: Functions,
-): Generator<NonMainFunctionAbstractSyntaxTreeNode, void, void> {
-	const functionHeaders = generateNewFunctionHeaders(
-		builtInFunctions,
-		existingFunctions,
-	);
-	for (const functionHeader of functionHeaders) {
-		const function_ = NonMainFunctionAbstractSyntaxTreeNode.create(
-			{
-				body: new BlockStatementAbstractSyntaxTreeNode(
-					{
-						statements: new StatementsAbstractSyntaxTreeNode(
-							{
-								finalStatement:
-									FunctionCallStatementAbstractSyntaxTreeNode.create(
-										{
-											segments: [
-												WordFunctionCallSegmentAbstractSyntaxTreeNode.create(
-													{word: "?"},
-													new SpanIndexes(0, 0),
-												),
-											],
-										},
-										new SpanIndexes(0, 0),
-									),
-								initialOperatedStatements: [],
-							},
-							new SpanIndexes(0, 0),
-						),
-					},
-					new SpanIndexes(0, 0),
-				),
-				header: functionHeader,
-			},
-			new SpanIndexes(0, 0),
-		);
-		yield function_;
-	}
-}
-function* generateNewFunctionHeaders(
-	builtInFunctions: Functions,
-	existingFunctions: Functions,
-): Generator<FunctionHeaderAbstractSyntaxTreeNode, void, void> {
-	const segmentses = generateNewFunctionHeaderSegmentses(1);
-	for (const segments of segmentses) {
-		const functionHeader = FunctionHeaderAbstractSyntaxTreeNode.create(
-			{segments: segments},
-			new SpanIndexes(0, 0),
-		);
-		if (
-			!(functionHeader.id in existingFunctions)
-			&& !(functionHeader.id in builtInFunctions)
-		) {
-			yield functionHeader;
-		}
-	}
-}
-function* generateNewFunctionHeaderSegmentses(
-	number: number,
-): Generator<
-	readonly [
-		SupportedFunctionHeaderSegmentAbstractSyntaxTreeNode,
-		...(readonly SupportedFunctionHeaderSegmentAbstractSyntaxTreeNode[]),
-	]
-> {
-	const firstSegments = [...generateNewFunctionHeaderSegments(number)];
-	yield* firstSegments.map((firstSegment) => {
-		return [firstSegment] as const;
-	});
-	yield* pickBfslyFromInfiniteGenerators(
-		...firstSegments.map((firstSegment) => {
-			const restSegmentses = generateNewFunctionHeaderSegmentses(number + 1);
-			return (function* () {
-				for (const restSegments of restSegmentses) {
-					yield [firstSegment, ...restSegments] as const;
-				}
-			})();
-		}),
-	);
-}
-function* generateNewFunctionHeaderSegments(
-	number: number,
-): Generator<SupportedFunctionHeaderSegmentAbstractSyntaxTreeNode, void, void> {
-	yield KnownFunctionHeaderSegmentAbstractSyntaxTreeNode.create(
-		{name: "k".repeat(number)},
-		new SpanIndexes(0, 0),
-	);
-	yield UnknownFunctionHeaderSegmentAbstractSyntaxTreeNode.create(
-		{name: "u".repeat(number)},
-		new SpanIndexes(0, 0),
-	);
-	yield WordFunctionHeaderSegmentAbstractSyntaxTreeNode.create(
-		{word: "w"},
-		new SpanIndexes(0, 0),
-	);
-}
-export function* pickBfslyFromInfiniteGenerators<Value>(
-	...generators: Generator<Value, void, void>[]
-): Generator<Value, void, void> {
-	for (;;) {
-		let isDone = true;
-		for (const generator of generators) {
-			const iterationResult = generator.next();
-			if (iterationResult.done) {
-				continue;
-			} else {
-				yield iterationResult.value;
-				isDone = false;
-			}
-		}
-		if (isDone) {
-			break;
-		}
+	public stringify(): string {
+		return [
+			...Object.values(this.children.functions),
+			...(this.children.mainFunction === null ?
+				[]
+			:	[this.children.mainFunction]),
+		]
+			.map((child) => {
+				return `${child.stringify()}\n\n`;
+			})
+			.join("");
 	}
 }

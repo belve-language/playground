@@ -35,5 +35,12 @@ export class FunctionHeaderAbstractSyntaxTreeNode extends AbstractSyntaxTreeNode
 	}
 	public readonly id: string;
 	public readonly knownsNames: readonly string[];
+	public stringify(): string {
+		return this.children.segments
+			.map((segment) => {
+				return segment.stringify();
+			})
+			.join(" ");
+	}
 	public readonly unknownsNames: readonly string[];
 }

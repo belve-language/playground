@@ -1,11 +1,12 @@
 import type {OperatedStatementAbstractSyntaxTreeNodeChildren} from "./children/OperatedStatementAbstractSyntaxTreeNodeChildren.ts";
-import type {Statements} from "../../../../../statements/Statements.ts";
 import type {Functions} from "../../../functions/Functions.ts";
 import {SpanIndexes} from "../../../span-indexes/SpanIndexes.ts";
 import type {SupportedStatementExecutingResult} from "../../../statement-executing-result/supported/SupportedStatementExecutingResult.ts";
 import type {Variables} from "../../../variables/Variables.ts";
 import {AbstractSyntaxTreeNode} from "../../AbstractSyntaxTreeNode.ts";
-import {pickBfslyFromInfiniteGenerators} from "../functions/FunctionsAbstractSyntaxTreeNode.ts";
+import type {FunctionHeaderAbstractSyntaxTreeNode} from "../function-header/FunctionHeaderAbstractSyntaxTreeNode.ts";
+import {OrOperatorAbstractSyntaxTreeNode} from "../operator/implementations/or/OrOperatorAbstractSyntaxTreeNode.ts";
+import {ThenOperatorAbstractSyntaxTreeNode} from "../operator/implementations/then/ThenOperatorAbstractSyntaxTreeNode.ts";
 import type {StatementsAbstractSyntaxTreeNode} from "../statements/StatementsAbstractSyntaxTreeNode.ts";
 export class OperatedStatementAbstractSyntaxTreeNode extends AbstractSyntaxTreeNode<OperatedStatementAbstractSyntaxTreeNodeChildren> {
 	public constructor(
@@ -29,26 +30,51 @@ export class OperatedStatementAbstractSyntaxTreeNode extends AbstractSyntaxTreeN
 		yield* thisStatementExecutingResults;
 	}
 	public *mutate(
-		functions: Functions,
+		functionsHeaders: readonly [
+			FunctionHeaderAbstractSyntaxTreeNode,
+			...FunctionHeaderAbstractSyntaxTreeNode[],
+		],
+		unknownsNames: readonly string[],
+		userVariablesNames: readonly string[],
 	): Generator<OperatedStatementAbstractSyntaxTreeNode, void, void> {
-		const children = this.children;
-		yield* pickBfslyFromInfiniteGenerators(
-			(function* () {
-				for (const mutatedOperator of children.operator.mutate()) {
-					yield new OperatedStatementAbstractSyntaxTreeNode(
-						{operator: mutatedOperator, statement: children.statement},
-						new SpanIndexes(0, 0),
-					);
-				}
-			})(),
-			(function* () {
-				for (const mutatedStatement of children.statement.mutate(functions)) {
-					yield new OperatedStatementAbstractSyntaxTreeNode(
-						{operator: children.operator, statement: mutatedStatement},
-						new SpanIndexes(0, 0),
-					);
-				}
-			})(),
-		);
+		const this_ = this;
+		for (const mutatedOperator of this_.children.operator.mutate()) {
+			yield new OperatedStatementAbstractSyntaxTreeNode(
+				{operator: mutatedOperator, statement: this_.children.statement},
+				new SpanIndexes(0, 0),
+			);
+		}
+		for (const mutatedStatement of this_.children.statement.mutate(
+			functionsHeaders,
+			unknownsNames,
+			userVariablesNames,
+		)) {
+			yield new OperatedStatementAbstractSyntaxTreeNode(
+				{operator: this_.children.operator, statement: mutatedStatement},
+				new SpanIndexes(0, 0),
+			);
+			for (const mutatedOperator of this_.children.operator.mutate()) {
+				yield new OperatedStatementAbstractSyntaxTreeNode(
+					{operator: mutatedOperator, statement: mutatedStatement},
+					new SpanIndexes(0, 0),
+				);
+			}
+		}
+	}
+	public scanSetUnknowns(
+		unknownsNamesToSet: ReadonlySet<string>,
+	): ReadonlySet<string> {
+		// TODO: CHECK BY TYPE NAME
+		if (this.children.operator instanceof OrOperatorAbstractSyntaxTreeNode) {
+			return unknownsNamesToSet;
+		} else if (
+			this.children.operator instanceof ThenOperatorAbstractSyntaxTreeNode
+		) {
+			return this.children.statement.scanSetUnknowns(unknownsNamesToSet);
+		}
+		throw new Error(`Unknown operator`);
+	}
+	public stringify(indentationLevel: number): string {
+		return `${this.children.statement.stringify(indentationLevel)}${this.children.operator.stringify()}`;
 	}
 }

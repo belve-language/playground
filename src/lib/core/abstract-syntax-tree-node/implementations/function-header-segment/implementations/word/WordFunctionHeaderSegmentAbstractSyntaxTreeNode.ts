@@ -20,4 +20,7 @@ export class WordFunctionHeaderSegmentAbstractSyntaxTreeNode extends FunctionHea
 	) {
 		super(children, id, spanIndexes);
 	}
+	public stringify(): string {
+		return this.children.word;
+	}
 }

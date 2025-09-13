@@ -37,4 +37,7 @@ export class MainFunctionAbstractSyntaxTreeNode extends FunctionAbstractSyntaxTr
 			return newFunctions;
 		}
 	}
+	public override stringify(): string {
+		return this.children.body.stringify(0);
+	}
 }

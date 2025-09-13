@@ -10,9 +10,9 @@ import {SuccessStatementExecutingResult} from "../../../../../statement-executin
 import {successStatementExecutingResultTypeName} from "../../../../../statement-executing-result/implementations/success/type-name/successStatementExecutingResultTypeName.ts";
 import type {SupportedStatementExecutingResult} from "../../../../../statement-executing-result/supported/SupportedStatementExecutingResult.ts";
 import type {Variables} from "../../../../../variables/Variables.ts";
+import type {FunctionHeaderAbstractSyntaxTreeNode} from "../../../function-header/FunctionHeaderAbstractSyntaxTreeNode.ts";
 import type {StatementsAbstractSyntaxTreeNode} from "../../../statements/StatementsAbstractSyntaxTreeNode.ts";
 import {StatementAbstractSyntaxTreeNode} from "../../StatementAbstractSyntaxTreeNode.ts";
-import type {SupportedStatementAbstractSyntaxTreeNode} from "../../supported/SupportedStatementAbstractSyntaxTreeNode.ts";
 export class BlockStatementAbstractSyntaxTreeNode extends StatementAbstractSyntaxTreeNode<BlockStatementAbstractSyntaxTreeNodeChildren> {
 	public constructor(
 		children: BlockStatementAbstractSyntaxTreeNodeChildren,
@@ -59,14 +59,31 @@ export class BlockStatementAbstractSyntaxTreeNode extends StatementAbstractSynta
 		}
 	}
 	public override *mutate(
-		functions: Functions,
+		functionsHeaders: readonly FunctionHeaderAbstractSyntaxTreeNode[],
+		unknownsNames: readonly string[],
+		userVariablesNames: readonly string[],
 	): Generator<BlockStatementAbstractSyntaxTreeNode, void, void> {
-		const mutatedStatements = this.children.statements.mutate(functions);
-		for (const mutatedStatement of mutatedStatements) {
-			yield new BlockStatementAbstractSyntaxTreeNode(
-				{statements: mutatedStatement},
+		for (const mutatedStatements of this.children.statements.mutate(
+			functionsHeaders,
+			unknownsNames,
+			userVariablesNames,
+		)) {
+			const mutatedBlockStatement = new BlockStatementAbstractSyntaxTreeNode(
+				{statements: mutatedStatements},
 				new SpanIndexes(0, 0),
 			);
+			yield mutatedBlockStatement;
 		}
+	}
+	public override scanSetUnknowns(
+		unknownsNamesToSet: ReadonlySet<string>,
+	): ReadonlySet<string> {
+		return this.children.statements.scanSetUnknowns(unknownsNamesToSet);
+	}
+	public stringify(indentationLevel: number): string {
+		const indentation = "\t".repeat(indentationLevel);
+		return `${indentation}{\n${this.children.statements.stringify(
+			indentationLevel + 1,
+		)}${indentation}}`;
 	}
 }

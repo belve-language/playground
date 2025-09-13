@@ -59,4 +59,7 @@ export class ThenOperatorAbstractSyntaxTreeNode extends OperatorAbstractSyntaxTr
 			}
 		}
 	}
+	public override stringify(): string {
+		return ",";
+	}
 }

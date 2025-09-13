@@ -18,6 +18,11 @@
 	import {presets} from "../lib/instances/presets/presets.ts";
 	import PresetItemList from "../lib/core/preset-item-list/PresetItemList.svelte";
 	import type {Variables} from "../lib/core/variables/Variables.ts";
+	import {UnknownFunctionHeaderSegmentAbstractSyntaxTreeNode} from "../lib/core/abstract-syntax-tree-node/implementations/function-header-segment/implementations/unknown/UnknownFunctionHeaderSegmentAbstractSyntaxTreeNode.ts";
+	import {WordFunctionHeaderSegmentAbstractSyntaxTreeNode} from "../lib/core/abstract-syntax-tree-node/implementations/function-header-segment/implementations/word/WordFunctionHeaderSegmentAbstractSyntaxTreeNode.ts";
+	import {KnownFunctionHeaderSegmentAbstractSyntaxTreeNode} from "../lib/core/abstract-syntax-tree-node/implementations/function-header-segment/implementations/known/KnownFunctionHeaderSegmentAbstractSyntaxTreeNode.ts";
+	import {FunctionHeaderAbstractSyntaxTreeNode} from "../lib/core/abstract-syntax-tree-node/implementations/function-header/FunctionHeaderAbstractSyntaxTreeNode.ts";
+	import type {SupportedFunctionHeaderSegmentAbstractSyntaxTreeNode} from "../lib/core/abstract-syntax-tree-node/implementations/function-header-segment/supported/SupportedFunctionHeaderSegmentAbstractSyntaxTreeNode.ts";
 	abstract class ParsingStatus<TypeName extends string> {
 		public readonly typeName: TypeName;
 		protected constructor(typeName: TypeName) {
@@ -215,6 +220,50 @@
 							);
 							return state_;
 						} else {
+							(async () => {
+								console.log(abstractifiedParsedSourceCode.stringify());
+								for (const mutatedFunctions of abstractifiedParsedSourceCode.mutate(
+									Object.keys(builtInFunctions).map((id) => {
+										const segmentsIds = id.split(" ");
+										const segments = segmentsIds.map((segmentId) => {
+											switch (segmentId) {
+												case "[]": {
+													return UnknownFunctionHeaderSegmentAbstractSyntaxTreeNode.create(
+														{name: ""},
+														new SpanIndexes(0, 0),
+													);
+												}
+												case "()": {
+													return KnownFunctionHeaderSegmentAbstractSyntaxTreeNode.create(
+														{name: ""},
+														new SpanIndexes(0, 0),
+													);
+												}
+												default: {
+													return WordFunctionHeaderSegmentAbstractSyntaxTreeNode.create(
+														{word: segmentId},
+														new SpanIndexes(0, 0),
+													);
+												}
+											}
+										}) as unknown as readonly [
+											SupportedFunctionHeaderSegmentAbstractSyntaxTreeNode,
+											...(readonly SupportedFunctionHeaderSegmentAbstractSyntaxTreeNode[]),
+										];
+										const functionHeader =
+											FunctionHeaderAbstractSyntaxTreeNode.create(
+												{segments: segments},
+												new SpanIndexes(0, 0),
+											);
+										return functionHeader;
+									}),
+									2,
+								)) {
+									await new Promise((resolve) => setTimeout(resolve, 100));
+									console.log("-----------------------------------");
+									console.log(mutatedFunctions.stringify());
+								}
+							})();
 							const steps = abstractifiedParsedSourceCode.run(builtInFunctions);
 							const state_ = new State(
 								new SuccessfulParsingStatus(
