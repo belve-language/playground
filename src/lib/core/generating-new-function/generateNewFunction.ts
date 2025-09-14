@@ -1,5 +1,3 @@
-import {combineDependentGeneratorsProducting} from "../../combineDependentGeneratorsProducting.ts";
-import {combineIndependentGeneratorsInterleaving} from "../../combining-independent-generators-interleaving/combineIndependentGeneratorsInterleaving.ts";
 import {NonMainFunctionAbstractSyntaxTreeNode} from "../abstract-syntax-tree-node/implementations/function/implementations/non-main/NonMainFunctionAbstractSyntaxTreeNode.ts";
 import {KnownFunctionCallSegmentAbstractSyntaxTreeNode} from "../abstract-syntax-tree-node/implementations/function-call-segment/implementations/known/KnownFunctionCallSegmentAbstractSyntaxTreeNode.ts";
 import {UnknownFunctionCallSegmentAbstractSyntaxTreeNode} from "../abstract-syntax-tree-node/implementations/function-call-segment/implementations/unknown/UnknownFunctionCallSegmentAbstractSyntaxTreeNode.ts";
@@ -14,6 +12,8 @@ import {BlockStatementAbstractSyntaxTreeNode} from "../abstract-syntax-tree-node
 import {FunctionCallStatementAbstractSyntaxTreeNode} from "../abstract-syntax-tree-node/implementations/statement/implementations/function-call/FunctionCallStatementAbstractSyntaxTreeNode.ts";
 import type {SupportedStatementAbstractSyntaxTreeNode} from "../abstract-syntax-tree-node/implementations/statement/supported/SupportedStatementAbstractSyntaxTreeNode.ts";
 import {StatementsAbstractSyntaxTreeNode} from "../abstract-syntax-tree-node/implementations/statements/StatementsAbstractSyntaxTreeNode.ts";
+import {combineDependentGeneratorsProducting} from "../combining-dependent-generators-producting/combineDependentGeneratorsProducting.ts";
+import {combineIndependentGeneratorsInterleaving} from "../combining-independent-generators-interleaving/combineIndependentGeneratorsInterleaving.ts";
 import {SpanIndexes} from "../span-indexes/SpanIndexes.ts";
 export function* generateNewFunction(
 	code: string,

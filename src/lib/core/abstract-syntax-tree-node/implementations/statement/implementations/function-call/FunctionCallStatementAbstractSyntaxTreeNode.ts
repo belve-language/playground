@@ -3,6 +3,7 @@ import {computeUnknowns} from "./computing-unknowns/computeUnknowns.ts";
 import {returnFunctionCallingResultTypeName} from "../../../../../function-calling-result/implementations/return/type-name/returnFunctionCallingResultTypeName.ts";
 import {stepFunctionCallingResultTypeName} from "../../../../../function-calling-result/implementations/step/type-name/stepFunctionCallingResultTypeName.ts";
 import {successFunctionCallingResultTypeName} from "../../../../../function-calling-result/implementations/success/type-name/successFunctionCallingResultTypeName.ts";
+import type {NonMainFunctions} from "../../../../../non-main-functions/NonMainFunctions.ts";
 import type {SpanIndexes} from "../../../../../span-indexes/SpanIndexes.ts";
 import {FailureStatementExecutingResult} from "../../../../../statement-executing-result/implementations/failure/FailureStatementExecutingResult.ts";
 import {failureStatementExecutingResultTypeName} from "../../../../../statement-executing-result/implementations/failure/type-name/failureStatementExecutingResultTypeName.ts";
@@ -14,7 +15,6 @@ import {computeId} from "./computing-id/computeId.ts";
 import {computeKnownsNames} from "./computing-knowns-names/computeKnownsNames.ts";
 import {computeKnownsValues} from "./computing-knowns-values/computeKnownsValues.ts";
 import {computeUnknownsNames} from "./computing-unknowns-names/computeUnknownsNames.ts";
-import type {Functions} from "../../../../../functions/Functions.ts";
 import {ReturnStatementExecutingResult} from "../../../../../statement-executing-result/implementations/return/ReturnStatementExecutingResult.ts";
 import {SuccessStatementExecutingResult} from "../../../../../statement-executing-result/implementations/success/SuccessStatementExecutingResult.ts";
 import type {FunctionHeaderAbstractSyntaxTreeNode} from "../../../function-header/FunctionHeaderAbstractSyntaxTreeNode.ts";
@@ -48,16 +48,19 @@ export class FunctionCallStatementAbstractSyntaxTreeNode extends StatementAbstra
 		this.unknownsNames = unknownsNames;
 	}
 	public override *execute(
-		functions: Functions,
+		nonMainFunctions: NonMainFunctions,
 		variables: Variables,
 	): Generator<SupportedStatementExecutingResult, void, void> {
 		yield new StepStatementExecutingResult(this, variables);
-		const function_ = functions[this.id];
+		const function_ = nonMainFunctions[this.id];
 		if (function_ === undefined) {
 			throw new Error(`Function "${this.id}" not found.`);
 		} else {
 			const knownsValues = computeKnownsValues(this.knownsNames, variables);
-			const functionCallingResults = function_.call(functions, knownsValues);
+			const functionCallingResults = function_.call(
+				nonMainFunctions,
+				knownsValues,
+			);
 			let hasFailed = true;
 			for (const functionCallingResult of functionCallingResults) {
 				switch (functionCallingResult.typeName) {
@@ -119,19 +122,6 @@ export class FunctionCallStatementAbstractSyntaxTreeNode extends StatementAbstra
 		userVariablesNames: readonly string[],
 	): Generator<FunctionCallStatementAbstractSyntaxTreeNode, void, void> {
 		// TODO
-	}
-	public override scanSetUnknowns(
-		unknownsNamesToSet: ReadonlySet<string>,
-	): ReadonlySet<string> {
-		return unknownsNamesToSet.difference(new Set(this.unknownsNames));
-	}
-	public stringify(identationLevel: number): string {
-		const identation = "\t".repeat(identationLevel);
-		return `${identation}${this.children.segments
-			.map((segment) => {
-				return segment.stringify();
-			})
-			.join(" ")}`;
 	}
 	private readonly unknownsNames: readonly string[];
 }

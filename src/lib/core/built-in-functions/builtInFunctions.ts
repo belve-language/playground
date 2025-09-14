@@ -1,10 +1,10 @@
 import type {Function} from "../function/Function.ts";
 import {ReturnFunctionCallingResult} from "../function-calling-result/implementations/return/ReturnFunctionCallingResult.ts";
-import type {Functions} from "../functions/Functions.ts";
+import type {Functions} from "../non-main-functions/NonMainFunctions.ts";
 class GreaterThanFunction implements Function {
 	public constructor() {}
 	public *call(
-		functions: Functions,
+		nonMainFunctions: NonMainFunctions,
 		knownsValues: readonly [number, number],
 	): Generator<ReturnFunctionCallingResult, void, void> {
 		if (knownsValues[0] > knownsValues[1]) {
@@ -15,7 +15,7 @@ class GreaterThanFunction implements Function {
 class LessThanFunction implements Function {
 	public constructor() {}
 	public *call(
-		functions: Functions,
+		nonMainFunctions: NonMainFunctions,
 		knownsValues: readonly [number, number],
 	): Generator<ReturnFunctionCallingResult, void, void> {
 		if (knownsValues[0] < knownsValues[1]) {
@@ -26,7 +26,7 @@ class LessThanFunction implements Function {
 class GreaterThanOrEqualFunction implements Function {
 	public constructor() {}
 	public *call(
-		functions: Functions,
+		nonMainFunctions: NonMainFunctions,
 		knownsValues: readonly [number, number],
 	): Generator<ReturnFunctionCallingResult, void, void> {
 		if (knownsValues[0] >= knownsValues[1]) {
@@ -37,7 +37,7 @@ class GreaterThanOrEqualFunction implements Function {
 class LessThanOrEqualFunction implements Function {
 	public constructor() {}
 	public *call(
-		functions: Functions,
+		nonMainFunctions: NonMainFunctions,
 		knownsValues: readonly [number, number],
 	): Generator<ReturnFunctionCallingResult, void, void> {
 		if (knownsValues[0] <= knownsValues[1]) {
@@ -48,7 +48,7 @@ class LessThanOrEqualFunction implements Function {
 class EqualFunction implements Function {
 	public constructor() {}
 	public *call(
-		functions: Functions,
+		nonMainFunctions: NonMainFunctions,
 		knownsValues: readonly [unknown, unknown],
 	): Generator<ReturnFunctionCallingResult, void, void> {
 		if (knownsValues[0] === knownsValues[1]) {
@@ -59,7 +59,7 @@ class EqualFunction implements Function {
 class AdditionFunction implements Function {
 	public constructor() {}
 	public *call(
-		functions: Functions,
+		nonMainFunctions: NonMainFunctions,
 		knownsValues: readonly [number, number],
 	): Generator<ReturnFunctionCallingResult, void, void> {
 		const [number1, number2] = knownsValues;
@@ -69,7 +69,7 @@ class AdditionFunction implements Function {
 class SubtractionFunction implements Function {
 	public constructor() {}
 	public *call(
-		functions: Functions,
+		nonMainFunctions: NonMainFunctions,
 		knownsValues: readonly [number, number],
 	): Generator<ReturnFunctionCallingResult, void, void> {
 		const [number1, number2] = knownsValues;
@@ -79,7 +79,7 @@ class SubtractionFunction implements Function {
 class ModulusFunction implements Function {
 	public constructor() {}
 	public *call(
-		functions: Functions,
+		nonMainFunctions: NonMainFunctions,
 		knownsValues: readonly [number, number],
 	): Generator<ReturnFunctionCallingResult, void, void> {
 		const [number1, number2] = knownsValues;
@@ -89,7 +89,7 @@ class ModulusFunction implements Function {
 class IsPairFunction implements Function {
 	public constructor() {}
 	public *call(
-		functions: Functions,
+		nonMainFunctions: NonMainFunctions,
 		knownsValues: readonly [unknown],
 	): Generator<ReturnFunctionCallingResult, void, void> {
 		const [value] = knownsValues;
@@ -101,7 +101,7 @@ class IsPairFunction implements Function {
 class IsNotPairFunction implements Function {
 	public constructor() {}
 	public *call(
-		functions: Functions,
+		nonMainFunctions: NonMainFunctions,
 		knownsValues: readonly [unknown],
 	): Generator<ReturnFunctionCallingResult, void, void> {
 		const [value] = knownsValues;
@@ -113,7 +113,7 @@ class IsNotPairFunction implements Function {
 class AssemblingPairFunction implements Function {
 	public constructor() {}
 	public *call(
-		functions: Functions,
+		nonMainFunctions: NonMainFunctions,
 		knownsValues: readonly [unknown, unknown],
 	): Generator<ReturnFunctionCallingResult, void, void> {
 		const [firstElement, secondElement] = knownsValues;
@@ -123,7 +123,7 @@ class AssemblingPairFunction implements Function {
 class DisassemblingPairFunction implements Function {
 	public constructor() {}
 	public *call(
-		functions: Functions,
+		nonMainFunctions: NonMainFunctions,
 		knownsValues: readonly [readonly [unknown, unknown]],
 	): Generator<ReturnFunctionCallingResult, void, void> {
 		const [[firstElement, secondElement]] = knownsValues;
@@ -133,7 +133,7 @@ class DisassemblingPairFunction implements Function {
 class NotEqualFunction implements Function {
 	public constructor() {}
 	public *call(
-		functions: Functions,
+		nonMainFunctions: NonMainFunctions,
 		knownsValues: readonly [unknown, unknown],
 	): Generator<ReturnFunctionCallingResult, void, void> {
 		if (knownsValues[0] !== knownsValues[1]) {
@@ -144,7 +144,7 @@ class NotEqualFunction implements Function {
 class PowerFunction implements Function {
 	public constructor() {}
 	public *call(
-		functions: Functions,
+		nonMainFunctions: NonMainFunctions,
 		knownsValues: readonly [number, number],
 	): Generator<ReturnFunctionCallingResult, void, void> {
 		const [base, exponent] = knownsValues;
@@ -154,7 +154,7 @@ class PowerFunction implements Function {
 class AssigningFunction implements Function {
 	public constructor() {}
 	public *call(
-		functions: Functions,
+		nonMainFunctions: NonMainFunctions,
 		knownsValues: readonly [unknown],
 	): Generator<ReturnFunctionCallingResult, void, void> {
 		const [value] = knownsValues;
@@ -164,7 +164,7 @@ class AssigningFunction implements Function {
 class MultiplicationFunction implements Function {
 	public constructor() {}
 	public *call(
-		functions: Functions,
+		nonMainFunctions: NonMainFunctions,
 		knownsValues: readonly [number, number],
 	): Generator<ReturnFunctionCallingResult, void, void> {
 		const [number1, number2] = knownsValues;

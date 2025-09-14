@@ -1,24 +1,16 @@
 import type {UnknownFunctionCallSegmentAbstractSyntaxTreeNodeChildren} from "./children/UnknownFunctionCallSegmentAbstractSyntaxTreeNodeChildren.ts";
 import type {SpanIndexes} from "../../../../../span-indexes/SpanIndexes.ts";
 import {FunctionCallSegmentAbstractSyntaxTreeNode} from "../../FunctionCallSegmentAbstractSyntaxTreeNode.ts";
+import {unknownFunctionCallSegmentAbstractSyntaxTreeNodeId} from "./id/unknownFunctionCallSegmentAbstractSyntaxTreeNodeId.ts";
 export class UnknownFunctionCallSegmentAbstractSyntaxTreeNode extends FunctionCallSegmentAbstractSyntaxTreeNode<UnknownFunctionCallSegmentAbstractSyntaxTreeNodeChildren> {
-	public static create(
+	public constructor(
 		children: UnknownFunctionCallSegmentAbstractSyntaxTreeNodeChildren,
-		spanIndexes: SpanIndexes,
-	): UnknownFunctionCallSegmentAbstractSyntaxTreeNode {
-		const node = new this(children, children.name, spanIndexes);
-		return node;
-	}
-	private constructor(
-		children: UnknownFunctionCallSegmentAbstractSyntaxTreeNodeChildren,
-		name: string,
 		spanIndexes: SpanIndexes,
 	) {
-		super(children, "[]", spanIndexes);
-		this.name = name;
-	}
-	public readonly name: string;
-	public stringify(): string {
-		return `[${this.name}]`;
+		super(
+			children,
+			unknownFunctionCallSegmentAbstractSyntaxTreeNodeId,
+			spanIndexes,
+		);
 	}
 }

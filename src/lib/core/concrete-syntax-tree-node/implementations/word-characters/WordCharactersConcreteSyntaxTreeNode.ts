@@ -1,7 +1,7 @@
 import type {WordCharactersConcreteSyntaxTreeNodeAtom} from "./atom/WordCharactersConcreteSyntaxTreeNodeAtom.ts";
+import {SuccessAbstractifyingResult} from "../../../abstractifying-result/implementations/success/SuccessAbstractifyingResult.ts";
+import {successAbstractifyingResultTypeName} from "../../../abstractifying-result/implementations/success/type-name/successAbstractifyingResultTypeName.ts";
 import {ConcreteSyntaxTreeNode} from "../../ConcreteSyntaxTreeNode.ts";
-import {SuccessAbstractifyingResult} from "../../abstractifying/result/implementations/success/SuccessAbstractifyingResult.ts";
-import {successAbstractifyingResultTypeName} from "../../abstractifying/result/implementations/success/type-name/successAbstractifyingResultTypeName.ts";
 export class WordCharactersConcreteSyntaxTreeNode extends ConcreteSyntaxTreeNode<WordCharactersConcreteSyntaxTreeNodeAtom> {
 	public constructor(atom: WordCharactersConcreteSyntaxTreeNodeAtom) {
 		super(atom);

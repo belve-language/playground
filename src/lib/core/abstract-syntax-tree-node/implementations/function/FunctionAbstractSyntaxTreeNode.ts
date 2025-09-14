@@ -1,37 +1,35 @@
 import type {FunctionAbstractSyntaxTreeNodeChildren} from "./children/FunctionAbstractSyntaxTreeNodeChildren.ts";
+import type {SupportedAbstractifyingResult} from "../../../abstractifying-result/supported/SupportedAbstractifyingResult.ts";
+import type {FunctionConcreteSyntaxTreeNode} from "../../../concrete-syntax-tree-node/implementations/function/FunctionConcreteSyntaxTreeNode.ts";
 import {FailureFunctionCallingResult} from "../../../function-calling-result/implementations/failure/FailureFunctionCallingResult.ts";
 import {ReturnFunctionCallingResult} from "../../../function-calling-result/implementations/return/ReturnFunctionCallingResult.ts";
 import {StepFunctionCallingResult} from "../../../function-calling-result/implementations/step/StepFunctionCallingResult.ts";
 import {SuccessFunctionCallingResult} from "../../../function-calling-result/implementations/success/SuccessFunctionCallingResult.ts";
 import type {SupportedFunctionCallingResult} from "../../../function-calling-result/supported/SupportedFunctionCallingResult.ts";
+import type {Functions} from "../../../non-main-functions/NonMainFunctions.ts";
 import type {SpanIndexes} from "../../../span-indexes/SpanIndexes.ts";
-import {AbstractSyntaxTreeNode} from "../../AbstractSyntaxTreeNode.ts";
-import {computeKnowns} from "./computing-knowns/computeKnowns.ts";
-import type {Functions} from "../../../functions/Functions.ts";
 import {failureStatementExecutingResultTypeName} from "../../../statement-executing-result/implementations/failure/type-name/failureStatementExecutingResultTypeName.ts";
 import {returnStatementExecutingResultTypeName} from "../../../statement-executing-result/implementations/return/type-name/returnStatementExecutingResultTypeName.ts";
 import {stepStatementExecutingResultTypeName} from "../../../statement-executing-result/implementations/step/type-name/stepStatementExecutingResultTypeName.ts";
 import {successStatementExecutingResultTypeName} from "../../../statement-executing-result/implementations/success/type-name/successStatementExecutingResultTypeName.ts";
 import type {Variables} from "../../../variables/Variables.ts";
-import type {FunctionHeaderAbstractSyntaxTreeNode} from "../function-header/FunctionHeaderAbstractSyntaxTreeNode.ts";
+import {AbstractSyntaxTreeNode} from "../../AbstractSyntaxTreeNode.ts";
 import type {FunctionsAbstractSyntaxTreeNode} from "../functions/FunctionsAbstractSyntaxTreeNode.ts";
-export abstract class FunctionAbstractSyntaxTreeNode<
-	FunctionHeaderAbstractSyntaxTreeNodeToUse extends
-		FunctionHeaderAbstractSyntaxTreeNode | null,
-> extends AbstractSyntaxTreeNode<
-	FunctionAbstractSyntaxTreeNodeChildren<FunctionHeaderAbstractSyntaxTreeNodeToUse>
-> {
+export abstract class FunctionAbstractSyntaxTreeNode extends AbstractSyntaxTreeNode<FunctionAbstractSyntaxTreeNodeChildren> {
 	public constructor(
-		children: FunctionAbstractSyntaxTreeNodeChildren<FunctionHeaderAbstractSyntaxTreeNodeToUse>,
+		children: FunctionAbstractSyntaxTreeNodeChildren,
 		spanIndexes: SpanIndexes,
 	) {
 		super(children, spanIndexes);
 	}
+	public abstract addToFunctions(
+		functions: FunctionsAbstractSyntaxTreeNode,
+	): SupportedAbstractifyingResult<FunctionsAbstractSyntaxTreeNode>;
 	public *call(
-		functions: Functions,
+		nonMainFunctions: NonMainFunctions,
 		knownsValues: readonly unknown[],
 	): Generator<SupportedFunctionCallingResult, void, void> {
-		const knowns = computeKnowns(this.children.header, knownsValues);
+		const knowns = this.children.header.computeKnowns(knownsValues);
 		const bodyExecutingResults = this.children.body.execute(functions, knowns);
 		for (const bodyExecutingResult of bodyExecutingResults) {
 			switch (bodyExecutingResult.typeName) {
@@ -74,15 +72,26 @@ export abstract class FunctionAbstractSyntaxTreeNode<
 					break;
 				}
 			}
-			continue;
 		}
 	}
 	public abstract computeUnknownsValues(
 		variables: Variables,
 	): readonly unknown[];
+	public override concretify(): FunctionConcreteSyntaxTreeNode {
+		const header = this.children.header.concretify();
+		const body = this.children.body.concretify();
+		const atom: FunctionConcreteSyntaxTreeNodeAtom = ThenAtom.create(
+			header,
+			body,
+		);
+		const function_: FunctionConcreteSyntaxTreeNode =
+			new FunctionConcreteSyntaxTreeNode(atom);
+		return function_;
+	}
 	public abstract createFunctions(): FunctionsAbstractSyntaxTreeNode;
-	public abstract putIntoFunctions(
-		functions: FunctionsAbstractSyntaxTreeNode,
-	): FunctionsAbstractSyntaxTreeNode;
-	public abstract stringify(): string;
+	public lint(): readonly string[] {
+		const bodyMessages = this.children.body.lint();
+		const functionMessages = bodyMessages;
+		return functionMessages;
+	}
 }

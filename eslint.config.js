@@ -113,5 +113,5 @@ export default [
 			],
 		},
 	},
-	{ignores: [".git", ".svelte-kit", "node_modules", "build"]},
+	{ignores: [".git", ".svelte-kit", "build", "node_modules"]},
 ];

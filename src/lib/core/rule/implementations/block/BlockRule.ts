@@ -1,7 +1,7 @@
 import type {NonTerminalAtom} from "../../../atom/implementations/non-terminal/NonTermnalAtom.ts";
 import type {ThenAtom} from "../../../atom/implementations/then/ThenAtom.ts";
-import {BlockConcreteSyntaxTreeNode} from "../../../concrete-syntax-tree-node/implementations/block/BlockConcreteSyntaxTreeNode.ts";
-import type {BlockConcreteSyntaxTreeNodeAtom} from "../../../concrete-syntax-tree-node/implementations/block/atom/BlockConcreteSyntaxTreeNodeAtom.ts";
+import {BlockConcreteSyntaxTreeNode} from "../../../concrete-syntax-tree-node/implementations/block-statement/BlockStatementConcreteSyntaxTreeNode.ts";
+import type {BlockConcreteSyntaxTreeNodeAtom} from "../../../concrete-syntax-tree-node/implementations/block-statement/atom/BlockStatementConcreteSyntaxTreeNodeAtom.ts";
 import type {ClosingCurlyBracketCharacterConcreteSyntaxTreeNode} from "../../../concrete-syntax-tree-node/implementations/closing-curly-bracket/ClosingCurlyBracketCharacterConcreteSyntaxTreeNode.ts";
 import type {OpeningCurlyBracketCharacterConcreteSyntaxTreeNode} from "../../../concrete-syntax-tree-node/implementations/opening-curly-bracket/OpeningCurlyBracketCharacterConcreteSyntaxTreeNode.ts";
 import type {OptionalBlockContentConcreteSyntaxTreeNode} from "../../../concrete-syntax-tree-node/implementations/optional-block-content/OptionalBlockContentConcreteSyntaxTreeNode.ts";

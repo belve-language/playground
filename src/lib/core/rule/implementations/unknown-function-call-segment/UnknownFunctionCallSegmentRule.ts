@@ -1,6 +1,6 @@
 import type {NonTerminalAtom} from "../../../atom/implementations/non-terminal/NonTermnalAtom.ts";
 import type {ThenAtom} from "../../../atom/implementations/then/ThenAtom.ts";
-import type {OpeningSquareBracketCharacter} from "../../../character/implementations/opening-square-bracket/OpeningSquareBracketCharacter.ts";
+import type {OpeningSquareBracketCharacter} from "../../../character/implementations/opening-square-bracket/openingSquareBracketCharacter.ts";
 import type {ClosingSquareBracketCharacterConcreteSyntaxTreeNode} from "../../../concrete-syntax-tree-node/implementations/closing-square-bracket/ClosingSquareBracketCharacterConcreteSyntaxTreeNode.ts";
 import type {OpeningSquareBracketCharacterConcreteSyntaxTreeNode} from "../../../concrete-syntax-tree-node/implementations/opening-square-bracket/OpeningSquareBracketCharacterConcreteSyntaxTreeNode.ts";
 import type {OptionalUnknownFunctionCallSegmentContentConcreteSyntaxTreeNode} from "../../../concrete-syntax-tree-node/implementations/optional-unknown-function-call-segment-content/OptionalUnknownFunctionCallSegmentContentConcreteSyntaxTreeNode.ts";

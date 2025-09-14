@@ -1,12 +1,12 @@
 import type {FunctionConcreteSyntaxTreeNodeAtom} from "./atom/FunctionConcreteSyntaxTreeNodeAtom.ts";
 import {MainFunctionAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree-node/implementations/function/implementations/main/MainFunctionAbstractSyntaxTreeNode.ts";
 import {NonMainFunctionAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree-node/implementations/function/implementations/non-main/NonMainFunctionAbstractSyntaxTreeNode.ts";
+import {ErrorAbstractifyingResult} from "../../../abstractifying-result/implementations/error/ErrorAbstractifyingResult.ts";
+import {errorAbstractifyingResultTypeName} from "../../../abstractifying-result/implementations/error/type-name/errorAbstractifyingResultTypeName.ts";
+import {SuccessAbstractifyingResult} from "../../../abstractifying-result/implementations/success/SuccessAbstractifyingResult.ts";
+import {successAbstractifyingResultTypeName} from "../../../abstractifying-result/implementations/success/type-name/successAbstractifyingResultTypeName.ts";
 import {SpanIndexes} from "../../../span-indexes/SpanIndexes.ts";
 import {ConcreteSyntaxTreeNode} from "../../ConcreteSyntaxTreeNode.ts";
-import {ErrorAbstractifyingResult} from "../../abstractifying/result/implementations/error/ErrorAbstractifyingResult.ts";
-import {errorAbstractifyingResultTypeName} from "../../abstractifying/result/implementations/error/type-name/errorAbstractifyingResultTypeName.ts";
-import {SuccessAbstractifyingResult} from "../../abstractifying/result/implementations/success/SuccessAbstractifyingResult.ts";
-import {successAbstractifyingResultTypeName} from "../../abstractifying/result/implementations/success/type-name/successAbstractifyingResultTypeName.ts";
 export class FunctionConcreteSyntaxTreeNode extends ConcreteSyntaxTreeNode<FunctionConcreteSyntaxTreeNodeAtom> {
 	public constructor(atom: FunctionConcreteSyntaxTreeNodeAtom) {
 		super(atom);

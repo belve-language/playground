@@ -79,7 +79,7 @@ sort (list) to [sorted] {
 	pair of (4) and (list3) is [list4],
 	sort (list4) to [sorted]
 }
-`,
+`, // TODO: Rework so it doesn't have {}
 	},
 	{
 		name: "Fibonacci sequence",

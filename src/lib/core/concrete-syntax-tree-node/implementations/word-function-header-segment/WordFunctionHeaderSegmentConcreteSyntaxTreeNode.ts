@@ -1,7 +1,7 @@
 import type {WordFunctionHeaderSegmentConcreteSyntaxTreeNodeAtom} from "./atom/WordFunctionHeaderSegmentConcreteSyntaxTreeNodeAtom.ts";
 import {WordFunctionHeaderSegmentAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree-node/implementations/function-header-segment/implementations/word/WordFunctionHeaderSegmentAbstractSyntaxTreeNode.ts";
+import {successAbstractifyingResultTypeName} from "../../../abstractifying-result/implementations/success/type-name/successAbstractifyingResultTypeName.ts";
 import {ConcreteSyntaxTreeNode} from "../../ConcreteSyntaxTreeNode.ts";
-import {successAbstractifyingResultTypeName} from "../../abstractifying/result/implementations/success/type-name/successAbstractifyingResultTypeName.ts";
 export class WordFunctionHeaderSegmentConcreteSyntaxTreeNode extends ConcreteSyntaxTreeNode<WordFunctionHeaderSegmentConcreteSyntaxTreeNodeAtom> {
 	public constructor(
 		atom: WordFunctionHeaderSegmentConcreteSyntaxTreeNodeAtom,

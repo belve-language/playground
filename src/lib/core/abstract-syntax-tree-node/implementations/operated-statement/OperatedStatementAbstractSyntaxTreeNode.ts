@@ -1,5 +1,5 @@
 import type {OperatedStatementAbstractSyntaxTreeNodeChildren} from "./children/OperatedStatementAbstractSyntaxTreeNodeChildren.ts";
-import type {Functions} from "../../../functions/Functions.ts";
+import type {Functions} from "../../../non-main-functions/NonMainFunctions.ts";
 import {SpanIndexes} from "../../../span-indexes/SpanIndexes.ts";
 import type {SupportedStatementExecutingResult} from "../../../statement-executing-result/supported/SupportedStatementExecutingResult.ts";
 import type {Variables} from "../../../variables/Variables.ts";
@@ -16,7 +16,7 @@ export class OperatedStatementAbstractSyntaxTreeNode extends AbstractSyntaxTreeN
 		super(children, spanIndexes);
 	}
 	public *execute(
-		functions: Functions,
+		nonMainFunctions: NonMainFunctions,
 		restStatements: StatementsAbstractSyntaxTreeNode,
 		variables: Variables,
 	): Generator<SupportedStatementExecutingResult, void, void> {

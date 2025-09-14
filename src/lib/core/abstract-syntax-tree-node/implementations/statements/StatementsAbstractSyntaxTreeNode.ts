@@ -1,5 +1,5 @@
 import type {StatementsAbstractSyntaxTreeNodeChildren} from "./children/StatementsAbstractSyntaxTreeNodeChildren.ts";
-import type {Functions} from "../../../functions/Functions.ts";
+import type {Functions} from "../../../non-main-functions/NonMainFunctions.ts";
 import {SpanIndexes} from "../../../span-indexes/SpanIndexes.ts";
 import {failureStatementExecutingResultTypeName} from "../../../statement-executing-result/implementations/failure/type-name/failureStatementExecutingResultTypeName.ts";
 import {ReturnStatementExecutingResult} from "../../../statement-executing-result/implementations/return/ReturnStatementExecutingResult.ts";
@@ -18,7 +18,7 @@ export class StatementsAbstractSyntaxTreeNode extends AbstractSyntaxTreeNode<Sta
 		super(children, spanIndexes);
 	}
 	public *execute(
-		functions: Functions,
+		nonMainFunctions: NonMainFunctions,
 		variables: Variables,
 	): Generator<SupportedStatementExecutingResult, void, void> {
 		const [firstOperatedStatement, ...restInitialOperatedStatements] =

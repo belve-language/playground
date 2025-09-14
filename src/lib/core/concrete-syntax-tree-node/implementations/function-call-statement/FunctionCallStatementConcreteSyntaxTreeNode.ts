@@ -1,10 +1,11 @@
 import type {FunctionCallStatementConcreteSyntaxTreeNodeAtom} from "./atom/FunctionCallStatementConcreteSyntaxTreeNodeAtom.ts";
-import type {FunctionCallStatementAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree-node/implementations/statement/implementations/function-call/FunctionCallStatementAbstractSyntaxTreeNode.ts";
+import {FunctionCallStatementAbstractSyntaxTreeNode} from "../../../abstract-syntax-tree-node/implementations/statement/implementations/function-call/FunctionCallStatementAbstractSyntaxTreeNode.ts";
+import {ErrorAbstractifyingResult} from "../../../abstractifying-result/implementations/error/ErrorAbstractifyingResult.ts";
+import {errorAbstractifyingResultTypeName} from "../../../abstractifying-result/implementations/error/type-name/errorAbstractifyingResultTypeName.ts";
+import {SuccessAbstractifyingResult} from "../../../abstractifying-result/implementations/success/SuccessAbstractifyingResult.ts";
+import {successAbstractifyingResultTypeName} from "../../../abstractifying-result/implementations/success/type-name/successAbstractifyingResultTypeName.ts";
+import {SpanIndexes} from "../../../span-indexes/SpanIndexes.ts";
 import {ConcreteSyntaxTreeNode} from "../../ConcreteSyntaxTreeNode.ts";
-import {ErrorAbstractifyingResult} from "../../abstractifying/result/implementations/error/ErrorAbstractifyingResult.ts";
-import {errorAbstractifyingResultTypeName} from "../../abstractifying/result/implementations/error/type-name/errorAbstractifyingResultTypeName.ts";
-import {SuccessAbstractifyingResult} from "../../abstractifying/result/implementations/success/SuccessAbstractifyingResult.ts";
-import {successAbstractifyingResultTypeName} from "../../abstractifying/result/implementations/success/type-name/successAbstractifyingResultTypeName.ts";
 export class FunctionCallStatementConcreteSyntaxTreeNode extends ConcreteSyntaxTreeNode<FunctionCallStatementConcreteSyntaxTreeNodeAtom> {
 	public constructor(atom: FunctionCallStatementConcreteSyntaxTreeNodeAtom) {
 		super(atom);
@@ -12,24 +13,38 @@ export class FunctionCallStatementConcreteSyntaxTreeNode extends ConcreteSyntaxT
 	public abstractify():
 		| ErrorAbstractifyingResult
 		| SuccessAbstractifyingResult<FunctionCallStatementAbstractSyntaxTreeNode> {
-		const functionCall = this.atom.node;
-		const abstractifiedFunctionCall = functionCall.abstractify();
-		const functionCallAbstractifyingResult = abstractifiedFunctionCall;
-		switch (functionCallAbstractifyingResult.typeName) {
+		const functionCallSegments = this.atom.node;
+		const functionCallSegmentsAbstractifyingResult =
+			functionCallSegments.abstractify();
+		switch (functionCallSegmentsAbstractifyingResult.typeName) {
 			case errorAbstractifyingResultTypeName: {
 				const functionCallStatementAbstractifyingResult: ErrorAbstractifyingResult =
 					new ErrorAbstractifyingResult(
-						functionCallAbstractifyingResult.message,
+						functionCallSegmentsAbstractifyingResult.message,
 					);
 				return functionCallStatementAbstractifyingResult;
 			}
 			case successAbstractifyingResultTypeName: {
-				const abstractifiedFunctionCallStatement =
-					functionCallAbstractifyingResult.data;
-				const functionCallStatementAbstractifyingResult: SuccessAbstractifyingResult<FunctionCallStatementAbstractSyntaxTreeNode> =
-					new SuccessAbstractifyingResult<FunctionCallStatementAbstractSyntaxTreeNode>(
-						abstractifiedFunctionCallStatement,
+				const abstractifiedFunctionCallSegments =
+					functionCallSegmentsAbstractifyingResult.data;
+				const [
+					firstAbstractifiedFunctionCallSegment,
+					...restAbstractifiedFunctionCallSegments
+				] = abstractifiedFunctionCallSegments;
+				const lastAbstractifiedFunctionCallSegment =
+					restAbstractifiedFunctionCallSegments[
+						restAbstractifiedFunctionCallSegments.length - 1
+					] ?? firstAbstractifiedFunctionCallSegment;
+				const abstractifiedFunctionCall: FunctionCallStatementAbstractSyntaxTreeNode =
+					FunctionCallStatementAbstractSyntaxTreeNode.create(
+						{segments: abstractifiedFunctionCallSegments},
+						new SpanIndexes(
+							firstAbstractifiedFunctionCallSegment.spanIndexes.from,
+							lastAbstractifiedFunctionCallSegment.spanIndexes.until,
+						),
 					);
+				const functionCallStatementAbstractifyingResult: SuccessAbstractifyingResult<FunctionCallStatementAbstractSyntaxTreeNode> =
+					new SuccessAbstractifyingResult(abstractifiedFunctionCall);
 				return functionCallStatementAbstractifyingResult;
 			}
 		}

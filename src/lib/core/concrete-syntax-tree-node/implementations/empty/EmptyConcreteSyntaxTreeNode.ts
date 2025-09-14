@@ -1,6 +1,6 @@
+import {SuccessAbstractifyingResult} from "../../../abstractifying-result/implementations/success/SuccessAbstractifyingResult.ts";
 import type {EmptyAtom} from "../../../atom/implementations/empty/EmptyAtom.ts";
 import {ConcreteSyntaxTreeNode} from "../../ConcreteSyntaxTreeNode.ts";
-import {SuccessAbstractifyingResult} from "../../abstractifying/result/implementations/success/SuccessAbstractifyingResult.ts";
 export class EmptyConcreteSyntaxTreeNode extends ConcreteSyntaxTreeNode<EmptyAtom> {
 	public constructor(atom: EmptyAtom) {
 		super(atom);

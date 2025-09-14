@@ -11,7 +11,7 @@ export function computeKnownsNames(
 			return segment instanceof KnownFunctionCallSegmentAbstractSyntaxTreeNode;
 		})
 		.map((segment) => {
-			return segment.name;
+			return segment.children.name;
 		});
 	return knownsNames;
 }

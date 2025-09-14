@@ -1,9 +1,8 @@
 import type {FunctionsAbstractSyntaxTreeNodeChildren} from "./children/FunctionsAbstractSyntaxTreeNodeChildren.ts";
-import {combineDependentGeneratorsProducting} from "../../../../combineDependentGeneratorsProducting.ts";
-import {combineIndependentGeneratorsInterleaving} from "../../../../combining-independent-generators-interleaving/combineIndependentGeneratorsInterleaving.ts";
+import {combineDependentGeneratorsProducting} from "../../../combining-dependent-generators-producting/combineDependentGeneratorsProducting.ts";
+import {combineIndependentGeneratorsInterleaving} from "../../../combining-independent-generators-interleaving/combineIndependentGeneratorsInterleaving.ts";
 import type {SupportedFunctionCallingResult} from "../../../function-calling-result/supported/SupportedFunctionCallingResult.ts";
-import type {Functions} from "../../../functions/Functions.ts";
-import {generateNewFunction} from "../../../generating-new-function/generateNewFunction.ts";
+import type {NonMainFunctions} from "../../../non-main-functions/NonMainFunctions.ts";
 import {SpanIndexes} from "../../../span-indexes/SpanIndexes.ts";
 import {AbstractSyntaxTreeNode} from "../../AbstractSyntaxTreeNode.ts";
 import type {FunctionHeaderAbstractSyntaxTreeNode} from "../function-header/FunctionHeaderAbstractSyntaxTreeNode.ts";
@@ -16,55 +15,55 @@ export class FunctionsAbstractSyntaxTreeNode extends AbstractSyntaxTreeNode<Func
 	}
 	public *mutate(
 		builtInFunctionsHeaders: readonly FunctionHeaderAbstractSyntaxTreeNode[],
-		maximalUserFunctionsCount: number,
+		maximalUserNonMainFunctionsCount: number,
 	): Generator<FunctionsAbstractSyntaxTreeNode, void, void> {
+		// TODO: zrób żeby na pewno po dodaniu funkcji była ona użyta
 		for (const mutatedFunctions of combineIndependentGeneratorsInterleaving(
 			this.mutateByAddingFunction(
 				builtInFunctionsHeaders,
-				maximalUserFunctionsCount,
+				maximalUserNonMainFunctionsCount,
 			),
 			this.mutateByMutatingFunction(
 				builtInFunctionsHeaders,
-				maximalUserFunctionsCount,
+				maximalUserNonMainFunctionsCount,
 			),
 		)) {
 			yield mutatedFunctions;
 		}
 	}
 	private *mutateByAddingFunction(
-		builtInFunctionsHeaders: readonly FunctionHeaderAbstractSyntaxTreeNode[],
-		maximalUserFunctionsCount: number,
+		builtInNonMainFunctionsHeaders: readonly FunctionHeaderAbstractSyntaxTreeNode[],
+		maximalUserNonMainFunctionsCount: number,
 	): Generator<FunctionsAbstractSyntaxTreeNode, void, void> {
-		const userFunctionsHeaders = Object.values(this.children.functions).map(
-			(function_) => {
-				return function_.children.header;
-			},
-		);
-		if (userFunctionsHeaders.length >= maximalUserFunctionsCount) {
-			return;
-		} else {
-			const combinedFunctionsHeaders = [
-				...builtInFunctionsHeaders,
-				...userFunctionsHeaders,
+		const userNonMainFunctions = Object.values(this.children.nonMainFunctions);
+		if (userNonMainFunctions.length < maximalUserNonMainFunctionsCount) {
+			const userNonMainFunctionsHeaders = userNonMainFunctions.map(
+				(function_) => {
+					return function_.children.header;
+				},
+			);
+			const combinedNonMainFunctionsHeaders = [
+				...builtInNonMainFunctionsHeaders,
+				...userNonMainFunctionsHeaders,
 			];
 			const this_ = this;
 			for (const mutatedFunctions of combineDependentGeneratorsProducting(
-				generateNewFunction("", 0, combinedFunctionsHeaders),
-				function* (mutatedFunction) {
+				generateNewNonMainFunction(combinedNonMainFunctionsHeaders),
+				function* (newNonMainFunction) {
 					const mutatedFunctions = new FunctionsAbstractSyntaxTreeNode(
 						{
-							functions: {
-								...this_.children.functions,
-								[mutatedFunction.id]: mutatedFunction,
+							...this_.children,
+							nonMainFunctions: {
+								...this_.children.nonMainFunctions,
+								[newNonMainFunction.id]: newNonMainFunction,
 							},
-							mainFunction: this_.children.mainFunction,
 						},
 						new SpanIndexes(0, 0),
 					);
 					yield mutatedFunctions;
 					for (const deeperMutatedFunctions of mutatedFunctions.mutate(
 						builtInFunctionsHeaders,
-						maximalUserFunctionsCount,
+						maximalUserNonMainFunctionsCount,
 					)) {
 						yield deeperMutatedFunctions;
 					}
@@ -75,39 +74,40 @@ export class FunctionsAbstractSyntaxTreeNode extends AbstractSyntaxTreeNode<Func
 		}
 	}
 	public *mutateByMutatingFunction(
-		builtInFunctionsHeaders: readonly FunctionHeaderAbstractSyntaxTreeNode[],
-		maximalUserFunctionsCount: number,
+		builtInNonMainFunctionsHeaders: readonly FunctionHeaderAbstractSyntaxTreeNode[],
+		maximalUserNonMainFunctionsCount: number,
 	): Generator<FunctionsAbstractSyntaxTreeNode, void, void> {
-		const userFunctionsHeaders = Object.values(this.children.functions).map(
+		const userNonMainFunctions = Object.values(this.children.nonMainFunctions);
+		const userNonMainFunctionsHeaders = userNonMainFunctions.map(
 			(function_) => {
 				return function_.children.header;
 			},
 		);
-		const combinedFunctionsHeaders = [
-			...builtInFunctionsHeaders,
-			...userFunctionsHeaders,
+		const combinedNonMainFunctionsHeaders = [
+			...builtInNonMainFunctionsHeaders,
+			...userNonMainFunctionsHeaders,
 		];
+		const this_ = this;
 		for (const mutatedFunctions of combineIndependentGeneratorsInterleaving<FunctionsAbstractSyntaxTreeNode>(
-			...Object.values(this.children.functions).map((function_) => {
-				const this_ = this;
+			...Object.values(this.children.nonMainFunctions).map((function_) => {
 				return (function* () {
 					for (const mutatedFunction of function_.mutate(
-						combinedFunctionsHeaders,
+						combinedNonMainFunctionsHeaders,
 					)) {
 						const mutatedFunctions = new FunctionsAbstractSyntaxTreeNode(
 							{
-								functions: {
-									...this_.children.functions,
+								...this_.children,
+								nonMainFunctions: {
+									...this_.children.nonMainFunctions,
 									[mutatedFunction.id]: mutatedFunction,
 								},
-								mainFunction: this_.children.mainFunction,
 							},
 							new SpanIndexes(0, 0),
 						);
 						yield mutatedFunctions;
 						for (const deeperMutatedFunctions of mutatedFunctions.mutate(
-							builtInFunctionsHeaders,
-							maximalUserFunctionsCount,
+							builtInNonMainFunctionsHeaders,
+							maximalUserNonMainFunctionsCount,
 						)) {
 							yield deeperMutatedFunctions;
 						}
@@ -119,30 +119,18 @@ export class FunctionsAbstractSyntaxTreeNode extends AbstractSyntaxTreeNode<Func
 		}
 	}
 	public *run(
-		builtInFunctions: Functions,
+		builtInFunctions: NonMainFunctions,
 	): Generator<SupportedFunctionCallingResult, void, void> {
 		const mainFunction = this.children.mainFunction;
-		if (mainFunction === null) {
-			throw new Error("Main function not found.");
-		} else {
-			const combinedFunctions: Functions = {
+		if (mainFunction !== null) {
+			const combinedFunctions: NonMainFunctions = {
 				...builtInFunctions,
-				...this.children.functions,
+				...this.children.nonMainFunctions,
 			};
-			const executingResults = mainFunction.call(combinedFunctions, []);
-			yield* executingResults;
+			const callingResults = mainFunction.call(combinedFunctions, []);
+			for (const callingResult of callingResults) {
+				yield callingResult;
+			}
 		}
-	}
-	public stringify(): string {
-		return [
-			...Object.values(this.children.functions),
-			...(this.children.mainFunction === null ?
-				[]
-			:	[this.children.mainFunction]),
-		]
-			.map((child) => {
-				return `${child.stringify()}\n\n`;
-			})
-			.join("");
 	}
 }

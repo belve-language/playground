@@ -1,6 +1,3 @@
-import {FunctionCallConcreteSyntaxTreeNode} from "../../../concrete-syntax-tree-node/implementations/function-call/FunctionCallConcreteSyntaxTreeNode.ts";
-import type {FunctionCallConcreteSyntaxTreeNodeAtom} from "../../../concrete-syntax-tree-node/implementations/function-call/atom/FunctionCallConcreteSyntaxTreeNodeAtom.ts";
-import type {FunctionCallSegmentsConcreteSyntaxTreeNode} from "../../../concrete-syntax-tree-node/implementations/function-call-segments/FunctionCallSegmentsConcreteSyntaxTreeNode.ts";
 import {NonTerminalExpression} from "../../../expression/implementations/non-terminal/NonTerminalExpression.ts";
 import type {RuleById} from "../../../rule-by-id/RuleById.ts";
 import {Rule} from "../../Rule.ts";

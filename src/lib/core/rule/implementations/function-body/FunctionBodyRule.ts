@@ -1,4 +1,4 @@
-import type {BlockConcreteSyntaxTreeNode} from "../../../concrete-syntax-tree-node/implementations/block/BlockConcreteSyntaxTreeNode.ts";
+import type {BlockConcreteSyntaxTreeNode} from "../../../concrete-syntax-tree-node/implementations/block-statement/BlockStatementConcreteSyntaxTreeNode.ts";
 import {FunctionBodyConcreteSyntaxTreeNode} from "../../../concrete-syntax-tree-node/implementations/function-body/FunctionBodyConcreteSyntaxTreeNode.ts";
 import type {FunctionBodyConcreteSyntaxTreeNodeAtom} from "../../../concrete-syntax-tree-node/implementations/function-body/atom/FunctionBodyConcreteSyntaxTreeNodeAtom.ts";
 import {NonTerminalExpression} from "../../../expression/implementations/non-terminal/NonTerminalExpression.ts";

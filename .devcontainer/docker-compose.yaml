@@ -4,7 +4,7 @@ services:
       args:
         ARCH_DOCKER_IMAGE_TAG_BUILD_NUMBER: "20250824.0.410029"
         MIRROR_DATE: "2025/08/26"
-        NODE_PACKAGE_VERSION: "24.6.0-1"
+        NODE_PACKAGE_VERSION: "24.7.0-1"
         NPM_PACKAGE_VERSION: "11.5.2-1"
       context: "."
       dockerfile: "Dockerfile"

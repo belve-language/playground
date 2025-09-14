@@ -1,8 +1,8 @@
 import type {OptionalPaddedVariableNameConcreteSyntaxTreeNodeAtom} from "./atom/OptionalPaddedVariableNameConcreteSyntaxTreeNodeAtom.ts";
+import {ErrorAbstractifyingResult} from "../../../abstractifying-result/implementations/error/ErrorAbstractifyingResult.ts";
+import {SuccessAbstractifyingResult} from "../../../abstractifying-result/implementations/success/SuccessAbstractifyingResult.ts";
+import {successAbstractifyingResultTypeName} from "../../../abstractifying-result/implementations/success/type-name/successAbstractifyingResultTypeName.ts";
 import {ConcreteSyntaxTreeNode} from "../../ConcreteSyntaxTreeNode.ts";
-import {ErrorAbstractifyingResult} from "../../abstractifying/result/implementations/error/ErrorAbstractifyingResult.ts";
-import {SuccessAbstractifyingResult} from "../../abstractifying/result/implementations/success/SuccessAbstractifyingResult.ts";
-import {successAbstractifyingResultTypeName} from "../../abstractifying/result/implementations/success/type-name/successAbstractifyingResultTypeName.ts";
 export class OptionalPaddedVariableNameConcreteSyntaxTreeNode extends ConcreteSyntaxTreeNode<OptionalPaddedVariableNameConcreteSyntaxTreeNodeAtom> {
 	public constructor(
 		atom: OptionalPaddedVariableNameConcreteSyntaxTreeNodeAtom,

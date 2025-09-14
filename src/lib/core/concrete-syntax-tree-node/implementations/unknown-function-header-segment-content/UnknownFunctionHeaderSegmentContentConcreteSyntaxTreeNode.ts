@@ -1,10 +1,10 @@
 import type {UnknownFunctionHeaderSegmentContentConcreteSyntaxTreeNodeAtom} from "./atom/UnknownFunctionHeaderSegmentContentConcreteSyntaxTreeNodeAtom.ts";
 import type {UnknownFunctionHeaderSegmentAbstractSyntaxTreeNodeChildren} from "../../../abstract-syntax-tree-node/implementations/function-header-segment/implementations/unknown/children/UnknownFunctionHeaderSegmentAbstractSyntaxTreeNodeChildren.ts";
+import {ErrorAbstractifyingResult} from "../../../abstractifying-result/implementations/error/ErrorAbstractifyingResult.ts";
+import {errorAbstractifyingResultTypeName} from "../../../abstractifying-result/implementations/error/type-name/errorAbstractifyingResultTypeName.ts";
+import {SuccessAbstractifyingResult} from "../../../abstractifying-result/implementations/success/SuccessAbstractifyingResult.ts";
+import {successAbstractifyingResultTypeName} from "../../../abstractifying-result/implementations/success/type-name/successAbstractifyingResultTypeName.ts";
 import {ConcreteSyntaxTreeNode} from "../../ConcreteSyntaxTreeNode.ts";
-import {ErrorAbstractifyingResult} from "../../abstractifying/result/implementations/error/ErrorAbstractifyingResult.ts";
-import {errorAbstractifyingResultTypeName} from "../../abstractifying/result/implementations/error/type-name/errorAbstractifyingResultTypeName.ts";
-import {SuccessAbstractifyingResult} from "../../abstractifying/result/implementations/success/SuccessAbstractifyingResult.ts";
-import {successAbstractifyingResultTypeName} from "../../abstractifying/result/implementations/success/type-name/successAbstractifyingResultTypeName.ts";
 export class UnknownFunctionHeaderSegmentContentConcreteSyntaxTreeNode extends ConcreteSyntaxTreeNode<UnknownFunctionHeaderSegmentContentConcreteSyntaxTreeNodeAtom> {
 	public constructor(
 		atom: UnknownFunctionHeaderSegmentContentConcreteSyntaxTreeNodeAtom,

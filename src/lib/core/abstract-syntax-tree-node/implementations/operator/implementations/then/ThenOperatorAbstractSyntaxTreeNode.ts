@@ -1,4 +1,4 @@
-import type {Functions} from "../../../../../functions/Functions.ts";
+import type {Functions} from "../../../../../non-main-functions/NonMainFunctions.ts";
 import {SpanIndexes} from "../../../../../span-indexes/SpanIndexes.ts";
 import {failureStatementExecutingResultTypeName} from "../../../../../statement-executing-result/implementations/failure/type-name/failureStatementExecutingResultTypeName.ts";
 import {returnStatementExecutingResultTypeName} from "../../../../../statement-executing-result/implementations/return/type-name/returnStatementExecutingResultTypeName.ts";
@@ -23,7 +23,7 @@ export class ThenOperatorAbstractSyntaxTreeNode extends OperatorAbstractSyntaxTr
 	}
 	public override *operate(
 		firstStatement: SupportedStatementAbstractSyntaxTreeNode,
-		functions: Functions,
+		nonMainFunctions: NonMainFunctions,
 		restStatements: StatementsAbstractSyntaxTreeNode,
 		variables: Variables,
 	): Generator<SupportedStatementExecutingResult, void, void> {

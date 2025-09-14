@@ -1,8 +1,8 @@
 import type {OptionalWordCharactersConcreteSyntaxTreeNodeAtom} from "./atom/OptionalWordCharactersConcreteSyntaxTreeNodeAtom.ts";
+import {ErrorAbstractifyingResult} from "../../../abstractifying-result/implementations/error/ErrorAbstractifyingResult.ts";
+import {SuccessAbstractifyingResult} from "../../../abstractifying-result/implementations/success/SuccessAbstractifyingResult.ts";
+import {successAbstractifyingResultTypeName} from "../../../abstractifying-result/implementations/success/type-name/successAbstractifyingResultTypeName.ts";
 import {ConcreteSyntaxTreeNode} from "../../ConcreteSyntaxTreeNode.ts";
-import {ErrorAbstractifyingResult} from "../../abstractifying/result/implementations/error/ErrorAbstractifyingResult.ts";
-import {SuccessAbstractifyingResult} from "../../abstractifying/result/implementations/success/SuccessAbstractifyingResult.ts";
-import {successAbstractifyingResultTypeName} from "../../abstractifying/result/implementations/success/type-name/successAbstractifyingResultTypeName.ts";
 export class OptionalWordCharactersConcreteSyntaxTreeNode extends ConcreteSyntaxTreeNode<OptionalWordCharactersConcreteSyntaxTreeNodeAtom> {
 	public constructor(atom: OptionalWordCharactersConcreteSyntaxTreeNodeAtom) {
 		super(atom);

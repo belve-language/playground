@@ -13,7 +13,7 @@ export function computeKnownsNames(
 			);
 		})
 		.map((segment) => {
-			return segment.name;
+			return segment.children.name;
 		});
 	return knownsNames;
 }

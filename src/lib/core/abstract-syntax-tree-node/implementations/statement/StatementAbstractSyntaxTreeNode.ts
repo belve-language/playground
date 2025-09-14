@@ -1,5 +1,5 @@
 import type {SupportedStatementAbstractSyntaxTreeNode} from "./supported/SupportedStatementAbstractSyntaxTreeNode.ts";
-import type {Functions} from "../../../functions/Functions.ts";
+import type {Functions} from "../../../non-main-functions/NonMainFunctions.ts";
 import type {SpanIndexes} from "../../../span-indexes/SpanIndexes.ts";
 import type {SupportedStatementExecutingResult} from "../../../statement-executing-result/supported/SupportedStatementExecutingResult.ts";
 import {AbstractSyntaxTreeNode} from "../../AbstractSyntaxTreeNode.ts";
@@ -13,7 +13,7 @@ export abstract class StatementAbstractSyntaxTreeNode<
 	}
 	public abstract execute(
 		functions: FunctionAbstractSyntaxTreeNodeChildrenFunctions,
-		variables: {readonly [variableName: string]: unknown},
+		variables: Variables,
 	): Generator<SupportedStatementExecutingResult, void, void>;
 	public abstract mutate(
 		functionsHeaders: readonly [

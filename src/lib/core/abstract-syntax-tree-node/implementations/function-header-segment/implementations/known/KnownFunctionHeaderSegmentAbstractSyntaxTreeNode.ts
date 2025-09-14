@@ -1,25 +1,16 @@
 import type {KnownFunctionHeaderSegmentAbstractSyntaxTreeNodeChildren} from "./children/KnownFunctionHeaderSegmentAbstractSyntaxTreeNodeChildren.ts";
 import type {SpanIndexes} from "../../../../../span-indexes/SpanIndexes.ts";
 import {FunctionHeaderSegmentAbstractSyntaxTreeNode} from "../../FunctionHeaderSegmentAbstractSyntaxTreeNode.ts";
+import {knownFunctionHeaderSegmentAbstractSyntaxTreeNodeId} from "./id/knownFunctionHeaderSegmentAbstractSyntaxTreeNodeId.ts";
 export class KnownFunctionHeaderSegmentAbstractSyntaxTreeNode extends FunctionHeaderSegmentAbstractSyntaxTreeNode<KnownFunctionHeaderSegmentAbstractSyntaxTreeNodeChildren> {
-	public static create(
+	public constructor(
 		children: KnownFunctionHeaderSegmentAbstractSyntaxTreeNodeChildren,
-		spanIndexes: SpanIndexes,
-	): KnownFunctionHeaderSegmentAbstractSyntaxTreeNode {
-		const node = new this(children, "()", children.name, spanIndexes);
-		return node;
-	}
-	private constructor(
-		children: KnownFunctionHeaderSegmentAbstractSyntaxTreeNodeChildren,
-		id: string,
-		name: string,
 		spanIndexes: SpanIndexes,
 	) {
-		super(children, id, spanIndexes);
-		this.name = name;
-	}
-	public readonly name: string;
-	public stringify(): string {
-		return `(${this.name})`;
+		super(
+			children,
+			knownFunctionHeaderSegmentAbstractSyntaxTreeNodeId,
+			spanIndexes,
+		);
 	}
 }

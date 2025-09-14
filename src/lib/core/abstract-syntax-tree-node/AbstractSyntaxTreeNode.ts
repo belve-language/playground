@@ -1,4 +1,5 @@
 import type {SpanIndexes} from "../span-indexes/SpanIndexes.ts";
+// TODO: RECONSIDER SPAN INDEXES
 export abstract class AbstractSyntaxTreeNode<Children> {
 	protected constructor(children: Children, spanIndexes: SpanIndexes) {
 		this.children = children;

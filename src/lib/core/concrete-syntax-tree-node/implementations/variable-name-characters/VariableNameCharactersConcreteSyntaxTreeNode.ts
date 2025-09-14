@@ -1,7 +1,7 @@
 import type {VariableNameCharactersConcreteSyntaxTreeNodeAtom} from "./atom/VariableNameCharactersConcreteSyntaxTreeNodeAtom.ts";
+import {SuccessAbstractifyingResult} from "../../../abstractifying-result/implementations/success/SuccessAbstractifyingResult.ts";
+import {successAbstractifyingResultTypeName} from "../../../abstractifying-result/implementations/success/type-name/successAbstractifyingResultTypeName.ts";
 import {ConcreteSyntaxTreeNode} from "../../ConcreteSyntaxTreeNode.ts";
-import {SuccessAbstractifyingResult} from "../../abstractifying/result/implementations/success/SuccessAbstractifyingResult.ts";
-import {successAbstractifyingResultTypeName} from "../../abstractifying/result/implementations/success/type-name/successAbstractifyingResultTypeName.ts";
 export class VariableNameCharactersConcreteSyntaxTreeNode extends ConcreteSyntaxTreeNode<VariableNameCharactersConcreteSyntaxTreeNodeAtom> {
 	public constructor(atom: VariableNameCharactersConcreteSyntaxTreeNodeAtom) {
 		super(atom);

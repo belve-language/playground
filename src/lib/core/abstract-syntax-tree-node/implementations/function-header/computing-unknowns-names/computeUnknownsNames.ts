@@ -13,7 +13,7 @@ export function computeUnknownsNames(
 			);
 		})
 		.map((segment) => {
-			return segment.name;
+			return segment.children.name;
 		});
 	return unknownsNames;
 }

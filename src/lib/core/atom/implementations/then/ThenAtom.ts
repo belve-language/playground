@@ -1,6 +1,6 @@
 import type {Character} from "../../../character/Character.ts";
 import type {ConcreteSyntaxTreeNode} from "../../../concrete-syntax-tree-node/ConcreteSyntaxTreeNode.ts";
-import type {SpanIndexes} from "../../../span-indexes/SpanIndexes.ts";
+import {SpanIndexes} from "../../../span-indexes/SpanIndexes.ts";
 import {Atom} from "../../Atom.ts";
 import type {EmptyAtom} from "../empty/EmptyAtom.ts";
 import type {NonTerminalAtom} from "../non-terminal/NonTermnalAtom.ts";
@@ -12,7 +12,24 @@ export class ThenAtom<
 		| TerminalAtom<Character>,
 	RightSubAtom extends Atom,
 > extends Atom {
-	public constructor(
+	public static create<
+		LeftSubAtom extends
+			| EmptyAtom
+			| NonTerminalAtom<ConcreteSyntaxTreeNode<Atom>>
+			| TerminalAtom<Character>,
+		RightSubAtom extends Atom,
+	>(
+		leftSubAtom: LeftSubAtom,
+		rightSubAtom: RightSubAtom,
+	): ThenAtom<LeftSubAtom, RightSubAtom> {
+		const spanIndexes = new SpanIndexes(
+			leftSubAtom.spanIndexes.from,
+			rightSubAtom.spanIndexes.until,
+		);
+		const thenAtom = new ThenAtom(leftSubAtom, rightSubAtom, spanIndexes);
+		return thenAtom;
+	}
+	private constructor(
 		leftSubAtom: LeftSubAtom,
 		rightSubAtom: RightSubAtom,
 		spanIndexes: SpanIndexes,

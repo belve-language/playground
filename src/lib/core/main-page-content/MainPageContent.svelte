@@ -37,7 +37,6 @@
 			align-self: center;
 		}
 	}
-
 	.university-and-faculty {
 		text-align: center;
 		font-weight: bold;
