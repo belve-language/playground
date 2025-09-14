@@ -1,0 +1,7 @@
+import type {KnownFunctionCallStatementSegmentAbstractSyntaxTreeNode} from "../implementations/known/KnownFunctionCallStatementSegmentAbstractSyntaxTreeNode.ts";
+import type {UnknownFunctionCallStatementSegmentAbstractSyntaxTreeNode} from "../implementations/unknown/UnknownFunctionCallStatementSegmentAbstractSyntaxTreeNode.ts";
+import type {WordFunctionCallStatementSegmentAbstractSyntaxTreeNode} from "../implementations/word/WordFunctionCallStatementSegmentAbstractSyntaxTreeNode.ts";
+export type SupportedFunctionCallStatementSegmentAbstractSyntaxTreeNode =
+	| KnownFunctionCallStatementSegmentAbstractSyntaxTreeNode
+	| UnknownFunctionCallStatementSegmentAbstractSyntaxTreeNode
+	| WordFunctionCallStatementSegmentAbstractSyntaxTreeNode;
