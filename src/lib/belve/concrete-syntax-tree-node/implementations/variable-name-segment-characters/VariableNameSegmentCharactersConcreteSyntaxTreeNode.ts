@@ -1,4 +1,5 @@
 import type {VariableNameSegmentCharactersConcreteSyntaxTreeNodeAtom} from "./atom/VariableNameSegmentCharactersConcreteSyntaxTreeNodeAtom.ts";
+import {SuccessAbstractifyingResult} from "../../../abstractifying-result/implementations/success/SuccessAbstractifyingResult.ts";
 import {successAbstractifyingResultTypeName} from "../../../abstractifying-result/implementations/success/type-name/successAbstractifyingResultTypeName.ts";
 import {ConcreteSyntaxTreeNode} from "../../ConcreteSyntaxTreeNode.ts";
 export class VariableNameSegmentCharactersConcreteSyntaxTreeNode extends ConcreteSyntaxTreeNode<VariableNameSegmentCharactersConcreteSyntaxTreeNodeAtom> {
@@ -7,7 +8,7 @@ export class VariableNameSegmentCharactersConcreteSyntaxTreeNode extends Concret
 	) {
 		super(atom);
 	}
-	public abstractify(): string {
+	public abstractify(): SuccessAbstractifyingResult<string> {
 		const variableNameSegmentCharacter = this.atom.leftSubAtom.node;
 		const optionalVariableNameSegmentCharacters = this.atom.rightSubAtom.node;
 		const abstractifiedVariableNameSegmentCharacter =
@@ -23,10 +24,16 @@ export class VariableNameSegmentCharactersConcreteSyntaxTreeNode extends Concret
 				if (abstractifiedOptionalVariableNameSegmentCharacters === null) {
 					const abstractifiedVariableNameSegmentCharacters: string =
 						abstractifiedVariableNameSegmentCharacter;
-					return abstractifiedVariableNameSegmentCharacters;
+					const variableNameSegmentCharactersAbstractifyingResult: SuccessAbstractifyingResult<string> =
+						new SuccessAbstractifyingResult<string>(
+							abstractifiedVariableNameSegmentCharacters,
+						);
+					return variableNameSegmentCharactersAbstractifyingResult;
 				} else {
 					const abstractifiedVariableNameSegmentCharacters: string = `${abstractifiedVariableNameSegmentCharacter}${abstractifiedOptionalVariableNameSegmentCharacters}`;
-					return abstractifiedVariableNameSegmentCharacters;
+					return new SuccessAbstractifyingResult<string>(
+						abstractifiedVariableNameSegmentCharacters,
+					);
 				}
 			}
 		}

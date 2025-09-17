@@ -16,28 +16,28 @@ export class EmptyExpression extends Expression<EmptyAtom> {
 		super();
 	}
 	public override checkIfCanBeEmpty(
-		alreadyCheckedRules: ReadonlySet<Rule<ConcreteSyntaxTreeNode<Atom>>>,
+		alreadyCheckedRules: ReadonlySet<Rule<Atom, ConcreteSyntaxTreeNode<Atom>>>,
 		ruleById: RuleById,
 	): true {
 		return true;
 	}
 	public override checkIfRuleCanBeFinal(
-		alreadyCheckedRules: ReadonlySet<Rule<ConcreteSyntaxTreeNode<Atom>>>,
-		rule: Rule<ConcreteSyntaxTreeNode<Atom>>,
+		alreadyCheckedRules: ReadonlySet<Rule<Atom, ConcreteSyntaxTreeNode<Atom>>>,
+		rule: Rule<Atom, ConcreteSyntaxTreeNode<Atom>>,
 		ruleById: RuleById,
 	): false {
 		return false;
 	}
 	public override computePossibleFirstingTerminals(
-		alreadyCheckedRules: ReadonlySet<Rule<ConcreteSyntaxTreeNode<Atom>>>,
+		alreadyCheckedRules: ReadonlySet<Rule<Atom, ConcreteSyntaxTreeNode<Atom>>>,
 		ruleById: RuleById,
 	): ReadonlySet<string> {
 		const possibleFirstingTerminals: ReadonlySet<string> = new Set<string>();
 		return possibleFirstingTerminals;
 	}
 	public override computePossibleFollowingTerminals(
-		alreadyCheckedRules: ReadonlySet<Rule<ConcreteSyntaxTreeNode<Atom>>>,
-		rule: Rule<ConcreteSyntaxTreeNode<Atom>>,
+		alreadyCheckedRules: ReadonlySet<Rule<Atom, ConcreteSyntaxTreeNode<Atom>>>,
+		rule: Rule<Atom, ConcreteSyntaxTreeNode<Atom>>,
 		ruleById: RuleById,
 	): ReadonlySet<string> {
 		const possibleFollowingTerminals: ReadonlySet<string> = new Set<string>();
@@ -64,8 +64,8 @@ export class EmptyExpression extends Expression<EmptyAtom> {
 			new SuccessExpressionParsingResult(atom, index, remainingCharacters);
 		return parsingResult;
 	}
-	public override stringifyToBackusNaurForm(): '""' {
-		const stringifiedExpression: '""' = '""';
+	public override stringifyToBackusNaurForm(): readonly ['""'] {
+		const stringifiedExpression: readonly ['""'] = ['""'];
 		return stringifiedExpression;
 	}
 }

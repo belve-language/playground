@@ -4,7 +4,10 @@ import type {WhitespaceCharacterConcreteSyntaxTreeNodeAtom} from "../../../concr
 import {TerminalExpression} from "../../../expression/implementations/terminal/TerminalExpression.ts";
 import type {RuleById} from "../../../rule-by-id/RuleById.ts";
 import {Rule} from "../../Rule.ts";
-export class WhitespaceCharacterRule extends Rule<WhitespaceCharacterConcreteSyntaxTreeNode> {
+export class WhitespaceCharacterRule extends Rule<
+	WhitespaceCharacterConcreteSyntaxTreeNodeAtom,
+	WhitespaceCharacterConcreteSyntaxTreeNode
+> {
 	public constructor() {
 		super(whitespaceCharacterRuleName);
 	}

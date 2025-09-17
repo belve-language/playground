@@ -25,9 +25,9 @@
 	"remoteEnv": {},
 	"remoteUser": "developer",
 	"securityOpt": [],
-	"service": "belve-explorer",
+	"service": "belve-playground",
 	"shutdownAction": "stopCompose",
 	"updateRemoteUserUID": true,
 	"userEnvProbe": "none",
-	"workspaceFolder": "/home/developer/belve-explorer"
+	"workspaceFolder": "/home/developer/belve-playground"
 }

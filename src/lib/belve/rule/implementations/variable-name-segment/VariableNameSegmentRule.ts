@@ -5,7 +5,10 @@ import type {VariableNameSegmentCharactersConcreteSyntaxTreeNode} from "../../..
 import {NonTerminalExpression} from "../../../expression/implementations/non-terminal/NonTerminalExpression.ts";
 import type {RuleById} from "../../../rule-by-id/RuleById.ts";
 import {Rule} from "../../Rule.ts";
-export class VariableNameSegmentRule extends Rule<VariableNameSegmentConcreteSyntaxTreeNode> {
+export class VariableNameSegmentRule extends Rule<
+	VariableNameSegmentConcreteSyntaxTreeNodeAtom,
+	VariableNameSegmentConcreteSyntaxTreeNode
+> {
 	public constructor() {
 		super(variableNameSegmentRuleName);
 	}

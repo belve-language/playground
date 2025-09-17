@@ -1,4 +1,5 @@
 import type {VariableNameSegmentConcreteSyntaxTreeNodeAtom} from "./atom/VariableNameSegmentConcreteSyntaxTreeNodeAtom.ts";
+import {successAbstractifyingResultTypeName} from "../../../abstractifying-result/implementations/success/type-name/successAbstractifyingResultTypeName.ts";
 import {ConcreteSyntaxTreeNode} from "../../ConcreteSyntaxTreeNode.ts";
 export class VariableNameSegmentConcreteSyntaxTreeNode extends ConcreteSyntaxTreeNode<VariableNameSegmentConcreteSyntaxTreeNodeAtom> {
 	public constructor(atom: VariableNameSegmentConcreteSyntaxTreeNodeAtom) {
@@ -6,10 +7,16 @@ export class VariableNameSegmentConcreteSyntaxTreeNode extends ConcreteSyntaxTre
 	}
 	public abstractify(): string {
 		const variableNameSegmentCharacters = this.atom.node;
-		const abstractifiedVariableNameSegmentCharacters =
+		const variableNameSegmentCharactersAbstractifyingResult =
 			variableNameSegmentCharacters.abstractify();
-		const abstractifiedVariableNameSegment: string =
-			abstractifiedVariableNameSegmentCharacters;
-		return abstractifiedVariableNameSegment;
+		switch (variableNameSegmentCharactersAbstractifyingResult.typeName) {
+			case successAbstractifyingResultTypeName: {
+				const abstractifiedVariableNameSegmentCharacters =
+					variableNameSegmentCharactersAbstractifyingResult.data;
+				const abstractifiedVariableNameSegment: string =
+					abstractifiedVariableNameSegmentCharacters;
+				return abstractifiedVariableNameSegment;
+			}
+		}
 	}
 }

@@ -8,7 +8,10 @@ import {NonTerminalExpression} from "../../../expression/implementations/non-ter
 import {ThenExpression} from "../../../expression/implementations/then/ThenExpression.ts";
 import type {RuleById} from "../../../rule-by-id/RuleById.ts";
 import {Rule} from "../../Rule.ts";
-export class WordCharactersRule extends Rule<WordCharactersConcreteSyntaxTreeNode> {
+export class WordCharactersRule extends Rule<
+	WordCharactersConcreteSyntaxTreeNodeAtom,
+	WordCharactersConcreteSyntaxTreeNode
+> {
 	public constructor() {
 		super(wordCharactersRuleName);
 	}

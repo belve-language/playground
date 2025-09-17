@@ -1,0 +1,1 @@
+export const returnStatementExecutingResultTypeName = "return";

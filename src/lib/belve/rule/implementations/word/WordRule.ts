@@ -5,7 +5,10 @@ import {NonTerminalExpression} from "../../../expression/implementations/non-ter
 import type {RuleById} from "../../../rule-by-id/RuleById.ts";
 import {Rule} from "../../Rule.ts";
 import {wordRuleName} from "./name/wordRuleName.ts";
-export class WordRule extends Rule<WordConcreteSyntaxTreeNode> {
+export class WordRule extends Rule<
+	WordConcreteSyntaxTreeNodeAtom,
+	WordConcreteSyntaxTreeNode
+> {
 	public constructor() {
 		super(wordRuleName);
 	}

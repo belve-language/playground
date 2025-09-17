@@ -31,8 +31,12 @@ export class KnownFunctionHeaderSegmentContentRule extends Rule<
 			NonTerminalExpression<PaddedOptionalVariableNameConcreteSyntaxTreeNode>,
 			NonTerminalExpression<VariableNameConcreteSyntaxTreeNode>,
 		] = [
-			new NonTerminalExpression(ruleById.PaddedOptionalVariableName),
-			new NonTerminalExpression(ruleById.VariableName),
+			new NonTerminalExpression<PaddedOptionalVariableNameConcreteSyntaxTreeNode>(
+				ruleById.PaddedOptionalVariableName,
+			),
+			new NonTerminalExpression<VariableNameConcreteSyntaxTreeNode>(
+				ruleById.VariableName,
+			),
 		];
 		return rightExpressions;
 	}

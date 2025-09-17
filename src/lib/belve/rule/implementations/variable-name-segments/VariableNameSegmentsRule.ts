@@ -4,6 +4,7 @@ import type {OptionalSeparatedOptionalVariableNameSegmentsConcreteSyntaxTreeNode
 import type {VariableNameSegmentConcreteSyntaxTreeNode} from "../../../concrete-syntax-tree-node/implementations/variable-name-segment/VariableNameSegmentConcreteSyntaxTreeNode.ts";
 import {VariableNameSegmentsConcreteSyntaxTreeNode} from "../../../concrete-syntax-tree-node/implementations/variable-name-segments/VariableNameSegmentsConcreteSyntaxTreeNode.ts";
 import type {VariableNameSegmentsConcreteSyntaxTreeNodeAtom} from "../../../concrete-syntax-tree-node/implementations/variable-name-segments/atom/VariableNameSegmentsConcreteSyntaxTreeNodeAtom.ts";
+import {NonTerminalExpression} from "../../../expression/implementations/non-terminal/NonTerminalExpression.ts";
 import {ThenExpression} from "../../../expression/implementations/then/ThenExpression.ts";
 import type {RuleById} from "../../../rule-by-id/RuleById.ts";
 import {Rule} from "../../Rule.ts";
@@ -38,8 +39,12 @@ export class VariableNameSegmentsRule extends Rule<
 				NonTerminalAtom<VariableNameSegmentConcreteSyntaxTreeNode>,
 				NonTerminalAtom<OptionalSeparatedOptionalVariableNameSegmentsConcreteSyntaxTreeNode>
 			>(
-				ruleById.VariableNameSegment,
-				ruleById.OptionalSeparatedOptionalVariableNameSegments,
+				new NonTerminalExpression<VariableNameSegmentConcreteSyntaxTreeNode>(
+					ruleById.VariableNameSegment,
+				),
+				new NonTerminalExpression<OptionalSeparatedOptionalVariableNameSegmentsConcreteSyntaxTreeNode>(
+					ruleById.OptionalSeparatedOptionalVariableNameSegments,
+				),
 			),
 		];
 		return rightExpressions;

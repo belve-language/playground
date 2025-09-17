@@ -1,22 +1,27 @@
 import * as typescriptEslintParser from "@typescript-eslint/parser";
 import importEslintPlugin from "eslint-plugin-import";
 import perfectionistEslintPlugin from "eslint-plugin-perfectionist";
+import svelteEslintParser from "svelte-eslint-parser";
 export default [
 	{
-		files: ["**/*.js", "**/*.mjs", "**/*.ts"],
-		languageOptions: {sourceType: "module"},
-	},
-	{files: ["**/*.cjs"], languageOptions: {sourceType: "commonjs"}},
-	{
-		files: ["**/*.cjs", "**/*.js", "**/*.mjs", "**/*.ts"],
+		files: ["**/*.js", "**/*.svelte", "**/*.ts"],
 		languageOptions: {
-			ecmaVersion: 13,
-			parser: typescriptEslintParser,
 			parserOptions: {
-				extraFileExtensions: [],
+				extraFileExtensions: ["svelte"],
 				project: "./tsconfig.json",
-				tsconfigRootDiar: ".",
 			},
+			sourceType: "module",
+		},
+	},
+	{
+		files: ["**/*.js", "**/*.ts"],
+		languageOptions: {parser: typescriptEslintParser},
+	},
+	{
+		files: ["**/*.svelte"],
+		languageOptions: {
+			parser: svelteEslintParser,
+			parserOptions: {parser: typescriptEslintParser},
 		},
 	},
 	{
@@ -86,6 +91,22 @@ export default [
 					type: "natural",
 				},
 			],
+			"perfectionist/sort-objects": [
+				"warn",
+				{
+					customGroups: [],
+					destructuredObjects: true,
+					groups: ["unknown"],
+					ignoreCase: true,
+					newlinesBetween: "never",
+					objectDeclarations: true,
+					order: "asc",
+					partitionByComment: false,
+					partitionByNewLine: false,
+					specialCharacters: "keep",
+					type: "natural",
+				},
+			],
 			"perfectionist/sort-union-types": [
 				"warn",
 				{
@@ -98,17 +119,6 @@ export default [
 					partitionByNewLine: false,
 					specialCharacters: "keep",
 					type: "natural",
-				},
-			],
-			"sort-keys": [
-				"warn",
-				"asc",
-				{
-					allowLineSeparatedGroups: false,
-					caseSensitive: false,
-					ignoreComputedKeys: false,
-					minKeys: 2,
-					natural: false,
 				},
 			],
 		},

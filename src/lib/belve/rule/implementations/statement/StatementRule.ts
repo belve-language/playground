@@ -6,7 +6,10 @@ import type {StatementConcreteSyntaxTreeNodeAtom} from "../../../concrete-syntax
 import {NonTerminalExpression} from "../../../expression/implementations/non-terminal/NonTerminalExpression.ts";
 import type {RuleById} from "../../../rule-by-id/RuleById.ts";
 import {Rule} from "../../Rule.ts";
-export class StatementRule extends Rule<StatementConcreteSyntaxTreeNode> {
+export class StatementRule extends Rule<
+	StatementConcreteSyntaxTreeNodeAtom,
+	StatementConcreteSyntaxTreeNode
+> {
 	public constructor() {
 		super(statementRuleName);
 	}
