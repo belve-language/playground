@@ -1,96 +1,212 @@
 import type {Atom} from "../../../pages/atom/Atom.ts";
 import {createElement} from "../../../pages/html/node/implementations/element/creating/createElement.ts";
+import Code from "../../../pages/html/node/implementations/element/implementations/code/Code.svelte";
 import H2 from "../../../pages/html/node/implementations/element/implementations/h2/H2.svelte";
+import H3 from "../../../pages/html/node/implementations/element/implementations/h3/H3.svelte";
 import P from "../../../pages/html/node/implementations/element/implementations/p/P.svelte";
+import Pre from "../../../pages/html/node/implementations/element/implementations/pre/Pre.svelte";
 import {createTextNode} from "../../../pages/html/node/implementations/text/creating/createTextNode.ts";
 const abstraktyfikacjaChapter = [
-	createElement(H2, [createTextNode("Abstraktyfikacja (abstractifying)")]),
-	createElement(P, [
+	createElement(H3, {} as const, [
+		createTextNode("Abstraktyfikacja (abstractifying)"),
+	]),
+	createElement(P, {} as const, [
 		createTextNode(
-			"Proces zamiany kodu źródłowego zapisanego jako drzewi składni konkretnej na kod źródłowy zapisany jako drzewo składni abstrakcyjnej. Nie jest on w pełni odwracalny, ponieważ wiele drzew składni konkretnej może sprowadzać się do tego samego drzewa składni abstrakcyjnej.",
+			"Proces zamiany kodu źródłowego zapisanego jako drzewo składni konkretnej na kod źródłowy zapisany jako drzewo składni abstrakcyjnej. Proces ten nie jest w pełni odwracalny, ponieważ wiele drzew składni konkretnej może odpowiadać temu samemu drzewu składni abstrakcyjnej.",
 		),
 	]),
-];
+] as const satisfies Atom[];
 const codebaseChapter = [
-	createElement(H2, [createTextNode("Codebase")]),
-	createElement(P, [
+	createElement(H3, {} as const, [createTextNode("Codebase (codebase)")]),
+	createElement(P, {} as const, [
 		createTextNode(
-			"Zbiór plików z kodem źródłowym, które razem są używane do zbudowania systemu informatycznego programu.",
+			"Zbiór plików z kodem źródłowym, które razem służą do zbudowania systemu informatycznego lub programu.",
 		),
 	]),
-];
+] as const satisfies Atom[];
 const drzewoSkladniAbstrakcyjnejChapter = [
-	createElement(H2, [createTextNode("Drzewo składni abstrakcyjnej")]),
-	createElement(P, [
+	createElement(H3, {} as const, [
+		createTextNode("Drzewo składni abstrakcyjnej (abstract syntax tree)"),
+	]),
+	createElement(P, {} as const, [
 		createTextNode(
-			"Drzewiasta struktura danych reprezentująca kod źródłowy, która zawiera tylko dane istotne z punktu widzenia jego wykonania. Jest ona zbudowana w wyniki abstraktyfikacji z drzewa składni konkretnej. Nie można z niej wiernie odtworzyć kodu źródłowego, z którego została zbudowana, ponieważ nieskończenie wiele kodów źródłowych może sprowadzać się do tego samego drzewa składni abstrakcyjnej. Można jednak zbudować deterministycznie z niej kod źródłowy, który się do niej sprowadza przyjmując pewne zasady konkretyfikacji.",
+			"Drzewiasta struktura danych reprezentująca kod źródłowy w sposób uproszczony – zawiera jedynie informacje istotne z punktu widzenia wykonania programu. Tworzona jest w wyniku abstraktyfikacji drzewa składni konkretnej. Nie można z niej wiernie odtworzyć pierwotnego kodu źródłowego, ponieważ różne reprezentacje konkretne mogą odpowiadać temu samemu drzewu składni abstrakcyjnej. Można jednak, przyjmując ustalone zasady konkretyfikacji, deterministycznie zbudować z niej kod źródłowy, który sprowadza się do tej samej reprezentacji abstrakcyjnej.",
 		),
 	]),
-];
+] as const satisfies Atom[];
 const drzewoSkladniKonkretnejChapter = [
-	createElement(H2, [createTextNode("Drzewo składni konkretnej")]),
-	createElement(P, [
+	createElement(H3, {} as const, [
+		createTextNode("Drzewo składni konkretnej (concrete syntax tree)"),
+	]),
+	createElement(P, {} as const, [
 		createTextNode(
-			"Drzewiasta i rekurencyjna struktura danych, która wiernie odtwarza kod źródłowy, z którego została zbudowana podczas parsingu. Można z niej wiernie odtworzyć kod źródłowy, z którego została zbudowana.",
+			"Drzewiasta, rekurencyjna struktura danych wiernie odtwarzająca kod źródłowy. Powstaje podczas parsowania. Na jej podstawie można dokładnie odtworzyć kod, z którego została utworzona.",
+		),
+	]),
+] as const satisfies Atom[];
+const formaterChapter = [
+	createElement(H3, {} as const, [createTextNode("Formater (formatter)")]),
+	createElement(P, {} as const, [
+		createTextNode(
+			"Program komputerowy, który przeprowadza formatowanie kodu.",
 		),
 	]),
 ];
-const lintingChapter = [
-	createElement(H2, [createTextNode("Linting")]),
-	createElement(P, [
+const formatowanieChapter = [
+	createElement(H3, {} as const, [createTextNode("Formatowanie (formatting)")]),
+	createElement(P, {} as const, [
 		createTextNode(
-			"Proces sprawdzania kodu źródłowego pod kątem potencjalnych błędów i niezgodności ze standardami kodowania. Przeprowadzaniem lintingu zajmuje się linter.",
+			"Proces edycji kodu źródłowego w taki sposób, aby zachowując jego funkcjonalność, uczynić go bardziej czytelnym. Przeprowadzaniem go zajmuje się formater.",
 		),
 	]),
+] as const satisfies Atom[];
+const kodZrodlowyChapter = [
+	createElement(H3, {} as const, [
+		createTextNode("Kod źródłowy (source code)"),
+	]),
+	createElement(P, {} as const, [
+		createTextNode("Zapis programu komputerowego w języku programowania."),
+	]),
+] as const satisfies Atom[];
+const linterChapter = [
+	createElement(H3, {} as const, [createTextNode("Linter (linter)")]),
+	createElement(P, {} as const, [
+		createTextNode("Program komputerowy przeprowadzający lintowanie."),
+	]),
 ];
+const lintowanieChapter = [
+	createElement(H3, {} as const, [createTextNode("Lintowanie (linting)")]),
+	createElement(P, {} as const, [
+		createTextNode(
+			"Proces analizy kodu źródłowego w celu wykrycia potencjalnych błędów oraz niezgodności z przyjętymi konwencjami i standardami. Przeprowadzaniem lintowania zajmuje się linter.",
+		),
+	]),
+] as const satisfies Atom[];
 const nieznanaChapter = [
-	createElement(H2, [createTextNode("Nieznana (unknown)")]),
-	createElement(P, [
+	createElement(H3, {} as const, [createTextNode("Nieznana (unknown)")]),
+	createElement(P, {} as const, [
 		createTextNode(
-			"Zmienna zdefiniowana jako parametr funkcji. Jej wartość jest ustalana podczas wykonywania ciała funkcji, a po zakończeniu wykonania ciała funkcji jest przekazywana do wywołującego funkcję.",
+			"Zmienna zdefiniowana jako parametr funkcji, której wartość jest ustalana podczas wykonywania ciała funkcji i zwracana do miejsca wywołania po zakończeniu działania funkcji.",
+		),
+	]),
+] as const satisfies Atom[];
+const notacjaBackusaNauraChapter = [
+	createElement(H3, {} as const, [
+		createTextNode("Notacja Backusa-Naura (Backus-Naur form)"),
+	]),
+	createElement(P, {} as const, [
+		createTextNode(
+			`Formalny sposób zapisu gramatyk bezkontekstowych, składający się z nieterminali i terminali. Nieterminale mogą być rozwijane w inne symbole, a terminale stanowią atomowe elementy języka (np. słowa kluczowe, literały, znaki). Reguły produkcji mają postać:`,
+		),
+	]),
+	createElement(Pre, {display: "block", marginBlock: "both"} as const, [
+		createTextNode(`<nieterminal> ::= symbol_1 | symbol_2 | ...`),
+	]),
+	createElement(P, {} as const, [
+		createTextNode(`gdzie `),
+		createElement(Pre, {display: "inline", marginBlock: "none"} as const, [
+			createTextNode("::="),
+		]),
+		createTextNode(', oznacza "może być rozwinięte w”, a '),
+		createElement(Pre, {display: "inline", marginBlock: "none"} as const, [
+			createTextNode("|"),
+		]),
+		createTextNode(
+			" wprowadza alternatywę wyboru. Symbol może być terminalem zapisywanym jako ",
+		),
+		createElement(Pre, {display: "inline", marginBlock: "none"} as const, [
+			createTextNode('"terminal"'),
+		]),
+		createTextNode(" lub nieterminalem zapisywanym jako "),
+		createElement(Pre, {display: "inline", marginBlock: "none"} as const, [
+			createTextNode("<nieterminal>"),
+		]),
+		createTextNode("."),
+	]),
+	createElement(P, {} as const, [createTextNode(`Przykład:`)]),
+	createElement(Pre, {display: "block", marginBlock: "both"} as const, [
+		createElement(Code, {} as const, [
+			createTextNode(`<cyfra> ::= "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+<liczba> ::= <cyfra> | <cyfra> <liczba>
+<wyrażenie> ::= <liczba> "+" <liczba>
+`),
+		]),
+	]),
+	createElement(P, {} as const, [
+		createTextNode(
+			`Reguły te definiują proste wyrażenia arytmetyczne składające się z dwóch liczb i znaku dodawania.`,
 		),
 	]),
 ];
-const parsingChapter = [
-	createElement(H2, [createTextNode("Parsing")]),
-	createElement(P, [
+const parsowanieChapter = [
+	createElement(H3, {} as const, [createTextNode("Parsowanie (parsing)")]),
+	createElement(P, {} as const, [
 		createTextNode(
-			"Proces zamiany kodu źródłowego zapisanego jako łańcuch znaków na drzewo składni konkretnej. Przeprowadzaniem parsingu zajmuje się parser. Ze zbudowanej struktury można odtworzyć dokładnie ten sam kod źródłowy, z którego została zbudowana.",
+			"Proces przekształcania kodu źródłowego zapisanego jako łańcuch znaków w drzewo składni konkretnej. Przeprowadzaniem parsowania zajmuje się parser.",
 		),
 	]),
-];
+] as const satisfies Atom[];
+const wykonanieKoduChapter = [
+	createElement(H3, {} as const, [
+		createTextNode("Wykonanie kodu (code execution)"),
+	]),
+	createElement(P, {} as const, [
+		createTextNode(
+			"Proces, w którym odczytywane i wykonywane są instrukcje zapisane w kodzie źródłowym.",
+		),
+	]),
+] as const satisfies Atom[];
+const zlozonoscPoznawczaKoduZrodlowegoChapter = [
+	createElement(H3, {} as const, [
+		createTextNode(
+			"Złożoność poznawcza kodu źródłowego (cognitive complexity of source code)",
+		),
+	]),
+	createElement(P, {} as const, [
+		createTextNode(
+			"Miara określająca, jak trudny do zrozumienia jest kod źródłowy programu z perspektywy programisty.",
+		),
+	]),
+] as const satisfies Atom[];
 const zmiennaChapter = [
-	createElement(H2, [createTextNode("Zmienna")]),
-	createElement(P, [
+	createElement(H3, {} as const, [createTextNode("Zmienna (variable)")]),
+	createElement(P, {} as const, [
 		createTextNode(
-			"Przypisanie wartości do łańcucha znaków będącego nazwą zmiennej. Mimo swojej nazwy, nie jest możliwa zmiana przypisanej wartości.",
+			"Przypisanie wartości do łańcucha znaków będącego nazwą zmiennej.",
 		),
 	]),
-];
+] as const satisfies Atom[];
 const znanaChapter = [
-	createElement(H2, [createTextNode("Znana (known)")]),
-	createElement(P, [
+	createElement(H3, {} as const, [createTextNode("Znana (known)")]),
+	createElement(P, {} as const, [
 		createTextNode(
-			"Zmienna zdefiniowana jako parametr funkcji. Jej wartość jest podana przez wywołującego funkcję i jest znana od początku wykonania ciała funkcji.",
+			"Zmienna zdefiniowana jako parametr funkcji, której wartość jest znana w momencie rozpoczęcia wykonywania ciała funkcji.",
 		),
 	]),
-];
+] as const satisfies Atom[];
 const przyjeteDefinicjeChapterSubchapters = [
 	...abstraktyfikacjaChapter,
 	...codebaseChapter,
 	...drzewoSkladniAbstrakcyjnejChapter,
 	...drzewoSkladniKonkretnejChapter,
-	...lintingChapter,
+	...formaterChapter,
+	...formatowanieChapter,
+	...kodZrodlowyChapter,
+	...linterChapter,
+	...lintowanieChapter,
 	...nieznanaChapter,
-	...parsingChapter,
+	...notacjaBackusaNauraChapter,
+	...parsowanieChapter,
+	...wykonanieKoduChapter,
+	...zlozonoscPoznawczaKoduZrodlowegoChapter,
 	...zmiennaChapter,
 	...znanaChapter,
 ];
 export const przyjeteDefinicjeChapter = [
-	createElement(H2, [createTextNode("Przyjęte definicje")]),
-	createElement(P, [
+	createElement(H2, {} as const, [createTextNode("Przyjęte definicje")]),
+	createElement(P, {} as const, [
 		createTextNode(
-			"Oto spis przyjętych w pracy definicji istotnych pojęć. W nawiasach zostały podane również ich odpowiedniki w języku angielskim.",
+			"Poniżej znajduje się spis przyjętych w pracy definicji istotnych pojęć. W nawiasach podano ich odpowiedniki w języku angielskim.",
 		),
 	]),
 	...przyjeteDefinicjeChapterSubchapters,

@@ -7,6 +7,6 @@
 </svelte:head>
 
 <main>
-	<a href={resolve("/explorer", {})}>Explorer</a>
+	<a href={resolve("/playground", {})}>Playground</a>
 	<a href={resolve("/thesis", {})}>Thesis</a>
 </main>

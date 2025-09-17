@@ -29,6 +29,10 @@ jobs:
     name: "Deploy"
     needs:
       - "build"
+    permissions:
+      contents: "read"
+      id-token: "write"
+      pages: "write"
     runs-on: "ubuntu-latest"
     steps:
       - id: "deploy_to_github_pages"

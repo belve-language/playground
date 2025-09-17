@@ -110,7 +110,8 @@ export const ruleById: RuleById = {
 	OpeningRoundBracketCharacter: new OpeningRoundBracketCharacterRule(),
 	OpeningSquareBracketCharacter: new OpeningSquareBracketCharacterRule(),
 	Operator: new OperatorRule(),
-	OptionalBlockContent: new OptionalBlockContentRule(),
+	OptionalBlockStatementContent: new OptionalBlockStatementContentRule(),
+	// TODO: Rename to source code
 	OptionalContent: new OptionalContentRule(),
 	OptionalFunctionCallStatementSegments:
 		new OptionalFunctionCallStatementSegmentsRule(),

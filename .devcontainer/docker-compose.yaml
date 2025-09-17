@@ -1,5 +1,5 @@
 services:
-  belve-explorer:
+  playground:
     build:
       args:
         ARCH_DOCKER_IMAGE_TAG_BUILD_NUMBER: "20250824.0.410029"
@@ -12,7 +12,7 @@ services:
       - consistency: "consistent"
         read_only: false
         source: ".."
-        target: "/home/developer/belve-explorer"
+        target: "/home/developer/playground"
         type: "bind"
       - consistency: "consistent"
         read_only: false

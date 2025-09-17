@@ -2,12 +2,14 @@
 	import type {Component} from "svelte";
 	const {
 		children,
+		marginBlock,
 	}: {
 		readonly children: readonly Component<{readonly [name: string]: never}>[];
+		readonly marginBlock: "both" | "end" | "none" | "start";
 	} = $props();
 </script>
 
-<li>
+<li class={`with-${marginBlock}-margin-block`}>
 	<span class="bullet">•</span>
 	<span class="content">
 		{#each children as child}
@@ -22,5 +24,17 @@
 		display: grid;
 		grid-template-columns: 1em 1fr;
 		grid-template-rows: auto;
+		&.with-both-margin-block {
+			margin-block: 1em;
+		}
+		&.with-start-margin-block {
+			margin-block-start: 1em;
+		}
+		&.with-end-margin-block {
+			margin-block-end: 1em;
+		}
+		&.with-none-margin-block {
+			margin-block: 0;
+		}
 	}
 </style>

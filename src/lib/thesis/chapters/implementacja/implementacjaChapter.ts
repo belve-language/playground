@@ -4,8 +4,9 @@ import H2 from "../../../pages/html/node/implementations/element/implementations
 import H3 from "../../../pages/html/node/implementations/element/implementations/h3/H3.svelte";
 import {createTextNode} from "../../../pages/html/node/implementations/text/creating/createTextNode.ts";
 export const implementacjaChapter = [
-	createElement(H2, [createTextNode("Implementacja")]),
-	createElement(H3, [createTextNode("Parser")]),
-	createElement(H3, [createTextNode("Eksplorator")]),
-	createElement(H2, [createTextNode("Możliwe rozszerzenia")]),
+	createElement(H2, {} as const, [createTextNode("Implementacja")]),
+	createElement(H3, {} as const, [createTextNode("Parser")]),
+	createElement(H3, {} as const, [createTextNode("Linter")]),
+	createElement(H3, {} as const, [createTextNode("Interpreter")]),
+	createElement(H3, {} as const, [createTextNode("Eksplorator")]),
 ] as const satisfies readonly Atom[];
