@@ -1,0 +1,1 @@
+export const successParsingStateTypeName = "success";
