@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Editor from "./editor/Editor.svelte";
 	import type {Preset} from "./preset/Preset.ts";
 	import PresetItemList from "./preset-item-list/PresetItemList.svelte";
 	import {presets} from "../../lib/instances/presets/presets.ts";
@@ -10,8 +11,6 @@
 	import {State} from "../../lib/playground/state/State.ts";
 	import {busyExecutingStateTypeName} from "./parsing-state/implementations/success/abstractifying-state/implementations/success/implementations/with-main-function/executing-state/implementations/busy/type-name/busyExecutingStateTypeName.ts";
 	import {idleExecutingStateTypeName} from "./parsing-state/implementations/success/abstractifying-state/implementations/success/implementations/with-main-function/executing-state/implementations/idle/type-name/idleExecutingStateTypeName.ts";
-	import {failureHighlightTypeName} from "./parsing-state/implementations/success/abstractifying-state/implementations/success/implementations/with-main-function/highlight/implementations/failure/type-name/failureHighlightTypeName.ts";
-	import {stepHighlightTypeName} from "./parsing-state/implementations/success/abstractifying-state/implementations/success/implementations/with-main-function/highlight/implementations/step/type-name/stepHighlightTypeName.ts";
 	import {successHighlightTypeName} from "./parsing-state/implementations/success/abstractifying-state/implementations/success/implementations/with-main-function/highlight/implementations/success/type-name/successHighlightTypeName.ts";
 	import {withMainFunctionSuccessAbstractifyingStateSubTypeName} from "./parsing-state/implementations/success/abstractifying-state/implementations/success/implementations/with-main-function/sub-type-name/withMainFunctionSuccessAbstractifyingStateSubTypeName.ts";
 	import {withoutMainFunctionSuccessAbstractifyingStateSubTypeName} from "./parsing-state/implementations/success/abstractifying-state/implementations/success/implementations/without-main-function/sub-type-name/withoutMainFunctionSuccessAbstractifyingStateSubTypeName.ts";
@@ -38,6 +37,9 @@
 	function handlePresetSet(preset: Preset): void {
 		state_ = State.create(preset.sourceCode);
 		isPresetModalOpen = false;
+	}
+	function handleSourceCodeChangedEvent(sourceCode: string): void {
+		state_ = State.create(sourceCode);
 	}
 </script>
 
@@ -88,66 +90,7 @@
 			{/if}
 		</span>
 	</div>
-	<div class="editor">
-		<textarea value={state_.sourceCode} oninput={handleTextareaInput}
-		></textarea>
-		<pre
-			class:step-highlight={state_.parsingState.typeName
-				=== successParsingStateTypeName
-				&& state_.parsingState.abstractifyingState.typeName
-					=== successAbstractifyingStateTypeName
-				&& state_.parsingState.abstractifyingState.subTypeName
-					=== withMainFunctionSuccessAbstractifyingStateSubTypeName
-				&& state_.parsingState.abstractifyingState.executingState.typeName
-					=== busyExecutingStateTypeName
-				&& state_.parsingState.abstractifyingState.executingState.highlight
-					!== null
-				&& state_.parsingState.abstractifyingState.executingState.highlight
-					.typeName === stepHighlightTypeName}
-			class:success-highlight={state_.parsingState.typeName
-				=== successParsingStateTypeName
-				&& state_.parsingState.abstractifyingState.typeName
-					=== successAbstractifyingStateTypeName
-				&& state_.parsingState.abstractifyingState.subTypeName
-					=== withMainFunctionSuccessAbstractifyingStateSubTypeName
-				&& state_.parsingState.abstractifyingState.executingState.typeName
-					=== busyExecutingStateTypeName
-				&& state_.parsingState.abstractifyingState.executingState.highlight
-					!== null
-				&& state_.parsingState.abstractifyingState.executingState.highlight
-					.typeName === successHighlightTypeName}
-			class:failure-highlight={state_.parsingState.typeName
-				=== successParsingStateTypeName
-				&& state_.parsingState.abstractifyingState.typeName
-					=== successAbstractifyingStateTypeName
-				&& state_.parsingState.abstractifyingState.subTypeName
-					=== withMainFunctionSuccessAbstractifyingStateSubTypeName
-				&& state_.parsingState.abstractifyingState.executingState.typeName
-					=== busyExecutingStateTypeName
-				&& state_.parsingState.abstractifyingState.executingState.highlight
-					!== null
-				&& state_.parsingState.abstractifyingState.executingState.highlight
-					.typeName
-					=== failureHighlightTypeName}>{#each state_.sourceCode.split("") as character, index}<span
-					class:unexpected={state_.parsingState.typeName
-						=== unexpectedCharacterParsingStateTypeName
-						&& state_.parsingState.index === index}
-					class:highlight={state_.parsingState.typeName
-						=== successParsingStateTypeName
-						&& state_.parsingState.abstractifyingState.typeName
-							=== successAbstractifyingStateTypeName
-						&& state_.parsingState.abstractifyingState.subTypeName
-							=== withMainFunctionSuccessAbstractifyingStateSubTypeName
-						&& state_.parsingState.abstractifyingState.executingState.typeName
-							=== busyExecutingStateTypeName
-						&& state_.parsingState.abstractifyingState.executingState.highlight
-							!== null
-						&& state_.parsingState.abstractifyingState.executingState.highlight
-							.spanIndexes.from <= index
-						&& state_.parsingState.abstractifyingState.executingState.highlight
-							.spanIndexes.until > index}>{character}</span
-				>{/each}</pre>
-	</div>
+	<Editor {state_} onSourceCodeChangedEvent={handleSourceCodeChangedEvent} />
 	{#if state_.parsingState.typeName === successParsingStateTypeName && state_.parsingState.abstractifyingState.typeName === successAbstractifyingStateTypeName && state_.parsingState.abstractifyingState.subTypeName === withMainFunctionSuccessAbstractifyingStateSubTypeName && state_.parsingState.abstractifyingState.executingState.typeName === busyExecutingStateTypeName}
 		<div>
 			{#if state_.parsingState.abstractifyingState.executingState.highlight !== null}
