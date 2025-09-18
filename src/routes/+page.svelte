@@ -5,8 +5,9 @@
 <svelte:head>
 	<title>Belve</title>
 </svelte:head>
-
 <main>
 	<a href={resolve("/playground", {})}>Playground</a>
 	<a href={resolve("/thesis", {})}>Thesis</a>
 </main>
+
+<style lang="scss"></style>

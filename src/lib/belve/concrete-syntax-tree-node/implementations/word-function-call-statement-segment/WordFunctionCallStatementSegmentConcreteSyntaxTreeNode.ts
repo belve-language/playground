@@ -14,7 +14,7 @@ export class WordFunctionCallStatementSegmentConcreteSyntaxTreeNode extends Conc
 		switch (wordAbstractifyingResult.typeName) {
 			case successAbstractifyingResultTypeName: {
 				const abstractifiedWord = wordAbstractifyingResult.data;
-				const abstractifiedWordFunctionCallStatementSegment =
+				const abstractifiedWordFunctionCallStatementSegment: WordFunctionCallStatementSegmentAbstractSyntaxTreeNode =
 					new WordFunctionCallStatementSegmentAbstractSyntaxTreeNode(
 						{word: abstractifiedWord},
 						word.atom.spanIndexes,

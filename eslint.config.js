@@ -1,7 +1,8 @@
-import * as typescriptEslintParser from "@typescript-eslint/parser";
-import importEslintPlugin from "eslint-plugin-import";
-import perfectionistEslintPlugin from "eslint-plugin-perfectionist";
-import svelteEslintParser from "svelte-eslint-parser";
+import * as typescriptParser from "@typescript-eslint/parser";
+import importPlugin from "eslint-plugin-import";
+import perfectionistPlugin from "eslint-plugin-perfectionist";
+import unusedImportsPlugin from "eslint-plugin-unused-imports";
+import svelteParser from "svelte-eslint-parser";
 export default [
 	{
 		files: ["**/*.js", "**/*.svelte", "**/*.ts"],
@@ -13,21 +14,19 @@ export default [
 			sourceType: "module",
 		},
 	},
-	{
-		files: ["**/*.js", "**/*.ts"],
-		languageOptions: {parser: typescriptEslintParser},
-	},
+	{files: ["**/*.js", "**/*.ts"], languageOptions: {parser: typescriptParser}},
 	{
 		files: ["**/*.svelte"],
 		languageOptions: {
-			parser: svelteEslintParser,
-			parserOptions: {parser: typescriptEslintParser},
+			parser: svelteParser,
+			parserOptions: {parser: typescriptParser},
 		},
 	},
 	{
 		plugins: {
-			import: importEslintPlugin,
-			perfectionist: perfectionistEslintPlugin,
+			import: importPlugin,
+			perfectionist: perfectionistPlugin,
+			unusedImports: unusedImportsPlugin,
 		},
 		rules: {
 			"import/order": [
@@ -121,6 +120,7 @@ export default [
 					type: "natural",
 				},
 			],
+			"unusedImports/no-unused-imports": ["warn"],
 		},
 	},
 	{ignores: [".git", ".svelte-kit", "build", "node_modules"]},

@@ -1,5 +1,7 @@
 import type {VariableNameSegmentCharactersConcreteSyntaxTreeNodeAtom} from "./atom/VariableNameSegmentCharactersConcreteSyntaxTreeNodeAtom.ts";
+import {SuccessAbstractifyingResult} from "../../../abstractifying-result/implementations/success/SuccessAbstractifyingResult.ts";
 import {successAbstractifyingResultTypeName} from "../../../abstractifying-result/implementations/success/type-name/successAbstractifyingResultTypeName.ts";
+import type {Character} from "../../../character/Character.ts";
 import {ConcreteSyntaxTreeNode} from "../../ConcreteSyntaxTreeNode.ts";
 export class VariableNameSegmentCharactersConcreteSyntaxTreeNode extends ConcreteSyntaxTreeNode<VariableNameSegmentCharactersConcreteSyntaxTreeNodeAtom> {
 	public constructor(
@@ -7,7 +9,7 @@ export class VariableNameSegmentCharactersConcreteSyntaxTreeNode extends Concret
 	) {
 		super(atom);
 	}
-	public abstractify(): string {
+	public abstractify(): SuccessAbstractifyingResult<string> {
 		const variableNameSegmentCharacter = this.atom.leftSubAtom.node;
 		const optionalVariableNameSegmentCharacters = this.atom.rightSubAtom.node;
 		const abstractifiedVariableNameSegmentCharacter =
@@ -21,12 +23,20 @@ export class VariableNameSegmentCharactersConcreteSyntaxTreeNode extends Concret
 				const abstractifiedOptionalVariableNameSegmentCharacters =
 					optionalVariableNameSegmentCharactersAbstractifyingResult.data;
 				if (abstractifiedOptionalVariableNameSegmentCharacters === null) {
-					const abstractifiedVariableNameSegmentCharacters: string =
+					const abstractifiedVariableNameSegmentCharacters: Character =
 						abstractifiedVariableNameSegmentCharacter;
-					return abstractifiedVariableNameSegmentCharacters;
+					const variableNameSegmentCharactersAbstractifyingResult: SuccessAbstractifyingResult<Character> =
+						new SuccessAbstractifyingResult<Character>(
+							abstractifiedVariableNameSegmentCharacters,
+						);
+					return variableNameSegmentCharactersAbstractifyingResult;
 				} else {
-					const abstractifiedVariableNameSegmentCharacters: string = `${abstractifiedVariableNameSegmentCharacter}${abstractifiedOptionalVariableNameSegmentCharacters}`;
-					return abstractifiedVariableNameSegmentCharacters;
+					const abstractifiedVariableNameSegmentCharacters: `${Character}${string}` = `${abstractifiedVariableNameSegmentCharacter}${abstractifiedOptionalVariableNameSegmentCharacters}`;
+					const variableNameSegmentCharactersAbstractifyingResult: SuccessAbstractifyingResult<`${Character}${string}`> =
+						new SuccessAbstractifyingResult<`${Character}${string}`>(
+							abstractifiedVariableNameSegmentCharacters,
+						);
+					return variableNameSegmentCharactersAbstractifyingResult;
 				}
 			}
 		}

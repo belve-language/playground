@@ -1,9 +1,15 @@
+import {optionalVariableNameRuleName} from "./name/optionalVariableNameRuleName.ts";
 import type {EmptyConcreteSyntaxTreeNode} from "../../../concrete-syntax-tree-node/implementations/empty/EmptyConcreteSyntaxTreeNode.ts";
+import {OptionalVariableNameConcreteSyntaxTreeNode} from "../../../concrete-syntax-tree-node/implementations/optional-variable-name/OptionalVariableNameConcreteSyntaxTreeNode.ts";
+import type {OptionalVariableNameConcreteSyntaxTreeNodeAtom} from "../../../concrete-syntax-tree-node/implementations/optional-variable-name/atom/OptionalVariableNameConcreteSyntaxTreeNodeAtom.ts";
+import type {VariableNameConcreteSyntaxTreeNode} from "../../../concrete-syntax-tree-node/implementations/variable-name/VariableNameConcreteSyntaxTreeNode.ts";
 import {NonTerminalExpression} from "../../../expression/implementations/non-terminal/NonTerminalExpression.ts";
 import type {RuleById} from "../../../rule-by-id/RuleById.ts";
 import {Rule} from "../../Rule.ts";
-import {optionalVariableNameRuleName} from "./name/optionalVariableNameRuleName.ts";
-export class OptionalVariableNameRule extends Rule<OptionalVariableNameConcreteSyntaxTreeNode> {
+export class OptionalVariableNameRule extends Rule<
+	OptionalVariableNameConcreteSyntaxTreeNodeAtom,
+	OptionalVariableNameConcreteSyntaxTreeNode
+> {
 	public constructor() {
 		super(optionalVariableNameRuleName);
 	}

@@ -1,0 +1,3 @@
+w Rule.ts jest problem z nazewnictwem 
+TODO
+jest tam użyte inne Rule niż this

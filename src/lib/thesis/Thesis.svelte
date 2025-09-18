@@ -18,3 +18,5 @@
 		...podsumowanieChapter,
 	]}
 />
+
+<style lang="scss"></style>

@@ -19,5 +19,6 @@ ADD https://archive.archlinux.org/packages/n/npm/npm-${NPM_PACKAGE_VERSION}-any.
 RUN pacman --noconfirm --upgrade /tmp/npm.pkg.tar.zst
 ENV NPM_PACKAGE_VERSION=${NPM_PACKAGE_VERSION}
 RUN groupadd --gid 969 docker && usermod --append --groups docker developer && pacman --noconfirm --sync docker docker-compose
+RUN pacman --noconfirm --sync graphviz
 USER developer
 EXPOSE 5173

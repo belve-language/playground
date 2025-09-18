@@ -28,55 +28,55 @@ export type WordCharacterConcreteSyntaxTreeNodeAtom =
 	| TerminalAtom<"@">
 	| TerminalAtom<"^">
 	| TerminalAtom<"_">
-	| TerminalAtom<"a">
 	| TerminalAtom<"A">
-	| TerminalAtom<"b">
+	| TerminalAtom<"a">
 	| TerminalAtom<"B">
-	| TerminalAtom<"c">
+	| TerminalAtom<"b">
 	| TerminalAtom<"C">
-	| TerminalAtom<"d">
+	| TerminalAtom<"c">
 	| TerminalAtom<"D">
-	| TerminalAtom<"e">
+	| TerminalAtom<"d">
 	| TerminalAtom<"E">
-	| TerminalAtom<"f">
+	| TerminalAtom<"e">
 	| TerminalAtom<"F">
-	| TerminalAtom<"g">
+	| TerminalAtom<"f">
 	| TerminalAtom<"G">
-	| TerminalAtom<"h">
+	| TerminalAtom<"g">
 	| TerminalAtom<"H">
-	| TerminalAtom<"i">
+	| TerminalAtom<"h">
 	| TerminalAtom<"I">
-	| TerminalAtom<"j">
+	| TerminalAtom<"i">
 	| TerminalAtom<"J">
-	| TerminalAtom<"k">
+	| TerminalAtom<"j">
 	| TerminalAtom<"K">
-	| TerminalAtom<"l">
+	| TerminalAtom<"k">
 	| TerminalAtom<"L">
-	| TerminalAtom<"m">
+	| TerminalAtom<"l">
 	| TerminalAtom<"M">
-	| TerminalAtom<"n">
+	| TerminalAtom<"m">
 	| TerminalAtom<"N">
-	| TerminalAtom<"o">
+	| TerminalAtom<"n">
 	| TerminalAtom<"O">
-	| TerminalAtom<"p">
+	| TerminalAtom<"o">
 	| TerminalAtom<"P">
-	| TerminalAtom<"q">
+	| TerminalAtom<"p">
 	| TerminalAtom<"Q">
-	| TerminalAtom<"r">
+	| TerminalAtom<"q">
 	| TerminalAtom<"R">
-	| TerminalAtom<"s">
+	| TerminalAtom<"r">
 	| TerminalAtom<"S">
-	| TerminalAtom<"t">
+	| TerminalAtom<"s">
 	| TerminalAtom<"T">
-	| TerminalAtom<"u">
+	| TerminalAtom<"t">
 	| TerminalAtom<"U">
-	| TerminalAtom<"v">
+	| TerminalAtom<"u">
 	| TerminalAtom<"V">
-	| TerminalAtom<"w">
+	| TerminalAtom<"v">
 	| TerminalAtom<"W">
-	| TerminalAtom<"x">
+	| TerminalAtom<"w">
 	| TerminalAtom<"X">
-	| TerminalAtom<"y">
+	| TerminalAtom<"x">
 	| TerminalAtom<"Y">
-	| TerminalAtom<"z">
-	| TerminalAtom<"Z">;
+	| TerminalAtom<"y">
+	| TerminalAtom<"Z">
+	| TerminalAtom<"z">;

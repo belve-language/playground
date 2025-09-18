@@ -60,6 +60,14 @@ const formatowanieChapter = [
 		),
 	]),
 ] as const satisfies Atom[];
+const interpreterChapter = [
+	createElement(H3, {} as const, [createTextNode("Interpreter (interpreter)")]),
+	createElement(P, {} as const, [
+		createTextNode(
+			"Program komputerowy, który bezpośrednio wykonuje kod źródłowy lub jego pośrednią reprezentację, zamiast tłumaczyć go najpierw na kod maszynowy.",
+		),
+	]),
+] as const satisfies Atom[];
 const kodZrodlowyChapter = [
 	createElement(H3, {} as const, [
 		createTextNode("Kod źródłowy (source code)"),
@@ -191,6 +199,7 @@ const przyjeteDefinicjeChapterSubchapters = [
 	...drzewoSkladniKonkretnejChapter,
 	...formaterChapter,
 	...formatowanieChapter,
+	...interpreterChapter,
 	...kodZrodlowyChapter,
 	...linterChapter,
 	...lintowanieChapter,

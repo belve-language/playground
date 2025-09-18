@@ -34,9 +34,9 @@ export class StartingWithKnownFunctionCallStatementSegmentsRestConcreteSyntaxTre
 					abstractifiedFunctionCallStatementSegments;
 				const startingWithKnownFunctionCallStatementSegmentsRestAbstractifyingResult: SuccessAbstractifyingResult<
 					readonly SupportedFunctionCallStatementSegmentAbstractSyntaxTreeNode[]
-				> = new SuccessAbstractifyingResult(
-					abstractifiedStartingWithKnownFunctionCallStatementSegmentsRest,
-				);
+				> = new SuccessAbstractifyingResult<
+					readonly SupportedFunctionCallStatementSegmentAbstractSyntaxTreeNode[]
+				>(abstractifiedStartingWithKnownFunctionCallStatementSegmentsRest);
 				return startingWithKnownFunctionCallStatementSegmentsRestAbstractifyingResult;
 			}
 		}

@@ -5,7 +5,6 @@
 <svelte:head>
 	<title>Opracowanie i implementacja języka programowania Belve</title>
 </svelte:head>
-
 <Thesis />
 
 <style lang="scss">

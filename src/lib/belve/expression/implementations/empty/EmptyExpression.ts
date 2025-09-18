@@ -16,31 +16,31 @@ export class EmptyExpression extends Expression<EmptyAtom> {
 		super();
 	}
 	public override checkIfCanBeEmpty(
-		alreadyCheckedRules: ReadonlySet<Rule<ConcreteSyntaxTreeNode<Atom>>>,
+		alreadyCheckedRules: ReadonlySet<Rule<Atom, ConcreteSyntaxTreeNode<Atom>>>,
 		ruleById: RuleById,
 	): true {
 		return true;
 	}
 	public override checkIfRuleCanBeFinal(
-		alreadyCheckedRules: ReadonlySet<Rule<ConcreteSyntaxTreeNode<Atom>>>,
-		rule: Rule<ConcreteSyntaxTreeNode<Atom>>,
+		alreadyCheckedRules: ReadonlySet<Rule<Atom, ConcreteSyntaxTreeNode<Atom>>>,
+		rule: Rule<Atom, ConcreteSyntaxTreeNode<Atom>>,
 		ruleById: RuleById,
 	): false {
 		return false;
 	}
 	public override computePossibleFirstingTerminals(
-		alreadyCheckedRules: ReadonlySet<Rule<ConcreteSyntaxTreeNode<Atom>>>,
+		alreadyCheckedRules: ReadonlySet<Rule<Atom, ConcreteSyntaxTreeNode<Atom>>>,
 		ruleById: RuleById,
 	): ReadonlySet<string> {
-		const possibleFirstingTerminals: ReadonlySet<string> = new Set<string>();
+		const possibleFirstingTerminals: ReadonlySet<never> = new Set<never>();
 		return possibleFirstingTerminals;
 	}
 	public override computePossibleFollowingTerminals(
-		alreadyCheckedRules: ReadonlySet<Rule<ConcreteSyntaxTreeNode<Atom>>>,
-		rule: Rule<ConcreteSyntaxTreeNode<Atom>>,
+		alreadyCheckedRules: ReadonlySet<Rule<Atom, ConcreteSyntaxTreeNode<Atom>>>,
+		rule: Rule<Atom, ConcreteSyntaxTreeNode<Atom>>,
 		ruleById: RuleById,
 	): ReadonlySet<string> {
-		const possibleFollowingTerminals: ReadonlySet<string> = new Set<string>();
+		const possibleFollowingTerminals: ReadonlySet<never> = new Set<never>();
 		return possibleFollowingTerminals;
 	}
 	public override finalizeParsing(
@@ -60,12 +60,16 @@ export class EmptyExpression extends Expression<EmptyAtom> {
 		remainingCharacters: readonly [Character, ...(readonly Character[])],
 	): SuccessExpressionParsingResult<EmptyAtom> {
 		const atom: EmptyAtom = new EmptyAtom(new SpanIndexes(index, index));
-		const parsingResult: SuccessExpressionParsingResult<EmptyAtom> =
-			new SuccessExpressionParsingResult(atom, index, remainingCharacters);
-		return parsingResult;
+		const expressionParsingResult: SuccessExpressionParsingResult<EmptyAtom> =
+			new SuccessExpressionParsingResult<EmptyAtom>(
+				atom,
+				index,
+				remainingCharacters,
+			);
+		return expressionParsingResult;
 	}
-	public override stringifyToBackusNaurForm(): '""' {
-		const stringifiedExpression: '""' = '""';
+	public override stringifyToBackusNaurForm(): readonly ['""'] {
+		const stringifiedExpression: readonly ['""'] = ['""'];
 		return stringifiedExpression;
 	}
 }

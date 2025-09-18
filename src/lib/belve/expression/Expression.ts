@@ -11,34 +11,34 @@ import type {RuleById} from "../rule-by-id/RuleById.ts";
 export abstract class Expression<AtomToUse extends Atom> {
 	protected constructor() {}
 	public abstract checkIfCanBeEmpty(
-		alreadyCheckedRules: ReadonlySet<Rule<ConcreteSyntaxTreeNode<Atom>>>,
+		alreadyCheckedRules: ReadonlySet<Rule<Atom, ConcreteSyntaxTreeNode<Atom>>>,
 		ruleById: RuleById,
 	): boolean;
 	public abstract checkIfRuleCanBeFinal(
-		alreadyCheckedRules: ReadonlySet<Rule<ConcreteSyntaxTreeNode<Atom>>>,
-		rule: Rule<ConcreteSyntaxTreeNode<Atom>>,
+		alreadyCheckedRules: ReadonlySet<Rule<Atom, ConcreteSyntaxTreeNode<Atom>>>,
+		rule: Rule<Atom, ConcreteSyntaxTreeNode<Atom>>,
 		ruleById: RuleById,
 	): boolean;
 	public computeFirstSet(ruleById: RuleById): FirstSet {
 		const firstSet: FirstSet = {
 			canBeEmpty: this.checkIfCanBeEmpty(
-				new Set<Rule<ConcreteSyntaxTreeNode<Atom>>>(),
+				new Set<Rule<Atom, ConcreteSyntaxTreeNode<Atom>>>(),
 				ruleById,
 			),
 			terminals: this.computePossibleFirstingTerminals(
-				new Set<Rule<ConcreteSyntaxTreeNode<Atom>>>(),
+				new Set<Rule<Atom, ConcreteSyntaxTreeNode<Atom>>>(),
 				ruleById,
 			),
 		};
 		return firstSet;
 	}
 	public abstract computePossibleFirstingTerminals(
-		alreadyCheckedRules: ReadonlySet<Rule<ConcreteSyntaxTreeNode<Atom>>>,
+		alreadyCheckedRules: ReadonlySet<Rule<Atom, ConcreteSyntaxTreeNode<Atom>>>,
 		ruleById: RuleById,
 	): ReadonlySet<string>;
 	public abstract computePossibleFollowingTerminals(
-		alreadyCheckedRules: ReadonlySet<Rule<ConcreteSyntaxTreeNode<Atom>>>,
-		rule: Rule<ConcreteSyntaxTreeNode<Atom>>,
+		alreadyCheckedRules: ReadonlySet<Rule<Atom, ConcreteSyntaxTreeNode<Atom>>>,
+		rule: Rule<Atom, ConcreteSyntaxTreeNode<Atom>>,
 		ruleById: RuleById,
 	): ReadonlySet<string>;
 	public abstract finalizeParsing(
@@ -52,5 +52,8 @@ export abstract class Expression<AtomToUse extends Atom> {
 		parsingTable: ParsingTable,
 		remainingCharacters: readonly [Character, ...(readonly Character[])],
 	): SupportedExpressionParsingResult<AtomToUse>;
-	public abstract stringifyToBackusNaurForm(): string;
+	public abstract stringifyToBackusNaurForm(): readonly [
+		string,
+		...(readonly string[]),
+	];
 }

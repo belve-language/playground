@@ -29,8 +29,10 @@ export class OptionalVariableNameSegmentsRule extends Rule<
 			NonTerminalExpression<EmptyConcreteSyntaxTreeNode>,
 			NonTerminalExpression<VariableNameSegmentsConcreteSyntaxTreeNode>,
 		] = [
-			new NonTerminalExpression(ruleById.Empty),
-			new NonTerminalExpression(ruleById.VariableNameSegments),
+			new NonTerminalExpression<EmptyConcreteSyntaxTreeNode>(ruleById.Empty),
+			new NonTerminalExpression<VariableNameSegmentsConcreteSyntaxTreeNode>(
+				ruleById.VariableNameSegments,
+			),
 		];
 		return rightExpressions;
 	}

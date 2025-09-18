@@ -5,7 +5,7 @@ export abstract class State<
 	PagedAtomsesToUse extends readonly PagedAtoms[],
 	RemainingAtoms extends readonly Atom[],
 > {
-	public constructor(
+	protected constructor(
 		nextAtomTarget: NextAtomTarget,
 		pagedAtomses: PagedAtomsesToUse,
 		remainingAtoms: RemainingAtoms,

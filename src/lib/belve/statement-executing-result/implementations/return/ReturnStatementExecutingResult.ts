@@ -4,9 +4,9 @@ import {StatementExecutingResult} from "../../StatementExecutingResult.ts";
 export class ReturnStatementExecutingResult extends StatementExecutingResult<
 	typeof returnStatementExecutingResultTypeName
 > {
-	public constructor(variables: Variables) {
+	public constructor(unknowns: Variables) {
 		super(returnStatementExecutingResultTypeName);
-		this.variables = variables;
+		this.unknowns = unknowns;
 	}
-	public readonly variables: Variables;
+	public readonly unknowns: Variables;
 }

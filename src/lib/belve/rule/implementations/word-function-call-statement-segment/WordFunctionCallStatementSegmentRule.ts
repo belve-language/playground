@@ -5,7 +5,10 @@ import type {WordFunctionCallStatementSegmentConcreteSyntaxTreeNodeAtom} from ".
 import {NonTerminalExpression} from "../../../expression/implementations/non-terminal/NonTerminalExpression.ts";
 import type {RuleById} from "../../../rule-by-id/RuleById.ts";
 import {Rule} from "../../Rule.ts";
-export class WordFunctionCallStatementSegmentRule extends Rule<WordFunctionCallStatementSegmentConcreteSyntaxTreeNode> {
+export class WordFunctionCallStatementSegmentRule extends Rule<
+	WordFunctionCallStatementSegmentConcreteSyntaxTreeNodeAtom,
+	WordFunctionCallStatementSegmentConcreteSyntaxTreeNode
+> {
 	public constructor() {
 		super(wordFunctionCallStatementSegmentRuleName);
 	}

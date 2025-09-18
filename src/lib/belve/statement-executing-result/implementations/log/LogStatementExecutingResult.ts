@@ -1,9 +1,21 @@
 import {logStatementExecutingResultTypeName} from "./type-name/logStatementExecutingResultTypeName.ts";
+import type {AbstractSyntaxTreeNode} from "../../../abstract-syntax-tree-node/AbstractSyntaxTreeNode.ts";
+import type {Variables} from "../../../variables/Variables.ts";
 import {StatementExecutingResult} from "../../StatementExecutingResult.ts";
-export class LogStatementExecutingResult extends StatementExecutingResult<
-	typeof logStatementExecutingResultTypeName
-> {
-	public constructor() {
+export abstract class LogStatementExecutingResult<
+	ActionTypeName extends string,
+> extends StatementExecutingResult<typeof logStatementExecutingResultTypeName> {
+	protected constructor(
+		actionTypeName: ActionTypeName,
+		node: AbstractSyntaxTreeNode<unknown>,
+		variables: Variables,
+	) {
 		super(logStatementExecutingResultTypeName);
+		this.actionTypeName = actionTypeName;
+		this.node = node;
+		this.variables = variables;
 	}
+	public readonly actionTypeName: ActionTypeName;
+	public readonly node: AbstractSyntaxTreeNode<unknown>;
+	public readonly variables: Variables;
 }
