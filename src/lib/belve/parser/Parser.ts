@@ -19,7 +19,7 @@ export class Parser<StartingRuleNode extends ConcreteSyntaxTreeNode<Atom>> {
 		grammar: Grammar<StartingRuleNode>,
 	): Parser<StartingRuleNode> {
 		const parsingTable = computeParsingTable(grammar);
-		const parser = new Parser<StartingRuleNode>(grammar, parsingTable);
+		const parser = new this<StartingRuleNode>(grammar, parsingTable);
 		return parser;
 	}
 	private constructor(

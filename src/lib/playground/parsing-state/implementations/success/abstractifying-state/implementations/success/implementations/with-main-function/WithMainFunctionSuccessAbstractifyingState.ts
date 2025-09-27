@@ -1,5 +1,4 @@
 import type {WithMainFunctionFunctionsAbstractSyntaxTreeNode} from "../../../../../../../../../belve/abstract-syntax-tree-node/implementations/functions/implementations/with-main-function/WithMainFunctionFunctionsAbstractSyntaxTreeNode.ts";
-import {builtInFunctions} from "../../../../../../../../../belve/built-in-functions/builtInFunctions.ts";
 import {SuccessAbstractifyingState} from "../../SuccessAbstractifyingState.ts";
 import {busyExecutingStateTypeName} from "./executing-state/implementations/busy/type-name/busyExecutingStateTypeName.ts";
 import {idleExecutingStateTypeName} from "./executing-state/implementations/idle/type-name/idleExecutingStateTypeName.ts";
@@ -18,21 +17,34 @@ export class WithMainFunctionSuccessAbstractifyingState extends SuccessAbstracti
 	}
 	public readonly executingState: SupportedExecutingState;
 	public readonly functions: WithMainFunctionFunctionsAbstractSyntaxTreeNode;
-	public run(): this | WithMainFunctionSuccessAbstractifyingState {
+	public *generateEveryExecutingState(): Generator<
+		WithMainFunctionSuccessAbstractifyingState,
+		void,
+		void
+	> {
+		const executingStates = this.executingState.generateEveryExecutingState();
+		for (const executingState of executingStates) {
+			const newState: WithMainFunctionSuccessAbstractifyingState =
+				new WithMainFunctionSuccessAbstractifyingState(
+					executingState,
+					this.functions,
+				);
+			yield newState;
+		}
+	}
+	public run(): WithMainFunctionSuccessAbstractifyingState {
 		if (this.executingState.typeName === idleExecutingStateTypeName) {
-			const newExecutingState = this.executingState.run(
-				this.functions.run(builtInFunctions),
-			);
+			const newExecutingState = this.executingState.run();
 			const newState = new WithMainFunctionSuccessAbstractifyingState(
 				newExecutingState,
 				this.functions,
 			);
 			return newState;
 		} else {
-			return this;
+			throw new Error("Cannot run non-idle executing state.");
 		}
 	}
-	public step(): this | WithMainFunctionSuccessAbstractifyingState {
+	public step(): WithMainFunctionSuccessAbstractifyingState {
 		if (this.executingState.typeName === busyExecutingStateTypeName) {
 			const newExecutingState = this.executingState.step();
 			const newState = new WithMainFunctionSuccessAbstractifyingState(
@@ -41,7 +53,7 @@ export class WithMainFunctionSuccessAbstractifyingState extends SuccessAbstracti
 			);
 			return newState;
 		} else {
-			return this;
+			throw new Error("Cannot step non-busy executing state.");
 		}
 	}
 }

@@ -1,4 +1,5 @@
 import type {SupportedOperatorAbstractSyntaxTreeNode} from "./supported/SupportedOperatorAbstractSyntaxTreeNode.ts";
+import type {Function} from "../../../function/Function.ts";
 import type {NonMainFunctions} from "../../../non-main-functions/NonMainFunctions.ts";
 import type {SpanIndexes} from "../../../span-indexes/SpanIndexes.ts";
 import type {SupportedStatementExecutingResult} from "../../../statement-executing-result/supported/SupportedStatementExecutingResult.ts";
@@ -17,9 +18,9 @@ export abstract class OperatorAbstractSyntaxTreeNode extends AbstractSyntaxTreeN
 		void
 	>;
 	public abstract operate(
+		availables: Variables,
 		firstStatement: SupportedStatementAbstractSyntaxTreeNode,
-		nonMainFunctions: NonMainFunctions,
+		nonMainFunctions: NonMainFunctions<Function>,
 		restStatements: SupportedStatementsAbstractSyntaxTreeNode,
-		variables: Variables,
 	): Generator<SupportedStatementExecutingResult, void, void>;
 }

@@ -1,4 +1,5 @@
 import type {SupportedStatementAbstractSyntaxTreeNode} from "./supported/SupportedStatementAbstractSyntaxTreeNode.ts";
+import type {Function} from "../../../function/Function.ts";
 import type {NonMainFunctions} from "../../../non-main-functions/NonMainFunctions.ts";
 import type {SpanIndexes} from "../../../span-indexes/SpanIndexes.ts";
 import type {SupportedStatementExecutingResult} from "../../../statement-executing-result/supported/SupportedStatementExecutingResult.ts";
@@ -12,7 +13,7 @@ export abstract class StatementAbstractSyntaxTreeNode<
 		super(children, spanIndexes);
 	}
 	public abstract execute(
-		nonMainFunctions: NonMainFunctions,
+		nonMainFunctions: NonMainFunctions<Function>,
 		variables: Variables,
 	): Generator<SupportedStatementExecutingResult, void, void>;
 	public abstract mutate(

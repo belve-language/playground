@@ -17,6 +17,7 @@ import {UnexpectedFinalizingExpressionParsingResult} from "../../../expression-p
 import {unexpectedFinalizingExpressionParsingResultTypeName} from "../../../expression-parsing-result/implementations/unexpected-finalizing/type-name/unexpectedFinalizingExpressionParsingResultTypeName.ts";
 import type {SupportedExpressionParsingResult} from "../../../expression-parsing-result/supported/SupportedExpressionParsingResult.ts";
 import type {Grammar} from "../../../grammar/Grammar.ts";
+import type {GrammarIteratingResult} from "../../../grammar-iterating-result/GrammarIteratingResult.ts";
 import {unexpectedCharacterParsingResultTypeName} from "../../../parsing-result/implementations/unexpected-character/type-name/unexpectedCharacterParsingResultTypeName.ts";
 import type {ParsingTable} from "../../../parsing-table/ParsingTable.ts";
 import type {Rule} from "../../../rule/Rule.ts";
@@ -159,7 +160,7 @@ export class ThenExpression<
 					this.rightSubExpression.finalizeParsing(grammar, index, parsingTable);
 				switch (rightSubExpressionFinalizingParsingResult.typeName) {
 					case successExpressionFinalizingParsingResultTypeName: {
-						const atom = ThenAtom.create(
+						const atom = new ThenAtom(
 							leftSubExpressionFinalizingParsingResult.atom,
 							rightSubExpressionFinalizingParsingResult.atom,
 						);
@@ -181,6 +182,34 @@ export class ThenExpression<
 					new UnexpectedFinalizingExpressionFinalizingParsingResult();
 				return finalizingParsingResult;
 			}
+		}
+	}
+	public override *iterateWithDepth(
+		alreadyVisitedRules: ReadonlySet<Rule<Atom, ConcreteSyntaxTreeNode<Atom>>>,
+		depth: number,
+		ruleById: RuleById,
+	): Generator<GrammarIteratingResult, void, void> {
+		const leftSubExpressionIteratingResults =
+			this.leftSubExpression.iterateWithDepth(
+				alreadyVisitedRules,
+				depth,
+				ruleById,
+			);
+		for (const leftSubExpressionIteratingResult of leftSubExpressionIteratingResults) {
+			const expressionIteratingResult: GrammarIteratingResult =
+				leftSubExpressionIteratingResult;
+			yield expressionIteratingResult;
+		}
+		const rightSubExpressionIteratingResults =
+			this.rightSubExpression.iterateWithDepth(
+				alreadyVisitedRules,
+				depth,
+				ruleById,
+			);
+		for (const rightSubExpressionIteratingResult of rightSubExpressionIteratingResults) {
+			const expressionIteratingResult: GrammarIteratingResult =
+				rightSubExpressionIteratingResult;
+			yield expressionIteratingResult;
 		}
 	}
 	public readonly leftSubExpression: Expression<LeftSubExpressionAtom>;
@@ -236,10 +265,7 @@ export class ThenExpression<
 								new SuccessExpressionParsingResult<
 									ThenAtom<LeftSubExpressionAtom, RightSubExpressionAtom>
 								>(
-									ThenAtom.create<
-										LeftSubExpressionAtom,
-										RightSubExpressionAtom
-									>(
+									new ThenAtom<LeftSubExpressionAtom, RightSubExpressionAtom>(
 										leftSubExpressionParsingResult.atom,
 										rightSubExpressionFinalizingParsingResult.atom,
 									),
@@ -277,10 +303,7 @@ export class ThenExpression<
 								new SuccessExpressionParsingResult<
 									ThenAtom<LeftSubExpressionAtom, RightSubExpressionAtom>
 								>(
-									ThenAtom.create<
-										LeftSubExpressionAtom,
-										RightSubExpressionAtom
-									>(
+									new ThenAtom<LeftSubExpressionAtom, RightSubExpressionAtom>(
 										leftSubExpressionParsingResult.atom,
 										rightSubExpressionParsingResult.atom,
 									),
@@ -299,9 +322,17 @@ export class ThenExpression<
 		string,
 		...(readonly string[]),
 	] {
+		const stringifiedLeftSubExpression: readonly [
+			string,
+			...(readonly string[]),
+		] = this.leftSubExpression.stringifyToBackusNaurForm();
+		const stringifiedRightSubExpression: readonly [
+			string,
+			...(readonly string[]),
+		] = this.rightSubExpression.stringifyToBackusNaurForm();
 		const stringifiedExpression: readonly [string, ...(readonly string[])] = [
-			...this.leftSubExpression.stringifyToBackusNaurForm(),
-			...this.rightSubExpression.stringifyToBackusNaurForm(),
+			...stringifiedLeftSubExpression,
+			...stringifiedRightSubExpression,
 		];
 		return stringifiedExpression;
 	}

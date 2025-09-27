@@ -12,28 +12,11 @@ export class ThenAtom<
 		| TerminalAtom<Character>,
 	RightSubAtom extends Atom,
 > extends Atom {
-	public static create<
-		LeftSubAtom extends
-			| EmptyAtom
-			| NonTerminalAtom<ConcreteSyntaxTreeNode<Atom>>
-			| TerminalAtom<Character>,
-		RightSubAtom extends Atom,
-	>(
-		leftSubAtom: LeftSubAtom,
-		rightSubAtom: RightSubAtom,
-	): ThenAtom<LeftSubAtom, RightSubAtom> {
+	public constructor(leftSubAtom: LeftSubAtom, rightSubAtom: RightSubAtom) {
 		const spanIndexes = new SpanIndexes(
 			leftSubAtom.spanIndexes.from,
 			rightSubAtom.spanIndexes.until,
 		);
-		const atom = new ThenAtom(leftSubAtom, rightSubAtom, spanIndexes);
-		return atom;
-	}
-	private constructor(
-		leftSubAtom: LeftSubAtom,
-		rightSubAtom: RightSubAtom,
-		spanIndexes: SpanIndexes,
-	) {
 		super(spanIndexes);
 		this.leftSubAtom = leftSubAtom;
 		this.rightSubAtom = rightSubAtom;

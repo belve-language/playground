@@ -1,12 +1,12 @@
 import type {Variables} from "../../../../../../variables/Variables.ts";
 export function computeKnownsValues(
+	availables: Variables,
 	knownsNames: readonly string[],
-	variables: Variables,
 ): readonly unknown[] {
 	const knownsValues: readonly unknown[] = knownsNames.map(
 		(name: string): unknown => {
-			if (name in variables) {
-				return variables[name];
+			if (name in availables) {
+				return availables[name];
 			} else {
 				const nameAsNumber = parseFloat(name);
 				// TODO

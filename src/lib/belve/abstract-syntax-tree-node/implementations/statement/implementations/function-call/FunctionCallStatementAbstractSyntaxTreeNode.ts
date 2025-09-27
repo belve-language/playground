@@ -3,6 +3,7 @@ import {computeId} from "./computing-id/computeId.ts";
 import {computeKnownsNames} from "./computing-knowns-names/computeKnownsNames.ts";
 import {computeKnownsValues} from "./computing-knowns-values/computeKnownsValues.ts";
 import {computeUnknownsNames} from "./computing-unknowns-names/computeUnknownsNames.ts";
+import type {Function} from "../../../../../function/Function.ts";
 import {failureLogFunctionCallingResultActionTypeName} from "../../../../../function-calling-result/implementations/log/implementations/failure/action-type-name/failureLogFunctionCallingResultActionTypeName.ts";
 import {stepLogFunctionCallingResultActionTypeName} from "../../../../../function-calling-result/implementations/log/implementations/step/action-type-name/stepLogFunctionCallingResultActionTypeName.ts";
 import {successLogFunctionCallingResultActionTypeName} from "../../../../../function-calling-result/implementations/log/implementations/success/action-type-name/successLogFunctionCallingResultActionTypeName.ts";
@@ -10,7 +11,6 @@ import {logFunctionCallingResultTypeName} from "../../../../../function-calling-
 import {returnFunctionCallingResultTypeName} from "../../../../../function-calling-result/implementations/return/type-name/returnFunctionCallingResultTypeName.ts";
 import type {NonMainFunctions} from "../../../../../non-main-functions/NonMainFunctions.ts";
 import type {SpanIndexes} from "../../../../../span-indexes/SpanIndexes.ts";
-import {FailureStatementExecutingResult} from "../../../../../statement-executing-result/implementations/failure/FailureStatementExecutingResult.ts";
 import {ReturnStatementExecutingResult} from "../../../../../statement-executing-result/implementations/return/ReturnStatementExecutingResult.ts";
 import type {Variables} from "../../../../../variables/Variables.ts";
 import type {FunctionHeaderAbstractSyntaxTreeNode} from "../../../function-header/FunctionHeaderAbstractSyntaxTreeNode.ts";
@@ -54,23 +54,21 @@ export class FunctionCallStatementAbstractSyntaxTreeNode extends StatementAbstra
 		this.unknownsNames = unknownsNames;
 	}
 	public override *execute(
-		nonMainFunctions: NonMainFunctions,
-		variables: Variables,
+		availables: Variables,
+		nonMainFunctions: NonMainFunctions<Function>,
 	): Generator<
-		| FailureStatementExecutingResult
-		| ReturnStatementExecutingResult
-		| SupportedLogStatementExecutingResult,
+		ReturnStatementExecutingResult | SupportedLogStatementExecutingResult,
 		void,
 		void
 	> {
 		const functionCallStatementExecutingResult1 =
-			new StepLogStatementExecutingResult(this, variables);
+			new StepLogStatementExecutingResult(availables, this);
 		yield functionCallStatementExecutingResult1;
 		const function_ = nonMainFunctions[this.id];
 		if (function_ === undefined) {
 			throw new Error(`Function "${this.id}" not found.`);
 		} else {
-			const knownsValues = computeKnownsValues(this.knownsNames, variables);
+			const knownsValues = computeKnownsValues(availables, this.knownsNames);
 			const functionCallingResults = function_.call(
 				nonMainFunctions,
 				knownsValues,
@@ -79,19 +77,12 @@ export class FunctionCallStatementAbstractSyntaxTreeNode extends StatementAbstra
 			for (const functionCallingResult of functionCallingResults) {
 				switch (functionCallingResult.typeName) {
 					case logFunctionCallingResultTypeName: {
-						// const functionCallStatementExecutingResult =
-						// 	new LogStatementExecutingResult(
-						// 		functionCallingResult.actionTypeName,
-						// 		functionCallingResult.node,
-						// 		functionCallingResult.variables,
-						// 	);
-						// yield functionCallStatementExecutingResult;
 						switch (functionCallingResult.actionTypeName) {
 							case failureLogFunctionCallingResultActionTypeName: {
 								const functionCallStatementExecutingResult2: FailureLogStatementExecutingResult =
 									new FailureLogStatementExecutingResult(
+										functionCallingResult.availables,
 										functionCallingResult.node,
-										functionCallingResult.variables,
 									);
 								yield functionCallStatementExecutingResult2;
 								break;
@@ -99,8 +90,8 @@ export class FunctionCallStatementAbstractSyntaxTreeNode extends StatementAbstra
 							case stepLogFunctionCallingResultActionTypeName: {
 								const functionCallStatementExecutingResult2: StepLogStatementExecutingResult =
 									new StepLogStatementExecutingResult(
+										functionCallingResult.availables,
 										functionCallingResult.node,
-										functionCallingResult.variables,
 									);
 								yield functionCallStatementExecutingResult2;
 								break;
@@ -108,9 +99,9 @@ export class FunctionCallStatementAbstractSyntaxTreeNode extends StatementAbstra
 							case successLogFunctionCallingResultActionTypeName: {
 								const functionCallStatementExecutingResult2: SuccessLogStatementExecutingResult =
 									new SuccessLogStatementExecutingResult(
+										functionCallingResult.availables,
 										functionCallingResult.node,
 										functionCallingResult.unknowns,
-										functionCallingResult.variables,
 									);
 								yield functionCallStatementExecutingResult2;
 								break;
@@ -125,7 +116,11 @@ export class FunctionCallStatementAbstractSyntaxTreeNode extends StatementAbstra
 							functionCallingResult.unknownsValues,
 						);
 						const functionCallStatementExecutingResult2: SuccessLogStatementExecutingResult =
-							new SuccessLogStatementExecutingResult(this, unknowns, variables);
+							new SuccessLogStatementExecutingResult(
+								availables,
+								this,
+								unknowns,
+							);
 						yield functionCallStatementExecutingResult2;
 						const functionCallStatementExecutingResult3: ReturnStatementExecutingResult =
 							new ReturnStatementExecutingResult(unknowns);
@@ -136,11 +131,8 @@ export class FunctionCallStatementAbstractSyntaxTreeNode extends StatementAbstra
 			}
 			if (hasFailed) {
 				const functionCallStatementExecutingResult2: FailureLogStatementExecutingResult =
-					new FailureLogStatementExecutingResult(this, variables);
+					new FailureLogStatementExecutingResult(availables, this);
 				yield functionCallStatementExecutingResult2;
-				const functionCallStatementExecutingResult3: FailureStatementExecutingResult =
-					new FailureStatementExecutingResult();
-				yield functionCallStatementExecutingResult3;
 			}
 		}
 	}

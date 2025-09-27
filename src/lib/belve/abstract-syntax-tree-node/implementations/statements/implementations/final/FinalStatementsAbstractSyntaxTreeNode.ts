@@ -1,8 +1,13 @@
 import type {FinalStatementsAbstractSyntaxTreeNodeChildren} from "./children/FinalStatementsAbstractSyntaxTreeNodeChildren.ts";
+import type {Function} from "../../../../../function/Function.ts";
 import type {NonMainFunctions} from "../../../../../non-main-functions/NonMainFunctions.ts";
 import type {SpanIndexes} from "../../../../../span-indexes/SpanIndexes.ts";
-import {FailureStatementExecutingResult} from "../../../../../statement-executing-result/implementations/failure/FailureStatementExecutingResult.ts";
-import {failureStatementExecutingResultTypeName} from "../../../../../statement-executing-result/implementations/failure/type-name/failureStatementExecutingResultTypeName.ts";
+import {FailureLogStatementExecutingResult} from "../../../../../statement-executing-result/implementations/log/implementations/failure/FailureLogStatementExecutingResult.ts";
+import {failureLogStatementExecutingResultActionTypeName} from "../../../../../statement-executing-result/implementations/log/implementations/failure/action-type-name/failureLogStatementExecutingResultActionTypeName.ts";
+import {StepLogStatementExecutingResult} from "../../../../../statement-executing-result/implementations/log/implementations/step/StepLogStatementExecutingResult.ts";
+import {stepLogStatementExecutingResultActionTypeName} from "../../../../../statement-executing-result/implementations/log/implementations/step/action-type-name/stepLogStatementExecutingResultActionTypeName.ts";
+import {SuccessLogStatementExecutingResult} from "../../../../../statement-executing-result/implementations/log/implementations/success/SuccessLogStatementExecutingResult.ts";
+import {successLogStatementExecutingResultActionTypeName} from "../../../../../statement-executing-result/implementations/log/implementations/success/action-type-name/successLogStatementExecutingResultActionTypeName.ts";
 import type {SupportedLogStatementExecutingResult} from "../../../../../statement-executing-result/implementations/log/supported/SupportedLogStatementExecutingResult.ts";
 import {logStatementExecutingResultTypeName} from "../../../../../statement-executing-result/implementations/log/type-name/logStatementExecutingResultTypeName.ts";
 import {ReturnStatementExecutingResult} from "../../../../../statement-executing-result/implementations/return/ReturnStatementExecutingResult.ts";
@@ -18,48 +23,74 @@ export class FinalStatementsAbstractSyntaxTreeNode extends StatementsAbstractSyn
 		super(children, spanIndexes);
 	}
 	public override *execute(
-		nonMainFunctions: NonMainFunctions,
-		variables: Variables,
+		availables: Variables,
+		nonMainFunctions: NonMainFunctions<Function>,
 	): Generator<
-		| FailureStatementExecutingResult
-		| ReturnStatementExecutingResult
-		| SupportedLogStatementExecutingResult,
+		ReturnStatementExecutingResult | SupportedLogStatementExecutingResult,
 		void,
 		void
 	> {
-		const statement = this.children.statement;
-		const statementExecutingResults = statement.execute(
+		// const finalStatementsExecutingResult1: StepLogStatementExecutingResult =
+		// 	new StepLogStatementExecutingResult(availables, this);
+		// yield finalStatementsExecutingResult1;
+		const statementExecutingResults = this.children.statement.execute(
+			availables,
 			nonMainFunctions,
-			variables,
 		);
+		// let hasFailed = true;
 		for (const statementExecutingResult of statementExecutingResults) {
 			switch (statementExecutingResult.typeName) {
-				case failureStatementExecutingResultTypeName: {
-					const finalStatementsExecutingResult =
-						new FailureStatementExecutingResult();
-					yield finalStatementsExecutingResult;
-					break;
-				}
 				case logStatementExecutingResultTypeName: {
-					const finalStatementsExecutingResult = statementExecutingResult;
-					// TODO FOR STACKTRAXE
-					// new LogStatementExecutingResult(
-					// 	statementExecutingResult.actionTypeName,
-					// 	statementExecutingResult.node,
-					// 	statementExecutingResult.variables,
-					// );
-					yield finalStatementsExecutingResult;
+					switch (statementExecutingResult.actionTypeName) {
+						case failureLogStatementExecutingResultActionTypeName: {
+							const finalStatementsExecutingResult2: FailureLogStatementExecutingResult =
+								new FailureLogStatementExecutingResult(
+									statementExecutingResult.availables,
+									statementExecutingResult.node,
+								);
+							yield finalStatementsExecutingResult2;
+							break;
+						}
+						case stepLogStatementExecutingResultActionTypeName: {
+							const finalStatementsExecutingResult2: StepLogStatementExecutingResult =
+								new StepLogStatementExecutingResult(
+									statementExecutingResult.availables,
+									statementExecutingResult.node,
+								);
+							yield finalStatementsExecutingResult2;
+							break;
+						}
+						case successLogStatementExecutingResultActionTypeName: {
+							const finalStatementsExecutingResult2: SuccessLogStatementExecutingResult =
+								new SuccessLogStatementExecutingResult(
+									statementExecutingResult.availables,
+									statementExecutingResult.node,
+									statementExecutingResult.unknowns,
+								);
+							yield finalStatementsExecutingResult2;
+							break;
+						}
+					}
 					break;
 				}
 				case returnStatementExecutingResultTypeName: {
+					// hasFailed = false;
 					const unknowns: Variables = statementExecutingResult.unknowns;
-					const finalStatementsExecutingResult =
+					// const finalStatementsExecutingResult2: SuccessLogStatementExecutingResult =
+					// 	new SuccessLogStatementExecutingResult(availables, this, unknowns);
+					// yield finalStatementsExecutingResult2;
+					const finalStatementsExecutingResult3: ReturnStatementExecutingResult =
 						new ReturnStatementExecutingResult(unknowns);
-					yield finalStatementsExecutingResult;
+					yield finalStatementsExecutingResult3;
 					break;
 				}
 			}
 		}
+		// if (hasFailed) {
+		// 	const finalStatementsExecutingResult2: FailureLogStatementExecutingResult =
+		// 		new FailureLogStatementExecutingResult(availables, this);
+		// 	yield finalStatementsExecutingResult2;
+		// }
 	}
 	public override *mutate(
 		functionsHeaders: readonly FunctionHeaderAbstractSyntaxTreeNode[],

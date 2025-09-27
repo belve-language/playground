@@ -9,19 +9,37 @@ import {StepHighlight} from "../../../highlight/implementations/step/StepHighlig
 import {SuccessHighlight} from "../../../highlight/implementations/success/SuccessHighlight.ts";
 import {ExecutingState} from "../../ExecutingState.ts";
 import {BusyExecutingState} from "../busy/BusyExecutingState.ts";
+import {DoneExecutingState} from "../done/DoneExecutingState.ts";
 import {idleExecutingStateTypeName} from "./type-name/idleExecutingStateTypeName.ts";
 export class IdleExecutingState extends ExecutingState<
 	typeof idleExecutingStateTypeName
 > {
-	public constructor() {
-		super(idleExecutingStateTypeName);
-	}
-	public run(
+	public constructor(
 		generator: Generator<SupportedFunctionCallingResult, void, void>,
-	): BusyExecutingState | IdleExecutingState {
-		const result = generator.next();
+	) {
+		super(idleExecutingStateTypeName);
+		this.generator = generator;
+	}
+	public override *generateEveryExecutingState(): Generator<
+		BusyExecutingState | DoneExecutingState | IdleExecutingState,
+		void,
+		void
+	> {
+		yield this;
+		const deeperExecutingStates = this.run().generateEveryExecutingState();
+		for (const deeperExecutingState of deeperExecutingStates) {
+			yield deeperExecutingState;
+		}
+	}
+	public readonly generator: Generator<
+		SupportedFunctionCallingResult,
+		void,
+		void
+	>;
+	public run(): BusyExecutingState | DoneExecutingState {
+		const result = this.generator.next();
 		if (result.done) {
-			const newState = new IdleExecutingState();
+			const newState = new DoneExecutingState();
 			return newState;
 		} else {
 			switch (result.value.typeName) {
@@ -29,31 +47,28 @@ export class IdleExecutingState extends ExecutingState<
 					switch (result.value.actionTypeName) {
 						case failureLogFunctionCallingResultActionTypeName: {
 							const newState = new BusyExecutingState(
-								generator,
+								this.generator,
 								new FailureHighlight(
-									result.value.node.spanIndexes,
-									result.value.variables,
+									result.value.availables,
+									result.value.node,
 								),
 							);
 							return newState;
 						}
 						case stepLogFunctionCallingResultActionTypeName: {
 							const newState = new BusyExecutingState(
-								generator,
-								new StepHighlight(
-									result.value.node.spanIndexes,
-									result.value.variables,
-								),
+								this.generator,
+								new StepHighlight(result.value.availables, result.value.node),
 							);
 							return newState;
 						}
 						case successLogFunctionCallingResultActionTypeName: {
 							const newState = new BusyExecutingState(
-								generator,
+								this.generator,
 								new SuccessHighlight(
-									result.value.node.spanIndexes,
+									result.value.availables,
+									result.value.node,
 									result.value.unknowns,
-									result.value.variables,
 								),
 							);
 							return newState;
@@ -61,7 +76,7 @@ export class IdleExecutingState extends ExecutingState<
 					}
 				}
 				case returnFunctionCallingResultTypeName: {
-					const newState = new BusyExecutingState(generator, null);
+					const newState = new BusyExecutingState(this.generator, null);
 					return newState;
 				}
 			}

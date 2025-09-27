@@ -51,6 +51,11 @@ export class TerminalExpression<
 			new UnexpectedFinalizingExpressionFinalizingParsingResult();
 		return finalizingParsingResult;
 	}
+	public override *iterateWithDepth(
+		alreadyVisitedRules: ReadonlySet<Rule<Atom, ConcreteSyntaxTreeNode<Atom>>>,
+		depth: number,
+		ruleById: RuleById,
+	): Generator<never, void, void> {}
 	public override parse(
 		grammar: Grammar<ConcreteSyntaxTreeNode<Atom>>,
 		index: number,

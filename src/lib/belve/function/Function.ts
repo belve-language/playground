@@ -2,7 +2,7 @@ import type {SupportedFunctionCallingResult} from "../function-calling-result/su
 import type {NonMainFunctions} from "../non-main-functions/NonMainFunctions.ts";
 export interface Function {
 	call(
-		nonMainFunctions: NonMainFunctions,
+		nonMainFunctions: NonMainFunctions<Function>,
 		knownsValues: readonly unknown[],
 	): Generator<SupportedFunctionCallingResult, void, void>;
 }

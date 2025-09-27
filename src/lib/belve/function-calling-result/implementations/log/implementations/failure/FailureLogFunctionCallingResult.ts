@@ -6,9 +6,9 @@ export class FailureLogFunctionCallingResult extends LogFunctionCallingResult<
 	typeof failureLogFunctionCallingResultActionTypeName
 > {
 	public constructor(
+		availables: Variables,
 		node: AbstractSyntaxTreeNode<unknown>,
-		variables: Variables,
 	) {
-		super(failureLogFunctionCallingResultActionTypeName, node, variables);
+		super(failureLogFunctionCallingResultActionTypeName, availables, node);
 	}
 }

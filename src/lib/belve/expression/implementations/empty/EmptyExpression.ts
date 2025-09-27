@@ -53,6 +53,11 @@ export class EmptyExpression extends Expression<EmptyAtom> {
 			new SuccessExpressionFinalizingParsingResult<EmptyAtom>(atom);
 		return finalizingParsingResult;
 	}
+	public override *iterateWithDepth(
+		alreadyVisitedRules: ReadonlySet<Rule<Atom, ConcreteSyntaxTreeNode<Atom>>>,
+		depth: number,
+		ruleById: RuleById,
+	): Generator<never, void, void> {}
 	public override parse(
 		grammar: Grammar<ConcreteSyntaxTreeNode<Atom>>,
 		index: number,

@@ -1,3 +1,4 @@
+import {thenOperatorCharacter} from "../../../character/implementations/operator/implementations/then/thenOperatorCharacter.ts";
 import {ThenOperatorConcreteSyntaxTreeNode} from "../../../concrete-syntax-tree-node/implementations/then-operator/ThenOperatorConcreteSyntaxTreeNode.ts";
 import type {ThenOperatorConcreteSyntaxTreeNodeAtom} from "../../../concrete-syntax-tree-node/implementations/then-operator/atom/ThenOperatorConcreteSyntaxTreeNodeAtom.ts";
 import {TerminalExpression} from "../../../expression/implementations/terminal/TerminalExpression.ts";
@@ -19,9 +20,13 @@ export class ThenOperatorRule extends Rule<
 	}
 	public override getRightExpressions(
 		ruleById: RuleById,
-	): readonly [TerminalExpression<",">] {
-		const rightExpressions: readonly [TerminalExpression<",">] = [
-			new TerminalExpression(","),
+	): readonly [TerminalExpression<typeof thenOperatorCharacter>] {
+		const rightExpressions: readonly [
+			TerminalExpression<typeof thenOperatorCharacter>,
+		] = [
+			new TerminalExpression<typeof thenOperatorCharacter>(
+				thenOperatorCharacter,
+			),
 		];
 		return rightExpressions;
 	}

@@ -6,9 +6,9 @@ export class StepLogFunctionCallingResult extends LogFunctionCallingResult<
 	typeof stepLogFunctionCallingResultActionTypeName
 > {
 	public constructor(
+		availables: Variables,
 		node: AbstractSyntaxTreeNode<unknown>,
-		variables: Variables,
 	) {
-		super(stepLogFunctionCallingResultActionTypeName, node, variables);
+		super(stepLogFunctionCallingResultActionTypeName, availables, node);
 	}
 }

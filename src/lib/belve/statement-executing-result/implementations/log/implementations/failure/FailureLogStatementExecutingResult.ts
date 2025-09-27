@@ -6,9 +6,9 @@ export class FailureLogStatementExecutingResult extends LogStatementExecutingRes
 	typeof failureLogStatementExecutingResultActionTypeName
 > {
 	public constructor(
+		availables: Variables,
 		node: AbstractSyntaxTreeNode<unknown>,
-		variables: Variables,
 	) {
-		super(failureLogStatementExecutingResultActionTypeName, node, variables);
+		super(failureLogStatementExecutingResultActionTypeName, availables, node);
 	}
 }

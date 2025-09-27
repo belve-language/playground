@@ -48,7 +48,7 @@ export class ParsingTableRow<AtomToUse extends Atom> {
 				}
 			}
 		}
-		const row = new ParsingTableRow<AtomToUse>(terminals, finalization);
+		const row = new this<AtomToUse>(terminals, finalization);
 		return row;
 	}
 	private constructor(

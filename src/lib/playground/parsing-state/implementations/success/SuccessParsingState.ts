@@ -14,45 +14,64 @@ import {ErrorAbstractifyingState} from "./abstractifying-state/implementations/e
 import {IdleExecutingState} from "./abstractifying-state/implementations/success/implementations/with-main-function/executing-state/implementations/idle/IdleExecutingState.ts";
 import type {SupportedAbstractifyingState} from "./abstractifying-state/supported/SupportedAbstractifyingState.ts";
 import {successParsingStateTypeName} from "./type-name/successParsingStateTypeName.ts";
-export class SuccessParsingState extends ParsingState<
-	typeof successParsingStateTypeName
-> {
+import type {NonMainFunctions} from "../../../../belve/non-main-functions/NonMainFunctions.ts";
+import type {BuiltInFunction} from "../../../built-in-functions/built-in-function/BuiltInFunction.ts";
+export class SuccessParsingState<
+	AbstractifyingStateToUse extends SupportedAbstractifyingState,
+> extends ParsingState<typeof successParsingStateTypeName> {
 	public static create(
 		abstractifyingResult:
 			| ErrorAbstractifyingResult
 			| SuccessAbstractifyingResult<null>
 			| SuccessAbstractifyingResult<SupportedFunctionsAbstractSyntaxTreeNode>,
-	): SuccessParsingState {
+		builtInFunctions: NonMainFunctions<BuiltInFunction>,
+	):
+		| SuccessParsingState<ErrorAbstractifyingState>
+		| SuccessParsingState<WithMainFunctionSuccessAbstractifyingState>
+		| SuccessParsingState<WithoutMainFunctionSuccessAbstractifyingState>
+		| SuccessParsingState<WithoutMainFunctionSuccessAbstractifyingState> {
 		switch (abstractifyingResult.typeName) {
 			case errorAbstractifyingResultTypeName: {
-				const state = new SuccessParsingState(
-					new ErrorAbstractifyingState(abstractifyingResult.message),
-				);
+				const abstractifyingState: ErrorAbstractifyingState =
+					new ErrorAbstractifyingState(abstractifyingResult.message);
+				const state: SuccessParsingState<ErrorAbstractifyingState> =
+					new this<ErrorAbstractifyingState>(abstractifyingState);
 				return state;
 			}
 			case successAbstractifyingResultTypeName: {
 				const abstractSourceCode = abstractifyingResult.data;
 				if (abstractSourceCode === null) {
-					const abstractifyingState =
+					const abstractifyingState: WithoutMainFunctionSuccessAbstractifyingState =
 						new WithoutMainFunctionSuccessAbstractifyingState();
-					const state = new SuccessParsingState(abstractifyingState);
+					const state: SuccessParsingState<WithoutMainFunctionSuccessAbstractifyingState> =
+						new this<WithoutMainFunctionSuccessAbstractifyingState>(
+							abstractifyingState,
+						);
 					return state;
 				} else {
 					switch (abstractSourceCode.typeName) {
 						case withMainFunctionFunctionsAbstractSyntaxTreeNodeTypeName: {
-							const executingState = new IdleExecutingState();
-							const abstractifyingState =
+							const executingState: IdleExecutingState = new IdleExecutingState(
+								abstractSourceCode.run(builtInFunctions),
+							);
+							const abstractifyingState: WithMainFunctionSuccessAbstractifyingState =
 								new WithMainFunctionSuccessAbstractifyingState(
 									executingState,
 									abstractSourceCode,
 								);
-							const state = new SuccessParsingState(abstractifyingState);
+							const state: SuccessParsingState<WithMainFunctionSuccessAbstractifyingState> =
+								new this<WithMainFunctionSuccessAbstractifyingState>(
+									abstractifyingState,
+								);
 							return state;
 						}
 						case withoutMainFunctionFunctionsAbstractSyntaxTreeNodeTypeName: {
-							const abstractifyingState =
+							const abstractifyingState: WithoutMainFunctionSuccessAbstractifyingState =
 								new WithoutMainFunctionSuccessAbstractifyingState();
-							const state = new SuccessParsingState(abstractifyingState);
+							const state: SuccessParsingState<WithoutMainFunctionSuccessAbstractifyingState> =
+								new this<WithoutMainFunctionSuccessAbstractifyingState>(
+									abstractifyingState,
+								);
 							return state;
 						}
 					}
@@ -60,35 +79,62 @@ export class SuccessParsingState extends ParsingState<
 			}
 		}
 	}
-	private constructor(abstractifyingState: SupportedAbstractifyingState) {
+	private constructor(abstractifyingState: AbstractifyingStateToUse) {
 		super(successParsingStateTypeName);
 		this.abstractifyingState = abstractifyingState;
 	}
-	public readonly abstractifyingState: SupportedAbstractifyingState;
-	public run(): SuccessParsingState | this {
+	public readonly abstractifyingState: AbstractifyingStateToUse;
+	public *generateEveryExecutingState(): Generator<
+		SuccessParsingState<WithMainFunctionSuccessAbstractifyingState>,
+		void,
+		undefined
+	> {
+		if (
+			this.abstractifyingState.typeName === successAbstractifyingResultTypeName
+			&& this.abstractifyingState.subTypeName
+				=== withMainFunctionSuccessAbstractifyingStateSubTypeName
+		) {
+			const abstractifyingStates =
+				this.abstractifyingState.generateEveryExecutingState();
+			for (const abstractifyingState of abstractifyingStates) {
+				const state: SuccessParsingState<WithMainFunctionSuccessAbstractifyingState> =
+					new SuccessParsingState<WithMainFunctionSuccessAbstractifyingState>(
+						abstractifyingState,
+					);
+				yield state;
+			}
+		}
+	}
+	public run(): SuccessParsingState<WithMainFunctionSuccessAbstractifyingState> {
 		if (
 			this.abstractifyingState.typeName === successAbstractifyingStateTypeName
 			&& this.abstractifyingState.subTypeName
 				=== withMainFunctionSuccessAbstractifyingStateSubTypeName
 		) {
 			const newAbstractifyingState = this.abstractifyingState.run();
-			const newState = new SuccessParsingState(newAbstractifyingState);
+			const newState: SuccessParsingState<WithMainFunctionSuccessAbstractifyingState> =
+				new SuccessParsingState<WithMainFunctionSuccessAbstractifyingState>(
+					newAbstractifyingState,
+				);
 			return newState;
 		} else {
-			return this;
+			throw new Error("Cannot run non-with-main-function state.");
 		}
 	}
-	public step(): SuccessParsingState | this {
+	public step(): SuccessParsingState<WithMainFunctionSuccessAbstractifyingState> {
 		if (
 			this.abstractifyingState.typeName === successAbstractifyingStateTypeName
 			&& this.abstractifyingState.subTypeName
 				=== withMainFunctionSuccessAbstractifyingStateSubTypeName
 		) {
 			const newAbstractifyingState = this.abstractifyingState.step();
-			const newState = new SuccessParsingState(newAbstractifyingState);
+			const newState: SuccessParsingState<WithMainFunctionSuccessAbstractifyingState> =
+				new SuccessParsingState<WithMainFunctionSuccessAbstractifyingState>(
+					newAbstractifyingState,
+				);
 			return newState;
 		} else {
-			return this;
+			throw new Error("Cannot step non-with-main-function state.");
 		}
 	}
 }

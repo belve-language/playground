@@ -5,18 +5,35 @@
 	import {opracowanieChapter} from "./chapters/opracowanie/opracowanieChapter.ts";
 	import {podsumowanieChapter} from "./chapters/podsumowanie/podsumowanieChapter.ts";
 	import {przyjeteDefinicjeChapter} from "./chapters/przyjete-definicje/przyjeteDefinicjeChapter.ts";
-	import TitlePageContent from "./title-page-content/TitlePageContent.svelte";
+	import {TitlePageContentAtomBuilder} from "./title-page-content-atom/TitlePageContentAtom.ts";
+	import {TableOfChaptersH2AtomBuilder} from "../pages/atom-builder/implementations/chapter-heading/implementations/table-of-chapters-h/implementations/2/TableOfChaptersH2AtomBuilder.ts";
+	import {TableOfSourcesH2AtomBuilder} from "../pages/atom-builder/implementations/chapter-heading/implementations/table-of-sources-h/implementations/2/TableOfSourcesH2AtomBuilder.ts";
 </script>
 
-<Pages
-	atoms={[
-		TitlePageContent,
-		...przyjeteDefinicjeChapter,
-		...motywacjaChapter,
-		...opracowanieChapter,
-		...implementacjaChapter,
-		...podsumowanieChapter,
-	]}
-/>
+<main>
+	<Pages
+		atomBuilders={[
+			new TitlePageContentAtomBuilder(
+				"Opracowanie i implementacja języka programowania Belve",
+			),
+			new TableOfChaptersH2AtomBuilder("Spis treści"),
+			...motywacjaChapter,
+			...przyjeteDefinicjeChapter,
+			...opracowanieChapter,
+			...implementacjaChapter,
+			...podsumowanieChapter,
+			new TableOfSourcesH2AtomBuilder("Spis źródeł"),
+		]}
+	/>
+</main>
 
-<style lang="scss"></style>
+<style lang="scss">
+	main {
+		--step-light: #b8d8f8;
+		--success-light: #bbdeb1;
+		--failure-light: #ffc6d0;
+		--step-dark: #37556f;
+		--success-dark: #3d5a33;
+		--failure-dark: #72464f;
+	}
+</style>

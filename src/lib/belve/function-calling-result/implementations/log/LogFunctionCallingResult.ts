@@ -7,15 +7,15 @@ export abstract class LogFunctionCallingResult<
 > extends FunctionCallingResult<typeof logFunctionCallingResultTypeName> {
 	protected constructor(
 		actionTypeName: ActionTypeName,
+		availables: Variables,
 		node: AbstractSyntaxTreeNode<unknown>,
-		variables: Variables,
 	) {
 		super(logFunctionCallingResultTypeName);
 		this.actionTypeName = actionTypeName;
+		this.availables = availables;
 		this.node = node;
-		this.variables = variables;
 	}
 	public readonly actionTypeName: ActionTypeName;
+	public readonly availables: Variables;
 	public readonly node: AbstractSyntaxTreeNode<unknown>;
-	public readonly variables: Variables;
 }

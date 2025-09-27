@@ -15,12 +15,11 @@
 	import {withMainFunctionSuccessAbstractifyingStateSubTypeName} from "./parsing-state/implementations/success/abstractifying-state/implementations/success/implementations/with-main-function/sub-type-name/withMainFunctionSuccessAbstractifyingStateSubTypeName.ts";
 	import {withoutMainFunctionSuccessAbstractifyingStateSubTypeName} from "./parsing-state/implementations/success/abstractifying-state/implementations/success/implementations/without-main-function/sub-type-name/withoutMainFunctionSuccessAbstractifyingStateSubTypeName.ts";
 	import {successAbstractifyingStateTypeName} from "./parsing-state/implementations/success/abstractifying-state/implementations/success/type-name/successAbstractifyingStateTypeName.ts";
-	let state_ = $state.raw<State>(State.create(""));
-	function handleTextareaInput(
-		event: Event & {readonly currentTarget: HTMLTextAreaElement},
-	): void {
-		state_ = State.create(event.currentTarget.value);
-	}
+	import type {SupportedParsingState} from "./parsing-state/supported/SupportedParsingState.ts";
+	import {builtInFunctions} from "../instances/built-in-functions/builtInFunctions.ts";
+	let state_: State<SupportedParsingState> = $state.raw<
+		State<SupportedParsingState>
+	>(State.create(builtInFunctions, []));
 	function handleStepButtonClick(): void {
 		state_ = state_.step();
 	}
@@ -35,11 +34,11 @@
 		isPresetModalOpen = false;
 	}
 	function handlePresetSet(preset: Preset): void {
-		state_ = State.create(preset.sourceCode);
+		state_ = State.create(builtInFunctions, preset.sourceCode.split(""));
 		isPresetModalOpen = false;
 	}
-	function handleSourceCodeChangedEvent(sourceCode: string): void {
-		state_ = State.create(sourceCode);
+	function handleSourceCodeChangedEvent(sourceCode: readonly string[]): void {
+		state_ = State.create(builtInFunctions, sourceCode);
 	}
 </script>
 
@@ -90,13 +89,18 @@
 			{/if}
 		</span>
 	</div>
-	<Editor {state_} onSourceCodeChangedEvent={handleSourceCodeChangedEvent} />
+	<Editor
+		state={state_}
+		onSourceCodeChangedEvent={handleSourceCodeChangedEvent}
+	/>
 	{#if state_.parsingState.typeName === successParsingStateTypeName && state_.parsingState.abstractifyingState.typeName === successAbstractifyingStateTypeName && state_.parsingState.abstractifyingState.subTypeName === withMainFunctionSuccessAbstractifyingStateSubTypeName && state_.parsingState.abstractifyingState.executingState.typeName === busyExecutingStateTypeName}
 		<div>
+			{state_.parsingState.abstractifyingState.executingState.highlight?.node
+				.constructor.name}
 			{#if state_.parsingState.abstractifyingState.executingState.highlight !== null}
-				<h2>Variables</h2>
-				<ul class="variables">
-					{#each Object.entries(state_.parsingState.abstractifyingState.executingState.highlight.variables) as [name, value] (name)}
+				<h2>Availables</h2>
+				<ul class="availables">
+					{#each Object.entries(state_.parsingState.abstractifyingState.executingState.highlight.availables) as [name, value] (name)}
 						<li>{name}: {JSON.stringify(value)}</li>
 					{/each}
 				</ul>
@@ -119,59 +123,18 @@
 		display: grid;
 		grid-template-columns: 1fr;
 		grid-template-rows: min-content 1fr auto;
-	}
-	pre {
-		&.step-highlight {
-			> span.highlight {
-				background-color: hsl(240, 100%, 50%);
-			}
-		}
-		&.success-highlight {
-			> span.highlight {
-				background-color: hsl(120, 100%, 25%);
-			}
-		}
-		&.failure-highlight {
-			> span.highlight {
-				background-color: hsl(0, 100%, 50%);
-			}
-		}
-	}
-	.unexpected {
-		outline: 5px solid hsl(0, 100%, 50%);
+		--step-light: #b2d8ff;
+		--success-light: #75f000;
+		--failure-light: #ffc6d0;
+		--step-dark: #00293f;
+		--success-dark: #102c00;
+		--failure-dark: #52001e;
 	}
 	.status {
 		padding: 0.5rem;
 		color: hsl(0, 0%, 100%);
 	}
-	.editor {
-		display: grid;
-		grid-template-columns: 1fr;
-		grid-template-rows: 1fr;
-		padding: 2px;
-		overflow: scroll;
-		font-size: 1rem;
-		border: 1px solid hsl(0, 0%, 100%);
-	}
-	textarea {
-		padding: 0;
-		border: none;
-		grid-area: 1 / 1 / 2 / 2;
-		font-size: inherit;
-		resize: none;
-		color: transparent;
-		caret-color: hsl(0, 0%, 100%);
-		background-color: hsl(0, 0%, 10%);
-		overflow: hidden;
-	}
-	pre {
-		grid-area: 1 / 1 / 2 / 2;
-		margin-block: 0;
-		pointer-events: none;
-		font-size: inherit;
-		color: hsl(0, 0%, 100%);
-	}
-	ul.variables > li {
+	ul.availables > li {
 		color: hsl(0, 0%, 100%);
 	}
 	:global {

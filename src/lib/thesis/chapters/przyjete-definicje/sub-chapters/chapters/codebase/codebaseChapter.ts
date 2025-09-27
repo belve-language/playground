@@ -1,0 +1,12 @@
+import {H3AtomBuilder} from "../../../../../../pages/atom-builder/implementations/chapter-heading/implementations/h/implementations/3/H3AtomBuilder.ts";
+import {PAtomBuilder} from "../../../../../../pages/atom-builder/implementations/non-chapter-heading/implementations/with-children/implementations/p/PAtomBuilder.ts";
+import {TextAtomBuilder} from "../../../../../../pages/atom-builder/implementations/non-chapter-heading/implementations/with-children/implementations/text/TextAtomBuilder.ts";
+import type {SupportedAtomBuilder} from "../../../../../../pages/atom-builder/supported/SupportedAtomBuilder.ts";
+export const codebaseChapter = [
+	new H3AtomBuilder("Codebase (codebase)"),
+	new PAtomBuilder({marginBlock: "1em 1em"}, [
+		new TextAtomBuilder(
+			"Zbiór plików z kodem źródłowym, które razem służą do zbudowania systemu informatycznego lub programu.",
+		),
+	]),
+] as const satisfies readonly SupportedAtomBuilder[];

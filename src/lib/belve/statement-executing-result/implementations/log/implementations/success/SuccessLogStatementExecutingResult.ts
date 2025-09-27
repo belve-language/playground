@@ -6,11 +6,11 @@ export class SuccessLogStatementExecutingResult extends LogStatementExecutingRes
 	typeof successLogStatementExecutingResultActionTypeName
 > {
 	public constructor(
+		availables: Variables,
 		node: AbstractSyntaxTreeNode<unknown>,
 		unknowns: Variables,
-		variables: Variables,
 	) {
-		super(successLogStatementExecutingResultActionTypeName, node, variables);
+		super(successLogStatementExecutingResultActionTypeName, availables, node);
 		this.unknowns = unknowns;
 	}
 	public readonly unknowns: Variables;

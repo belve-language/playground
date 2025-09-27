@@ -1,40 +1,84 @@
 <script lang="ts">
-	import type {Atom} from "./atom/Atom.ts";
+	import type {SupportedAtomBuilder} from "./atom-builder/supported/SupportedAtomBuilder.ts";
+	import {RootHierarchy} from "./hierarchy/implementations/root/RootHierarchy.ts";
 	import Page from "./page/Page.svelte";
-	import {ToLastPageState} from "./state/implementations/to-last-page/ToLastPageState.ts";
-	import {ToNewPageState} from "./state/implementations/to-new-page/ToNewPageState.ts";
-	import type {SupportedState} from "./state/supported/SupportedState.ts";
-	const {atoms}: {readonly atoms: readonly [Atom, ...(readonly Atom[])]} =
-		$props();
-	let state_: SupportedState = $state.raw<SupportedState>(
-		ToNewPageState.createEmpty(atoms),
+	import {Paging} from "./paging/Paging.ts";
+	import {onMount} from "svelte";
+	const {
+		atomBuilders: atomBuilders,
+	}: {readonly atomBuilders: readonly SupportedAtomBuilder[]} = $props();
+	let lastAtomBuilders: readonly SupportedAtomBuilder[] =
+		$state.raw<readonly SupportedAtomBuilder[]>(atomBuilders);
+	let remainingAtomBuilders: readonly SupportedAtomBuilder[] =
+		$state.raw<readonly SupportedAtomBuilder[]>(atomBuilders);
+	let hierarchy: RootHierarchy = $state.raw<RootHierarchy>(
+		RootHierarchy.createEmpty(),
 	);
-	function handleNoOverflowReportedEvent(): void {
-		state_ = state_.handleNoOverflowReported();
-	}
-	function handleOverflowReportedEvent(): void {
-		state_ = state_.handleOverflowReported();
+	$effect.pre((): void => {
+		if (atomBuilders !== lastAtomBuilders) {
+			remainingAtomBuilders = atomBuilders;
+			hierarchy = RootHierarchy.createEmpty();
+		}
+	});
+	function startLayoutingAtomBuilders(): void {
+		const [firstRemainingAtomBuilder, ...restRemainingAtomBuilders] =
+			remainingAtomBuilders;
+		if (firstRemainingAtomBuilder !== undefined) {
+			hierarchy = hierarchy.insertAtomBuilderAtEnd(firstRemainingAtomBuilder);
+			remainingAtomBuilders = restRemainingAtomBuilders;
+		}
 	}
 	$effect((): void => {
-		state_ = ToLastPageState.createAfterAtomsChanged(atoms);
+		if (atomBuilders !== lastAtomBuilders) {
+			lastAtomBuilders = atomBuilders;
+			startLayoutingAtomBuilders();
+		}
 	});
+	onMount((): void => {
+		startLayoutingAtomBuilders();
+	});
+	const pagings: readonly Paging[] = $derived<readonly Paging[]>(
+		Array.from(hierarchy.generateEveryPaging()),
+	);
+	// TODO: make sure it's reset properly when props change
+	let pageNumberOfOverflow: null | number = null;
+	async function handleOverflowReportedEventInPage(
+		pageNumber: number,
+	): Promise<void> {
+		if (pageNumberOfOverflow === null) {
+			pageNumberOfOverflow = pageNumber;
+		}
+	}
+	function reportRound(): void {
+		if (pageNumberOfOverflow === null) {
+			const [firstRemainingAtomBuilder, ...restRemainingAtomBuilders] =
+				remainingAtomBuilders;
+			if (firstRemainingAtomBuilder !== undefined) {
+				hierarchy = hierarchy.insertAtomBuilderAtEnd(firstRemainingAtomBuilder);
+				remainingAtomBuilders = restRemainingAtomBuilders;
+			}
+		} else {
+			// for (const newHierarchy of pagingManager.fixOverflow(
+			// 	pageNumberOfOverflow,
+			// )) {
+			// 	hierarchy = newHierarchy;
+			// 	pageNumberOfOverflow = null;
+			// 	return;
+			// }
+			throw new Error("Could not fix overflow");
+		}
+	}
 </script>
 
 <div class="pages">
-	{#each state_.pagedAtomses as pagedAtoms, pageIndex (pageIndex)}
-		{@const pageNumber: number = pageIndex + 1}
+	{#each pagings as paging, pageIndex (pageIndex)}
 		<Page
-			onOverflowReportedEvent={handleOverflowReportedEvent}
-			onNoOverflowReportedEvent={handleNoOverflowReportedEvent}
-			number={pageNumber}
-		>
-			{#snippet content()}
-				{#each pagedAtoms as atom}
-					{@const Atom_ = atom}
-					<Atom_ />
-				{/each}
-			{/snippet}
-		</Page>
+			onOverflowReportedEvent={handleOverflowReportedEventInPage}
+			{paging}
+			countOfPages={pagings.length}
+			{pageIndex}
+			{reportRound}
+		></Page>
 	{/each}
 </div>
 

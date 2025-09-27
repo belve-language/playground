@@ -1,6 +1,8 @@
 import {withMainFunctionFunctionsAbstractSyntaxTreeNodeTypeName} from "./type-name/withMainFunctionFunctionsAbstractSyntaxTreeNodeTypeName.ts";
+import type {BuiltInFunction} from "../../../../../../playground/built-in-functions/built-in-function/BuiltInFunction.ts";
 import {ErrorAbstractifyingResult} from "../../../../../abstractifying-result/implementations/error/ErrorAbstractifyingResult.ts";
 import {SuccessAbstractifyingResult} from "../../../../../abstractifying-result/implementations/success/SuccessAbstractifyingResult.ts";
+import type {Function} from "../../../../../function/Function.ts";
 import type {SupportedFunctionCallingResult} from "../../../../../function-calling-result/supported/SupportedFunctionCallingResult.ts";
 import type {NonMainFunctions} from "../../../../../non-main-functions/NonMainFunctions.ts";
 import {SpanIndexes} from "../../../../../span-indexes/SpanIndexes.ts";
@@ -62,14 +64,16 @@ export class WithMainFunctionFunctionsAbstractSyntaxTreeNode extends FunctionsAb
 		}
 	}
 	public *run(
-		builtInFunctions: NonMainFunctions,
+		builtInFunctions: NonMainFunctions<BuiltInFunction>,
 	): Generator<SupportedFunctionCallingResult, void, void> {
-		const mainFunction = this.children.mainFunction;
-		const combinedFunctions: NonMainFunctions = {
+		const combinedFunctions: NonMainFunctions<Function> = {
 			...builtInFunctions,
 			...this.children.nonMainFunctions,
 		};
-		const mainFunctionCallingResults = mainFunction.call(combinedFunctions);
+		const mainFunctionCallingResults = this.children.mainFunction.call(
+			combinedFunctions,
+			[],
+		);
 		for (const mainFunctionCallingResult of mainFunctionCallingResults) {
 			const withMainFunctionFunctionsRunningResult: SupportedFunctionCallingResult =
 				mainFunctionCallingResult;

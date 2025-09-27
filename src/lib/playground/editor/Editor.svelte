@@ -1,28 +1,31 @@
 <script lang="ts">
-	import Mirror from "../mirror/Mirror.svelte";
+	import type {SupportedParsingState} from "../parsing-state/supported/SupportedParsingState.ts";
 	import type {State} from "../state/State.ts";
+	import MirrorOfEditor from "./mirror/MirrorOfEditor.svelte";
+	import TextareaOfEditor from "./textarea/TextareaOfEditor.svelte";
 	const {
-		onSourceCodeChangedEvent,
-		state_,
+		onSourceCodeChangedEvent: onSourceCodeChangedEvent,
+		state: state_,
 	}: {
-		readonly onSourceCodeChangedEvent: (sourceCode: string) => void;
-		readonly state_: State;
+		readonly onSourceCodeChangedEvent: (
+			newSourceCode: readonly string[],
+		) => void;
+		readonly state: State<SupportedParsingState>;
 	} = $props();
-	function handleTextareaInput(
-		event: Event & {readonly currentTarget: HTMLTextAreaElement},
-	): void {
-		onSourceCodeChangedEvent(event.currentTarget.value);
+	function handleSourceCodeChangedEvent(newSourceCode: string): void {
+		onSourceCodeChangedEvent(newSourceCode.split(""));
 	}
-	// TODO textarea -> new component
 </script>
 
 <div class="editor">
-	<div class="actual-source-code-wrapper">
-		<textarea value={state_.sourceCode} oninput={handleTextareaInput}
-		></textarea>
+	<div class="textarea-wrapper">
+		<TextareaOfEditor
+			onSourceCodeChangedEvent={handleSourceCodeChangedEvent}
+			sourceCode={state_.sourceCode.join("")}
+		/>
 	</div>
 	<div class="mirror-wrapper">
-		<Mirror {state_} />
+		<MirrorOfEditor state={state_} />
 	</div>
 </div>
 
@@ -36,25 +39,14 @@
 		font-size: 1rem;
 		border: 1px solid hsl(0, 0%, 100%);
 	}
-	.actual-source-code-wrapper,
-	.mirror-wrapper {
+	.mirror-wrapper,
+	.textarea-wrapper {
 		grid-area: 1 / 1 / 2 / 2;
 		display: grid;
 		grid-template-columns: 1fr;
 		grid-template-rows: 1fr;
 	}
-	textarea {
-		padding: 0;
-		border: none;
-		font-size: inherit;
-		resize: none;
-		color: transparent;
-		caret-color: hsl(0, 0%, 100%);
-		background-color: transparent;
-		overflow: hidden;
-	}
 	.mirror-wrapper {
 		pointer-events: none;
-		font-size: inherit;
 	}
 </style>

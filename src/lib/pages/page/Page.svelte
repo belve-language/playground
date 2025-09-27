@@ -1,57 +1,76 @@
 <script lang="ts">
-	import {onMount, type Snippet} from "svelte";
+	import type {Paging} from "../paging/Paging.ts";
+	import {onMount} from "svelte";
 	const {
-		content,
-		number,
-		onNoOverflowReportedEvent,
-		onOverflowReportedEvent,
+		countOfPages: countOfPages,
+		onOverflowReportedEvent: onOverflowReportedEvent,
+		pageIndex: pageIndex,
+		paging: paging,
+		reportRound: reportRound,
 	}: {
-		readonly content: Snippet<[]>;
-		readonly number: number;
-		readonly onNoOverflowReportedEvent: (pageNumber: number) => void;
+		readonly countOfPages: number;
 		readonly onOverflowReportedEvent: (pageNumber: number) => void;
+		readonly pageIndex: number;
+		readonly paging: Paging;
+		readonly reportRound: () => void;
 	} = $props();
 	let contentElement: HTMLElement;
+	let lastPaging: Paging = $state.raw<Paging>(paging);
+	$effect((): void => {
+		if (paging !== lastPaging) {
+			lastPaging = paging;
+			checkForOverflow();
+			if (pageIndex + 1 === countOfPages) {
+				reportRound();
+			}
+		}
+	});
+	onMount((): void => {
+		if (pageIndex + 1 === countOfPages) {
+			checkForOverflow();
+			reportRound();
+		}
+	});
 	function checkForOverflow(): void {
 		if (contentElement.scrollHeight > contentElement.clientHeight) {
-			onOverflowReportedEvent(number);
-		} else {
-			onNoOverflowReportedEvent(number);
+			onOverflowReportedEvent(paging.numberOfPage);
 		}
 	}
-	onMount((): (() => void) => {
-		const observer = new MutationObserver(() => {
-			checkForOverflow();
-		});
-		observer.observe(contentElement, {
-			characterData: true,
-			childList: true,
-			subtree: true,
-		});
-		checkForOverflow();
-		return (): void => {
-			observer.disconnect();
-		};
-	});
 </script>
 
-<div class="page">
+<div
+	class="page"
+	class:without-page-number={!paging.shouldHavePageNumber}
+	class:with-page-number={paging.shouldHavePageNumber}
+>
 	<div class="content" bind:this={contentElement}>
-		{@render content()}
+		{#each paging.atoms as atom, index (index)}<atom.component />{/each}
 	</div>
-	<div class="footer">{number.toString(10)}</div>
+	{#if paging.shouldHavePageNumber}
+		<div class="footer">
+			{paging.numberOfPage.toString(10)}
+		</div>
+	{/if}
 </div>
 
 <style lang="scss">
 	.page {
 		width: 210mm;
-		height: 297mm;
+		// TODO: Document this
+		// height: 297mm;
+		height: 297.129mm;
 		padding: 2.5cm;
 		background-color: white;
 		display: grid;
 		grid-template-columns: 1fr;
-		grid-template-rows: 1fr min-content;
-		gap: 1cm;
+		&.with-page-number {
+			grid-template-rows: 1fr min-content;
+			gap: 1cm;
+		}
+		&.without-page-number {
+			grid-template-rows: 1fr;
+		}
+		overflow-wrap: break-word;
 	}
 	.content {
 		overflow: auto;

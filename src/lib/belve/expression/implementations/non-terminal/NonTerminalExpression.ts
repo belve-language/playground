@@ -9,6 +9,7 @@ import {UnexpectedCharacterExpressionParsingResult} from "../../../expression-pa
 import {UnexpectedFinalizingExpressionParsingResult} from "../../../expression-parsing-result/implementations/unexpected-finalizing/UnexpectedFinalizingExpressionParsingResult.ts";
 import {unexpectedFinalizingExpressionParsingResultTypeName} from "../../../expression-parsing-result/implementations/unexpected-finalizing/type-name/unexpectedFinalizingExpressionParsingResultTypeName.ts";
 import type {Grammar} from "../../../grammar/Grammar.ts";
+import type {GrammarIteratingResult} from "../../../grammar-iterating-result/GrammarIteratingResult.ts";
 import type {Index} from "../../../index/Index.ts";
 import type {ParsingTable} from "../../../parsing-table/ParsingTable.ts";
 import type {Rule} from "../../../rule/Rule.ts";
@@ -102,6 +103,22 @@ export class NonTerminalExpression<
 					new UnexpectedFinalizingExpressionFinalizingParsingResult();
 				return expressionFinalizingParsingResult;
 			}
+		}
+	}
+	public override *iterateWithDepth(
+		alreadyVisitedRules: ReadonlySet<Rule<Atom, ConcreteSyntaxTreeNode<Atom>>>,
+		depth: number,
+		ruleById: RuleById,
+	): Generator<GrammarIteratingResult, void, void> {
+		const ruleIteratingResults = this.rule.iterateWithDepth(
+			alreadyVisitedRules,
+			depth,
+			ruleById,
+		);
+		for (const ruleIteratingResult of ruleIteratingResults) {
+			const expressionIteratingResult: GrammarIteratingResult =
+				ruleIteratingResult;
+			yield expressionIteratingResult;
 		}
 	}
 	public override parse(

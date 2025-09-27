@@ -1,13 +1,8 @@
-<script>
-	import {resolve} from "$app/paths";
+<script lang="ts">
+	import Playground from "../lib/playground/Playground.svelte";
 </script>
 
 <svelte:head>
-	<title>Belve</title>
+	<title>Belve Playground</title>
 </svelte:head>
-<main>
-	<a href={resolve("/playground", {})}>Playground</a>
-	<a href={resolve("/thesis", {})}>Thesis</a>
-</main>
-
-<style lang="scss"></style>
+<Playground />

@@ -8,6 +8,7 @@ import {successExpressionParsingResultTypeName} from "../expression-parsing-resu
 import {unexpectedCharacterExpressionParsingResultTypeName} from "../expression-parsing-result/implementations/unexpected-character/type-name/unexpectedCharacterExpressionParsingResultTypeName.ts";
 import {unexpectedFinalizingExpressionParsingResultTypeName} from "../expression-parsing-result/implementations/unexpected-finalizing/type-name/unexpectedFinalizingExpressionParsingResultTypeName.ts";
 import type {Grammar} from "../grammar/Grammar.ts";
+import {GrammarIteratingResult} from "../grammar-iterating-result/GrammarIteratingResult.ts";
 import type {Index} from "../index/Index.ts";
 import type {ParsingTable} from "../parsing-table/ParsingTable.ts";
 import type {ParsingTableRow} from "../parsing-table/row/ParsingTableRow.ts";
@@ -170,6 +171,42 @@ export abstract class Rule<
 	public abstract getRightExpressions(
 		ruleById: RuleById,
 	): readonly [Expression<AtomToUse>, ...(readonly Expression<AtomToUse>[])];
+	public *iterateAllWithDepth(
+		ruleById: RuleById,
+	): Generator<GrammarIteratingResult, void, void> {
+		const iteratingResults = this.iterateWithDepth(
+			new Set<never>(),
+			0,
+			ruleById,
+		);
+		for (const iteratingResult of iteratingResults) {
+			yield iteratingResult;
+		}
+	}
+	public *iterateWithDepth(
+		alreadyVisitedRules: ReadonlySet<Rule<Atom, ConcreteSyntaxTreeNode<Atom>>>,
+		depth: number,
+		ruleById: RuleById,
+	): Generator<GrammarIteratingResult, void, void> {
+		if (!alreadyVisitedRules.has(this)) {
+			const ruleIteratingResult: GrammarIteratingResult =
+				new GrammarIteratingResult(depth, this);
+			yield ruleIteratingResult;
+			const rightExpressions = this.getRightExpressions(ruleById);
+			for (const expression of rightExpressions) {
+				const expressionIteratingResults = expression.iterateWithDepth(
+					alreadyVisitedRules.union(new Set<this>([this])),
+					depth + 1,
+					ruleById,
+				);
+				for (const expressionIteratingResult of expressionIteratingResults) {
+					const ruleIteratingResult: GrammarIteratingResult =
+						expressionIteratingResult;
+					yield ruleIteratingResult;
+				}
+			}
+		}
+	}
 	public readonly name: string;
 	public parse(
 		grammar: Grammar<ConcreteSyntaxTreeNode<Atom>>,
