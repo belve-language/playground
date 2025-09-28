@@ -1,14 +1,15 @@
 import type {Atom} from "../../../../../atom/Atom.ts";
-import type {ChapterHeadingAtom} from "../../../../../atom/implementations/h/implementations/chapter-heading/ChapterHeadingAtom.ts";
+import type {ChapterHeadingAtom} from "../../../../../atom/implementations/chapter-heading/ChapterHeadingAtom.ts";
 import {TableOfChaptersLiAtom} from "../../../../../atom/implementations/table-of-chapters-li/TableOfChaptersLiAtom.ts";
-import type {ChapterHeadingAtomBuilder} from "../../../../../atom-builder/implementations/chapter-heading/ChapterHeadingAtomBuilder.ts";
+import type {HChapterHeadingAtomBuilder} from "../../../../../atom-builder/implementations/chapter-heading/implementations/h/HChapterHeadingAtomBuilder.ts";
 import type {TableOfChaptersHChapterHeadingAtomBuilder} from "../../../../../atom-builder/implementations/chapter-heading/implementations/table-of-chapters-h/TableOfChaptersHChapterHeadingAtomBuilder.ts";
 import type {TableOfSourcesHChapterHeadingAtomBuilder} from "../../../../../atom-builder/implementations/chapter-heading/implementations/table-of-sources-h/TableOfSourcesHChapterHeadingAtomBuilder.ts";
 import type {NonChapterHeadingAtomBuilder} from "../../../../../atom-builder/implementations/non-chapter-heading/NonChapterHeadingAtomBuilder.ts";
 import type {ChapterNumber} from "../../../../../chapter-number/ChapterNumber.ts";
 import type {Source} from "../../../../../source/Source.ts";
-import type {MoveDatum} from "../../../../move-datum/MoveDatum.ts";
+import {MoveDatum} from "../../../../move-datum/MoveDatum.ts";
 import {LeafHierarchy} from "../../LeafHierarchy.ts";
+import {ResultOfFixingOverflow} from "../../result-of-fixing-overflow/ResultOfFixingOverflow.ts";
 export class TableOfChaptersLeafHierarchy extends LeafHierarchy<TableOfChaptersLiAtom> {
 	public static create(
 		atom: ChapterHeadingAtom,
@@ -22,7 +23,7 @@ export class TableOfChaptersLeafHierarchy extends LeafHierarchy<TableOfChaptersL
 					index: number,
 				): TableOfChaptersLiAtom => {
 					const liAtom: TableOfChaptersLiAtom = new TableOfChaptersLiAtom(
-						0, // todo
+						atom.numberOfPage,
 						{
 							marginBlock: `${
 								index === 0 ? "1" : "0"
@@ -42,7 +43,9 @@ export class TableOfChaptersLeafHierarchy extends LeafHierarchy<TableOfChaptersL
 			...(readonly TableOfChaptersLiAtom[]),
 		],
 	) {
-		super(true, subAtoms);
+		const [firstSubAtom, ...restSubAtoms] = subAtoms;
+		const lastSubAtom = restSubAtoms[restSubAtoms.length - 1] ?? firstSubAtom;
+		super(lastSubAtom.numberOfPage, true, subAtoms);
 	}
 	public override *extractAtoms(): Generator<Atom, void, void> {
 		for (const subAtom of this.subAtoms) {
@@ -55,8 +58,45 @@ export class TableOfChaptersLeafHierarchy extends LeafHierarchy<TableOfChaptersL
 	public override extractSources(): readonly [] {
 		return [];
 	}
+	public override *fixOverflow(
+		numberOfPage: number,
+	): Generator<ResultOfFixingOverflow<TableOfChaptersLiAtom>, void, void> {
+		const [firstSubAtom, ...restSubAtoms] = this.subAtoms;
+		for (const [index, restSubAtom] of restSubAtoms
+			.entries()
+			.toArray()
+			.toReversed()) {
+			if (numberOfPage === restSubAtom.numberOfPage) {
+				const newSubAtom: TableOfChaptersLiAtom = restSubAtom.repage();
+				const newHierarchy: TableOfChaptersLeafHierarchy = this.setSubAtoms([
+					firstSubAtom,
+					...restSubAtoms.slice(0, index),
+					newSubAtom,
+					...restSubAtoms.slice(index + 1),
+				]);
+				const result: ResultOfFixingOverflow<TableOfChaptersLiAtom> =
+					new ResultOfFixingOverflow([], newHierarchy);
+				yield result;
+				return;
+			}
+		}
+		if (numberOfPage === firstSubAtom.numberOfPage) {
+			const newFirstSubAtom: ChapterHeadingAtom = firstSubAtom.repage();
+			const newHierarchy: TableOfChaptersLeafHierarchy = this.setSubAtoms([
+				newFirstSubAtom,
+				...restSubAtoms,
+			]);
+			const result: ResultOfFixingOverflow<TableOfChaptersLiAtom> =
+				new ResultOfFixingOverflow(
+					[new MoveDatum(firstSubAtom, newFirstSubAtom)],
+					newHierarchy,
+				);
+			yield result;
+			return;
+		}
+	}
 	public override insertChapterHeadingAtomBuilderAtEnd(
-		atomBuilder: ChapterHeadingAtomBuilder,
+		atomBuilder: HChapterHeadingAtomBuilder,
 		chapterNumber: ChapterNumber,
 	): never {
 		throw new Error("Bad layout");
@@ -99,7 +139,7 @@ export class TableOfChaptersLeafHierarchy extends LeafHierarchy<TableOfChaptersL
 		// 					targetAtom: subAtom.targetAtom,
 		// 				}),
 		// 				subAtom.level,
-		// 				subAtom.pageNumber,
+		// 				subAtom.numberOfPage,
 		// 				subAtom.targetAtom,
 		// 			);
 		// 			return newSubAtom;
@@ -123,7 +163,7 @@ export class TableOfChaptersLeafHierarchy extends LeafHierarchy<TableOfChaptersL
 			const newHierarchy: TableOfChaptersLeafHierarchy = this.setSubAtoms([
 				firstSubAtom,
 				new TableOfChaptersLiAtom(
-					0, // todo
+					this.numberOfLastPage,
 					{marginBlock: "1em 1em"},
 					insertedAtom,
 				),
@@ -136,7 +176,7 @@ export class TableOfChaptersLeafHierarchy extends LeafHierarchy<TableOfChaptersL
 					firstSubAtom,
 					secondSubAtom.setStyles({marginBlock: "1em 0em"}),
 					new TableOfChaptersLiAtom(
-						0, // todo
+						this.numberOfLastPage,
 						{marginBlock: "0em 1em"},
 						insertedAtom,
 					),
@@ -151,8 +191,7 @@ export class TableOfChaptersLeafHierarchy extends LeafHierarchy<TableOfChaptersL
 					...restRestSubAtoms.slice(0, restRestSubAtoms.length - 1),
 					lastSubAtom.setStyles({marginBlock: "0em 0em"}),
 					new TableOfChaptersLiAtom(
-						0, // todo
-						//
+						this.numberOfLastPage,
 						{marginBlock: "0em 1em"},
 						insertedAtom,
 					),

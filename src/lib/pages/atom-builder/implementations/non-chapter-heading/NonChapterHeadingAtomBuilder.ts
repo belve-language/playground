@@ -10,6 +10,6 @@ export abstract class NonChapterHeadingAtomBuilder extends AtomBuilder<
 	}
 	public abstract build(
 		existingSources: readonly Source[],
-		pageNumber: number,
+		numberOfPage: number,
 	): BuildingResultOfNonChapterHeadingAtomBuilder;
 }

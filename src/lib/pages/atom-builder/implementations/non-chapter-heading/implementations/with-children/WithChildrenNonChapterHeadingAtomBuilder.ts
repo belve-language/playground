@@ -1,4 +1,5 @@
 import {NonChapterHeadingAtom} from "../../../../../atom/implementations/non-chapter-heading/NonChapterHeadingAtom.ts";
+import {WithChildrenNonChapterHeadingAtom} from "../../../../../atom/implementations/non-chapter-heading/implementations/with-children/WithChildrenNonChapterHeadingAtom.ts";
 import {bindComponentProps} from "../../../../../binding-component-props/bindComponentProps.ts";
 import type {Source} from "../../../../../source/Source.ts";
 import {NonChapterHeadingAtomBuilder} from "../../NonChapterHeadingAtomBuilder.ts";
@@ -6,18 +7,19 @@ import {BuildingResultOfNonChapterHeadingAtomBuilder} from "../../building-resul
 import type {Component} from "svelte";
 export abstract class WithChildrenNonChapterHeadingAtomBuilder extends NonChapterHeadingAtomBuilder {
 	protected constructor(
-		childBuilders: readonly NonChapterHeadingAtomBuilder[],
+		buildersOfChildren: readonly NonChapterHeadingAtomBuilder[],
 		component: Component<{readonly children: readonly NonChapterHeadingAtom[]}>,
 	) {
 		super();
-		this.childBuilders = childBuilders;
+		this.buildersOfChildren = buildersOfChildren;
 		this.component = component;
 	}
 	public override build(
 		existingSources: readonly Source[],
+		numberOfPage: number,
 	): BuildingResultOfNonChapterHeadingAtomBuilder {
 		const {children: children, newSources: newSources} =
-			this.childBuilders.reduce<{
+			this.buildersOfChildren.reduce<{
 				children: readonly NonChapterHeadingAtom[];
 				newSources: readonly Source[];
 			}>(
@@ -34,7 +36,7 @@ export abstract class WithChildrenNonChapterHeadingAtomBuilder extends NonChapte
 					const result: BuildingResultOfNonChapterHeadingAtomBuilder =
 						builder.build(
 							[...existingSources, ...accumulator.newSources],
-							0, // TODO
+							numberOfPage,
 						);
 					return {
 						children: [...accumulator.children, result.atom],
@@ -43,16 +45,17 @@ export abstract class WithChildrenNonChapterHeadingAtomBuilder extends NonChapte
 				},
 				{children: [], newSources: []},
 			);
-		const atom: NonChapterHeadingAtom = new NonChapterHeadingAtom(
+		const atom: NonChapterHeadingAtom = new WithChildrenNonChapterHeadingAtom(
+			children,
 			bindComponentProps(this.component, {children: children}),
-			0, // TODO
+			numberOfPage,
 			newSources,
 		);
 		const result: BuildingResultOfNonChapterHeadingAtomBuilder =
 			new BuildingResultOfNonChapterHeadingAtomBuilder(atom, newSources);
 		return result;
 	}
-	private readonly childBuilders: readonly NonChapterHeadingAtomBuilder[];
+	private readonly buildersOfChildren: readonly NonChapterHeadingAtomBuilder[];
 	private readonly component: Component<{
 		readonly children: readonly NonChapterHeadingAtom[];
 	}>;

@@ -2,7 +2,9 @@ import type {NonChapterHeadingAtomBuilder} from "../../../../NonChapterHeadingAt
 import {WithChildrenNonChapterHeadingAtomBuilder} from "../../WithChildrenNonChapterHeadingAtomBuilder.ts";
 import ComponentOfTheadAtom from "./component/ComponentOfTheadAtom.svelte";
 export class TheadAtomBuilder extends WithChildrenNonChapterHeadingAtomBuilder {
-	public constructor(childBuilders: readonly NonChapterHeadingAtomBuilder[]) {
-		super(childBuilders, ComponentOfTheadAtom);
+	public constructor(
+		buildersOfChildren: readonly NonChapterHeadingAtomBuilder[],
+	) {
+		super(buildersOfChildren, ComponentOfTheadAtom);
 	}
 }

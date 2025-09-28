@@ -1,5 +1,5 @@
 import ComponentOfSourceAtom from "./component/ComponentOfSourceAtom.svelte";
-import {NonChapterHeadingAtom} from "../../../../../atom/implementations/non-chapter-heading/NonChapterHeadingAtom.ts";
+import {WithoutChildrenNonChapterHeadingAtom} from "../../../../../atom/implementations/non-chapter-heading/implementations/without-children/WithoutChildrenNonChapterHeadingAtom.ts";
 import {bindComponentProps} from "../../../../../binding-component-props/bindComponentProps.ts";
 import type {Source} from "../../../../../source/Source.ts";
 import {NonChapterHeadingAtomBuilder} from "../../NonChapterHeadingAtomBuilder.ts";
@@ -12,16 +12,17 @@ export class SourceAtomBuilder extends NonChapterHeadingAtomBuilder {
 	}
 	public override build(
 		existingSources: readonly Source[],
-		pageNumber: number,
+		numberOfPage: number,
 	): BuildingResultOfNonChapterHeadingAtomBuilder {
-		const atom: NonChapterHeadingAtom = new NonChapterHeadingAtom(
-			bindComponentProps(ComponentOfSourceAtom, {
-				number: existingSources.length + 1,
-				text: this.text,
-			}),
-			pageNumber,
-			[this.source],
-		);
+		const atom: WithoutChildrenNonChapterHeadingAtom =
+			new WithoutChildrenNonChapterHeadingAtom(
+				bindComponentProps(ComponentOfSourceAtom, {
+					number: existingSources.length + 1,
+					text: this.text,
+				}),
+				numberOfPage,
+				[this.source],
+			);
 		const result: BuildingResultOfNonChapterHeadingAtomBuilder =
 			new BuildingResultOfNonChapterHeadingAtomBuilder(atom, [this.source]);
 		return result;

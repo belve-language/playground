@@ -1,5 +1,5 @@
 import ComponentOfBelveCodeAtom from "./component/ComponentOfBelveCodeAtom.svelte";
-import {NonChapterHeadingAtom} from "../../pages/atom/implementations/non-chapter-heading/NonChapterHeadingAtom.ts";
+import {WithoutChildrenNonChapterHeadingAtom} from "../../pages/atom/implementations/non-chapter-heading/implementations/without-children/WithoutChildrenNonChapterHeadingAtom.ts";
 import {NonChapterHeadingAtomBuilder} from "../../pages/atom-builder/implementations/non-chapter-heading/NonChapterHeadingAtomBuilder.ts";
 import {BuildingResultOfNonChapterHeadingAtomBuilder} from "../../pages/atom-builder/implementations/non-chapter-heading/building-result/BuildingResultOfNonChapterHeadingAtomBuilder.ts";
 import {bindComponentProps} from "../../pages/binding-component-props/bindComponentProps.ts";
@@ -13,13 +13,14 @@ export class BelveCodeAtomBuilder extends NonChapterHeadingAtomBuilder {
 	}
 	public override build(
 		existingSources: readonly Source[],
-		pageNumber: number,
+		numberOfPage: number,
 	): BuildingResultOfNonChapterHeadingAtomBuilder {
-		const atom: NonChapterHeadingAtom = new NonChapterHeadingAtom(
-			bindComponentProps(ComponentOfBelveCodeAtom, {state: this.state}),
-			pageNumber,
-			[],
-		);
+		const atom: WithoutChildrenNonChapterHeadingAtom =
+			new WithoutChildrenNonChapterHeadingAtom(
+				bindComponentProps(ComponentOfBelveCodeAtom, {state: this.state}),
+				numberOfPage,
+				[],
+			);
 		const result: BuildingResultOfNonChapterHeadingAtomBuilder =
 			new BuildingResultOfNonChapterHeadingAtomBuilder(atom, []);
 		return result;

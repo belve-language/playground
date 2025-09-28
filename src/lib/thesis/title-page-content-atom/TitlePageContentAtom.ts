@@ -1,7 +1,7 @@
 import ComponentOfTitlePageContentAtom from "./component/ComponentOfTitlePageContentAtom.svelte";
-import {ChapterHeadingAtomBuilder} from "../../pages/atom-builder/implementations/chapter-heading/ChapterHeadingAtomBuilder.ts";
-export class TitlePageContentAtomBuilder extends ChapterHeadingAtomBuilder {
+import {HChapterHeadingAtomBuilder} from "../../pages/atom-builder/implementations/chapter-heading/implementations/h/HChapterHeadingAtomBuilder.ts";
+export class TitlePageContentAtomBuilder extends HChapterHeadingAtomBuilder {
 	public constructor(title: string) {
-		super(ComponentOfTitlePageContentAtom, 1, false, title);
+		super(ComponentOfTitlePageContentAtom, 1, false, false, title);
 	}
 }

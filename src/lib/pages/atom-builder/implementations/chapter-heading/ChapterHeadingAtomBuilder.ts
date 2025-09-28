@@ -1,13 +1,13 @@
 import {chapterHeadingAtomBuilderTypeName} from "./type-name/chapterHeadingAtomBuilderTypeName.ts";
-import {ChapterHeadingAtom} from "../../../atom/implementations/h/implementations/chapter-heading/ChapterHeadingAtom.ts";
+import {ChapterHeadingAtom} from "../../../atom/implementations/chapter-heading/ChapterHeadingAtom.ts";
 import {bindComponentProps} from "../../../binding-component-props/bindComponentProps.ts";
 import type {ChapterHeadingAtomLevel} from "../../../chapter-heading-atom-level/ChapterHeadingAtomLevel.ts";
 import type {ChapterNumber} from "../../../chapter-number/ChapterNumber.ts";
 import {AtomBuilder} from "../../AtomBuilder.ts";
 import type {Component} from "svelte";
-export abstract class ChapterHeadingAtomBuilder extends AtomBuilder<
-	typeof chapterHeadingAtomBuilderTypeName
-> {
+export abstract class ChapterHeadingAtomBuilder<
+	SubTypeName extends string,
+> extends AtomBuilder<typeof chapterHeadingAtomBuilderTypeName> {
 	protected constructor(
 		component: Component<{
 			readonly chapterNumber: ChapterNumber;
@@ -15,6 +15,8 @@ export abstract class ChapterHeadingAtomBuilder extends AtomBuilder<
 		}>,
 		level: ChapterHeadingAtomLevel,
 		shouldBeConsideredInChapterNumbers: boolean,
+		shouldHaveNumberOfPage: boolean,
+		subTypeName: SubTypeName,
 		title: string,
 	) {
 		super(chapterHeadingAtomBuilderTypeName);
@@ -22,11 +24,13 @@ export abstract class ChapterHeadingAtomBuilder extends AtomBuilder<
 		this.level = level;
 		this.shouldBeConsideredInChapterNumbers =
 			shouldBeConsideredInChapterNumbers;
+		this.shouldHaveNumberOfPage = shouldHaveNumberOfPage;
+		this.subTypeName = subTypeName;
 		this.title = title;
 	}
 	public build(
 		chapterNumber: ChapterNumber,
-		pageNumber: number,
+		numberOfPage: number,
 	): ChapterHeadingAtom {
 		const atom: ChapterHeadingAtom = new ChapterHeadingAtom(
 			chapterNumber,
@@ -35,7 +39,8 @@ export abstract class ChapterHeadingAtomBuilder extends AtomBuilder<
 				title: this.title,
 			}),
 			this.level,
-			pageNumber,
+			numberOfPage,
+			this.shouldHaveNumberOfPage,
 			this.title,
 		);
 		return atom;
@@ -46,5 +51,7 @@ export abstract class ChapterHeadingAtomBuilder extends AtomBuilder<
 	}>;
 	public readonly level: ChapterHeadingAtomLevel;
 	public readonly shouldBeConsideredInChapterNumbers: boolean;
+	private readonly shouldHaveNumberOfPage: boolean;
+	public readonly subTypeName: SubTypeName;
 	public readonly title: string;
 }

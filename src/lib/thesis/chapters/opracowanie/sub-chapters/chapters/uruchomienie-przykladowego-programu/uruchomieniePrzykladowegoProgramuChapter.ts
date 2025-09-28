@@ -11,13 +11,13 @@ import {FinalStatementsAbstractSyntaxTreeNode} from "../../../../../../belve/abs
 import {IntermediateStatementsAbstractSyntaxTreeNode} from "../../../../../../belve/abstract-syntax-tree-node/implementations/statements/implementations/intermediate/IntermediateStatementsAbstractSyntaxTreeNode.ts";
 import type {Variables} from "../../../../../../belve/variables/Variables.ts";
 import {builtInFunctions} from "../../../../../../instances/built-in-functions/builtInFunctions.ts";
-import {BrAtomBuilder} from "../../../../../../pages/atom/implementations/non-chapter-heading/implementations/br/BrAtomBuilder.ts";
 import {H3AtomBuilder} from "../../../../../../pages/atom-builder/implementations/chapter-heading/implementations/h/implementations/3/H3AtomBuilder.ts";
+import {BrAtomBuilder} from "../../../../../../pages/atom-builder/implementations/non-chapter-heading/implementations/br/BrAtomBuilder.ts";
+import {TextAtomBuilder} from "../../../../../../pages/atom-builder/implementations/non-chapter-heading/implementations/text/TextAtomBuilder.ts";
 import {LiAtomBuilder} from "../../../../../../pages/atom-builder/implementations/non-chapter-heading/implementations/with-children/implementations/li/LiAtomBuilder.ts";
 import {PAtomBuilder} from "../../../../../../pages/atom-builder/implementations/non-chapter-heading/implementations/with-children/implementations/p/PAtomBuilder.ts";
 import {PreAtomBuilder} from "../../../../../../pages/atom-builder/implementations/non-chapter-heading/implementations/with-children/implementations/pre/PreAtomBuilder.ts";
 import {SpanAtomBuilder} from "../../../../../../pages/atom-builder/implementations/non-chapter-heading/implementations/with-children/implementations/span/SpanAtomBuilder.ts";
-import {TextAtomBuilder} from "../../../../../../pages/atom-builder/implementations/non-chapter-heading/implementations/with-children/implementations/text/TextAtomBuilder.ts";
 import type {SupportedAtomBuilder} from "../../../../../../pages/atom-builder/supported/SupportedAtomBuilder.ts";
 import type {SuccessParsingState} from "../../../../../../playground/parsing-state/implementations/success/SuccessParsingState.ts";
 import type {WithMainFunctionSuccessAbstractifyingState} from "../../../../../../playground/parsing-state/implementations/success/abstractifying-state/implementations/success/implementations/with-main-function/WithMainFunctionSuccessAbstractifyingState.ts";

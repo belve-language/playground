@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type {Atom} from "../../../../../../../../atom/Atom.ts";
-	import type {PreAtomStyles} from "../../../../../../../../atom/implementations/non-chapter-heading/implementations/pre/styles/PreAtomStyles.ts";
+	import type {PreAtomStyles} from "../styles/PreAtomStyles.ts";
 	const {
 		children: children,
 		styles: styles,

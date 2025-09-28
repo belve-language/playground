@@ -6,7 +6,7 @@ import {Atom} from "../../Atom.ts";
 export class TableOfSourcesLiAtom extends Atom {
 	public constructor(
 		number: number,
-		pageNumber: number,
+		numberOfPage: number,
 		source: Source,
 		styles: StylesOfTableOfSourcesLiAtom,
 	) {
@@ -16,7 +16,23 @@ export class TableOfSourcesLiAtom extends Atom {
 				source: source,
 				styles: styles,
 			}),
-			pageNumber,
+			numberOfPage,
+			true,
 		);
+		this.number = number;
+		this.source = source;
+		this.styles = styles;
 	}
+	private readonly number: number;
+	public override repage(): TableOfSourcesLiAtom {
+		const newAtom: TableOfSourcesLiAtom = new TableOfSourcesLiAtom(
+			this.number,
+			this.numberOfPage + 1,
+			this.source,
+			this.styles,
+		);
+		return newAtom;
+	}
+	private readonly source: Source;
+	private readonly styles: StylesOfTableOfSourcesLiAtom;
 }

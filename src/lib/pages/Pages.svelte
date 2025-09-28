@@ -43,10 +43,10 @@
 	// TODO: make sure it's reset properly when props change
 	let pageNumberOfOverflow: null | number = null;
 	async function handleOverflowReportedEventInPage(
-		pageNumber: number,
+		numberOfPage: number,
 	): Promise<void> {
 		if (pageNumberOfOverflow === null) {
-			pageNumberOfOverflow = pageNumber;
+			pageNumberOfOverflow = numberOfPage;
 		}
 	}
 	function reportRound(): void {
@@ -58,13 +58,11 @@
 				remainingAtomBuilders = restRemainingAtomBuilders;
 			}
 		} else {
-			// for (const newHierarchy of pagingManager.fixOverflow(
-			// 	pageNumberOfOverflow,
-			// )) {
-			// 	hierarchy = newHierarchy;
-			// 	pageNumberOfOverflow = null;
-			// 	return;
-			// }
+			for (const newHierarchy of hierarchy.fixOverflow(pageNumberOfOverflow)) {
+				hierarchy = newHierarchy;
+				pageNumberOfOverflow = null;
+				return;
+			}
 			throw new Error("Could not fix overflow");
 		}
 	}

@@ -1,6 +1,6 @@
 import {H5AtomBuilder} from "../../../../../../../../../../pages/atom-builder/implementations/chapter-heading/implementations/h/implementations/5/H5AtomBuilder.ts";
+import {TextAtomBuilder} from "../../../../../../../../../../pages/atom-builder/implementations/non-chapter-heading/implementations/text/TextAtomBuilder.ts";
 import {PAtomBuilder} from "../../../../../../../../../../pages/atom-builder/implementations/non-chapter-heading/implementations/with-children/implementations/p/PAtomBuilder.ts";
-import {TextAtomBuilder} from "../../../../../../../../../../pages/atom-builder/implementations/non-chapter-heading/implementations/with-children/implementations/text/TextAtomBuilder.ts";
 import type {SupportedAtomBuilder} from "../../../../../../../../../../pages/atom-builder/supported/SupportedAtomBuilder.ts";
 export const funkcjeChapterSubChapters = [
 	new H5AtomBuilder("Funkcje bez funkcji głównej"),

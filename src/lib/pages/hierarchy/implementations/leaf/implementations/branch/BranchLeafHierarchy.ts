@@ -1,15 +1,17 @@
 import type {Atom} from "../../../../../atom/Atom.ts";
-import type {ChapterHeadingAtom} from "../../../../../atom/implementations/h/implementations/chapter-heading/ChapterHeadingAtom.ts";
+import type {ChapterHeadingAtom} from "../../../../../atom/implementations/chapter-heading/ChapterHeadingAtom.ts";
 import type {NonChapterHeadingAtom} from "../../../../../atom/implementations/non-chapter-heading/NonChapterHeadingAtom.ts";
-import type {ChapterHeadingAtomBuilder} from "../../../../../atom-builder/implementations/chapter-heading/ChapterHeadingAtomBuilder.ts";
+import type {HChapterHeadingAtomBuilder} from "../../../../../atom-builder/implementations/chapter-heading/implementations/h/HChapterHeadingAtomBuilder.ts";
 import type {TableOfChaptersHChapterHeadingAtomBuilder} from "../../../../../atom-builder/implementations/chapter-heading/implementations/table-of-chapters-h/TableOfChaptersHChapterHeadingAtomBuilder.ts";
 import type {TableOfSourcesHChapterHeadingAtomBuilder} from "../../../../../atom-builder/implementations/chapter-heading/implementations/table-of-sources-h/TableOfSourcesHChapterHeadingAtomBuilder.ts";
 import type {NonChapterHeadingAtomBuilder} from "../../../../../atom-builder/implementations/non-chapter-heading/NonChapterHeadingAtomBuilder.ts";
 import type {ChapterNumber} from "../../../../../chapter-number/ChapterNumber.ts";
 import type {Source} from "../../../../../source/Source.ts";
 import type {MoveData} from "../../../../move-data/MoveData.ts";
-import type {MoveDatum} from "../../../../move-datum/MoveDatum.ts";
+import {MoveDatum} from "../../../../move-datum/MoveDatum.ts";
 import {LeafHierarchy} from "../../LeafHierarchy.ts";
+import {ResultOfFixingOverflow} from "../../result-of-fixing-overflow/ResultOfFixingOverflow.ts";
+import {ResultOfInsertingChapterHeadingAtomBuilder} from "../../result-of-inserting-chapter-heading-atom-builder/ResultOfInsertingChapterHeadingAtomBuilder.ts";
 import {ResultOfInsertingNonChapterHeadingAtomBuilder} from "../../result-of-inserting-non-chapter-heading-atom-builder/ResultOfInsertingNonChapterHeadingAtomBuilder.ts";
 import {TableOfChaptersLeafHierarchy} from "../table-of-chapters/TableOfChaptersLeafHierarchy.ts";
 import {TableOfSourcesLeafHierarchy} from "../table-of-sources/TableOfSourcesLeafHierarchy.ts";
@@ -33,7 +35,22 @@ export class BranchLeafHierarchy extends LeafHierarchy<NonChapterHeadingAtom> {
 		shouldBeConsideredInChapterNumbers: boolean,
 		subHierarchies: readonly LeafHierarchy<Atom>[],
 	) {
-		super(shouldBeConsideredInChapterNumbers, subAtoms);
+		const lastSubHierarchy = subHierarchies[subHierarchies.length - 1];
+		if (lastSubHierarchy === undefined) {
+			const [firstSubAtom, ...restSubAtoms] = subAtoms;
+			const lastSubAtom = restSubAtoms[restSubAtoms.length - 1] ?? firstSubAtom;
+			super(
+				lastSubAtom.numberOfPage,
+				shouldBeConsideredInChapterNumbers,
+				subAtoms,
+			);
+		} else {
+			super(
+				lastSubHierarchy.numberOfLastPage,
+				shouldBeConsideredInChapterNumbers,
+				subAtoms,
+			);
+		}
 		this.subHierarchies = subHierarchies;
 	}
 	public override *extractAtoms(): Generator<Atom, void, void> {
@@ -78,19 +95,96 @@ export class BranchLeafHierarchy extends LeafHierarchy<NonChapterHeadingAtom> {
 		];
 		return sources;
 	}
+	public *fixOverflow(
+		numberOfPage: number,
+	): Generator<ResultOfFixingOverflow<NonChapterHeadingAtom>, void, void> {
+		for (const result of this.fixOverflowInSubHierarchies(numberOfPage)) {
+			yield result;
+			return;
+		}
+		for (const result of this.fixOverflowInSubAtoms(numberOfPage)) {
+			yield result;
+			return;
+		}
+	}
+	private *fixOverflowInSubAtoms(
+		numberOfPage: number,
+	): Generator<ResultOfFixingOverflow<NonChapterHeadingAtom>, void, void> {
+		const [firstSubAtom, ...restSubAtoms] = this.subAtoms;
+		for (const [index, restSubAtom] of restSubAtoms
+			.entries()
+			.toArray()
+			.toReversed()) {
+			if (numberOfPage === restSubAtom.numberOfPage) {
+				const newSubAtom: NonChapterHeadingAtom = restSubAtom.repage();
+				const newHierarchy: BranchLeafHierarchy = this.setSubAtoms([
+					firstSubAtom,
+					...restSubAtoms.slice(0, index),
+					newSubAtom,
+					...restSubAtoms.slice(index + 1),
+				]);
+				const result: ResultOfFixingOverflow<NonChapterHeadingAtom> =
+					new ResultOfFixingOverflow([], newHierarchy);
+				yield result;
+				return;
+			}
+		}
+		if (numberOfPage === firstSubAtom.numberOfPage) {
+			const newFirstSubAtom: ChapterHeadingAtom = firstSubAtom.repage();
+			const moveDatum: MoveDatum = new MoveDatum(firstSubAtom, newFirstSubAtom);
+			const moveData = [moveDatum] as const satisfies MoveData;
+			const newHierarchy: BranchLeafHierarchy = this.setSubAtoms([
+				newFirstSubAtom,
+				...restSubAtoms,
+			]).notifyTableOfChaptersOfMovedChapterHeadingAtomWithPropagation(
+				moveData,
+			);
+			const result: ResultOfFixingOverflow<NonChapterHeadingAtom> =
+				new ResultOfFixingOverflow(moveData, newHierarchy);
+			yield result;
+			return;
+		}
+	}
+	private *fixOverflowInSubHierarchies(
+		numberOfPage: number,
+	): Generator<ResultOfFixingOverflow<NonChapterHeadingAtom>, void, void> {
+		for (const [index, subHierarchy] of this.subHierarchies
+			.entries()
+			.toArray()
+			.toReversed()) {
+			if (numberOfPage <= subHierarchy.numberOfLastPage) {
+				for (const fixingOverflowResult of subHierarchy.fixOverflow(
+					numberOfPage,
+				)) {
+					const newHierarchy: BranchLeafHierarchy = this.setSubHierarchies([
+						...this.subHierarchies.slice(0, index),
+						fixingOverflowResult.newHierarchy,
+						...this.subHierarchies.slice(index + 1),
+					]).notifyTableOfChaptersOfMovedChapterHeadingAtomWithPropagation(
+						fixingOverflowResult.moveData,
+					);
+					const result: ResultOfFixingOverflow<NonChapterHeadingAtom> =
+						new ResultOfFixingOverflow(
+							fixingOverflowResult.moveData,
+							newHierarchy,
+						);
+					yield result;
+					return;
+				}
+			}
+		}
+	}
+	// TODO rename?
 	public override insertChapterHeadingAtomBuilderAtEnd(
-		atomBuilder: ChapterHeadingAtomBuilder,
+		atomBuilder: HChapterHeadingAtomBuilder,
 		chapterNumber: ChapterNumber,
-	): {
-		readonly insertedAtom: ChapterHeadingAtom;
-		readonly newHierarchy: BranchLeafHierarchy;
-	} {
+	): ResultOfInsertingChapterHeadingAtomBuilder<NonChapterHeadingAtom> {
 		if (atomBuilder.level === this.subAtoms[0].level + 1) {
 			const newAtom: ChapterHeadingAtom = atomBuilder.build(
 				atomBuilder.shouldBeConsideredInChapterNumbers ?
 					chapterNumber.push(this.subHierarchies.length + 1)
 				:	chapterNumber,
-				0, // TODO
+				this.numberOfLastPage,
 			);
 			const newHierarchy: BranchLeafHierarchy = this.setSubHierarchies([
 				...this.subHierarchies,
@@ -108,7 +202,7 @@ export class BranchLeafHierarchy extends LeafHierarchy<NonChapterHeadingAtom> {
 			if (lastSubHierarchy === undefined) {
 				throw new Error("Bad layout");
 			} else {
-				const {insertedAtom: insertedAtom, newHierarchy: newLastSubHierarchy} =
+				const resultOfInsertingIntoLastSubHierarchy =
 					lastSubHierarchy.insertChapterHeadingAtomBuilderAtEnd(
 						atomBuilder,
 						atomBuilder.shouldBeConsideredInChapterNumbers ?
@@ -117,11 +211,16 @@ export class BranchLeafHierarchy extends LeafHierarchy<NonChapterHeadingAtom> {
 					);
 				const newHierarchy: BranchLeafHierarchy = this.setSubHierarchies([
 					...this.subHierarchies.slice(0, this.subHierarchies.length - 1),
-					newLastSubHierarchy,
+					resultOfInsertingIntoLastSubHierarchy.newHierarchy,
 				]).notifyTableOfChaptersOfInsertedChapterHeadingAtomWithPropagation(
-					insertedAtom,
+					resultOfInsertingIntoLastSubHierarchy.insertedAtom,
 				);
-				return {insertedAtom: insertedAtom, newHierarchy: newHierarchy};
+				const result: ResultOfInsertingChapterHeadingAtomBuilder<NonChapterHeadingAtom> =
+					new ResultOfInsertingChapterHeadingAtomBuilder<NonChapterHeadingAtom>(
+						resultOfInsertingIntoLastSubHierarchy.insertedAtom,
+						newHierarchy,
+					);
+				return result;
 			}
 		}
 	}
@@ -135,7 +234,7 @@ export class BranchLeafHierarchy extends LeafHierarchy<NonChapterHeadingAtom> {
 		if (lastSubHierarchy === undefined) {
 			const {atom: newAtom, newSources: newSources} = atomBuilder.build(
 				existingSources,
-				0, // TODO
+				this.numberOfLastPage,
 			);
 			const newHierarchy: BranchLeafHierarchy = this.setSubAtoms([
 				...this.subAtoms,
@@ -169,14 +268,11 @@ export class BranchLeafHierarchy extends LeafHierarchy<NonChapterHeadingAtom> {
 	public override insertTableOfChaptersHAtomBuilderAtEnd(
 		atomBuilder: TableOfChaptersHChapterHeadingAtomBuilder,
 		chapterNumber: ChapterNumber,
-	): {
-		readonly insertedAtom: ChapterHeadingAtom;
-		readonly newHierarchy: BranchLeafHierarchy;
-	} {
+	): ResultOfInsertingChapterHeadingAtomBuilder<NonChapterHeadingAtom> {
 		if (atomBuilder.level === this.subAtoms[0].level + 1) {
 			const newAtom: ChapterHeadingAtom = atomBuilder.build(
 				chapterNumber.push(this.subHierarchies.length + 1),
-				0, // TODO
+				this.numberOfLastPage,
 			);
 			const newHierarchy: BranchLeafHierarchy = this.setSubHierarchies([
 				...this.subHierarchies,
@@ -194,32 +290,34 @@ export class BranchLeafHierarchy extends LeafHierarchy<NonChapterHeadingAtom> {
 			if (lastSubHierarchy === undefined) {
 				throw new Error("Bad layout");
 			} else {
-				const {insertedAtom: insertedAtom, newHierarchy: newLastSubHierarchy} =
+				const resultOfInsertingIntoLastSubHierarchy =
 					lastSubHierarchy.insertTableOfChaptersHAtomBuilderAtEnd(
 						atomBuilder,
 						chapterNumber.push(this.subHierarchies.length + 1),
 					);
 				const newHierarchy: BranchLeafHierarchy = this.setSubHierarchies([
 					...this.subHierarchies.slice(0, this.subHierarchies.length - 1),
-					newLastSubHierarchy,
+					resultOfInsertingIntoLastSubHierarchy.newHierarchy,
 				]).notifyTableOfChaptersOfInsertedChapterHeadingAtomWithPropagation(
-					insertedAtom,
+					resultOfInsertingIntoLastSubHierarchy.insertedAtom,
 				);
-				return {insertedAtom: insertedAtom, newHierarchy: newHierarchy};
+				const result: ResultOfInsertingChapterHeadingAtomBuilder<NonChapterHeadingAtom> =
+					new ResultOfInsertingChapterHeadingAtomBuilder<NonChapterHeadingAtom>(
+						resultOfInsertingIntoLastSubHierarchy.insertedAtom,
+						newHierarchy,
+					);
+				return result;
 			}
 		}
 	}
 	public override insertTableOfSourcesHAtomBuilderAtEnd(
 		atomBuilder: TableOfSourcesHChapterHeadingAtomBuilder,
 		chapterNumber: ChapterNumber,
-	): {
-		readonly insertedAtom: ChapterHeadingAtom;
-		readonly newHierarchy: BranchLeafHierarchy;
-	} {
+	): ResultOfInsertingChapterHeadingAtomBuilder<NonChapterHeadingAtom> {
 		if (atomBuilder.level === this.subAtoms[0].level + 1) {
 			const newAtom: ChapterHeadingAtom = atomBuilder.build(
 				chapterNumber.push(this.subHierarchies.length + 1),
-				0, // TODO
+				this.numberOfLastPage,
 			);
 			const newHierarchy: BranchLeafHierarchy = this.setSubHierarchies([
 				...this.subHierarchies,
@@ -234,18 +332,23 @@ export class BranchLeafHierarchy extends LeafHierarchy<NonChapterHeadingAtom> {
 			if (lastSubHierarchy === undefined) {
 				throw new Error("Bad layout");
 			} else {
-				const {insertedAtom: insertedAtom, newHierarchy: newLastSubHierarchy} =
+				const resultOfInsertingIntoLastSubHierarchy =
 					lastSubHierarchy.insertTableOfSourcesHAtomBuilderAtEnd(
 						atomBuilder,
 						chapterNumber.push(this.subHierarchies.length + 1),
 					);
 				const newHierarchy: BranchLeafHierarchy = this.setSubHierarchies([
 					...this.subHierarchies.slice(0, this.subHierarchies.length - 1),
-					newLastSubHierarchy,
+					resultOfInsertingIntoLastSubHierarchy.newHierarchy,
 				]).notifyTableOfChaptersOfInsertedChapterHeadingAtomWithPropagation(
-					insertedAtom,
+					resultOfInsertingIntoLastSubHierarchy.insertedAtom,
 				);
-				return {insertedAtom: insertedAtom, newHierarchy: newHierarchy};
+				const result: ResultOfInsertingChapterHeadingAtomBuilder<NonChapterHeadingAtom> =
+					new ResultOfInsertingChapterHeadingAtomBuilder<NonChapterHeadingAtom>(
+						resultOfInsertingIntoLastSubHierarchy.insertedAtom,
+						newHierarchy,
+					);
+				return result;
 			}
 		}
 	}

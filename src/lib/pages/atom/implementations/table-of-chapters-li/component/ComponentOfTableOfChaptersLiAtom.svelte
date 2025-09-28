@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type {ChapterHeadingAtom} from "../../h/implementations/chapter-heading/ChapterHeadingAtom.ts";
+	import type {ChapterHeadingAtom} from "../../chapter-heading/ChapterHeadingAtom.ts";
 	import type {StylesOfTableOfChaptersLiAtom} from "../styles/StylesOfTableOfChaptersLiAtom.ts";
 	const {
 		styles: styles,
@@ -17,7 +17,7 @@
 		{targetAtom.title}</span
 	>
 	<span class="line" bind:this={lineElement}></span>
-	<span class="page-number">{targetAtom.pageNumber.toString(10)}</span>
+	<span class="page-number">{targetAtom.numberOfPage.toString(10)}</span>
 </li>
 
 <style lang="scss">

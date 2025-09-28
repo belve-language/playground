@@ -1,4 +1,4 @@
-import type {ChapterHeadingAtom} from "../../atom/implementations/h/implementations/chapter-heading/ChapterHeadingAtom.ts";
+import type {ChapterHeadingAtom} from "../../atom/implementations/chapter-heading/ChapterHeadingAtom.ts";
 export class MoveDatum {
 	public constructor(
 		oldChapterHeadingAtom: ChapterHeadingAtom,

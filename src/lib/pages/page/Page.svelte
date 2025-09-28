@@ -9,7 +9,7 @@
 		reportRound: reportRound,
 	}: {
 		readonly countOfPages: number;
-		readonly onOverflowReportedEvent: (pageNumber: number) => void;
+		readonly onOverflowReportedEvent: (numberOfPage: number) => void;
 		readonly pageIndex: number;
 		readonly paging: Paging;
 		readonly reportRound: () => void;
@@ -40,13 +40,13 @@
 
 <div
 	class="page"
-	class:without-page-number={!paging.shouldHavePageNumber}
-	class:with-page-number={paging.shouldHavePageNumber}
+	class:without-page-number={!paging.shouldHaveNumberOfPage}
+	class:with-page-number={paging.shouldHaveNumberOfPage}
 >
 	<div class="content" bind:this={contentElement}>
 		{#each paging.atoms as atom, index (index)}<atom.component />{/each}
 	</div>
-	{#if paging.shouldHavePageNumber}
+	{#if paging.shouldHaveNumberOfPage}
 		<div class="footer">
 			{paging.numberOfPage.toString(10)}
 		</div>

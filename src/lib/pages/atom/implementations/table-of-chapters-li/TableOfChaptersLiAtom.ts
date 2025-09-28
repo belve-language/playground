@@ -1,11 +1,11 @@
-import type {StylesOfTableOfChaptersLiAtom} from "./styles/StylesOfTableOfChaptersLiAtom.ts";
 import {bindComponentProps} from "../../../binding-component-props/bindComponentProps.ts";
 import {Atom} from "../../Atom.ts";
+import type {ChapterHeadingAtom} from "../chapter-heading/ChapterHeadingAtom.ts";
 import ComponentOfTableOfChaptersLiAtom from "./component/ComponentOfTableOfChaptersLiAtom.svelte";
-import type {ChapterHeadingAtom} from "../h/implementations/chapter-heading/ChapterHeadingAtom.ts";
+import type {StylesOfTableOfChaptersLiAtom} from "./styles/StylesOfTableOfChaptersLiAtom.ts";
 export class TableOfChaptersLiAtom extends Atom {
 	public constructor(
-		pageNumber: number,
+		numberOfPage: number,
 		styles: StylesOfTableOfChaptersLiAtom,
 		targetAtom: ChapterHeadingAtom,
 	) {
@@ -14,16 +14,25 @@ export class TableOfChaptersLiAtom extends Atom {
 				styles: styles,
 				targetAtom: targetAtom,
 			}),
-			pageNumber,
+			numberOfPage,
+			true,
 		);
 		this.styles = styles;
 		this.targetAtom = targetAtom;
+	}
+	public override repage(): TableOfChaptersLiAtom {
+		const newAtom: TableOfChaptersLiAtom = new TableOfChaptersLiAtom(
+			this.numberOfPage + 1,
+			this.styles,
+			this.targetAtom,
+		);
+		return newAtom;
 	}
 	public setStyles(
 		newStyles: StylesOfTableOfChaptersLiAtom,
 	): TableOfChaptersLiAtom {
 		const newAtom: TableOfChaptersLiAtom = new TableOfChaptersLiAtom(
-			this.pageNumber,
+			this.numberOfPage,
 			newStyles,
 			this.targetAtom,
 		);
@@ -33,7 +42,7 @@ export class TableOfChaptersLiAtom extends Atom {
 		newTargetAtom: ChapterHeadingAtom,
 	): TableOfChaptersLiAtom {
 		const newAtom: TableOfChaptersLiAtom = new TableOfChaptersLiAtom(
-			this.pageNumber,
+			this.numberOfPage,
 			this.styles,
 			newTargetAtom,
 		);

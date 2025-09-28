@@ -1,15 +1,15 @@
-import type {PreAtomStyles} from "../../../../../../../atom/implementations/non-chapter-heading/implementations/pre/styles/PreAtomStyles.ts";
 import {bindComponentProps} from "../../../../../../../binding-component-props/bindComponentProps.ts";
 import type {NonChapterHeadingAtomBuilder} from "../../../../NonChapterHeadingAtomBuilder.ts";
 import {WithChildrenNonChapterHeadingAtomBuilder} from "../../WithChildrenNonChapterHeadingAtomBuilder.ts";
 import ComponentOfPreAtom from "./component/ComponentOfPreAtom.svelte";
+import type {PreAtomStyles} from "./styles/PreAtomStyles.ts";
 export class PreAtomBuilder extends WithChildrenNonChapterHeadingAtomBuilder {
 	public constructor(
 		styles: PreAtomStyles,
-		childBuilders: readonly NonChapterHeadingAtomBuilder[],
+		buildersOfChildren: readonly NonChapterHeadingAtomBuilder[],
 	) {
 		super(
-			childBuilders,
+			buildersOfChildren,
 			bindComponentProps(ComponentOfPreAtom, {styles: styles}),
 		);
 	}
