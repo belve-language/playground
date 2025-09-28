@@ -5,7 +5,10 @@ import type {Value} from "../../../../value/Value.ts";
 import {BuiltInFunction} from "../../BuiltInFunction.ts";
 export class PowerFunction extends BuiltInFunction {
 	public constructor() {
-		super("Raises a base to the power of exponent.");
+		super(
+			"Raises a base to the power of exponent.",
+			"Podnosi podstawę do potęgi wykładnika.",
+		);
 	}
 	public *call(
 		nonMainFunctions: NonMainFunctions<Function>,

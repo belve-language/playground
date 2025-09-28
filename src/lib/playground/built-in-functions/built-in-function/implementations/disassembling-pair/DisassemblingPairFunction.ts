@@ -5,7 +5,10 @@ import type {Value} from "../../../../value/Value.ts";
 import {BuiltInFunction} from "../../BuiltInFunction.ts";
 export class DisassemblingPairFunction extends BuiltInFunction {
 	public constructor() {
-		super("Disassembles a pair into its two elements.");
+		super(
+			"Disassembles a pair into its two elements.",
+			"Rozkłada parę na jej dwa elementy.",
+		);
 	}
 	public *call(
 		nonMainFunctions: NonMainFunctions<Function>,

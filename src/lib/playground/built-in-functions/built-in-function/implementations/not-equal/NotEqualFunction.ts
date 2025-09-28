@@ -8,6 +8,7 @@ export class NotEqualFunction extends BuiltInFunction {
 	public constructor() {
 		super(
 			"Checks if two values are not equal. Pairs are considered not equal if they differ in their elements.",
+			"Sprawdza, czy dwie wartości są różne. Pary są uznawane za różne, jeśli ich elementy się różnią.",
 		);
 	}
 	public *call(

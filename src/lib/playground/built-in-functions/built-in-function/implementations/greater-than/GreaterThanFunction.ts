@@ -5,7 +5,10 @@ import type {Value} from "../../../../value/Value.ts";
 import {BuiltInFunction} from "../../BuiltInFunction.ts";
 export class GreaterThanFunction extends BuiltInFunction {
 	public constructor() {
-		super("Checks if the first number is greater than the second number.");
+		super(
+			"Checks if the first number is greater than the second number.",
+			"Sprawdza, czy pierwsza liczba jest większa od drugiej liczby.",
+		);
 	}
 	public *call(
 		nonMainFunctions: NonMainFunctions<Function>,

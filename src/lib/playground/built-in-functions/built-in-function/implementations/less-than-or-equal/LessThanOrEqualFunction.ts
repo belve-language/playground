@@ -7,6 +7,7 @@ export class LessThanOrEqualFunction extends BuiltInFunction {
 	public constructor() {
 		super(
 			"Checks if the first number is less than or equal to the second number.",
+			"Sprawdza, czy pierwsza liczba jest mniejsza lub równa drugiej liczbie.",
 		);
 	}
 	public *call(

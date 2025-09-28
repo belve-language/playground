@@ -5,7 +5,7 @@ import type {Value} from "../../../../value/Value.ts";
 import {BuiltInFunction} from "../../BuiltInFunction.ts";
 export class AssigningFunction extends BuiltInFunction {
 	public constructor() {
-		super("Assigns a value to an unknown.");
+		super("Assigns a value to an unknown.", "Przypisuje wartość do nieznanej.");
 	}
 	public *call(
 		nonMainFunctions: NonMainFunctions<Function>,

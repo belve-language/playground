@@ -7,6 +7,7 @@ export class ModuloFunction extends BuiltInFunction {
 	public constructor() {
 		super(
 			"Computes the remainder of the division of the dividend by the divisor. It takes the sign of the dividend.",
+			"Oblicza resztę z dzielenia dzielnej przez dzielnik. Przyjmuje znak dzielnej.",
 		);
 	}
 	public *call(

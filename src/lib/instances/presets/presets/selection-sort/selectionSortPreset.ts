@@ -1,33 +1,30 @@
 import type {Preset} from "../../../../playground/preset/Preset.ts";
-export const insertionSortPreset = {
-	name: "Insertion sort",
+export const selectionSortPreset = {
+	descriptionInPolish:
+		"Sortowanie przez wybór to algorytm sortowania, który dzieli listę na dwie części: posortowaną i nieposortowaną. W każdej iteracji wybiera najmniejszy element z części nieposortowanej i dodaje go do końca części posortowanej.",
+	name: "Selection sort",
+	nameInPolish: "Sortowanie przez wybór",
 	sourceCode: `extract min from (list) to [min] and leave [rest] {
 	pair of [head] and [tail] is (list),
 	{
 		is (tail) pair,
 		extract min from (tail) to [sub min] and leave [sub rest],
 		{
-			(head) < (sub min),
-			(head) = [min],
+			(head) < (sub min), (head) = [min],
 			pair of (sub min) and (sub rest) is [rest]
 		}.
 		{
-			(head) >= (sub min),
-			(sub min) = [min],
+			(head) >= (sub min), (sub min) = [min],
 			pair of (head) and (sub rest) is [rest]
 		}
 	}.
 	{
 		is not (tail) pair,
 		{
-			(head) < (tail),
-			(head) = [min],
-			(tail) = [rest]
+			(head) < (tail), (head) = [min], (tail) = [rest]
 		}.
 		{
-			(head) >= (tail),
-			(tail) = [min],
-			(head) = [rest]
+			(head) >= (tail), (tail) = [min], (head) = [rest]
 		}
 	}
 }

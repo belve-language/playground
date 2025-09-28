@@ -15,9 +15,9 @@
 <li style="margin-block: {styles.marginBlock}">
 	<span class="bullet">[{number.toString(10)}]</span>
 	<span class="content">
-		<strong>{source.description}</strong><br /><a href={source.url}
-			>{source.url}</a
-		>
+		{source.author}, {source.description}, dostęp {source.dateOfAccess.toLocaleDateString(
+			"pl-PL",
+		)}, <a href={source.url}>{source.url}</a>
 	</span>
 </li>
 

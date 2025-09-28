@@ -359,7 +359,9 @@ rodzic(X, Y) :-
 		new SourceAtomBuilder(
 			`konkretny przykład z repozytorium JavaScriptowej biblioteki React`,
 			new Source(
-				"Przykład nienaturalnego z punktu widzenia języka naturalnego zapisu funkcji w JavaScript",
+				"Meta",
+				new Date(1759064545140),
+				'Fragment kodu źródłowego biblioteki React z funkcją "transform"',
 				"https://github.com/facebook/react/blob/cad813ac1ed5c04c6ccb390a3bdf5fedbbacaa45/scripts/print-warnings/print-warnings.js#L21",
 			),
 		),

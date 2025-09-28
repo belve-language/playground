@@ -7,7 +7,8 @@ import {checkIfValuesAreEqual} from "./checking-if-values-are-equal/checkIfValue
 export class EqualFunction extends BuiltInFunction {
 	public constructor() {
 		super(
-			"Checks if two values are not equal. Pairs are considered not equal if they differ in their elements.",
+			"Checks if two values are equal. Pairs are considered equal if their elements are equal.",
+			"Sprawdza, czy dwie wartości są równe. Pary są uznawane za równe, jeśli ich elementy są sobie równe.",
 		);
 	}
 	public *call(

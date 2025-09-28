@@ -29,6 +29,9 @@ export const interpreterChapter = [
 				},
 				[new TextAtomBuilder(key)],
 			),
+			new PAtomBuilder({marginBlock: "0em 0em"}, [
+				new TextAtomBuilder(function_.descriptionInPolish),
+			]),
 		]);
 	}),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [

@@ -5,7 +5,10 @@ import type {Value} from "../../../../value/Value.ts";
 import {BuiltInFunction} from "../../BuiltInFunction.ts";
 export class AdditionFunction extends BuiltInFunction {
 	public constructor() {
-		super("Performs the addition of two numbers.");
+		super(
+			"Performs the addition of two numbers.",
+			"Wykonuje dodawanie dwóch liczb.",
+		);
 	}
 	public *call(
 		nonMainFunctions: NonMainFunctions<Function>,

@@ -5,7 +5,10 @@ import type {Value} from "../../../../value/Value.ts";
 import {BuiltInFunction} from "../../BuiltInFunction.ts";
 export class MultiplicationFunction extends BuiltInFunction {
 	public constructor() {
-		super("Performs multiplication on two numbers.");
+		super(
+			"Performs multiplication on two numbers.",
+			"Wykonuje mnożenie na dwóch liczbach.",
+		);
 	}
 	public *call(
 		nonMainFunctions: NonMainFunctions<Function>,

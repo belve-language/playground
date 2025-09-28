@@ -5,7 +5,10 @@ import type {Value} from "../../../../value/Value.ts";
 import {BuiltInFunction} from "../../BuiltInFunction.ts";
 export class IsNotPairFunction extends BuiltInFunction {
 	public constructor() {
-		super("Checks if the value is not a pair.");
+		super(
+			"Checks if the value is not a pair.",
+			"Sprawdza, czy wartość nie jest parą.",
+		);
 	}
 	public *call(
 		nonMainFunctions: NonMainFunctions<Function>,

@@ -5,7 +5,10 @@ import type {Value} from "../../../../value/Value.ts";
 import {BuiltInFunction} from "../../BuiltInFunction.ts";
 export class FloorFunction extends BuiltInFunction {
 	public constructor() {
-		super("Rounds a number down to the nearest integer.");
+		super(
+			"Rounds a number down to the nearest integer.",
+			"Zaokrągla liczbę w dół do najbliższej liczby całkowitej.",
+		);
 	}
 	public *call(
 		nonMainFunctions: NonMainFunctions<Function>,

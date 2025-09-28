@@ -5,7 +5,10 @@ import type {Value} from "../../../../value/Value.ts";
 import {BuiltInFunction} from "../../BuiltInFunction.ts";
 export class AssemblingPairFunction extends BuiltInFunction {
 	public constructor() {
-		super("Aassembles a pair from two values.");
+		super(
+			"Aassembles a pair from two values.",
+			"Tworzy parę z dwóch wartości.",
+		);
 	}
 	public *call(
 		nonMainFunctions: NonMainFunctions<Function>,

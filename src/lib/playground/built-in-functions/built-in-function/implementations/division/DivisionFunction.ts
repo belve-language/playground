@@ -5,7 +5,10 @@ import type {Value} from "../../../../value/Value.ts";
 import {BuiltInFunction} from "../../BuiltInFunction.ts";
 export class DivisionFunction extends BuiltInFunction {
 	public constructor() {
-		super("Divides one number by another number.");
+		super(
+			"Divides one number by another number.",
+			"Dzieli jedną liczbę przez drugą liczbę.",
+		);
 	}
 	public *call(
 		nonMainFunctions: NonMainFunctions<Function>,

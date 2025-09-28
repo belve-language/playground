@@ -20,6 +20,7 @@ import {SuccessRuleParsingResult} from "../rule-parsing-result/implementations/s
 import {UnexpectedCharacterRuleParsingResult} from "../rule-parsing-result/implementations/unexpected-character/UnexpectedCharacterRuleParsingResult.ts";
 import {UnexpectedFinalizingRuleParsingResult} from "../rule-parsing-result/implementations/unexpected-finalizing/UnexpectedFinalizingRuleParsingResult.ts";
 import type {SupportedRuleParsingResult} from "../rule-parsing-result/supported/SupportedRuleParsingResult.ts";
+// TODO: Problem z nazewnictwem?
 export abstract class Rule<
 	AtomToUse extends Atom,
 	NodeToUse extends ConcreteSyntaxTreeNode<AtomToUse>,

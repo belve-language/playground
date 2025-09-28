@@ -1,1 +1,6 @@
-export type Preset = {readonly name: string; readonly sourceCode: string};
+export type Preset = {
+	readonly descriptionInPolish: string;
+	readonly name: string;
+	readonly nameInPolish: string;
+	readonly sourceCode: string;
+};

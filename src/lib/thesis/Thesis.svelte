@@ -1,6 +1,8 @@
 <script lang="ts">
+	import {browser} from "$app/environment";
 	import Pages from "../pages/Pages.svelte";
 	import {implementacjaChapter} from "./chapters/implementacja/implementacjaChapter.ts";
+	import {implementacjePrzykladowychAlgorytmowChapter} from "./chapters/implementacja-przykladowych-algorytmow/implementacjaPrzykladowychAlgorytmowChapter.ts";
 	import {motywacjaChapter} from "./chapters/motywacja/motywacjaChapter.ts";
 	import {opracowanieChapter} from "./chapters/opracowanie/opracowanieChapter.ts";
 	import {podsumowanieChapter} from "./chapters/podsumowanie/podsumowanieChapter.ts";
@@ -11,20 +13,23 @@
 </script>
 
 <main>
-	<Pages
-		atomBuilders={[
-			new TitlePageContentAtomBuilder(
-				"Opracowanie i implementacja języka programowania Belve",
-			),
-			new TableOfChaptersH2AtomBuilder("Spis treści"),
-			...motywacjaChapter,
-			...przyjeteDefinicjeChapter,
-			...opracowanieChapter,
-			...implementacjaChapter,
-			...podsumowanieChapter,
-			new TableOfSourcesH2AtomBuilder("Spis źródeł"),
-		]}
-	/>
+	{#if browser}
+		<Pages
+			atomBuilders={[
+				new TitlePageContentAtomBuilder(
+					"Opracowanie i implementacja języka programowania Belve",
+				),
+				new TableOfChaptersH2AtomBuilder("Spis treści"),
+				...motywacjaChapter,
+				...przyjeteDefinicjeChapter,
+				...opracowanieChapter,
+				...implementacjaChapter,
+				...implementacjePrzykladowychAlgorytmowChapter,
+				...podsumowanieChapter,
+				new TableOfSourcesH2AtomBuilder("Spis źródeł"),
+			]}
+		/>
+	{/if}
 </main>
 
 <style lang="scss">

@@ -25,7 +25,9 @@ export const podsumowanieChapter = [
 		new SourceAtomBuilder(
 			"Przyjmuje się, że jest to bardzo pożądana codebase'ów",
 			new Source(
-				"Przemyślenia Tima Braya na temat minimalizacji liczby zależności w oprogramowaniu",
+				"Tim Bray",
+				new Date(1759065029994),
+				"Przemyślenia na temat minimalizacji liczby zależności w oprogramowaniu",
 				"https://0dependencies.dev/",
 			),
 		),
@@ -63,8 +65,10 @@ export const podsumowanieChapter = [
 		new SourceAtomBuilder(
 			"bardzo prosta konstrukcja",
 			new Source(
-				"Dokumentacja szablonów tekstowych (template literals) w języku JavaScript",
-				"https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals#multi-line_strings",
+				"MDN",
+				new Date(1759064678553),
+				"Dokumentacja literałów szablonowych (template literals) w języku JavaScript",
+				"https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals",
 			),
 		),
 		new TextAtomBuilder(
