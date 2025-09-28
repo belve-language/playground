@@ -1,2 +1,2 @@
 export const optionalStartingWithWordFunctionHeaderSegmentsRestRuleName =
-	"optional starting with word function header segments rest";
+	"opcjonalna reszta zaczynających się od słowa segmentów nagłówka funkcji";

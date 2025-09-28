@@ -1,1 +1,1 @@
-export const statementRuleName = "statement";
+export const statementRuleName = "instrukcja";

@@ -1,2 +1,2 @@
 export const variableNameSegmentCharacterRuleName =
-	"variable name segment character";
+	"znak segmentu nazwy zmiennej";

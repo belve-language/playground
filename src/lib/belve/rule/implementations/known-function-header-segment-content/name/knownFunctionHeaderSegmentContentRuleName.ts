@@ -1,2 +1,2 @@
 export const knownFunctionHeaderSegmentContentRuleName =
-	"known function header segment content";
+	"zawartość segmentu znanej nagłówka funkcji";

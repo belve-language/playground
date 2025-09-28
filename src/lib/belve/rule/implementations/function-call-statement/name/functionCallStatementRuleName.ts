@@ -1,1 +1,1 @@
-export const functionCallStatementRuleName = "function call statement";
+export const functionCallStatementRuleName = "instrukcja wywołania funkcji";

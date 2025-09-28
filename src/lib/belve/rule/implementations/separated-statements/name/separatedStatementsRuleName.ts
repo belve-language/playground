@@ -1,1 +1,1 @@
-export const separatedStatementsRuleName = "separated statements";
+export const separatedStatementsRuleName = "oddzielona sekwencja instrukcji";

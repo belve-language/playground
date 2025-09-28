@@ -1,1 +1,1 @@
-export const statementsRuleName = "statements";
+export const statementsRuleName = "sekwencja instrukcji";

@@ -1,2 +1,2 @@
 export const closingSquareBracketCharacterRuleName =
-	"closing square bracket character";
+	"znak zamykającego nawiasu kwadratowego";

@@ -1,5 +1,9 @@
 <script lang="ts">
-	import type {Source} from "../../../../source/Source.ts";
+	import {
+		BookSource,
+		InternetSource,
+		type Source,
+	} from "../../../../source/Source.ts";
 	import type {StylesOfTableOfSourcesLiAtom} from "../styles/StylesOfTableOfSourcesLiAtom.ts";
 	const {
 		number: number,
@@ -15,9 +19,21 @@
 <li style="margin-block: {styles.marginBlock}">
 	<span class="bullet">[{number.toString(10)}]</span>
 	<span class="content">
-		{source.author}, {source.description}, dostęp {source.dateOfAccess.toLocaleDateString(
+		<!-- {source.author}, {source.description}, dostęp {source.dateOfAccess.toLocaleDateString(
 			"pl-PL",
-		)}, <a href={source.url}>{source.url}</a>
+		)}, <a href={source.url}>{source.url}</a> 
+		
+		todo refactor
+		-->
+
+		{#if source instanceof InternetSource}
+			{source.authorName}, {source.description},
+			<a href={source.url}>{source.url}</a>, dostęp {source.dateOfAccess.toLocaleDateString(
+				"pl-PL",
+			)}
+		{:else if source instanceof BookSource}
+			{source.authorName}, {source.title}, {source.publisherName}, {source.dateOfPublication.getFullYear()}
+		{/if}
 	</span>
 </li>
 

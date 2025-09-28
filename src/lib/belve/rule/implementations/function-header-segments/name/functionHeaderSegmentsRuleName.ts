@@ -1,1 +1,1 @@
-export const functionHeaderSegmentsRuleName = "function header segments";
+export const functionHeaderSegmentsRuleName = "segmenty nagłówka funkcji";

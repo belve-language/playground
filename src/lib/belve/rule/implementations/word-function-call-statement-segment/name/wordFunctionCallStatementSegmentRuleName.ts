@@ -1,2 +1,2 @@
 export const wordFunctionCallStatementSegmentRuleName =
-	"word function call statement segment";
+	"segment słowa instrukcji wywołania funkcji";

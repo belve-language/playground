@@ -1,2 +1,2 @@
 export const knownFunctionCallStatementSegmentContentRuleName =
-	"known function call statement segment content";
+	"zawartość segmentu znanej instrukcji wywołania funkcji";

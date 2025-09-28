@@ -1,2 +1,2 @@
 export const startingWithWordFunctionCallStatementSegmentsRuleName =
-	"starting with word function call statement segments";
+	"zaczyn się od word function call statement segments";

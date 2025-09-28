@@ -1,1 +1,1 @@
-export const functionRuleName = "function";
+export const functionRuleName = "funkcja";

@@ -1,1 +1,1 @@
-export const functionHeaderRuleName = "function header";
+export const functionHeaderRuleName = "nagłówek funkcji";

@@ -1,1 +1,1 @@
-export const optionalFunctionsRuleName = "optional functions";
+export const optionalFunctionsRuleName = "opcjonalny zbiór funkcji";

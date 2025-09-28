@@ -1,1 +1,1 @@
-export const variableNameSegmentRuleName = "variable name segment";
+export const variableNameSegmentRuleName = "segment nazwy zmiennej";

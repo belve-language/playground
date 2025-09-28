@@ -1,1 +1,1 @@
-export const optionalWordCharactersRuleName = "optional word characters";
+export const optionalWordCharactersRuleName = "opcjonalne znaki słowa";

@@ -1,2 +1,2 @@
 export const separatedOptionalFunctionHeaderSegmentsRuleName =
-	"separated optional function header segments";
+	"oddzielone opcjonalne segmenty nagłówka funkcji";

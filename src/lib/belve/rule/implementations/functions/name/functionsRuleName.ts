@@ -1,1 +1,1 @@
-export const functionsRuleName = "functions";
+export const functionsRuleName = "zbiór funkcji";

@@ -1,1 +1,1 @@
-export const wordRuleName = "word";
+export const wordRuleName = "słowo";

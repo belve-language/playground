@@ -1,2 +1,2 @@
 export const startingWithKnownFunctionCallStatementSegmentsRuleName =
-	"starting with known function call statement segments";
+	"zaczyn się od known function call statement segments";

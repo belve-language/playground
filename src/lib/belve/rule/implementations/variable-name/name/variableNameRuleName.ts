@@ -1,1 +1,1 @@
-export const variableNameRuleName = "variable name";
+export const variableNameRuleName = "nazwa zmiennej";

@@ -1,2 +1,2 @@
 export const optionalSeparatedOptionalVariableNameSegmentsRuleName =
-	"optional separated optional variable name segments";
+	"opcjonalne oddzielone opcjonalne segmenty nazwy zmiennej";

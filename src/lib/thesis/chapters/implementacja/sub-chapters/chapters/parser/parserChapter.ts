@@ -2,6 +2,7 @@ import {parser} from "../../../../../../instances/parser/parser.ts";
 import {H3AtomBuilder} from "../../../../../../pages/atom-builder/implementations/chapter-heading/implementations/h/implementations/3/H3AtomBuilder.ts";
 import {H4AtomBuilder} from "../../../../../../pages/atom-builder/implementations/chapter-heading/implementations/h/implementations/4/H4AtomBuilder.ts";
 import {BrAtomBuilder} from "../../../../../../pages/atom-builder/implementations/non-chapter-heading/implementations/br/BrAtomBuilder.ts";
+import {SourceAtomBuilder} from "../../../../../../pages/atom-builder/implementations/non-chapter-heading/implementations/source/SourceAtomBuilder.ts";
 import {TextAtomBuilder} from "../../../../../../pages/atom-builder/implementations/non-chapter-heading/implementations/text/TextAtomBuilder.ts";
 import {LiAtomBuilder} from "../../../../../../pages/atom-builder/implementations/non-chapter-heading/implementations/with-children/implementations/li/LiAtomBuilder.ts";
 import {PAtomBuilder} from "../../../../../../pages/atom-builder/implementations/non-chapter-heading/implementations/with-children/implementations/p/PAtomBuilder.ts";
@@ -14,6 +15,7 @@ import {ThAtomBuilder} from "../../../../../../pages/atom-builder/implementation
 import {TheadAtomBuilder} from "../../../../../../pages/atom-builder/implementations/non-chapter-heading/implementations/with-children/implementations/thead/TheadAtomBuilder.ts";
 import {TrAtomBuilder} from "../../../../../../pages/atom-builder/implementations/non-chapter-heading/implementations/with-children/implementations/tr/TrAtomBuilder.ts";
 import type {SupportedAtomBuilder} from "../../../../../../pages/atom-builder/supported/SupportedAtomBuilder.ts";
+import {BookSource} from "../../../../../../pages/source/Source.ts";
 import {basePreAtomStyles} from "../../../../../base-pre-atom-styles/basePreAtomStyles.ts";
 import {checkIfRuleIsInteresting} from "../../../../../checking-if-rule-is-interesting/checkIfRuleIsInteresting.ts";
 // TODO refactor
@@ -32,7 +34,19 @@ export const parserChapter = [
 	new H3AtomBuilder("Parser"),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
 		new TextAtomBuilder(
-			"Parser nie został zaimplementowany ręcznie. Mimo że język Belve jest stosunkowo prosty, wygodniejsze było wykorzystanie techniki generowania parsera na podstawie gramatyki kompatybilnej z parserami klasy LL(1). Parser używany w systemie należy właśnie do tej klasy.",
+			"Parser nie został zaimplementowany ręcznie. Mimo że język Belve jest stosunkowo prosty, wygodniejsze było wykorzystanie techniki generowania parsera na podstawie gramatyki kompatybilnej z ",
+		),
+		new SourceAtomBuilder(
+			"parserami klasy LL(1)",
+			new BookSource(
+				"Alfred V. Aho, Monica S. Lam, Ravi Sethi, and Jeffrey D. Ullman",
+				new Date("2006-08-31"),
+				"Pearson Education, Inc",
+				"Compilers: Principles, Techniques, and Tools (2nd Edition)",
+			),
+		),
+		new TextAtomBuilder(
+			". Parser używany w systemie należy właśnie do tej klasy.",
 		),
 	]),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
@@ -167,7 +181,10 @@ export const parserChapter = [
 					),
 				)
 					.filter((rule) => {
-						const isRuleInteresting = checkIfRuleIsInteresting(rule);
+						const isRuleInteresting =
+							checkIfRuleIsInteresting(rule)
+							&& (rule.name === "opcjonalny kod źródłowy"
+								|| !rule.name.includes("opcjonaln"));
 						return isRuleInteresting;
 					})
 					.map((rule) => {
@@ -300,7 +317,10 @@ export const parserChapter = [
 					),
 				)
 					.filter((rule) => {
-						const isRuleInteresting = checkIfRuleIsInteresting(rule);
+						const isRuleInteresting =
+							checkIfRuleIsInteresting(rule)
+							&& (rule.name === "opcjonalny kod źródłowy"
+								|| !rule.name.includes("opcjonaln"));
 						return isRuleInteresting;
 					})
 					.map((rule) => {
@@ -478,11 +498,14 @@ export const parserChapter = [
 						checkIfRuleIsInteresting(rule)
 						&& !rule.name.includes("segment")
 						&& !rule.name.includes("operator")
-						&& !rule.name.includes("call")
-						&& rule.name !== "empty"
-						&& !rule.name.includes("word")
-						&& !rule.name.includes("whitespace")
-						&& !rule.name.includes("variable name")
+						&& !rule.name.includes("wywoła")
+						&& rule.name !== "nic"
+						&& !rule.name.includes("słow")
+						&& !rule.name.includes("przestrzeń")
+						&& !rule.name.includes("nazwa zmiennej")
+						&& !rule.name.includes("nazwy zmiennej")
+						&& (rule.name === "opcjonalny kod źródłowy"
+							|| !rule.name.includes("opcjonaln"))
 						&& !rule
 							.getRightExpressions(parser.grammar.ruleById)
 							.some((expression) => {

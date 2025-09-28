@@ -1,2 +1,2 @@
 export const startingWithKnownFunctionHeaderSegmentsRuleName =
-	"starting with known function header segments";
+	"zaczyn się od known function header segments";

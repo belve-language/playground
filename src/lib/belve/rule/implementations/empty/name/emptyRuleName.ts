@@ -1,1 +1,1 @@
-export const emptyRuleName = "empty";
+export const emptyRuleName = "nic";

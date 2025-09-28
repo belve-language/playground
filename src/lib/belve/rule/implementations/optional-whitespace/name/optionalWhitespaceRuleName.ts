@@ -1,1 +1,1 @@
-export const optionalWhitespaceRuleName = "optional whitespace";
+export const optionalWhitespaceRuleName = "opcjonalna przestrzeń";

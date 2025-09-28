@@ -1,2 +1,2 @@
 export const startingWithWordFunctionHeaderSegmentsRestRuleName =
-	"starting with word function header segments rest";
+	"zaczyn się od word function header segments rest";

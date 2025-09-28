@@ -1,2 +1,2 @@
 export const optionalFunctionCallStatementSegmentsRuleName =
-	"optional function call statement segments";
+	"opcjonalne segmenty instrukcji wywołania funkcji";

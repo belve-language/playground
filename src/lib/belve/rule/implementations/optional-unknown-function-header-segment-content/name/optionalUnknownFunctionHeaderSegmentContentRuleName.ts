@@ -1,2 +1,2 @@
 export const optionalUnknownFunctionHeaderSegmentContentRuleName =
-	"optional unknown function header segment content";
+	"opcjonalna zawartość segmentu nieznanego nagłówka funkcji";

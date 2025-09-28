@@ -9,7 +9,7 @@ import {PAtomBuilder} from "../../../pages/atom-builder/implementations/non-chap
 import {PreAtomBuilder} from "../../../pages/atom-builder/implementations/non-chapter-heading/implementations/with-children/implementations/pre/PreAtomBuilder.ts";
 import {StrongAtomBuilder} from "../../../pages/atom-builder/implementations/non-chapter-heading/implementations/with-children/implementations/strong/StrongAtomBuilder.ts";
 import type {SupportedAtomBuilder} from "../../../pages/atom-builder/supported/SupportedAtomBuilder.ts";
-import {Source} from "../../../pages/source/Source.ts";
+import {InternetSource} from "../../../pages/source/Source.ts";
 import {basePreAtomStyles} from "../../base-pre-atom-styles/basePreAtomStyles.ts";
 export const podsumowanieChapter = [
 	new H2AtomBuilder("Podsumowanie"),
@@ -24,7 +24,7 @@ export const podsumowanieChapter = [
 		),
 		new SourceAtomBuilder(
 			"Przyjmuje się, że jest to bardzo pożądana codebase'ów",
-			new Source(
+			new InternetSource(
 				"Tim Bray",
 				new Date(1759065029994),
 				"Przemyślenia na temat minimalizacji liczby zależności w oprogramowaniu",
@@ -64,7 +64,7 @@ export const podsumowanieChapter = [
 		),
 		new SourceAtomBuilder(
 			"bardzo prosta konstrukcja",
-			new Source(
+			new InternetSource(
 				"MDN",
 				new Date(1759064678553),
 				"Dokumentacja literałów szablonowych (template literals) w języku JavaScript",
@@ -99,10 +99,10 @@ export const podsumowanieChapter = [
 			"Język nie posiada mechanizmu komentarzy. Komentarze są przydatne do dokumentowania kodu źródłowego i wyjaśniania jego działania. Wprowadzenie komentarzy wymagałoby rozszerzenia składni języka o konstrukcje komentarzy.",
 		),
 	]),
-	new H4AtomBuilder("Typy danych"),
+	new H4AtomBuilder("Typy danych na poziomie składni"),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
 		new TextAtomBuilder(
-			"Język nie posiada mechanizmu typów danych. Typy danych są przydatne do określania rodzaju danych, które mogą być przechowywane w zmiennych, a potencjalnie również do optymalizacji wykonywania kodu. Wprowadzenie typów danych wymagałoby rozszerzenia składni języka o konstrukcje definiowania typów danych oraz mechanizmu sprawdzania typów podczas kompilacji lub wykonywania kodu.",
+			"Język nie posiada typów danych na poziomie składni. Są one przydatne do określania rodzaju danych, które mogą być przechowywane w zmiennych, co zapobiega pomyłkom programisty. Potencjalnie również mogą pomóc optymalizować wykonywanie kodu. Wprowadzenie typów danych wymagałoby oprócz rozszerzenia składni języka o konstrukcje definiowania typów danych również mechanizm sprawdzania typów podczas kompilacji lub wykonywania kodu.",
 		),
 	]),
 	new H4AtomBuilder("Kompilator"),

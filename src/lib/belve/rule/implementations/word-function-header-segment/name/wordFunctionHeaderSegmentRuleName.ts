@@ -1,1 +1,2 @@
-export const wordFunctionHeaderSegmentRuleName = "word function header segment";
+export const wordFunctionHeaderSegmentRuleName =
+	"segment słowa nagłówka funkcji";

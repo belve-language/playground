@@ -1,1 +1,1 @@
-export const thenOperatorRuleName = "then operator";
+export const thenOperatorRuleName = 'operator "następnie"';

@@ -10,6 +10,7 @@
 	import {TitlePageContentAtomBuilder} from "./title-page-content-atom/TitlePageContentAtom.ts";
 	import {TableOfChaptersH2AtomBuilder} from "../pages/atom-builder/implementations/chapter-heading/implementations/table-of-chapters-h/implementations/2/TableOfChaptersH2AtomBuilder.ts";
 	import {TableOfSourcesH2AtomBuilder} from "../pages/atom-builder/implementations/chapter-heading/implementations/table-of-sources-h/implementations/2/TableOfSourcesH2AtomBuilder.ts";
+	import {H1AtomBuilder} from "../pages/atom-builder/implementations/chapter-heading/implementations/h/implementations/1/H1AtomBuilder.ts";
 </script>
 
 <main>

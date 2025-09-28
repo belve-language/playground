@@ -1,1 +1,2 @@
-export const paddedOptionalStatementsRuleName = "padded optional statements";
+export const paddedOptionalStatementsRuleName =
+	"otoczona opcjonalna sekwencja instrukcji";

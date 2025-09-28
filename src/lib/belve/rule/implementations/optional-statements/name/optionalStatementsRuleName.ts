@@ -1,1 +1,1 @@
-export const optionalStatementsRuleName = "optional statements";
+export const optionalStatementsRuleName = "opcjonalna sekwencja instrukcji";

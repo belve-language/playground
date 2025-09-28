@@ -1,2 +1,2 @@
 export const knownFunctionHeaderSegmentRuleName =
-	"known function header segment";
+	"segment znanej nagłówka funkcji";

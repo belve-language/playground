@@ -1,1 +1,1 @@
-export const whitespaceRuleName = "whitespace";
+export const whitespaceRuleName = "przestrzeń";

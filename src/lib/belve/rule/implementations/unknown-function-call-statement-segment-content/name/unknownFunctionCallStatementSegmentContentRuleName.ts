@@ -1,2 +1,2 @@
 export const unknownFunctionCallStatementSegmentContentRuleName =
-	"unknown function call statement segment content";
+	"zawartość segmentu nieznanej instrukcji wywołania funkcji";

@@ -1,2 +1,2 @@
 // TODO rename to source code
-export const contentRuleName = "content";
+export const contentRuleName = "kod źródłowy";

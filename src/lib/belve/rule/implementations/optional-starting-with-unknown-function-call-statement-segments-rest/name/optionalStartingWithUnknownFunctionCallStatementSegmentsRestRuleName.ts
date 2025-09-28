@@ -1,2 +1,2 @@
 export const optionalStartingWithUnknownFunctionCallStatementSegmentsRestRuleName =
-	"optional starting with unknown function call statement segments rest";
+	"opcjonalna reszta zaczynających się od nieznanej segmentów instrukcji wywołania funkcji";

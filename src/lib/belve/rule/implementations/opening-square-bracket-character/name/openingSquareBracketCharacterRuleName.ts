@@ -1,2 +1,2 @@
 export const openingSquareBracketCharacterRuleName =
-	"opening square bracket character";
+	"znak otwierającego nawiasu kwadratowego";

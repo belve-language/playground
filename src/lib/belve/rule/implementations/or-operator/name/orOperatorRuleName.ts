@@ -1,1 +1,1 @@
-export const orOperatorRuleName = "or operator";
+export const orOperatorRuleName = 'operator "lub"';

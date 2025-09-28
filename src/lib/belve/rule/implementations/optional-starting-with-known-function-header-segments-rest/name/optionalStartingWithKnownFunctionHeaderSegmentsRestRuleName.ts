@@ -1,2 +1,2 @@
 export const optionalStartingWithKnownFunctionHeaderSegmentsRestRuleName =
-	"optional starting with known function header segments rest";
+	"opcjonalna reszta zaczynających się od znanej segmentów nagłówka funkcji";

@@ -1,2 +1,2 @@
 export const closingRoundBracketCharacterRuleName =
-	"closing round bracket character";
+	"znak zamykającego nawiasu okrągłego";

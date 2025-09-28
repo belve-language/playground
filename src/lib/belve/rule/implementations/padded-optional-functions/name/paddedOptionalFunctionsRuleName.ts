@@ -1,1 +1,2 @@
-export const paddedOptionalFunctionsRuleName = "padded optional functions";
+export const paddedOptionalFunctionsRuleName =
+	"opcjonalna otoczona sekwencja funkcji";

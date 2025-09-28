@@ -1,2 +1,2 @@
 export const openingCurlyBracketCharacterRuleName =
-	"opening curly bracket character";
+	"znak otwierającego nawiasu klamrowego";

@@ -1,1 +1,1 @@
-export const wordCharacterRuleName = "word character";
+export const wordCharacterRuleName = "znak słowa";

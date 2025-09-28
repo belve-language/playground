@@ -1,2 +1,2 @@
 export const optionalSeparatedStatementsRuleName =
-	"optional separated statements";
+	"opcjonalna oddzielona sekwencja instrukcji";

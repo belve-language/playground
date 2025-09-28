@@ -1,1 +1,1 @@
-export const whitespaceCharacterRuleName = "whitespace character";
+export const whitespaceCharacterRuleName = "znak biały";

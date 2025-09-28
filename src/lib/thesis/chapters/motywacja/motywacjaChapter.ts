@@ -8,7 +8,7 @@ import {PAtomBuilder} from "../../../pages/atom-builder/implementations/non-chap
 import {PreAtomBuilder} from "../../../pages/atom-builder/implementations/non-chapter-heading/implementations/with-children/implementations/pre/PreAtomBuilder.ts";
 import {StrongAtomBuilder} from "../../../pages/atom-builder/implementations/non-chapter-heading/implementations/with-children/implementations/strong/StrongAtomBuilder.ts";
 import type {SupportedAtomBuilder} from "../../../pages/atom-builder/supported/SupportedAtomBuilder.ts";
-import {Source} from "../../../pages/source/Source.ts";
+import {InternetSource} from "../../../pages/source/Source.ts";
 import {basePreAtomStyles} from "../../base-pre-atom-styles/basePreAtomStyles.ts";
 export const motywacjaChapter = [
 	new H2AtomBuilder("Motywacja"),
@@ -358,7 +358,7 @@ rodzic(X, Y) :-
 		),
 		new SourceAtomBuilder(
 			`konkretny przykład z repozytorium JavaScriptowej biblioteki React`,
-			new Source(
+			new InternetSource(
 				"Meta",
 				new Date(1759064545140),
 				'Fragment kodu źródłowego biblioteki React z funkcją "transform"',

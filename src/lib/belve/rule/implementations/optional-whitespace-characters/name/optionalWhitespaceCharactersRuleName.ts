@@ -1,2 +1,1 @@
-export const optionalWhitespaceCharactersRuleName =
-	"optional whitespace characters";
+export const optionalWhitespaceCharactersRuleName = "opcjonalne znaki białe";

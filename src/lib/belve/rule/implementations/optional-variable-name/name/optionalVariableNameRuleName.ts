@@ -1,1 +1,1 @@
-export const optionalVariableNameRuleName = "optional variable name";
+export const optionalVariableNameRuleName = "opcjonalna nazwa zmiennej";

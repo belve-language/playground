@@ -1,2 +1,2 @@
 export const paddedOptionalVariableNameRuleName =
-	"padded optional variable name";
+	"otoczona opcjonalna nazwa zmiennej";

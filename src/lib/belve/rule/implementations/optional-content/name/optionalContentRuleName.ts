@@ -1,1 +1,1 @@
-export const optionalContentRuleName = "optional content";
+export const optionalContentRuleName = "opcjonalny kod źródłowy";

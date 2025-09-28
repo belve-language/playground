@@ -1,1 +1,1 @@
-export const functionBodyRuleName = "function body";
+export const functionBodyRuleName = "ciało funkcji";

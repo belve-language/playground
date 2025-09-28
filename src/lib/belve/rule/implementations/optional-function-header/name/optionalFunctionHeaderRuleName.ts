@@ -1,1 +1,1 @@
-export const optionalFunctionHeaderRuleName = "optional function header";
+export const optionalFunctionHeaderRuleName = "opcjonalny nagłówek funkcji";

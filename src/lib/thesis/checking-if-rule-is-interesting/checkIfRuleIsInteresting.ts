@@ -5,11 +5,11 @@ export function checkIfRuleIsInteresting(
 	rule: Rule<Atom, ConcreteSyntaxTreeNode<Atom>>,
 ): boolean {
 	const isRuleInteresting =
-		rule.name === "optional content"
-		|| (!rule.name.endsWith(" character")
-			&& !rule.name.endsWith(" segments")
-			&& !rule.name.startsWith("optional ")
-			&& !rule.name.startsWith("starting with ")
-			&& !rule.name.startsWith("unknown "));
+		rule.name === "opcjonalny kod źródłowy" /* optional source code */
+		|| (!rule.name.startsWith("znak ")
+			&& !rule.name.startsWith("segmenty ")
+			&& !rule.name.startsWith("opcjonaln")
+			&& !rule.name.startsWith("zaczyn")
+			&& !rule.name.includes("nieznan"));
 	return isRuleInteresting;
 }

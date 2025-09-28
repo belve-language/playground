@@ -1,1 +1,1 @@
-export const blockStatementContentRuleName = "block statement content";
+export const blockStatementContentRuleName = "zawartość wyrażenia blokowego";

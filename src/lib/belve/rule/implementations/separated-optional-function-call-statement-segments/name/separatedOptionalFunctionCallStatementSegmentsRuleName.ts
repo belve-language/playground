@@ -1,2 +1,2 @@
 export const separatedOptionalFunctionCallStatementSegmentsRuleName =
-	"separated optional function call statement segments";
+	"oddzielone opcjonalne segmenty wywołania funkcji";
