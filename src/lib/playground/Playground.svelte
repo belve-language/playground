@@ -17,6 +17,7 @@
 	import {successAbstractifyingStateTypeName} from "./parsing-state/implementations/success/abstractifying-state/implementations/success/type-name/successAbstractifyingStateTypeName.ts";
 	import type {SupportedParsingState} from "./parsing-state/supported/SupportedParsingState.ts";
 	import {builtInFunctions} from "../instances/built-in-functions/builtInFunctions.ts";
+	import {doneExecutingStateTypeName} from "./parsing-state/implementations/success/abstractifying-state/implementations/success/implementations/with-main-function/executing-state/implementations/done/type-name/doneExecutingStateTypeName.ts";
 	let state_: State<SupportedParsingState> = $state.raw<
 		State<SupportedParsingState>
 	>(State.create(builtInFunctions, []));
@@ -53,7 +54,7 @@
 					{#if state_.parsingState.abstractifyingState.typeName === successAbstractifyingStateTypeName}
 						{#if state_.parsingState.abstractifyingState.subTypeName === withMainFunctionSuccessAbstractifyingStateSubTypeName}
 							✔️ Valid
-							{#if state_.parsingState.abstractifyingState.executingState.typeName === idleExecutingStateTypeName}
+							{#if state_.parsingState.abstractifyingState.executingState.typeName === idleExecutingStateTypeName || state_.parsingState.abstractifyingState.executingState.typeName === doneExecutingStateTypeName}
 								<button type="button" onclick={handleRunButtonClick}
 									>▶️ Run</button
 								>
