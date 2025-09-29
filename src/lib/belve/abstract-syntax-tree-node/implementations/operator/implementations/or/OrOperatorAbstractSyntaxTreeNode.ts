@@ -20,6 +20,11 @@ export class OrOperatorAbstractSyntaxTreeNode extends OperatorAbstractSyntaxTree
 	public constructor(spanIndexes: SpanIndexes) {
 		super(spanIndexes);
 	}
+	public override checkIfShouldConsiderStatementAsEncountered(
+		statement: SupportedStatementAbstractSyntaxTreeNode,
+	): readonly [] {
+		return [];
+	}
 	public override *mutate(): Generator<
 		ThenOperatorAbstractSyntaxTreeNode,
 		void,

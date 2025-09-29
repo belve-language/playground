@@ -1,4 +1,5 @@
 import type {IntermediateStatementsAbstractSyntaxTreeNodeChildren} from "./children/IntermediateStatementsAbstractSyntaxTreeNodeChildren.ts";
+import type {BuiltInFunction} from "../../../../../../playground/built-in-functions/built-in-function/BuiltInFunction.ts";
 import type {Function} from "../../../../../function/Function.ts";
 import type {NonMainFunctions} from "../../../../../non-main-functions/NonMainFunctions.ts";
 import type {SpanIndexes} from "../../../../../span-indexes/SpanIndexes.ts";
@@ -13,7 +14,9 @@ import {logStatementExecutingResultTypeName} from "../../../../../statement-exec
 import {ReturnStatementExecutingResult} from "../../../../../statement-executing-result/implementations/return/ReturnStatementExecutingResult.ts";
 import {returnStatementExecutingResultTypeName} from "../../../../../statement-executing-result/implementations/return/type-name/returnStatementExecutingResultTypeName.ts";
 import type {Variables} from "../../../../../variables/Variables.ts";
+import type {NonMainFunctionAbstractSyntaxTreeNode} from "../../../function/implementations/non-main/NonMainFunctionAbstractSyntaxTreeNode.ts";
 import type {FunctionHeaderAbstractSyntaxTreeNode} from "../../../function-header/FunctionHeaderAbstractSyntaxTreeNode.ts";
+import type {SupportedStatementAbstractSyntaxTreeNode} from "../../../statement/supported/SupportedStatementAbstractSyntaxTreeNode.ts";
 import {StatementsAbstractSyntaxTreeNode} from "../../StatementsAbstractSyntaxTreeNode.ts";
 export class IntermediateStatementsAbstractSyntaxTreeNode extends StatementsAbstractSyntaxTreeNode<IntermediateStatementsAbstractSyntaxTreeNodeChildren> {
 	public constructor(
@@ -93,6 +96,32 @@ export class IntermediateStatementsAbstractSyntaxTreeNode extends StatementsAbst
 		// 		new FailureLogStatementExecutingResult(availables, this);
 		// 	yield intermediateStatementsExecutingResult2;
 		// }
+	}
+	public override lint(
+		builtInFunctions: NonMainFunctions<BuiltInFunction>,
+		encounteredStatements: readonly SupportedStatementAbstractSyntaxTreeNode[],
+		hasEncounteredOtherStatements: boolean,
+		nonMainFunctions: NonMainFunctions<NonMainFunctionAbstractSyntaxTreeNode>,
+	): readonly string[] {
+		return [
+			...this.children.operatedStatement.lint(
+				builtInFunctions,
+				encounteredStatements,
+				nonMainFunctions,
+			),
+			...this.children.restStatements.lint(
+				builtInFunctions,
+				[
+					...encounteredStatements,
+					// TODO
+					...this.children.operatedStatement.children.operator.checkIfShouldConsiderStatementAsEncountered(
+						this.children.operatedStatement.children.statement,
+					),
+				],
+				true,
+				nonMainFunctions,
+			),
+		];
 	}
 	public override *mutate(
 		functionsHeaders: readonly FunctionHeaderAbstractSyntaxTreeNode[],

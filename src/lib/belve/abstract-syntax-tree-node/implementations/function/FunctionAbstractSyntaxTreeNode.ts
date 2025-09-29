@@ -18,6 +18,8 @@ import type {Variables} from "../../../variables/Variables.ts";
 import {AbstractSyntaxTreeNode} from "../../AbstractSyntaxTreeNode.ts";
 import type {FunctionHeaderAbstractSyntaxTreeNode} from "../function-header/FunctionHeaderAbstractSyntaxTreeNode.ts";
 import type {SupportedFunctionsAbstractSyntaxTreeNode} from "../functions/supported/SupportedFunctionsAbstractSyntaxTreeNode.ts";
+import type {NonMainFunctionAbstractSyntaxTreeNode} from "./implementations/non-main/NonMainFunctionAbstractSyntaxTreeNode.ts";
+import type {BuiltInFunction} from "../../../../playground/built-in-functions/built-in-function/BuiltInFunction.ts";
 export abstract class FunctionAbstractSyntaxTreeNode<
 	FunctionHeaderAbstractSyntaxTreeNodeToUse extends
 		FunctionHeaderAbstractSyntaxTreeNode | null,
@@ -129,9 +131,17 @@ export abstract class FunctionAbstractSyntaxTreeNode<
 	public abstract createFunctions(): SupportedFunctionsAbstractSyntaxTreeNode;
 	// public abstract concretifyHeader(): OptionalFunctionHeaderConcreteSyntaxTreeNode;
 	// public abstract createFunctions(): SupportedFunctionsAbstractSyntaxTreeNode;
-	public lint(): readonly string[] {
+	public lint(
+		builtInFunctions: NonMainFunctions<BuiltInFunction>,
+		nonMainFunctions: NonMainFunctions<NonMainFunctionAbstractSyntaxTreeNode>,
+	): readonly string[] {
 		// TODO
-		const bodyLintingResults = this.children.body.lint();
+		const bodyLintingResults = this.children.body.lint(
+			builtInFunctions,
+			[],
+			true,
+			nonMainFunctions,
+		);
 		const functionLintingResults: readonly string[] = bodyLintingResults;
 		return functionLintingResults;
 	}

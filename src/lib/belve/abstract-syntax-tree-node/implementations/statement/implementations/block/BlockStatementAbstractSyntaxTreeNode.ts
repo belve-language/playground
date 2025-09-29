@@ -1,4 +1,5 @@
 import type {BlockStatementAbstractSyntaxTreeNodeChildren} from "./children/BlockStatementAbstractSyntaxTreeNodeChildren.ts";
+import type {BuiltInFunction} from "../../../../../../playground/built-in-functions/built-in-function/BuiltInFunction.ts";
 import type {BlockStatementConcreteSyntaxTreeNode} from "../../../../../concrete-syntax-tree-node/implementations/block-statement/BlockStatementConcreteSyntaxTreeNode.ts";
 import type {Function} from "../../../../../function/Function.ts";
 import type {NonMainFunctions} from "../../../../../non-main-functions/NonMainFunctions.ts";
@@ -14,14 +15,35 @@ import {logStatementExecutingResultTypeName} from "../../../../../statement-exec
 import {ReturnStatementExecutingResult} from "../../../../../statement-executing-result/implementations/return/ReturnStatementExecutingResult.ts";
 import {returnStatementExecutingResultTypeName} from "../../../../../statement-executing-result/implementations/return/type-name/returnStatementExecutingResultTypeName.ts";
 import type {Variables} from "../../../../../variables/Variables.ts";
+import type {NonMainFunctionAbstractSyntaxTreeNode} from "../../../function/implementations/non-main/NonMainFunctionAbstractSyntaxTreeNode.ts";
 import type {FunctionHeaderAbstractSyntaxTreeNode} from "../../../function-header/FunctionHeaderAbstractSyntaxTreeNode.ts";
 import {StatementAbstractSyntaxTreeNode} from "../../StatementAbstractSyntaxTreeNode.ts";
+import type {SupportedStatementAbstractSyntaxTreeNode} from "../../supported/SupportedStatementAbstractSyntaxTreeNode.ts";
+import type {FunctionCallStatementAbstractSyntaxTreeNode} from "../function-call/FunctionCallStatementAbstractSyntaxTreeNode.ts";
 export class BlockStatementAbstractSyntaxTreeNode extends StatementAbstractSyntaxTreeNode<BlockStatementAbstractSyntaxTreeNodeChildren> {
 	public constructor(
 		children: BlockStatementAbstractSyntaxTreeNodeChildren,
 		spanIndexes: SpanIndexes,
 	) {
 		super(children, spanIndexes);
+	}
+	public override checkIfBlockIsEqualTo(
+		other: BlockStatementAbstractSyntaxTreeNode,
+	): readonly string[] {
+		// TODO
+		return [];
+	}
+	public override checkIfFunctionCallIsEqualTo(
+		other: FunctionCallStatementAbstractSyntaxTreeNode,
+	): readonly string[] {
+		return [];
+	}
+	public override checkIfWasAlreadyUsed(
+		encounteredStatements: readonly SupportedStatementAbstractSyntaxTreeNode[],
+	): readonly string[] {
+		return encounteredStatements.flatMap((encounteredStatement) => {
+			return encounteredStatement.checkIfBlockIsEqualTo(this);
+		});
 	}
 	public concretify(): BlockStatementConcreteSyntaxTreeNode {
 		// TODO
@@ -99,9 +121,21 @@ export class BlockStatementAbstractSyntaxTreeNode extends StatementAbstractSynta
 			yield blockStatementExecutingResult2;
 		}
 	}
-	public lint(): readonly string[] {
-		// TODO
-		throw new Error("Method not implemented.");
+	public override lint(
+		builtInFunctions: NonMainFunctions<BuiltInFunction>,
+		encounteredStatements: readonly SupportedStatementAbstractSyntaxTreeNode[],
+		hasEncounteredOtherStatements: boolean,
+		nonMainFunctions: NonMainFunctions<NonMainFunctionAbstractSyntaxTreeNode>,
+	): readonly string[] {
+		return [
+			...(hasEncounteredOtherStatements ? [] : ["Overnested block statement."]),
+			...this.children.statements.lint(
+				builtInFunctions,
+				encounteredStatements,
+				false,
+				nonMainFunctions,
+			),
+		];
 	}
 	public override *mutate(
 		nonMainFunctionsHeaders: readonly FunctionHeaderAbstractSyntaxTreeNode[],

@@ -12,6 +12,9 @@ export abstract class OperatorAbstractSyntaxTreeNode extends AbstractSyntaxTreeN
 	protected constructor(spanIndexes: SpanIndexes) {
 		super(null, spanIndexes);
 	}
+	public abstract checkIfShouldConsiderStatementAsEncountered(
+		statement: SupportedStatementAbstractSyntaxTreeNode,
+	): readonly SupportedStatementAbstractSyntaxTreeNode[];
 	public abstract mutate(): Generator<
 		SupportedOperatorAbstractSyntaxTreeNode,
 		void,

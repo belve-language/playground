@@ -1,7 +1,9 @@
 import type {FunctionsAbstractSyntaxTreeNodeChildren} from "./children/FunctionsAbstractSyntaxTreeNodeChildren.ts";
 import type {WithMainFunctionFunctionsAbstractSyntaxTreeNode} from "./implementations/with-main-function/WithMainFunctionFunctionsAbstractSyntaxTreeNode.ts";
 import type {SupportedFunctionsAbstractSyntaxTreeNode} from "./supported/SupportedFunctionsAbstractSyntaxTreeNode.ts";
+import type {BuiltInFunction} from "../../../../playground/built-in-functions/built-in-function/BuiltInFunction.ts";
 import type {SupportedAbstractifyingResult} from "../../../abstractifying-result/supported/SupportedAbstractifyingResult.ts";
+import type {NonMainFunctions} from "../../../non-main-functions/NonMainFunctions.ts";
 import {SpanIndexes} from "../../../span-indexes/SpanIndexes.ts";
 import {AbstractSyntaxTreeNode} from "../../AbstractSyntaxTreeNode.ts";
 import type {MainFunctionAbstractSyntaxTreeNode} from "../function/implementations/main/MainFunctionAbstractSyntaxTreeNode.ts";
@@ -27,6 +29,9 @@ export abstract class FunctionsAbstractSyntaxTreeNode<
 	public abstract addNonMainFunction(
 		functionToAdd: NonMainFunctionAbstractSyntaxTreeNode,
 	): SupportedAbstractifyingResult<SupportedFunctionsAbstractSyntaxTreeNode>;
+	public abstract lint(
+		builtInFunctions: NonMainFunctions<BuiltInFunction>,
+	): readonly string[];
 	// TODO
 	// public *mutate(
 	// 	builtInFunctionsHeaders: readonly FunctionHeaderAbstractSyntaxTreeNode[],

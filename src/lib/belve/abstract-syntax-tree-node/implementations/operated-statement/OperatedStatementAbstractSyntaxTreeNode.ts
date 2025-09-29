@@ -1,4 +1,5 @@
 import type {OperatedStatementAbstractSyntaxTreeNodeChildren} from "./children/OperatedStatementAbstractSyntaxTreeNodeChildren.ts";
+import type {BuiltInFunction} from "../../../../playground/built-in-functions/built-in-function/BuiltInFunction.ts";
 import type {Function} from "../../../function/Function.ts";
 import type {NonMainFunctions} from "../../../non-main-functions/NonMainFunctions.ts";
 import {SpanIndexes} from "../../../span-indexes/SpanIndexes.ts";
@@ -14,7 +15,9 @@ import {returnStatementExecutingResultTypeName} from "../../../statement-executi
 import type {SupportedStatementExecutingResult} from "../../../statement-executing-result/supported/SupportedStatementExecutingResult.ts";
 import type {Variables} from "../../../variables/Variables.ts";
 import {AbstractSyntaxTreeNode} from "../../AbstractSyntaxTreeNode.ts";
+import type {NonMainFunctionAbstractSyntaxTreeNode} from "../function/implementations/non-main/NonMainFunctionAbstractSyntaxTreeNode.ts";
 import type {FunctionHeaderAbstractSyntaxTreeNode} from "../function-header/FunctionHeaderAbstractSyntaxTreeNode.ts";
+import type {SupportedStatementAbstractSyntaxTreeNode} from "../statement/supported/SupportedStatementAbstractSyntaxTreeNode.ts";
 import type {SupportedStatementsAbstractSyntaxTreeNode} from "../statements/supported/SupportedStatementsAbstractSyntaxTreeNode.ts";
 export class OperatedStatementAbstractSyntaxTreeNode extends AbstractSyntaxTreeNode<OperatedStatementAbstractSyntaxTreeNodeChildren> {
 	public constructor(
@@ -91,6 +94,20 @@ export class OperatedStatementAbstractSyntaxTreeNode extends AbstractSyntaxTreeN
 		// 		new FailureLogStatementExecutingResult(availables, this);
 		// 	yield statementExecutingResult2;
 		// }
+	}
+	public lint(
+		builtInFunctions: NonMainFunctions<BuiltInFunction>,
+		encounteredStatements: readonly SupportedStatementAbstractSyntaxTreeNode[],
+		nonMainFunctions: NonMainFunctions<NonMainFunctionAbstractSyntaxTreeNode>,
+	): readonly string[] {
+		return [
+			...this.children.statement.lint(
+				builtInFunctions,
+				encounteredStatements,
+				true,
+				nonMainFunctions,
+			),
+		];
 	}
 	public *mutate(
 		functionsHeaders: readonly [

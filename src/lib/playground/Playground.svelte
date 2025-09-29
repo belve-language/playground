@@ -63,6 +63,11 @@
 									>👣 Do a step</button
 								>
 							{/if}
+							{#if state_.parsingState.abstractifyingState.functions !== null}
+								{state_.parsingState.abstractifyingState.functions
+									.lint(builtInFunctions)
+									.join(", ")}
+							{/if}
 						{:else if state_.parsingState.abstractifyingState.subTypeName === withoutMainFunctionSuccessAbstractifyingStateSubTypeName}
 							❓ Nothing to run
 						{/if}

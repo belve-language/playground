@@ -3,6 +3,7 @@ import {computeId} from "./computing-id/computeId.ts";
 import {computeKnownsNames} from "./computing-knowns-names/computeKnownsNames.ts";
 import {computeKnownsValues} from "./computing-knowns-values/computeKnownsValues.ts";
 import {computeUnknownsNames} from "./computing-unknowns-names/computeUnknownsNames.ts";
+import type {BuiltInFunction} from "../../../../../../playground/built-in-functions/built-in-function/BuiltInFunction.ts";
 import type {Function} from "../../../../../function/Function.ts";
 import {failureLogFunctionCallingResultActionTypeName} from "../../../../../function-calling-result/implementations/log/implementations/failure/action-type-name/failureLogFunctionCallingResultActionTypeName.ts";
 import {stepLogFunctionCallingResultActionTypeName} from "../../../../../function-calling-result/implementations/log/implementations/step/action-type-name/stepLogFunctionCallingResultActionTypeName.ts";
@@ -20,6 +21,9 @@ import {FailureLogStatementExecutingResult} from "../../../../../statement-execu
 import {StepLogStatementExecutingResult} from "../../../../../statement-executing-result/implementations/log/implementations/step/StepLogStatementExecutingResult.ts";
 import {SuccessLogStatementExecutingResult} from "../../../../../statement-executing-result/implementations/log/implementations/success/SuccessLogStatementExecutingResult.ts";
 import type {SupportedLogStatementExecutingResult} from "../../../../../statement-executing-result/implementations/log/supported/SupportedLogStatementExecutingResult.ts";
+import type {NonMainFunctionAbstractSyntaxTreeNode} from "../../../function/implementations/non-main/NonMainFunctionAbstractSyntaxTreeNode.ts";
+import type {SupportedStatementAbstractSyntaxTreeNode} from "../../supported/SupportedStatementAbstractSyntaxTreeNode.ts";
+import type {BlockStatementAbstractSyntaxTreeNode} from "../block/BlockStatementAbstractSyntaxTreeNode.ts";
 export class FunctionCallStatementAbstractSyntaxTreeNode extends StatementAbstractSyntaxTreeNode<FunctionCallStatementAbstractSyntaxTreeNodeChildren> {
 	public static create(
 		children: FunctionCallStatementAbstractSyntaxTreeNodeChildren,
@@ -52,6 +56,39 @@ export class FunctionCallStatementAbstractSyntaxTreeNode extends StatementAbstra
 		this.id = id;
 		this.knownsNames = knownsNames;
 		this.unknownsNames = unknownsNames;
+	}
+	public override checkIfBlockIsEqualTo(
+		other: BlockStatementAbstractSyntaxTreeNode,
+	): readonly string[] {
+		return [];
+	}
+	public override checkIfFunctionCallIsEqualTo(
+		other: FunctionCallStatementAbstractSyntaxTreeNode,
+	): readonly string[] {
+		// TODO
+		return (
+				this.id === other.id
+					&& this.knownsNames.length === other.knownsNames.length
+					&& this.knownsNames.every(
+						(knownName, index) => knownName === other.knownsNames[index],
+					)
+					&& this.unknownsNames.length === other.unknownsNames.length
+					&& this.unknownsNames.every(
+						(unknownName, index) => unknownName === other.unknownsNames[index],
+					)
+			) ?
+				[
+					`Function call statement "${this.id}" already present in the same branch.`,
+				]
+			:	[];
+	}
+	// TODO: no public?
+	public override checkIfWasAlreadyUsed(
+		encounteredStatements: readonly SupportedStatementAbstractSyntaxTreeNode[],
+	): readonly string[] {
+		return encounteredStatements.flatMap((encounteredStatement) => {
+			return encounteredStatement.checkIfFunctionCallIsEqualTo(this);
+		});
 	}
 	public override *execute(
 		availables: Variables,
@@ -138,6 +175,20 @@ export class FunctionCallStatementAbstractSyntaxTreeNode extends StatementAbstra
 	}
 	private readonly id: string;
 	private readonly knownsNames: readonly string[];
+	public override lint(
+		builtInFunctions: NonMainFunctions<BuiltInFunction>,
+		encounteredStatements: readonly SupportedStatementAbstractSyntaxTreeNode[],
+		hasEncounteredOtherStatements: boolean,
+		nonMainFunctions: NonMainFunctions<NonMainFunctionAbstractSyntaxTreeNode>,
+	): readonly string[] {
+		console.log(this.id);
+		return [
+			...(this.id in builtInFunctions || this.id in nonMainFunctions ?
+				[]
+			:	[`Function "${this.id}" not found.`]),
+			...this.checkIfWasAlreadyUsed(encounteredStatements),
+		];
+	}
 	public override *mutate(
 		functionsHeaders: readonly [
 			FunctionHeaderAbstractSyntaxTreeNode,

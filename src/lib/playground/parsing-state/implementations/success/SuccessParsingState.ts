@@ -42,7 +42,7 @@ export class SuccessParsingState<
 				const abstractSourceCode = abstractifyingResult.data;
 				if (abstractSourceCode === null) {
 					const abstractifyingState: WithoutMainFunctionSuccessAbstractifyingState =
-						new WithoutMainFunctionSuccessAbstractifyingState();
+						new WithoutMainFunctionSuccessAbstractifyingState(null);
 					const state: SuccessParsingState<WithoutMainFunctionSuccessAbstractifyingState> =
 						new this<WithoutMainFunctionSuccessAbstractifyingState>(
 							abstractifyingState,
@@ -67,7 +67,9 @@ export class SuccessParsingState<
 						}
 						case withoutMainFunctionFunctionsAbstractSyntaxTreeNodeTypeName: {
 							const abstractifyingState: WithoutMainFunctionSuccessAbstractifyingState =
-								new WithoutMainFunctionSuccessAbstractifyingState();
+								new WithoutMainFunctionSuccessAbstractifyingState(
+									abstractSourceCode,
+								);
 							const state: SuccessParsingState<WithoutMainFunctionSuccessAbstractifyingState> =
 								new this<WithoutMainFunctionSuccessAbstractifyingState>(
 									abstractifyingState,

@@ -1,5 +1,7 @@
+import type {BuiltInFunction} from "../../../../../../playground/built-in-functions/built-in-function/BuiltInFunction.ts";
 import {ErrorAbstractifyingResult} from "../../../../../abstractifying-result/implementations/error/ErrorAbstractifyingResult.ts";
 import {SuccessAbstractifyingResult} from "../../../../../abstractifying-result/implementations/success/SuccessAbstractifyingResult.ts";
+import type {NonMainFunctions} from "../../../../../non-main-functions/NonMainFunctions.ts";
 import {SpanIndexes} from "../../../../../span-indexes/SpanIndexes.ts";
 import type {MainFunctionAbstractSyntaxTreeNode} from "../../../function/implementations/main/MainFunctionAbstractSyntaxTreeNode.ts";
 import type {NonMainFunctionAbstractSyntaxTreeNode} from "../../../function/implementations/non-main/NonMainFunctionAbstractSyntaxTreeNode.ts";
@@ -70,5 +72,12 @@ export class WithoutMainFunctionFunctionsAbstractSyntaxTreeNode extends Function
 				);
 			return addingNonMainFunctionResult;
 		}
+	}
+	public override lint(
+		builtInFunctions: NonMainFunctions<BuiltInFunction>,
+	): readonly string[] {
+		return Object.values(this.children.nonMainFunctions).flatMap((func) => {
+			return func.lint(builtInFunctions, this.children.nonMainFunctions);
+		});
 	}
 }

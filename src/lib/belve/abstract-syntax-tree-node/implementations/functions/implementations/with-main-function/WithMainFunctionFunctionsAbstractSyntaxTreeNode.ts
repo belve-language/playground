@@ -63,6 +63,19 @@ export class WithMainFunctionFunctionsAbstractSyntaxTreeNode extends FunctionsAb
 			return addingNonMainFunctionResult;
 		}
 	}
+	public override lint(
+		builtInFunctions: NonMainFunctions<BuiltInFunction>,
+	): readonly string[] {
+		return [
+			...this.children.mainFunction.lint(
+				builtInFunctions,
+				this.children.nonMainFunctions,
+			),
+			...Object.values(this.children.nonMainFunctions).flatMap((function_) => {
+				return function_.lint(builtInFunctions, this.children.nonMainFunctions);
+			}),
+		];
+	}
 	public *run(
 		builtInFunctions: NonMainFunctions<BuiltInFunction>,
 	): Generator<SupportedFunctionCallingResult, void, void> {
