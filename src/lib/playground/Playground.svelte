@@ -45,103 +45,139 @@
 <svelte:head>
 	<title>Belve Playground</title>
 </svelte:head>
-<main>
-	<div class="status">
-		{#if state_.parsingState.typeName === successParsingStateTypeName}
-			{#if state_.parsingState.abstractifyingState.typeName === successAbstractifyingStateTypeName}
-				{#if state_.parsingState.abstractifyingState.subTypeName === withMainFunctionSuccessAbstractifyingStateSubTypeName}
-					✔️ Valid
-					{#if state_.parsingState.abstractifyingState.executingState.typeName === idleExecutingStateTypeName}
-						<button type="button" onclick={handleRunButtonClick}>▶️ Run</button>
-					{:else if state_.parsingState.abstractifyingState.executingState.typeName === busyExecutingStateTypeName}
-						<button type="button" onclick={handleStepButtonClick}
-							>👣 Do a step</button
-						>
+<div class="playground">
+	<main>
+		<div class="status">
+			<span>
+				{#if state_.parsingState.typeName === successParsingStateTypeName}
+					{#if state_.parsingState.abstractifyingState.typeName === successAbstractifyingStateTypeName}
+						{#if state_.parsingState.abstractifyingState.subTypeName === withMainFunctionSuccessAbstractifyingStateSubTypeName}
+							✔️ Valid
+							{#if state_.parsingState.abstractifyingState.executingState.typeName === idleExecutingStateTypeName}
+								<button type="button" onclick={handleRunButtonClick}
+									>▶️ Run</button
+								>
+							{:else if state_.parsingState.abstractifyingState.executingState.typeName === busyExecutingStateTypeName}
+								<button type="button" onclick={handleStepButtonClick}
+									>👣 Do a step</button
+								>
+							{/if}
+						{:else if state_.parsingState.abstractifyingState.subTypeName === withoutMainFunctionSuccessAbstractifyingStateSubTypeName}
+							❓ Nothing to run
+						{/if}
+					{:else if state_.parsingState.abstractifyingState.typeName === errorAbstractifyingStateTypeName}
+						❌ {state_.parsingState.abstractifyingState.message}
 					{/if}
-				{:else if state_.parsingState.abstractifyingState.subTypeName === withoutMainFunctionSuccessAbstractifyingStateSubTypeName}
-					❓ Nothing to run
+				{:else if state_.parsingState.typeName === unexpectedCharacterParsingStateTypeName}
+					❌ Unexpected character at index {state_.parsingState.index}
+				{:else if state_.parsingState.typeName === unexpectedFinalizingParsingStateTypeName}
+					❌ Unexpected end of the source code
+				{:else if state_.parsingState.typeName === extraCharactersParsingStateTypeName}
+					❌ Extra characters at the end of the source code
 				{/if}
-			{:else if state_.parsingState.abstractifyingState.typeName === errorAbstractifyingStateTypeName}
-				❌ {state_.parsingState.abstractifyingState.message}
-			{/if}
-		{:else if state_.parsingState.typeName === unexpectedCharacterParsingStateTypeName}
-			❌ Unexpected character at index {state_.parsingState.index}
-		{:else if state_.parsingState.typeName === unexpectedFinalizingParsingStateTypeName}
-			❌ Unexpected end of the source code
-		{:else if state_.parsingState.typeName === extraCharactersParsingStateTypeName}
-			❌ Extra characters at the end of the source code
-		{/if}
-		<span>
-			<button type="button" onclick={handleOpeningPresetModalButtonClick}
-				>🌱 Apply a preset</button
-			>
-			{#if isPresetModalOpen}
-				<dialog open>
-					<ul>
-						{#each presets as preset}
-							<PresetItemList {preset} onPresetSet={handlePresetSet} />
-						{/each}
-					</ul>
-					<button type="button" onclick={handleClosingPresetModalButtonClick}
-						>✖️ Close</button
-					>
-				</dialog>
-			{/if}
-		</span>
-	</div>
-	<Editor
-		state={state_}
-		onSourceCodeChangedEvent={handleSourceCodeChangedEvent}
-	/>
-	{#if state_.parsingState.typeName === successParsingStateTypeName && state_.parsingState.abstractifyingState.typeName === successAbstractifyingStateTypeName && state_.parsingState.abstractifyingState.subTypeName === withMainFunctionSuccessAbstractifyingStateSubTypeName && state_.parsingState.abstractifyingState.executingState.typeName === busyExecutingStateTypeName}
-		<div>
-			{state_.parsingState.abstractifyingState.executingState.highlight?.node
-				.constructor.name}
-			{#if state_.parsingState.abstractifyingState.executingState.highlight !== null}
-				<h2>Availables</h2>
-				<ul class="availables">
-					{#each Object.entries(state_.parsingState.abstractifyingState.executingState.highlight.availables) as [name, value] (name)}
-						<li>{name}: {JSON.stringify(value)}</li>
-					{/each}
-				</ul>
-				{#if state_.parsingState.abstractifyingState.executingState.highlight.typeName === successHighlightTypeName}
-					<h2>Unknowns</h2>
-					<ul class="unknowns">
-						{#each Object.entries(state_.parsingState.abstractifyingState.executingState.highlight.unknowns) as [name, value] (name)}
+			</span>
+			<span>
+				<button type="button" onclick={handleOpeningPresetModalButtonClick}
+					>🌱 Apply a preset</button
+				>
+				{#if isPresetModalOpen}
+					<dialog open>
+						<ul>
+							{#each presets as preset}
+								<PresetItemList {preset} onPresetSet={handlePresetSet} />
+							{/each}
+						</ul>
+						<button type="button" onclick={handleClosingPresetModalButtonClick}
+							>✖️ Close</button
+						>
+					</dialog>
+				{/if}
+			</span>
+		</div>
+		<Editor
+			state={state_}
+			onSourceCodeChangedEvent={handleSourceCodeChangedEvent}
+		/>
+		{#if state_.parsingState.typeName === successParsingStateTypeName && state_.parsingState.abstractifyingState.typeName === successAbstractifyingStateTypeName && state_.parsingState.abstractifyingState.subTypeName === withMainFunctionSuccessAbstractifyingStateSubTypeName && state_.parsingState.abstractifyingState.executingState.typeName === busyExecutingStateTypeName}
+			<div class="debug">
+				{#if state_.parsingState.abstractifyingState.executingState.highlight !== null}
+					{state_.parsingState.abstractifyingState.executingState.highlight.node.constructor.name.slice(
+						0,
+						-"AbstractSyntaxTreeNode".length,
+					)}
+					<h2>Availables</h2>
+					<ul class="availables">
+						{#each Object.entries(state_.parsingState.abstractifyingState.executingState.highlight.availables) as [name, value] (name)}
 							<li>{name}: {JSON.stringify(value)}</li>
 						{/each}
 					</ul>
+					{#if state_.parsingState.abstractifyingState.executingState.highlight.typeName === successHighlightTypeName}
+						<h2>Unknowns</h2>
+						<ul class="unknowns">
+							{#each Object.entries(state_.parsingState.abstractifyingState.executingState.highlight.unknowns) as [name, value] (name)}
+								<li>{name}: {JSON.stringify(value)}</li>
+							{/each}
+						</ul>
+					{/if}
 				{/if}
-			{/if}
-		</div>
-	{/if}
-</main>
+			</div>
+		{/if}
+	</main>
+	<aside>
+		<ul>
+			{#each Object.entries(builtInFunctions) as [id, function_], index (index)}
+				<li><strong>{id}</strong><br />{function_.description}</li>
+			{/each}
+		</ul>
+	</aside>
+</div>
 
 <style lang="scss">
+	.playground {
+		display: grid;
+		grid-template-columns: 1fr 15em;
+		grid-template-rows: 100%;
+	}
+	aside {
+		overflow: auto;
+		> ul {
+			display: flex;
+			flex-direction: column;
+			gap: 0.5em;
+		}
+	}
 	main {
 		height: 100%;
 		display: grid;
 		grid-template-columns: 1fr;
-		grid-template-rows: min-content 1fr auto;
+		grid-template-rows: min-content 1fr 15em;
 		--step-light: #b2d8ff;
 		--success-light: #75f000;
 		--failure-light: #ffc6d0;
-		--step-dark: #00293f;
-		--success-dark: #102c00;
-		--failure-dark: #52001e;
+		--step-dark: #2a4257;
+		--success-dark: #2f4627;
+		--failure-dark: #5a363d;
 	}
 	.status {
 		padding: 0.5rem;
 		color: hsl(0, 0%, 100%);
+		display: flex;
+		justify-content: space-between;
 	}
 	ul.availables > li {
 		color: hsl(0, 0%, 100%);
+	}
+	.debug {
+		overflow-y: scroll;
 	}
 	:global {
 		.sveltekit-body,
 		body,
 		html {
 			height: 100%;
+			display: grid;
+			grid-template-columns: 100%;
+			grid-template-rows: 100%;
 		}
 		body {
 			margin: 0;
