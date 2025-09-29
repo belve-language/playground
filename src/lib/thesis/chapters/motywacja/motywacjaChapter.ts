@@ -196,7 +196,7 @@ const c = 3;
 	),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
 		new TextAtomBuilder(
-			`Obie wersje są stabilne, zwracając nową tablicę nie modyfikując otrzymanej i mają tę samą złożoność obliczeniową O(n²). Obie zostały sformatowane tym samym formaterem i spełniają te same reguły lintera. Jednak kod deklaratywny jest krótszy – ma mniej linii i znaków.`,
+			`Obie wersje są stabilne, zwracają nową tablicę nie modyfikując otrzymanej i mają tę samą złożoność obliczeniową O(n²). Obie zostały sformatowane tym samym formaterem i spełniają te same reguły lintera. Jednak kod deklaratywny jest krótszy – ma mniej linii i znaków.`,
 		),
 	]),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
