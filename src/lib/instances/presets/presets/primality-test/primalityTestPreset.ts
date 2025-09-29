@@ -1,7 +1,7 @@
 import type {Preset} from "../../../../playground/preset/Preset.ts";
 export const primalityTestPreset = {
 	descriptionInPolish:
-		"Test pierwszości to sprawdzenie czy zadana liczba jest liczbą pierwszą, czyli taką liczbą naturalną większą od 1, która ma dokładnie dwa dzielniki: 1 oraz samą siebie. Wykorzystywana w implementacji rekurencja, która sprawdza podzielność zadanej liczby przez kolejne potencjalne dzielniki.",
+		"Test pierwszości to sprawdzenie czy zadana liczba jest liczbą pierwszą, czyli taką liczbą naturalną większą od 1, która ma dokładnie dwa dzielniki: 1 oraz samą siebie. Wykorzystywana w implementacji jest rekurencja, która sprawdza podzielność zadanej liczby przez kolejne potencjalne dzielniki.",
 	name: "Primality test",
 	nameInPolish: "Test pierwszości",
 	sourceCode: `is (dividend) not divisible by (divisor) {

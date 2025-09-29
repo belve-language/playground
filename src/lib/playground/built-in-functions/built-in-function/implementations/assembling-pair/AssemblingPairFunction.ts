@@ -7,7 +7,7 @@ export class AssemblingPairFunction extends BuiltInFunction {
 	public constructor() {
 		super(
 			"Aassembles a pair from two values.",
-			"Tworzy parę z dwóch wartości.",
+			"Składa parę z dwóch wartości.",
 		);
 	}
 	public *call(

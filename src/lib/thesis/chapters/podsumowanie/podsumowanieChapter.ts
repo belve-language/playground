@@ -15,30 +15,37 @@ export const podsumowanieChapter = [
 	new H2AtomBuilder("Podsumowanie"),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
 		new TextAtomBuilder(
-			"Cel pracy, którym było stworzenie minimalistycznego języka programowania z zachowaniem względnej czytelności kodu źródłowego, został osiągnięty. Język rzeczywiście działa i możliwe jest zapisanie w nim wielu algorytmów odnośnie których nie trzeba się zastanawiać jakich konstrukcji językowych użyć, aby możliwie skrócić kod. Tutaj konstrukcji jest na tyle mało, że napisane kody źródłowe stanowią wiarygodne odzwierciedlenie złożoności poznawczej algorytmów.",
+			"Cel pracy, którym było stworzenie minimalistycznego języka programowania z zachowaniem względnej czytelności kodu źródłowego, został osiągnięty. Język rzeczywiście działa i możliwe jest zapisanie w nim wielu algorytmów odnośnie których nie trzeba się zastanawiać, jakich konstrukcji językowych użyć, aby możliwie skrócić kod. Konstrukcji jest tutaj na tyle mało, że napisane kody źródłowe stanowią wiarygodne odzwierciedlenie złożoności poznawczej algorytmów.",
 		),
 	]),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
 		new TextAtomBuilder(
-			"Implementacja języka udała się bez konieczności użycia zewnętrznych bibliotek i innych zależności. ",
+			"Dzięki sposobie zapisu funkcji bliskiemu zapisowi naturalnemu, udało się również osiągnąć wysoki poziom czytelności kodu, co potwierdzają przytoczone wcześniej przykładowe kody źródłowe.",
+		),
+	]),
+	new PAtomBuilder({marginBlock: "1em 1em"}, [
+		new TextAtomBuilder(
+			"Implementacja rdzenia języka udała się bez konieczności użycia zewnętrznych bibliotek i innych zależności. ",
 		),
 		new SourceAtomBuilder(
 			"Przyjmuje się, że jest to bardzo pożądana codebase'ów",
 			new InternetSource(
 				"Tim Bray",
 				new Date(1759065029994),
-				"Przemyślenia na temat minimalizacji liczby zależności w oprogramowaniu",
+				"0dependencies!",
 				"https://0dependencies.dev/",
 			),
 		),
 		new TextAtomBuilder(". Dzięki temu:"),
 	]),
 	new LiAtomBuilder({marginBlock: "1em 0em"}, [
-		new TextAtomBuilder("Codebase jest odporny na ataki typu supply chain;"),
+		new TextAtomBuilder(
+			"Codebase implementacji języka jest odporny na ataki typu supply chain;",
+		),
 	]),
 	new LiAtomBuilder({marginBlock: "0em 0em"}, [
 		new TextAtomBuilder(
-			"Utrzymanie codebase'u jest łatwiejsze – mniej zależności to czasu spędzone na ich aktualizowanie;",
+			"Utrzymanie codebase'u jest łatwiejsze – mniej zależności to mniej czasu spędzonego na ich aktualizowanie;",
 		),
 	]),
 	new LiAtomBuilder({marginBlock: "0em 0em"}, [
@@ -60,7 +67,7 @@ export const podsumowanieChapter = [
 	new H4AtomBuilder("Natywne wsparcie dla tekstowego typu danych"),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
 		new TextAtomBuilder(
-			"W tym momencie wszelkie typy danych są całowicie zależne od wykorzystywanego interpretera – to on decyduje o tym, czy dana nazwa zmiennej odnosi się do globalnej czy lokalnej wartości. Przydatna byłaby modyfikacja gramatyki wprowadzająca natywną (czyli niezależną od interpretera) konstrukcję definiowania łańcuchów znaków. W szczególności przydałaby się możliwość łatwego tworzenia łańcuchów znaków (tekstów) wielowierszowych. Przykładowo, w języku Javascript jest to ",
+			"W tym momencie wszelkie typy danych są całkowicie zależne od wykorzystywanego interpretera – to on decyduje o tym, czy dana nazwa zmiennej odnosi się do globalnej czy lokalnej wartości. Przydatna byłaby modyfikacja gramatyki wprowadzająca natywną (czyli niezależną od interpretera) konstrukcję definiowania łańcuchów znaków. W szczególności przydałaby się możliwość łatwego tworzenia łańcuchów znaków (tekstów) wielowierszowych. Przykładowo, w języku JavaScript jest to ",
 		),
 		new SourceAtomBuilder(
 			"bardzo prosta konstrukcja",
@@ -72,7 +79,7 @@ export const podsumowanieChapter = [
 			),
 		),
 		new TextAtomBuilder(
-			`: Wystarczy otoczyć w kodzie źródłowym wybrany łańcuch znaków znakami backtick (`,
+			`: Wystarczy otoczyć w kodzie źródłowym wybrany łańcuch znaków grawisami (`,
 		),
 		new PreAtomBuilder(
 			{
@@ -151,12 +158,12 @@ export const podsumowanieChapter = [
 		},
 		[
 			new TextAtomBuilder(
-				`none of the integers between (start) and (end) divide (dividend) {
+				`no integer between (start) and (end) divides (dividend) {
 	(start) > (end).
 	(start) <= (end),
 	is (dividend) not divisible by (start),
 	(start) + (1) = [next start],
-	none of the integers between (next start) and (end) divide (dividend)
+	no integer between (next start) and (end) divides (dividend)
 }`,
 			),
 		],
@@ -168,7 +175,7 @@ export const podsumowanieChapter = [
 	]),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
 		new TextAtomBuilder(
-			"Można by więc wprowadzić nowy operator, który w ogóle nie dopuściłby do wykonania reszty instrukcji, gdy pierwsza instrukcja zwróci jakikolwiek wynik. Jest to popularny mechanizm w językach programowania i jest to przykład strategii skróconego ewaluowania.",
+			"Można by więc wprowadzić nowy operator, który w ogóle nie dopuściłby do wykonania reszty instrukcji, gdy pierwsza instrukcja zwróci jakikolwiek wynik. Jest to popularny mechanizm w językach programowania i jest to przykład skróconego ewaluowania.",
 		),
 	]),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [

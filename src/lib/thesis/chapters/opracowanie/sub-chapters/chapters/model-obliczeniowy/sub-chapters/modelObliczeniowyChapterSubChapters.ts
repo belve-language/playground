@@ -15,7 +15,7 @@ export const modelObliczeniowyChapterSubChapters = [
 	new H4AtomBuilder("Instrukcja"),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
 		new TextAtomBuilder(
-			"Należy rozróżniać 2 rodzaje instrukcji: instrukcję bloku i instrukcję wywołania funkcji.",
+			"Należy rozróżnić 2 rodzaje instrukcji: instrukcję bloku i instrukcję wywołania funkcji.",
 		),
 	]),
 	new H5AtomBuilder("Instrukcja bloku"),
@@ -27,7 +27,7 @@ export const modelObliczeniowyChapterSubChapters = [
 	new H5AtomBuilder("Instrukcja wywołania funkcji"),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
 		new TextAtomBuilder(
-			"Należy odczytać z dostępnych zmiennych te, które są wymienione jako znane w wywołaniu funkcji i zamienić je na postać pozycyjną. Następnie należy wywołać funkcję z tymi znanymi w postaci pozycyjnej.",
+			"Należy odczytać ze zmiennych dostępnych te, które są wymienione jako znane w wywołaniu funkcji i zamienić je na postać pozycyjną. Następnie należy wywołać funkcję z tymi znanymi w postaci pozycyjnej.",
 		),
 	]),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
@@ -55,7 +55,7 @@ export const modelObliczeniowyChapterSubChapters = [
 	]),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
 		new TextAtomBuilder(
-			"Należy wykonać pierwszą operowaną instrukcję i przekazać do tego wykonania resztę instrukcji, będąca sekwencją instrukcji. Każdy wynik tego wykonania należy traktować jako wynik wykonania sekwencji pośredniej instrukcji.",
+			"Należy wykonać pierwszą operowaną instrukcję i przekazać do tego wykonania resztę instrukcji, będącą sekwencją instrukcji. Każdy wynik tego wykonania należy traktować jako wynik wykonania sekwencji pośredniej instrukcji.",
 		),
 	]),
 	new H4AtomBuilder("Operowana instrukcja"),
@@ -64,7 +64,7 @@ export const modelObliczeniowyChapterSubChapters = [
 	]),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
 		new TextAtomBuilder(
-			"Należy wykonać operację operatora przekazując do niej instrukcję i resztę instrukcji, będąca sekwencją instrukcji. Każdy wynik tej operacji należy traktować jako wynik wykonania operowanej instrukcji.",
+			"Należy wykonać operację operatora przekazując do niej instrukcję i resztę instrukcji, będącą sekwencją instrukcji. Każdy wynik tej operacji należy traktować jako wynik wykonania operowanej instrukcji.",
 		),
 	]),
 	new H4AtomBuilder("Operator"),
@@ -75,13 +75,7 @@ export const modelObliczeniowyChapterSubChapters = [
 	]),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
 		new TextAtomBuilder(
-			"Operator do działania wymaga pary operandów: pierwszej instrukcji i reszty instrukcji, będąca sekwencją instrukcji.",
-		),
-	]),
-	new H5AtomBuilder('Operator "następnie"'),
-	new PAtomBuilder({marginBlock: "1em 1em"}, [
-		new TextAtomBuilder(
-			'Należy wykonać pierwszą instrukcję. Dla każdego jej jej wyniku wykonania należy niezależnie włączyć poznane nieznane do dostępnych zmiennych i wykonać resztę instrukcji z tymi dostępnymi zmiennymi. Każdy wynik wykonania reszty instrukcji, będącej sekwencją instrukcji, należy traktować jako wynik wykonania operatora "następnie".',
+			"Operator do działania wymaga pary operandów: pierwszej instrukcji i reszty instrukcji, będącej sekwencją instrukcji.",
 		),
 	]),
 	new H5AtomBuilder('Operator "lub"'),
@@ -92,7 +86,13 @@ export const modelObliczeniowyChapterSubChapters = [
 	]),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
 		new TextAtomBuilder(
-			'Niezależnie należy wykonać resztę instrukcji, będącej sekwencją instrukcji, z tymi samymi dostępnymi zmiennymi, co przy wykonywaniu pierwszej instrukcji (czyli bez włączania ewentualnych poznanych nieznanych do dostępnych zmiennych). Należy traktować każdy wynik wykonania reszty instrukcji jako wynik wykonania operatora "lub".',
+			'Niezależnie należy wykonać resztę instrukcji, będącą sekwencją instrukcji, z tymi samymi dostępnymi zmiennymi, co przy wykonywaniu pierwszej instrukcji (czyli bez włączania ewentualnych poznanych nieznanych do zmiennych dostępnych). Należy traktować każdy wynik wykonania reszty instrukcji jako wynik wykonania operatora "lub".',
+		),
+	]),
+	new H5AtomBuilder('Operator "następnie"'),
+	new PAtomBuilder({marginBlock: "1em 1em"}, [
+		new TextAtomBuilder(
+			'Należy wykonać pierwszą instrukcję. Dla każdego jej wyniku wykonania należy niezależnie włączyć poznane nieznane do zmiennych dostępnych i wykonać resztę instrukcji z tymi dostępnymi zmiennymi. Każdy wynik wykonania reszty instrukcji, będącej sekwencją instrukcji, należy traktować jako wynik wykonania operatora "następnie".',
 		),
 	]),
 ] as const satisfies readonly SupportedAtomBuilder[];

@@ -6,7 +6,7 @@ export const efektUbocznyChapter = [
 	new H3AtomBuilder("Efekt uboczny (side effect)"),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
 		new TextAtomBuilder(
-			"Każda operacja wykonywana przez funkcję, która wpływa na stan programu poza zakresem tej funkcji lub w inny sposób oddziałuje ze światem zewnętrznym.",
+			"Każda operacja wykonywana podczas uruchomienia fragmentu kodu źródłowego, która wpływa na stan programu poza zakresem tego fragmentu lub w inny sposób oddziałuje ze światem zewnętrznym.",
 		),
 	]),
 ] as const satisfies readonly SupportedAtomBuilder[];

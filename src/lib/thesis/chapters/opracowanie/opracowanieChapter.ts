@@ -7,7 +7,7 @@ export const opracowanieChapter = [
 	new H2AtomBuilder("Opracowanie"),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
 		new TextAtomBuilder(
-			"Rozdział ten poświęcony jest teoretycznym podstawom języka Belve, w tym jego koncepcjom, składni, semantyce oraz zasadom działania. Bazuje na nich omówiona później implementacja systemu umożliwiającego wykonywanie programów napisanych w tym języku.",
+			'Rozdział ten poświęcony jest teoretycznym podstawom wymyślonego w ramach pracy języka programowania o nazwie "Belve", w tym jego koncepcjom, składni, semantyce oraz zasadom działania. Bazuje na nich omówiona później implementacja systemu umożliwiającego wykonywanie programów napisanych w tym języku.',
 		),
 	]),
 	...opracowanieChapterSubChapters,

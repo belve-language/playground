@@ -19,6 +19,12 @@ import {BookSource} from "../../../../../../pages/source/Source.ts";
 import {basePreAtomStyles} from "../../../../../base-pre-atom-styles/basePreAtomStyles.ts";
 import {checkIfRuleIsInteresting} from "../../../../../checking-if-rule-is-interesting/checkIfRuleIsInteresting.ts";
 // TODO refactor
+export const ll1Source = new BookSource(
+	"Alfred V. Aho, Monica S. Lam, Ravi Sethi, and Jeffrey D. Ullman",
+	new Date("2006-08-31"),
+	"Pearson Education, Inc",
+	"Compilers: Principles, Techniques, and Tools (2nd Edition)",
+);
 const interestingCharacters = [
 	" ",
 	"(",
@@ -36,15 +42,7 @@ export const parserChapter = [
 		new TextAtomBuilder(
 			"Parser nie został zaimplementowany ręcznie. Mimo że język Belve jest stosunkowo prosty, wygodniejsze było wykorzystanie techniki generowania parsera na podstawie gramatyki kompatybilnej z ",
 		),
-		new SourceAtomBuilder(
-			"parserami klasy LL(1)",
-			new BookSource(
-				"Alfred V. Aho, Monica S. Lam, Ravi Sethi, and Jeffrey D. Ullman",
-				new Date("2006-08-31"),
-				"Pearson Education, Inc",
-				"Compilers: Principles, Techniques, and Tools (2nd Edition)",
-			),
-		),
+		new SourceAtomBuilder("parserami klasy LL(1)", ll1Source),
 		new TextAtomBuilder(
 			". Parser używany w systemie należy właśnie do tej klasy.",
 		),
@@ -55,7 +53,7 @@ export const parserChapter = [
 		),
 	]),
 	new H4AtomBuilder("Reguły"),
-	new LiAtomBuilder({marginBlock: "1em 1em"}, [
+	new PAtomBuilder({marginBlock: "1em 1em"}, [
 		new TextAtomBuilder(
 			"W kodzie zaimplementowana jest abstrakcyjna klasa reprezentująca pojedynczą regułę gramatyki. Klasa ta wymusza przechowywanie symbolu nieterminala będącego lewą stroną reguły oraz symboli tworzących jej rozwinięcie.",
 		),
@@ -66,19 +64,47 @@ export const parserChapter = [
 		),
 	]),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
+		new TextAtomBuilder("Obsługiwane są wyłącznie reguły w postaci: "),
+		new PreAtomBuilder(
+			{
+				...basePreAtomStyles,
+				display: "inline",
+				fontSize: "1em",
+				marginBlock: "0em 0em",
+			},
+			[
+				new TextAtomBuilder(
+					"<nieterminal> ::= <rozwinięcie₁> | <rozwinięcie₂> | ...",
+				),
+			],
+		),
+		new TextAtomBuilder(" , gdzie "),
+		new PreAtomBuilder(
+			{
+				...basePreAtomStyles,
+				display: "inline",
+				fontSize: "1em",
+				marginBlock: "0em 0em",
+			},
+			[new TextAtomBuilder("<rozwinięcie>")],
+		),
 		new TextAtomBuilder(
-			"Obsługiwane są wyłącznie reguły w postaci: <nieterminal> ::= <rozwinięcie₁> | <rozwinięcie₂> | ... , gdzie <rozwinięcie> to terminal, nieterminal lub ich konkatenacja z dalszym rozwinięciem.",
+			" to terminal, nieterminal lub ich konkatenacja z dalszym rozwinięciem.",
 		),
 	]),
 	new H4AtomBuilder("Gramatyka"),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
+		new SourceAtomBuilder(
+			`Żeby zbudować parser, potrzebne jest ustalenie zbiorów nazywanych zwyczajowo FIRST i FOLLOW dla wszystkich reguł gramatyki`,
+			ll1Source,
+		),
 		new TextAtomBuilder(
-			`Żeby zbudować parser, potrzebne jest ustalenie zbiorów FIRST i FOLLOW dla wszystkich reguł gramatyki. Zbiór FIRST określa, które terminale mogą pojawić się na początku rozwinięcia danej reguły, uwzględniając również możliwość wyprowadzenia pustego słowa (oznaczany w tej pracy jako "ε"). Z kolei zbiór FOLLOW wskazuje, które terminale mogą bezpośrednio wystąpić po danej regule w dowolnym poprawnym rozwinięciu, łącznie ze specjalnym symbolem końca wejścia (oznaczany w tej pracy jako "$").`,
+			`. Zbiór FIRST określa, które terminale mogą pojawić się na początku rozwinięcia danej reguły, uwzględniając również możliwość wyprowadzenia pustego słowa (oznaczany w tej pracy jako "ε"). Z kolei zbiór FOLLOW określa, które terminale mogą bezpośrednio wystąpić po danej regule w dowolnym poprawnym rozwinięciu, łącznie ze specjalnym symbolem końca wejścia (oznaczany w tej pracy jako "$").`,
 		),
 	]),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
 		new TextAtomBuilder(
-			"Gotowe reguły są umieszczane w zbiorze, który — wraz ze wskazaniem reguły początkowej — służy do utworzenia instancji klasy reprezentującej całą gramatykę. Klasa ta realizuje operacje wymagające znajomości wszystkich reguł, w tym:",
+			"Gotowe reguły są umieszczane w zbiorze, który – wraz ze wskazaniem reguły początkowej – służy do utworzenia instancji klasy reprezentującej całą gramatykę. Klasa ta realizuje operacje wymagające znajomości wszystkich reguł, w tym:",
 		),
 	]),
 	new LiAtomBuilder({marginBlock: "1em 1em"}, [
@@ -119,7 +145,7 @@ export const parserChapter = [
 		// TODO: Should be 1em
 		new LiAtomBuilder({marginBlock: "1em 0em"}, [
 			new TextAtomBuilder(
-				"W przeciwnym wypadku obliczenia rozpoczyna się od reguły początkowej, przeglądając rozwinięcia kolejnych reguł i wyszukując konkatenacje symboli. Jeżeli okaże się, że w danej konkatenacji lewa część może występować w pozycji końcowej, do zbioru FOLLOW dodawane są terminale będące możliwymi symbolami początkowymi prawej strony rozwinięcia.",
+				"W przeciwnym wypadku wyznaczanie rozpoczyna się od reguły początkowej, przeglądając rozwinięcia kolejnych reguł i wyszukując konkatenacje symboli. Jeżeli okaże się, że w danej konkatenacji w jej lewej części reguła może występować w pozycji końcowej, do zbioru FOLLOW dodawane są terminale będące możliwymi symbolami początkowymi prawej strony rozwinięcia.",
 			),
 		]),
 	]),
@@ -127,10 +153,10 @@ export const parserChapter = [
 		new StrongAtomBuilder([new TextAtomBuilder("Obliczanie zbiorów FIRST")]),
 		new BrAtomBuilder(),
 		new TextAtomBuilder(
-			`Poniżej przydstawiono tabelę zbiorów FIRST dla wybranych reguł:`,
+			`Poniżej przedstawiono tabelę zbiorów FIRST dla wybranych reguł:`,
 		),
 		new BrAtomBuilder(),
-		new TableAtomBuilder([
+		new TableAtomBuilder({marginBlock: "1em 1em"}, [
 			new TheadAtomBuilder([
 				new TrAtomBuilder([
 					new ThAtomBuilder([new TextAtomBuilder("Reguła ⟍ Znak")]),
@@ -263,10 +289,10 @@ export const parserChapter = [
 		new StrongAtomBuilder([new TextAtomBuilder("Obliczanie zbiorów FOLLOW")]),
 		new BrAtomBuilder(),
 		new TextAtomBuilder(
-			`Poniżej przydstawiono tabelę zbiorów FOLLOW dla wybranych reguł:`,
+			`Poniżej przedstawiono tabelę zbiorów FOLLOW dla wybranych reguł:`,
 		),
 		new BrAtomBuilder(),
-		new TableAtomBuilder([
+		new TableAtomBuilder({marginBlock: "1em 1em"}, [
 			new TheadAtomBuilder([
 				new TrAtomBuilder([
 					new ThAtomBuilder([new TextAtomBuilder("Reguła ⟍ Znak")]),
@@ -390,7 +416,7 @@ export const parserChapter = [
 	]),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
 		new TextAtomBuilder(
-			"Tablica parsowania jest budowana na podstawie zbiorów FIRST i FOLLOW. Dla każdej produkcji reguły i każdego terminala z jej zbioru FIRST, w tablicy umieszcza się parę (reguła, terminal) wskazującą na tę produkcję. Jeżeli produkcja może wyprowadzić puste słowo, wstawia się również pary dla terminali ze zbioru FOLLOW reguły.",
+			"Tablica parsowania jest budowana na podstawie zbiorów FIRST i FOLLOW. Dla każdej produkcji reguły i każdego terminala ze zbioru FIRST w tablicy umieszcza się parę wskazującą na tę produkcję. Jeśli produkcja może wyprowadzić puste słowo, wstawia się również pary dla wszystkich terminali ze zbioru FOLLOW reguły.",
 		),
 	]),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
@@ -405,12 +431,12 @@ export const parserChapter = [
 	]),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
 		new TextAtomBuilder(
-			"Jeżeli parsowanie wyrażenia powiedzie się, reguła buduje węzeł drzewa składni konkretnej, zapamiętuje nowy indeks w strumieniu wejściowym oraz pozostałe znaki, i zwraca wynik parsowania wyższej warstwie wywołania.",
+			"Jeżeli parsowanie reguły powiedzie się, reguła buduje węzeł drzewa składni konkretnej, który zwracany jest wraz z pozostałymi do sparsowania znakami wyższej warstwie wywołania.",
 		),
 	]),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
 		new TextAtomBuilder(
-			"Jeżeli parsowanie wyrażenia się nie powiedzie, reguła zwraca błąd z informacją o miejscu w kodzie, w którym wystąpił problem.",
+			"Jeżeli parsowanie reguły się nie powiedzie, reguła zwraca błąd z informacją o miejscu w kodzie źródłowym, w którym wystąpił problem.",
 		),
 	]),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
@@ -420,7 +446,7 @@ export const parserChapter = [
 	]),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
 		new TextAtomBuilder(
-			"Jeżeli całe wejście zostanie przetworzone bez błędów, zwracane jest drzewo składni konkretnej, którego korzeniem jest reguła startowa. Każdy węzeł odpowiada regule.",
+			"Jeżeli całe wejście zostanie przetworzone bez błędów, zwracane jest drzewo składni konkretnej, którego korzeniem jest węzeł odpowiadający regule startowej. Każdy węzeł odpowiada jakiejś regule.",
 		),
 	]),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
@@ -433,7 +459,7 @@ export const parserChapter = [
 			`Poniżej przedstawiono fragment tablicy parsowania dla wybranych reguł:`,
 		),
 	]),
-	new TableAtomBuilder([
+	new TableAtomBuilder({marginBlock: "1em 1em"}, [
 		new TheadAtomBuilder([
 			new TrAtomBuilder([
 				new ThAtomBuilder([new TextAtomBuilder("Reguła ⟍ Znak")]),
@@ -564,12 +590,7 @@ export const parserChapter = [
 	]),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
 		new TextAtomBuilder(
-			"Instancje klasy węzła drzewa składni konkretnej przechowują informację o ich zakresie w kodzie źródłowym.",
-		),
-	]),
-	new PAtomBuilder({marginBlock: "1em 1em"}, [
-		new TextAtomBuilder(
-			"Konkretniej mówiąc jest to indeks początkowy oraz indeks końcowy (nie włączając go). Wynika to z faktu, że przykładowy pusty kod źródłowy też musi dać się sparsować do węzła. Jego indeks początkowy i końcowy to jest 0.",
+			"Instancje klasy węzła drzewa składni konkretnej przechowują informację o ich zakresie w kodzie źródłowym. Konkretniej mówiąc, jest to indeks początkowy oraz indeks końcowy (nie włączając go). Wynika to z faktu, że przykładowy pusty kod źródłowy też musi dać się sparsować do węzła. Jego indeks początkowy i końcowy to jest 0.",
 		),
 	]),
 ] as const satisfies readonly SupportedAtomBuilder[];

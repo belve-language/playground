@@ -7,7 +7,7 @@ export class PowerFunction extends BuiltInFunction {
 	public constructor() {
 		super(
 			"Raises a base to the power of exponent.",
-			"Podnosi podstawę do potęgi wykładnika.",
+			"Podnosi pierwszą liczbę do potęgi równej drugiej liczbie.",
 		);
 	}
 	public *call(

@@ -36,4 +36,29 @@ export class BookSource extends Source {
 	public readonly publisherName: string;
 	public readonly title: string;
 }
+export class ArticleSource extends Source {
+	public constructor(
+		authorName: string,
+		dateOfPublication: Date,
+		issue: string,
+		journalName: string,
+		pageNumbers: string,
+		title: string,
+		volume: string,
+	) {
+		super(authorName);
+		this.dateOfPublication = dateOfPublication;
+		this.issue = issue;
+		this.journalName = journalName;
+		this.pageNumbers = pageNumbers;
+		this.title = title;
+		this.volume = volume;
+	}
+	public readonly dateOfPublication: Date;
+	public readonly issue: string;
+	public readonly journalName: string;
+	public readonly pageNumbers: string;
+	public readonly title: string;
+	public readonly volume: string;
+}
 // TODO: ADD MERGING SAME SOURCES. USE ====

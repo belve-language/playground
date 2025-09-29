@@ -17,7 +17,7 @@ export const semantykaChapter = [
 	new H4AtomBuilder("Kod źródłowy (source code)"),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
 		new TextAtomBuilder(
-			"Kod źródłowy stanowi zbiór funkcji. Funkcje rozróżniane są poprzez swoje nagłówki, dlatego ich nagłówki nie mogą się powtarzać. Może istnieć co najwyżej jedna funkcja bez nagłówka – jest ona rozumiana jako funkcja główna, czyli ta, która uruchamia się automatycznie po rozpoczęciu działania programu utworzonego na podstawie kodu źródłowego.",
+			"Składa się ze zbioru funkcji. Funkcje rozróżniane są poprzez swoje nagłówki, dlatego ich nagłówki nie mogą się powtarzać. Może istnieć co najwyżej jedna funkcja bez nagłówka – jest ona rozumiana jako funkcja główna, czyli ta, która uruchamia się automatycznie po uruchomieniu programu utworzonego na podstawie kodu źródłowego.",
 		),
 	]),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
@@ -52,7 +52,7 @@ is (n) even {
 	new H4AtomBuilder("Funkcja (function)"),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
 		new TextAtomBuilder(
-			"Funkcja to instrukcja bloku (stanowiąca jej ciało), której przypisano opcjonalny nagłówek identyfikujący tę funkcję. Funkcja reprezentuje powtarzalny fragment kodu, który może zostać wykonany z pewnym zestawem początkowych znanych zmiennych. Nazywa się to wywołaniem. Nieznane zmienne, które zostaną poznane podczas wykonywania ciała funkcji, są zwracane do instrukcji, która tę funkcję wywołała.",
+			"Funkcja składa się z instrukcji bloku, będącej jej ciałem, oraz z opcjonalnego nagłówka, identyfikującego tę funkcję. Funkcja reprezentuje powtarzalny fragment kodu, który może zostać wykonany z pewnym zmiennych znanych (parametrów). Nazywa się to wywołaniem. Zmienne nieznane, które zostaną poznane podczas wykonywania ciała funkcji, są zwracane do instrukcji, która tę funkcję wywołała.",
 		),
 	]),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
@@ -79,7 +79,7 @@ is (n) even {
 	new H4AtomBuilder("Instrukcja (statement)"),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
 		new TextAtomBuilder(
-			"Instrukcja to wywołanie funkcji albo blok instrukcji. Jej wykonanie może skutkować poznaniem pewnych dotąd nieznanych zmiennych.",
+			"Instrukcja to albo instrukcja wywołania funkcji albo instrukcja bloku. Jej wykonanie może skutkować poznaniem pewnych dotąd nieznanych zmiennych.",
 		),
 	]),
 	new H5AtomBuilder("Instrukcja bloku"),
@@ -110,13 +110,21 @@ is (n) even {
 	new H5AtomBuilder("Instrukcja wywołania funkcji"),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
 		new TextAtomBuilder(
-			"Instrukcja wywołania funkcji to odwołanie do funkcji wskazanej w tej instrukcji. Jej wykonanie umożliwia poznanie nieznanych zmiennych zdefiniowanych w nagłówku wywoływanej funkcji.",
+			"Instrukcja wywołania funkcji to odwołanie do funkcji wskazanej w tej instrukcji celem wywołania tej funkcji. Jej wykonanie umożliwia poznanie zmiennych nieznanych zdefiniowanych w nagłówku wywoływanej funkcji.",
 		),
 	]),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
-		new TextAtomBuilder(
-			"Przykładowo, oto instrukcja wywołania funkcji () is divisible by ():",
+		new TextAtomBuilder("Przykładowo, oto instrukcja wywołania funkcji "),
+		new PreAtomBuilder(
+			{
+				...basePreAtomStyles,
+				display: "inline",
+				fontSize: "1em",
+				marginBlock: "0em 0em",
+			},
+			[new CodeAtomBuilder([new TextAtomBuilder("() is divisible by ()")])],
 		),
+		new TextAtomBuilder(":"),
 	]),
 	new PreAtomBuilder(
 		{
@@ -130,7 +138,7 @@ is (n) even {
 	new H4AtomBuilder("Sekwencja instrukcji (statements)"),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
 		new TextAtomBuilder(
-			"Sekwencja instrukcji ma co najmniej jedną instrukcję, a instrukcje rozdzielone są operatorami. Wykonywane są w kolejności od pierwszej do ostatniej. Operatory określają warunki, w których możliwe jest przejście do wykonania kolejnej instrukcji.",
+			"Sekwencja instrukcji ma co najmniej jedną instrukcję, a instrukcje rozdzielone są operatorami. Wykonywane są w kolejności od pierwszej do ostatniej. Operatory określają warunki, w których możliwe jest przejście do wykonywania kolejnych instrukcji.",
 		),
 	]),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
@@ -148,8 +156,8 @@ is (n) even {
 		[
 			new CodeAtomBuilder([
 				new TextAtomBuilder(
-					`(user) wants to remove a resource, (user) is an admin.
-(user) is the owner of (resource)
+					`(user) wants to remove the (resource), (user) is an admin.
+(user) is the owner of the (resource)
 `,
 				),
 			]),
@@ -158,13 +166,43 @@ is (n) even {
 	new H4AtomBuilder("Nagłówek funkcji (function header)"),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
 		new TextAtomBuilder(
-			"Nagłówek funkcji definiuje, jakie zmienne są znane, a jakie nieznane w kontekście danej funkcji. Zawiera także dodatkowe elementy umożliwiające identyfikację funkcji oraz podpowiadające programiście jej przeznaczenie i sposób działania.",
+			"Nagłówek funkcji definiuje, jakie są znane (zmienne), a jakie nieznane (zmienne) w kontekście danej funkcji. Zawiera także dodatkowe elementy umożliwiające identyfikację funkcji oraz podpowiadające programiście jej przeznaczenie i sposób działania.",
 		),
 	]),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
 		new TextAtomBuilder(
-			"Przykładowo, oto nagłówek funkcji definiujący dwie znane (start i end) i jedną nieznaną (integer):",
+			"Przykładowo, oto nagłówek funkcji definiujący dwie znane (",
 		),
+		new PreAtomBuilder(
+			{
+				...basePreAtomStyles,
+				display: "inline",
+				fontSize: "1em",
+				marginBlock: "0em 0em",
+			},
+			[new CodeAtomBuilder([new TextAtomBuilder("start")])],
+		),
+		new TextAtomBuilder(" i "),
+		new PreAtomBuilder(
+			{
+				...basePreAtomStyles,
+				display: "inline",
+				fontSize: "1em",
+				marginBlock: "0em 0em",
+			},
+			[new CodeAtomBuilder([new TextAtomBuilder("end")])],
+		),
+		new TextAtomBuilder(") i jedną nieznaną ("),
+		new PreAtomBuilder(
+			{
+				...basePreAtomStyles,
+				display: "inline",
+				fontSize: "1em",
+				marginBlock: "0em 0em",
+			},
+			[new CodeAtomBuilder([new TextAtomBuilder("integer")])],
+		),
+		new TextAtomBuilder("):"),
 	]),
 	new PreAtomBuilder(
 		{
@@ -184,7 +222,7 @@ is (n) even {
 	new H4AtomBuilder("Operator (operator)"),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
 		new TextAtomBuilder(
-			"Operator to konstrukcja rozdzielająca instrukcje w sekwencji instrukcji. Określa warunki, w których możliwe jest przejście do wykonania kolejnej instrukcji.",
+			"Operator rozdziela instrukcje w sekwencji instrukcji. Określa warunki, w których możliwe jest przejście do wykonywania kolejnych instrukcji.",
 		),
 	]),
 	new H5AtomBuilder('Operator "lub" ("or" operator)'),
@@ -209,10 +247,10 @@ is (n) even {
 			]),
 		],
 	),
-	new H5AtomBuilder('Operator "i" ("and" operator)'),
+	new H5AtomBuilder('Operator "następnie" ("then" operator)'),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
 		new TextAtomBuilder(
-			'Operator "i" wymaga, aby instrukcja z jego lewej strony została wykonana przed przejściem do pozostałej sekwencji instrukcji z jego prawej strony. Nieznane poznane w wyniku wykonania instrukcji z lewej strony są przekazywane jako dostępne do wykonania pozostałej sekwencji instrukcji z prawej strony. Poznane nieznane są łączone.',
+			'Operator "następnie" wymaga, aby instrukcja z jego lewej strony została wykonana przed przejściem do pozostałej sekwencji instrukcji z jego prawej strony. Nieznane poznane w wyniku wykonania instrukcji z lewej strony są przekazywane jako dostępne do wykonania pozostałej sekwencji instrukcji z prawej strony. Poznane nieznane są łączone.',
 		),
 	]),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [

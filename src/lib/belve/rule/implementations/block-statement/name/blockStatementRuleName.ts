@@ -1,1 +1,1 @@
-export const blockStatementRuleName = "wyrażenie blokowe";
+export const blockStatementRuleName = "instrukcja blokowa";

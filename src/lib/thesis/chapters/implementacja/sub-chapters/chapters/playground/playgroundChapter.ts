@@ -8,7 +8,7 @@ export const playgroundChapter = [
 	new H3AtomBuilder("Playground"),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
 		new TextAtomBuilder(
-			"Wszystkie wcześniejsze komponenty składające się na implementację języka zostały zebrane w interaktywnym środowisku programistycznym dostępnym pod adresem https://belve-language.github.io/playground/. Znaleźć można następujące elementy interfejsu:",
+			"Wszystkie wcześniejsze komponenty składające się na implementację języka zostały zebrane w interaktywnym środowisku programistycznym dostępnym pod adresem https://belve-language.github.io/playground/. Napotkać można tam następujące elementy interfejsu:",
 		),
 	]),
 	new LiAtomBuilder({marginBlock: "1em 1em"}, [
@@ -18,7 +18,7 @@ export const playgroundChapter = [
 	]),
 	new LiAtomBuilder({marginBlock: "1em 1em"}, [
 		new TextAtomBuilder(
-			"Obok pola tekstowego znajduje się wyświetlacz stanu. W pierwszej kolejności wyświetla on ewentualny błąd składni. Jeśli kod jest poprawny składniowo, wyświetla on ewentualną informację o błędzie abstraktyfikacji. Jeśli również pod tym względem kod jest poprawny, to sprawdzane jest czy w kodzie źródłowym jest funkcja główna. Jeśli jest ona dostępna, to wyświetlany jest przycisk umożliwiający uruchomienie interpretera. Dalsze kliknięcia umożliwiają wykonywanie kolejnych kroków interpretacji. Jeśli skończą się kroki, to przycisk umożliwia ponowne uruchomienie .",
+			"Obok pola tekstowego znajduje się wyświetlacz stanu. W pierwszej kolejności wyświetla on ewentualny błąd składni. Jeśli kod jest poprawny składniowo, wyświetla on ewentualną informację o błędzie abstraktyfikacji. Jeśli również pod tym względem kod jest poprawny, to sprawdzane jest, czy w kodzie źródłowym jest funkcja główna. Jeśli jest ona dostępna, to wyświetlany jest przycisk umożliwiający uruchomienie interpretera. Dalsze kliknięcia umożliwiają wykonywanie kolejnych kroków interpretacji. Jeśli skończą się kroki, to przycisk umożliwia ponowne uruchomienie.",
 		),
 	]),
 	new LiAtomBuilder({marginBlock: "1em 1em"}, [
@@ -37,23 +37,23 @@ export const playgroundChapter = [
 		),
 	]),
 	new LiAtomBuilder({marginBlock: "1em 1em"}, [
-		new SpanAtomBuilder({color: "var(--failure-dark)"}, [
-			new TextAtomBuilder("Czerwony"),
+		new SpanAtomBuilder({color: "var(--step-dark)"}, [
+			new TextAtomBuilder("Niebieski"),
 		]),
-		new TextAtomBuilder(" – porażka wykonania węzła;"),
+		new TextAtomBuilder(
+			" – wykonanie kroku węzła. Zawsze nastąpi po nim porażka lub powodzenie, choć może wydarzyć się to wiele kroków później;",
+		),
 	]),
 	new LiAtomBuilder({marginBlock: "1em 1em"}, [
 		new SpanAtomBuilder({color: "var(--success-dark)"}, [
 			new TextAtomBuilder("Zielony"),
 		]),
-		new TextAtomBuilder(" – sukces wykonania węzła;"),
+		new TextAtomBuilder(" – powodzenie wykonania węzła;"),
 	]),
 	new LiAtomBuilder({marginBlock: "1em 1em"}, [
-		new SpanAtomBuilder({color: "var(--step-dark)"}, [
-			new TextAtomBuilder("Niebieski"),
+		new SpanAtomBuilder({color: "var(--failure-dark)"}, [
+			new TextAtomBuilder("Czerwony"),
 		]),
-		new TextAtomBuilder(
-			" – wykonanie kroku węzła. Zawsze nastąpi po nim porażka lub sukces, choć może wydarzyć się to wiele kroków później;",
-		),
+		new TextAtomBuilder(" – porażka wykonania węzła;"),
 	]),
 ] as const satisfies readonly SupportedAtomBuilder[];

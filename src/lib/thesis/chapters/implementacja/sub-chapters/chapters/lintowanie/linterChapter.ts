@@ -24,7 +24,7 @@ export const linterChapter = [
 		new StrongAtomBuilder([new TextAtomBuilder("Zbędne instrukcje bloku")]),
 		new BrAtomBuilder(),
 		new TextAtomBuilder(
-			"Instrukcje bloku, w których jedyną instrukcją jest instrukcja bloku powinny zostać uproszczone poprzez usunięcie zbędnego poziomu zagnieżdżenia. Przykładowo:",
+			"Instrukcje bloku, w których jedyną instrukcją jest instrukcja bloku, powinny zostać uproszczone poprzez usunięcie zbędnego poziomu zagnieżdżenia. Przykładowo:",
 		),
 		new PreAtomBuilder(
 			{
@@ -45,7 +45,7 @@ export const linterChapter = [
 				]),
 			],
 		),
-		new TextAtomBuilder("powinno zostać zmienione na"),
+		new TextAtomBuilder("powinno zostać zmienione na:"),
 		new PreAtomBuilder(
 			{
 				...basePreAtomStyles,
@@ -93,7 +93,7 @@ export const linterChapter = [
 			],
 		),
 		new TextAtomBuilder(
-			"W tym wypadku można pozbyć się tylko drugiego wystąpienia instrukcji. Pierwsze jest potrzebne innej instrukcji. Czasem nie ma znaczenia, które z wystąpień usunie się.",
+			"W tym wypadku można pozbyć się tylko drugiego wystąpienia instrukcji. Pierwsze jest potrzebne innej instrukcji. Czasem nie ma znaczenia, które z wystąpień zostanie usunięte.",
 		),
 	]),
 ] as const satisfies readonly SupportedAtomBuilder[];

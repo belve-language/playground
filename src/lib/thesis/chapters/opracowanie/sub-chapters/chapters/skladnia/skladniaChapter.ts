@@ -2,6 +2,7 @@ import {grammar} from "../../../../../../instances/grammar/grammar.ts";
 import {H3AtomBuilder} from "../../../../../../pages/atom-builder/implementations/chapter-heading/implementations/h/implementations/3/H3AtomBuilder.ts";
 import {H4AtomBuilder} from "../../../../../../pages/atom-builder/implementations/chapter-heading/implementations/h/implementations/4/H4AtomBuilder.ts";
 import {BrAtomBuilder} from "../../../../../../pages/atom-builder/implementations/non-chapter-heading/implementations/br/BrAtomBuilder.ts";
+import {SourceAtomBuilder} from "../../../../../../pages/atom-builder/implementations/non-chapter-heading/implementations/source/SourceAtomBuilder.ts";
 import {TextAtomBuilder} from "../../../../../../pages/atom-builder/implementations/non-chapter-heading/implementations/text/TextAtomBuilder.ts";
 import {LiAtomBuilder} from "../../../../../../pages/atom-builder/implementations/non-chapter-heading/implementations/with-children/implementations/li/LiAtomBuilder.ts";
 import {PAtomBuilder} from "../../../../../../pages/atom-builder/implementations/non-chapter-heading/implementations/with-children/implementations/p/PAtomBuilder.ts";
@@ -11,6 +12,7 @@ import type {SupportedAtomBuilder} from "../../../../../../pages/atom-builder/su
 import {basePreAtomStyles} from "../../../../../base-pre-atom-styles/basePreAtomStyles.ts";
 import {checkIfRuleIsInteresting} from "../../../../../checking-if-rule-is-interesting/checkIfRuleIsInteresting.ts";
 import {computeFittingTextLayoutInPreAdapted} from "../../../../../computing-fitting-text-layout-in-pre-adapted/computeFittingTextLayoutInPreAdapted.ts";
+import {ll1Source} from "../../../../implementacja/sub-chapters/chapters/parser/parserChapter.ts";
 export const skladniaChapter = [
 	new H3AtomBuilder("Składnia"),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
@@ -23,14 +25,13 @@ export const skladniaChapter = [
 			new TextAtomBuilder("Znak biały (whitespace character):"),
 		]),
 		new BrAtomBuilder(),
-		new TextAtomBuilder("Przykłady: spacja, tabulator, znak nowej linii;"),
+		new TextAtomBuilder("Przykładowo spacja, tabulator i znak nowej linii;"),
 	]),
 	new LiAtomBuilder({marginBlock: "1em 1em"}, [
 		new StrongAtomBuilder([
 			new TextAtomBuilder("Znak operatora (operator character):"),
 		]),
 		new BrAtomBuilder(),
-		new TextAtomBuilder("Są to: "),
 		new PreAtomBuilder(
 			{
 				...basePreAtomStyles,
@@ -99,7 +100,7 @@ export const skladniaChapter = [
 			},
 			[new TextAtomBuilder("+")],
 		),
-		new TextAtomBuilder(", "),
+		new TextAtomBuilder(" i "),
 		new PreAtomBuilder(
 			{
 				...basePreAtomStyles,
@@ -145,14 +146,34 @@ export const skladniaChapter = [
 				new TextAtomBuilder('Operator "następnie" ("then" operator):'),
 			]),
 			new BrAtomBuilder(),
-			new TextAtomBuilder("Reprezentowany poprzez przecinek;"),
+			new TextAtomBuilder("Reprezentowany poprzez "),
+			new PreAtomBuilder(
+				{
+					...basePreAtomStyles,
+					display: "inline",
+					fontSize: "1em",
+					marginBlock: "0em 0em",
+				},
+				[new TextAtomBuilder(",")],
+			),
+			new TextAtomBuilder(" (przecinek);"),
 		]),
-		new LiAtomBuilder({marginBlock: "1em 1em"}, [
+		new LiAtomBuilder({marginBlock: "0em 0em"}, [
 			new StrongAtomBuilder([
 				new TextAtomBuilder('Operator "lub" ("or" operator):'),
 			]),
 			new BrAtomBuilder(),
-			new TextAtomBuilder("Reprezentowany poprzez kropkę;"),
+			new TextAtomBuilder("Reprezentowany poprzez "),
+			new PreAtomBuilder(
+				{
+					...basePreAtomStyles,
+					display: "inline",
+					fontSize: "1em",
+					marginBlock: "0em 0em",
+				},
+				[new TextAtomBuilder(".")],
+			),
+			new TextAtomBuilder(" (kropkę);"),
 		]),
 	]),
 	new LiAtomBuilder({marginBlock: "1em 1em"}, [
@@ -466,7 +487,7 @@ export const skladniaChapter = [
 			},
 			[
 				new TextAtomBuilder(
-					"none of integers between (2) and (max divisor to check) divide (number)",
+					"no integer between (2) and (max divisor to check) divides (number)",
 				),
 			],
 		),
@@ -512,7 +533,7 @@ export const skladniaChapter = [
 				new TextAtomBuilder(`{
     (number) > (1),
     (number) ^ (0.5) = [max divisor to check],
-    none of integers between (2) and (max divisor to check) divide (number)
+    no integer between (2) and (max divisor to check) divides (number)
 }`),
 			],
 		),
@@ -554,7 +575,7 @@ export const skladniaChapter = [
 			},
 			[
 				new TextAtomBuilder(
-					"none of integers between (2) and (max divisor to check) divide (number)",
+					"no integer between (2) and (max divisor to check) divides (number)",
 				),
 			],
 		),
@@ -588,20 +609,31 @@ export const skladniaChapter = [
 				new TextAtomBuilder(`(dividend) % (divisor) = [remainder] {
     (number) > (1),
     (number) ^ (0.5) = [max divisor to check],
-    none of integers between (2) and (max divisor to check) divide (number)
+    no integer between (2) and (max divisor to check) divides (number)
 }`),
 			],
 		),
 	]),
 	new LiAtomBuilder({marginBlock: "1em 1em"}, [
+		new StrongAtomBuilder([new TextAtomBuilder("Zbiór funkcji (functions):")]),
+		new BrAtomBuilder(),
+		new TextAtomBuilder("Łańcuch co najmniej jednej funkcji;"),
+	]),
+	new LiAtomBuilder({marginBlock: "1em 1em"}, [
 		new StrongAtomBuilder([new TextAtomBuilder("Kod źródłowy (source code):")]),
 		new BrAtomBuilder(),
-		new TextAtomBuilder("Łańcuch funkcji, który może być pusty;"),
+		new TextAtomBuilder(
+			"Opcjonalny zbiór funkcji. Można oddzielać składowe funkcje znakami białymi w dowolny sposób.",
+		),
 	]),
 	new H4AtomBuilder("Gramatyka"),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
 		new TextAtomBuilder(
-			"Gramatyka została przygotowana tak, aby mogła zostać sparsowana przez parser LL(1). Wymagało to w niektórych miejscach zdefiniowania reguł w sposób nieintuicyjny.",
+			"Gramatyka została przygotowana tak, aby mogła zostać sparsowana przez ",
+		),
+		new SourceAtomBuilder("parser LL(1)", ll1Source),
+		new TextAtomBuilder(
+			". Wymagało to w niektórych miejscach zdefiniowania reguł w sposób nieintuicyjny.",
 		),
 		new BrAtomBuilder(),
 		new TextAtomBuilder(
@@ -742,4 +774,9 @@ export const skladniaChapter = [
 			],
 		);
 	}),
+	new PAtomBuilder({marginBlock: "1em 1em"}, [
+		new TextAtomBuilder(
+			"Warto zaznaczyć, że w opisanej powyżej składni znajduje się pewna nadmiarowa konstrukcja – sekwencje instrukcji mogłyby składać się z samych instrukcji wywołania funkcji, a instrukcje bloku mogłyby być używane tylko jako ciała funkcji. Mogłoby to pogorszyć czytelność kodu źródłowego poprzez dużą liczbę małych funkcji. Decyzja o używaniu instrukcji bloku w sekwencjach instrukcji niech będzie pozostawiona programiście.",
+		),
+	]),
 ] as const satisfies readonly SupportedAtomBuilder[];

@@ -1,5 +1,6 @@
 import {builtInFunctions} from "../../../../../../instances/built-in-functions/builtInFunctions.ts";
 import {H3AtomBuilder} from "../../../../../../pages/atom-builder/implementations/chapter-heading/implementations/h/implementations/3/H3AtomBuilder.ts";
+import {BrAtomBuilder} from "../../../../../../pages/atom-builder/implementations/non-chapter-heading/implementations/br/BrAtomBuilder.ts";
 import {TextAtomBuilder} from "../../../../../../pages/atom-builder/implementations/non-chapter-heading/implementations/text/TextAtomBuilder.ts";
 import {LiAtomBuilder} from "../../../../../../pages/atom-builder/implementations/non-chapter-heading/implementations/with-children/implementations/li/LiAtomBuilder.ts";
 import {PAtomBuilder} from "../../../../../../pages/atom-builder/implementations/non-chapter-heading/implementations/with-children/implementations/p/PAtomBuilder.ts";
@@ -10,7 +11,7 @@ export const interpreterChapter = [
 	new H3AtomBuilder("Interpreter"),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
 		new TextAtomBuilder(
-			"Implementując interpreter udało się skorzystać z wygodnego faktu, że do uruchomienia kodu źródłowego potrzebne jest drzewo składni abstrakcyjnej. Na to drzewo gotowe są przecież klasy. Do tych klas zostały dodane odpowiednie metody realizujące działania wymagane przy procesie interpretacji.",
+			"Implementując interpreter, skorzystano z faktu, że do wykonania kodu źródłowego potrzebne jest drzewo składni abstrakcyjnej. Gotowe klasy reprezentujące to drzewo zostały rozszerzone o metody realizujące operacje niezbędne w procesie interpretacji.",
 		),
 	]),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
@@ -29,14 +30,14 @@ export const interpreterChapter = [
 				},
 				[new TextAtomBuilder(key)],
 			),
-			new PAtomBuilder({marginBlock: "0em 0em"}, [
-				new TextAtomBuilder(function_.descriptionInPolish),
-			]),
+			new TextAtomBuilder(":"),
+			new BrAtomBuilder(),
+			new TextAtomBuilder(function_.descriptionInPolish),
 		]);
 	}),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
 		new TextAtomBuilder(
-			"Kolejną istotną rzeczą w interpreterze są wartości globalne – pewne nazwy zmiennych nie powinny być rozumiane jako zmienne użytkownika (programisty), ale jako globalne stałe. Na ten moment są to tylko liczby. Interpreter w swojej aktualnej postaci mając nazwę dostępnej zmiennej i chcąc poznać jej wartość, zagląda do mapowania nazwy zmiennej na jej wartość, a w przypadku braku takiego wpisu próbuje jeszcze sprawdzić czy nazwa zmiennej wygląda jak licza, a jesli tak, to konwertuje jej zapis tekstowy na liczbę i wykorzystuje.",
+			"Kolejną istotną rzeczą w interpreterze są wartości globalne – pewne nazwy zmiennych nie powinny być rozumiane jako zmienne użytkownika (programisty), ale jako globalne stałe. Na ten moment są to tylko liczby. Interpreter w swojej aktualnej postaci mając nazwę dostępnej zmiennej i chcąc poznać jej wartość, zagląda do mapowania nazwy zmiennej na jej wartość, a w przypadku braku takiego wpisu próbuje jeszcze sprawdzić czy nazwa zmiennej wygląda jak liczba, a jesli tak, to konwertuje jej zapis tekstowy na liczbę i traktuje ją jako wartość zmiennej.",
 		),
 	]),
 ] as const satisfies readonly SupportedAtomBuilder[];

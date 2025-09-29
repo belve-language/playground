@@ -17,6 +17,7 @@ import {parsowanieWybaczajaceChapter} from "./chapters/parsowanie-wybaczajace/pa
 import {playgroundChapter} from "./chapters/playground/playgroundChapter.ts";
 import {programowanieLogiczneChapter} from "./chapters/programowanie-logiczne/programowanieLogiczneChapter.ts";
 import {serwerJezykowyChapter} from "./chapters/serwer-jezykowy/serwerJezykowyChapter.ts";
+import {skroconeEwaluowanieChapter} from "./chapters/skrocone-ewaluowanie/skroconeEwaluowanieChapter.ts";
 import {wykonanieKoduChapter} from "./chapters/wykonanie-kodu/wykonanieKoduChapter.ts";
 import {zlozonoscPoznawczaKoduZrodlowegoChapter} from "./chapters/zlozonosc-poznawcza-kodu-zrodlowego/zlozonoscPoznawczaKoduZrodlowegoChapter.ts";
 import {zmiennaChapter} from "./chapters/zmienna/zmiennaChapter.ts";
@@ -41,6 +42,7 @@ export const przyjeteDefinicjeChapterSubChapters = [
 	...playgroundChapter,
 	...programowanieLogiczneChapter,
 	...serwerJezykowyChapter,
+	...skroconeEwaluowanieChapter,
 	...wykonanieKoduChapter,
 	...zlozonoscPoznawczaKoduZrodlowegoChapter,
 	...zmiennaChapter,

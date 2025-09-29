@@ -12,8 +12,10 @@ import {IntermediateStatementsAbstractSyntaxTreeNode} from "../../../../../../be
 import type {Variables} from "../../../../../../belve/variables/Variables.ts";
 import {builtInFunctions} from "../../../../../../instances/built-in-functions/builtInFunctions.ts";
 import {H3AtomBuilder} from "../../../../../../pages/atom-builder/implementations/chapter-heading/implementations/h/implementations/3/H3AtomBuilder.ts";
+import type {NonChapterHeadingAtomBuilder} from "../../../../../../pages/atom-builder/implementations/non-chapter-heading/NonChapterHeadingAtomBuilder.ts";
 import {BrAtomBuilder} from "../../../../../../pages/atom-builder/implementations/non-chapter-heading/implementations/br/BrAtomBuilder.ts";
 import {TextAtomBuilder} from "../../../../../../pages/atom-builder/implementations/non-chapter-heading/implementations/text/TextAtomBuilder.ts";
+import {IAtomBuilder} from "../../../../../../pages/atom-builder/implementations/non-chapter-heading/implementations/with-children/implementations/i/IAtomBuilder.ts";
 import {LiAtomBuilder} from "../../../../../../pages/atom-builder/implementations/non-chapter-heading/implementations/with-children/implementations/li/LiAtomBuilder.ts";
 import {PAtomBuilder} from "../../../../../../pages/atom-builder/implementations/non-chapter-heading/implementations/with-children/implementations/p/PAtomBuilder.ts";
 import {PreAtomBuilder} from "../../../../../../pages/atom-builder/implementations/non-chapter-heading/implementations/with-children/implementations/pre/PreAtomBuilder.ts";
@@ -38,27 +40,42 @@ check (n) {(n) = (6)}                         {my number is [n], check (n)}
 `;
 const state = State.create(builtInFunctions, exampleSourceCode.split(""));
 const allExecutingStates = Array.from(state.generateEveryExecutingState());
-function determineNodeName(node: AbstractSyntaxTreeNode<unknown>): string {
+function determineNodeName(
+	node: AbstractSyntaxTreeNode<unknown>,
+): readonly NonChapterHeadingAtomBuilder[] {
 	if (node instanceof WithMainFunctionFunctionsAbstractSyntaxTreeNode) {
-		return "funkcjach z funkcją główną";
+		return [new TextAtomBuilder("funkcjach z funkcją główną")];
 	} else if (node instanceof MainFunctionAbstractSyntaxTreeNode) {
-		return "funkcji głównej";
+		return [new TextAtomBuilder("funkcji głównej")];
 	} else if (node instanceof NonMainFunctionAbstractSyntaxTreeNode) {
-		return `funkcji niegłównej "${node.children.header.id}"`;
+		// return [new TextAtomBuilder(`funkcji niegłównej "${node.children.header.id}"`)];
+		return [
+			new TextAtomBuilder(`funkcji niegłównej `),
+			new PreAtomBuilder(
+				{
+					...basePreAtomStyles,
+					display: "inline",
+					fontSize: "1em",
+					marginBlock: "0em 0em",
+				},
+				[new TextAtomBuilder(`${node.children.header.id}`)],
+			),
+			new TextAtomBuilder(""),
+		];
 	} else if (node instanceof BlockStatementAbstractSyntaxTreeNode) {
-		return "instrukcji bloku";
+		return [new TextAtomBuilder("instrukcji bloku")];
 	} else if (node instanceof FunctionCallStatementAbstractSyntaxTreeNode) {
-		return "instrukcji wywołania funkcji";
+		return [new TextAtomBuilder("instrukcji wywołania funkcji")];
 	} else if (node instanceof FinalStatementsAbstractSyntaxTreeNode) {
-		return "instrukcjach finalnych";
+		return [new TextAtomBuilder("instrukcjach finalnych")];
 	} else if (node instanceof IntermediateStatementsAbstractSyntaxTreeNode) {
-		return "instrukcjach pośrednich";
+		return [new TextAtomBuilder("instrukcjach pośrednich")];
 	} else if (node instanceof OrOperatorAbstractSyntaxTreeNode) {
-		return 'operatorze "lub"';
+		return [new TextAtomBuilder('operatorze "lub"')];
 	} else if (node instanceof ThenOperatorAbstractSyntaxTreeNode) {
-		return 'operatorze "następnie"';
+		return [new TextAtomBuilder('operatorze "następnie"')];
 	} else if (node instanceof OperatedStatementAbstractSyntaxTreeNode) {
-		return "operowanej instrukcji";
+		return [new TextAtomBuilder("operowanej instrukcji")];
 	} else {
 		throw new Error("Unknown node type.");
 	}
@@ -88,7 +105,7 @@ function determineVariables(
 	variables: Variables,
 ): readonly (PreAtomBuilder | TextAtomBuilder)[] {
 	if (Object.keys(variables).length === 0) {
-		return [new TextAtomBuilder("brak")];
+		return [new IAtomBuilder([new TextAtomBuilder("brak")])];
 	} else {
 		return Object.entries(variables).flatMap(([name, value], index) => {
 			// return `${varName} = ${varValue}`;
@@ -122,7 +139,9 @@ function determineDescription(highlight: SupportedHighlight): PAtomBuilder {
 	// )}${highlight.typeName === successHighlightTypeName ? ` i poznanymi nieznanymi: ${determineVariables(highlight.unknowns)}` : ""}.`;
 	return new PAtomBuilder({marginBlock: "1em 0em"}, [
 		statusNameAtomBuilder,
-		new TextAtomBuilder(` w ${nodeName}.`),
+		new TextAtomBuilder(` w `),
+		...nodeName,
+		new TextAtomBuilder(`.`),
 		new BrAtomBuilder(),
 		new TextAtomBuilder(`Dostępne zmienne: `),
 		...determineVariables(highlight.availables),
@@ -187,7 +206,7 @@ export const uruchomieniePrzykladowegoProgramuChapter = [
 	new H3AtomBuilder("Uruchomienie przykładowego programu"),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
 		new TextAtomBuilder(
-			"Poniżej przedstawiono pełny przykład krok po kroku działania interpretera dla programu sprawdzającego czy zapis danej liczby w systemie dziesiętnym zawiera daną cyfrę.",
+			"Poniżej przedstawiono pełny, krok po kroku, przykład działania interpretera dla programu, który sprawdza, czy dana liczba w systemie dziesiętnym zawiera określoną cyfrę.",
 		),
 	]),
 	...mirrors,

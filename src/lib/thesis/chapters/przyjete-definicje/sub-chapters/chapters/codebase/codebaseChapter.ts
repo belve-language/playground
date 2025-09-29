@@ -6,7 +6,7 @@ export const codebaseChapter = [
 	new H3AtomBuilder("Codebase (codebase)"),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
 		new TextAtomBuilder(
-			"Zbiór plików z kodem źródłowym, które razem służą do zbudowania systemu informatycznego lub programu.",
+			"Zbiór plików z kodem źródłowym, które razem służą do zbudowania systemu informatycznego lub programu komputerowego.",
 		),
 	]),
 ] as const satisfies readonly SupportedAtomBuilder[];

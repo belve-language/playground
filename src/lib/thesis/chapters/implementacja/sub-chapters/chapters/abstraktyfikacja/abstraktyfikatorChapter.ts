@@ -27,7 +27,7 @@ export const abstraktyfikatorChapter = [
 			new TextAtomBuilder(`is () prime {
 	() > (1),
 	() ^ (0.5) = [],
-	none of the integers between (2) and () divide ()
+	no integer between (2) and () divides ()
 }
 `),
 		],

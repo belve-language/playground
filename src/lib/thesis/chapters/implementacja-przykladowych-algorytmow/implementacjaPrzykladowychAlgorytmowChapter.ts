@@ -14,7 +14,7 @@ export const implementacjePrzykladowychAlgorytmowChapter = [
 	new H2AtomBuilder("Implementacje przykładowych algorytmów"),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
 		new TextAtomBuilder(
-			"Poniżej przeddstawiono przykładowe implementacje wybranych algorytmów. Wykorzystywane w nich wbudowane funkcje pokrywają się tymi, opisanymi w rozdziale o interpreterze. Należy założyć, że w środowisku wykonującym dostępne są globalne zmienne reprezentujące wymienione w kodach źródłowych liczby.",
+			"Poniżej przedstawiono przykładowe implementacje wybranych algorytmów. Wykorzystywane w nich wbudowane funkcje pokrywają się z tymi, opisanymi w rozdziale o interpreterze. Należy założyć, że w środowisku wykonującym dostępne są globalne zmienne reprezentujące wymienione w kodach źródłowych liczby.",
 		),
 	]),
 	...presets.flatMap((preset: Preset): readonly SupportedAtomBuilder[] => {

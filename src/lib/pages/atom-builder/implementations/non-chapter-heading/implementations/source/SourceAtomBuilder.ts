@@ -14,17 +14,28 @@ export class SourceAtomBuilder extends NonChapterHeadingAtomBuilder {
 		existingSources: readonly Source[],
 		numberOfPage: number,
 	): BuildingResultOfNonChapterHeadingAtomBuilder {
+		const indexOfAlreadyExistingSource = existingSources.findIndex(
+			(existingSource: Source): boolean => {
+				return existingSource === this.source;
+			},
+		);
 		const atom: WithoutChildrenNonChapterHeadingAtom =
 			new WithoutChildrenNonChapterHeadingAtom(
 				bindComponentProps(ComponentOfSourceAtom, {
-					number: existingSources.length + 1,
+					number:
+						indexOfAlreadyExistingSource === -1 ?
+							existingSources.length + 1
+						:	indexOfAlreadyExistingSource + 1,
 					text: this.text,
 				}),
 				numberOfPage,
 				[this.source],
 			);
 		const result: BuildingResultOfNonChapterHeadingAtomBuilder =
-			new BuildingResultOfNonChapterHeadingAtomBuilder(atom, [this.source]);
+			new BuildingResultOfNonChapterHeadingAtomBuilder(
+				atom,
+				indexOfAlreadyExistingSource === -1 ? [this.source] : [],
+			);
 		return result;
 	}
 	private readonly source: Source;

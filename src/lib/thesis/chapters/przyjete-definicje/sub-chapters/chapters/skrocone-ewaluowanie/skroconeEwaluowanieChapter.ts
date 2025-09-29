@@ -2,11 +2,11 @@ import {H3AtomBuilder} from "../../../../../../pages/atom-builder/implementation
 import {TextAtomBuilder} from "../../../../../../pages/atom-builder/implementations/non-chapter-heading/implementations/text/TextAtomBuilder.ts";
 import {PAtomBuilder} from "../../../../../../pages/atom-builder/implementations/non-chapter-heading/implementations/with-children/implementations/p/PAtomBuilder.ts";
 import type {SupportedAtomBuilder} from "../../../../../../pages/atom-builder/supported/SupportedAtomBuilder.ts";
-export const drzewoSkladniKonkretnejChapter = [
-	new H3AtomBuilder("Drzewo składni konkretnej (concrete syntax tree)"),
+export const skroconeEwaluowanieChapter = [
+	new H3AtomBuilder("Skrócone ewaluowanie (short-circuit evaluation)"),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
 		new TextAtomBuilder(
-			"Drzewiasta, rekurencyjna struktura danych wiernie odtwarzająca kod źródłowy. Powstaje podczas parsowania. Na jej podstawie można dokładnie odtworzyć kod źródłowy, z którego została utworzona.",
+			"Skrócone ewaluowanie to technika stosowana w wielu językach programowania, w której druga część wyrażenia logicznego nie jest oceniana, jeśli pierwsza część już wystarcza do określenia wyniku.",
 		),
 	]),
 ] as const satisfies readonly SupportedAtomBuilder[];

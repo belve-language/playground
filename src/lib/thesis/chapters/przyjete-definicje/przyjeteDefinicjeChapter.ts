@@ -4,7 +4,7 @@ import {TextAtomBuilder} from "../../../pages/atom-builder/implementations/non-c
 import {PAtomBuilder} from "../../../pages/atom-builder/implementations/non-chapter-heading/implementations/with-children/implementations/p/PAtomBuilder.ts";
 import type {SupportedAtomBuilder} from "../../../pages/atom-builder/supported/SupportedAtomBuilder.ts";
 export const przyjeteDefinicjeChapter = [
-	new H2AtomBuilder("Przyjęte definicje"),
+	new H2AtomBuilder("Spis przyjętych definicji"),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
 		new TextAtomBuilder(
 			"Poniżej znajduje się spis przyjętych w pracy definicji istotnych pojęć. W nawiasach podano ich odpowiedniki w języku angielskim.",

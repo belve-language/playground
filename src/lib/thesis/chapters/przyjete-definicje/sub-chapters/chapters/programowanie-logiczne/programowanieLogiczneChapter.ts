@@ -7,7 +7,7 @@ export const programowanieLogiczneChapter = [
 	new H3AtomBuilder("Programowanie logiczne (logic programming)"),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
 		new SourceAtomBuilder(
-			"Programowanie logiczne to styl programowania, w którym programy są wyrażane jako zestawy zdań w języku logiki symbolicznej. Programy stworzone w tym stylu nazywa się programami logicznymi, a język, w którym się je pisze – językiem programowania logicznego. System komputerowy, który umożliwia tworzenie i wykonywanie takich programów, określa się mianem systemu programowania logicznego.",
+			"Programowanie logiczne to styl programowania, w którym programy są wyrażane jako zestawy zdań w języku logiki symbolicznej. Programy stworzone w tym stylu nazywa się programami logicznymi, a język, w którym się je pisze – językiem programowania logicznego.",
 			new InternetSource(
 				"Stanford University",
 				new Date(1759064933897),

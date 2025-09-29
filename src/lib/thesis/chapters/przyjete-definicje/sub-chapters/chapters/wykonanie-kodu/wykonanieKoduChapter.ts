@@ -6,7 +6,7 @@ export const wykonanieKoduChapter = [
 	new H3AtomBuilder("Wykonanie kodu (code execution)"),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
 		new TextAtomBuilder(
-			"Proces, w którym odczytywane i wykonywane są instrukcje zapisane w kodzie źródłowym.",
+			"Proces, w którym wykonywane są instrukcje zapisane w kodzie źródłowym.",
 		),
 	]),
 ] as const satisfies readonly SupportedAtomBuilder[];

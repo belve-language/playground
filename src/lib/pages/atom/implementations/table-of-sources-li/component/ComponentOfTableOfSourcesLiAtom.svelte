@@ -1,5 +1,6 @@
 <script lang="ts">
 	import {
+		ArticleSource,
 		BookSource,
 		InternetSource,
 		type Source,
@@ -33,6 +34,10 @@
 			)}
 		{:else if source instanceof BookSource}
 			{source.authorName}, {source.title}, {source.publisherName}, {source.dateOfPublication.getFullYear()}
+		{:else if source instanceof ArticleSource}
+			{source.authorName}, {source.title}, {source.journalName}, {source.volume},
+			{source.issue}, {source.pageNumbers},
+			{source.dateOfPublication.getFullYear()}
 		{/if}
 	</span>
 </li>

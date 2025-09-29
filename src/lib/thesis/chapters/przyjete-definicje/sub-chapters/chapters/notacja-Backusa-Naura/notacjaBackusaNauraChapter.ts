@@ -19,7 +19,7 @@ export const notacjaBackusaNauraChapter = [
 			fontSize: "1em",
 			marginBlock: "1em 1em",
 		},
-		[new TextAtomBuilder(`<nieterminal> ::= symbol_1 | symbol_2 | ...`)],
+		[new TextAtomBuilder(`<nieterminal> ::= symbol₁ | symbol₂ | ...`)],
 	),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
 		new TextAtomBuilder(`gdzie `),

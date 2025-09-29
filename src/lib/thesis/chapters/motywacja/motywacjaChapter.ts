@@ -8,7 +8,7 @@ import {PAtomBuilder} from "../../../pages/atom-builder/implementations/non-chap
 import {PreAtomBuilder} from "../../../pages/atom-builder/implementations/non-chapter-heading/implementations/with-children/implementations/pre/PreAtomBuilder.ts";
 import {StrongAtomBuilder} from "../../../pages/atom-builder/implementations/non-chapter-heading/implementations/with-children/implementations/strong/StrongAtomBuilder.ts";
 import type {SupportedAtomBuilder} from "../../../pages/atom-builder/supported/SupportedAtomBuilder.ts";
-import {InternetSource} from "../../../pages/source/Source.ts";
+import {ArticleSource, InternetSource} from "../../../pages/source/Source.ts";
 import {basePreAtomStyles} from "../../base-pre-atom-styles/basePreAtomStyles.ts";
 export const motywacjaChapter = [
 	new H2AtomBuilder("Motywacja"),
@@ -19,12 +19,12 @@ export const motywacjaChapter = [
 	]),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
 		new TextAtomBuilder(
-			`Jest to miara wyjątkowo prosta – we współczesnych edytorach programistycznych numer każdej linii jest widoczny, więc wystarczy sprawdzić numer ostatniej, aby dowiedzieć się, ile linii liczy cały kod. Jednak czy taka miara jest rzeczywiście wiarygodna?`,
+			`Jest to miara wyjątkowo prosta – we współczesnych edytorach programistycznych numer każdej linii jest widoczny, więc wystarczy sprawdzić numer ostatniej, aby dowiedzieć się, z ilu linii składa się cały kod. Jednak czy taka miara jest rzeczywiście wiarygodna?`,
 		),
 	]),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
 		new TextAtomBuilder(
-			`Nie do końca. We wszystkich popularnych językach programowania można dodawać puste linie i białe znaki, które nie mają żadnego wpływu na działanie programu. Problem ten można częściowo rozwiązać, stosując formater kodu (lub linter, który wskaże zbędne fragmenty, a następnie można je usunąć ręcznie). Po sformatowaniu kodu można odczytać liczbę linii w sposób bardziej obiektywny.`,
+			`Nie do końca. We wszystkich popularnych językach programowania można dodawać puste linie i białe znaki, które nie mają żadnego wpływu na działanie programu. Problem ten można częściowo rozwiązać, stosując formater kodu. Po sformatowaniu kodu można odczytać liczbę linii w sposób bardziej obiektywny.`,
 		),
 	]),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
@@ -67,7 +67,7 @@ const c = 3;
 	),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
 		new TextAtomBuilder(
-			`Niektóre formatery potrafią rozbić deklaracje na osobne linie, ale problem pogłębia się w przypadku funkcji, które można zapisać na kilka sposobów:`,
+			`Niektóre formatery potrafią rozbić deklaracje na osobne linie, ale problem pogłębia się w przypadku funkcji, które można w tym języku zapisać na kilka sposobów:`,
 		),
 	]),
 	new PreAtomBuilder(
@@ -108,8 +108,23 @@ const c = 3;
 	]),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
 		new TextAtomBuilder(
-			`Lintery mogą narzucić spójny standard stylu, co zwiększa wiarygodność liczby linii jako miary złożoności, ale nie rozwiązuje to całego problemu. Gdy kod staje się ustandaryzowany, pojawia się kwestia paradygmatu programowania.`,
+			`Lintery mogą narzucić spójny standard stylu, co zwiększa wiarygodność liczby linii jako miary złożoności`,
 		),
+	]),
+	new PAtomBuilder({marginBlock: "1em 1em"}, [
+		new TextAtomBuilder(
+			"Na tym etapie kod jest już względnie ustandaryzowany. Można badać go posługując się ",
+		),
+		new SourceAtomBuilder(
+			"znanymi metodami pomiaru złożoności kodu źródłowego",
+			new InternetSource(
+				"Wikipedia",
+				new Date(1759086734814),
+				"Programming complexity – Measures",
+				"https://en.wikipedia.org/wiki/Programming_complexity#Measures",
+			),
+		),
+		new TextAtomBuilder(", ale pojawia się kwestia paradygmatu programowania."),
 	]),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
 		new TextAtomBuilder(
@@ -150,7 +165,7 @@ const c = 3;
 		],
 	),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
-		new TextAtomBuilder(`lub w stylu deklaratywnym:`),
+		new TextAtomBuilder(`i w stylu deklaratywnym:`),
 	]),
 	new PreAtomBuilder(
 		{
@@ -181,27 +196,62 @@ const c = 3;
 	),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
 		new TextAtomBuilder(
-			`Obie wersje są stabilne, nie mutują tablicy wejściowej i mają tę samą złożoność obliczeniową O(n²). Obie zostały sformatowane tym samym formatterem i spełniają te same reguły lintera. Jednak kod deklaratywny jest krótszy – ma mniej linii i znaków.`,
+			`Obie wersje są stabilne, zwracając nową tablicę nie modyfikując otrzymanej i mają tę samą złożoność obliczeniową O(n²). Obie zostały sformatowane tym samym formaterem i spełniają te same reguły lintera. Jednak kod deklaratywny jest krótszy – ma mniej linii i znaków.`,
 		),
 	]),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
 		new TextAtomBuilder(
-			`Pokazuje to, że liczba linii kodu (ani liczba znaków) nie jest w pełni wiarygodną miarą złożoności programu. Rozwiązaniem może być ograniczenie dostępnych konstrukcji języka do minimalnego zestawu – tak, aby różne zapisy tego samego algorytmu były jak najbardziej zbliżone. Można to osiągnąć na dwa sposoby:`,
-		),
-	]),
-	new LiAtomBuilder({marginBlock: "0em 0em"}, [
-		new TextAtomBuilder(
-			`wybierając język bardzo niskiego poziomu (np. jeden z asemblerów);`,
-		),
-	]),
-	new LiAtomBuilder({marginBlock: "0em 0em"}, [
-		new TextAtomBuilder(
-			`wybierając język bardzo wysokiego poziomu, który minimalizuje konstrukcje imperatywne (np. Prolog);`,
+			`Pokazuje to, że liczba linii kodu (ani liczba znaków) nie jest w pełni wiarygodną miarą złożoności programu.`,
 		),
 	]),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
 		new TextAtomBuilder(
-			`Drugie podejście jest ciekawsze – języki wysokiego poziomu są bardziej przystępne dla programisty, a i tak ostatecznie sprowadzają się do kodu niskopoziomowego.`,
+			`Można też ustalić złożoności tych kodów przy pomocy znanych miar złożoności. Przykładowo obliczyć można ich `,
+		),
+		new SourceAtomBuilder(
+			"złożoność cyklomatyczną",
+			new ArticleSource(
+				"Thomas J. McCabe",
+				new Date("1976-12"),
+				"4",
+				"IEE Transactions on Software Engineering",
+				"308-320",
+				"A Complexity Measure",
+				"SE-2",
+			),
+		),
+		new TextAtomBuilder(`. Pomocne będzie tu `),
+		new SourceAtomBuilder(
+			"narzędzie JSHint",
+			new InternetSource(
+				"Społeczność narzędzia JSHint",
+				new Date(1759087644148),
+				"Strona internetowa narzędzia JSHint",
+				"https://jshint.com",
+			),
+		),
+		new TextAtomBuilder(
+			`, które oblicza tę miarę dla kodu dla języka JavaScript. Okazuje się, że kod imperatywny ma 1 funkcję, której złożoność cyklomatyczna wynosi 4, a kod deklaratywny ma 4 funkcje, z których każda ma złożoność cyklomatyczną wynoszącą 1. Na tej podstawie nie można jednoznacznie stwierdzić, który kod jest bardziej złożony, bo trzeba najpierw zdecydować jak istotny jest wpływ liczby funkcji na złożoność całości.`,
+		),
+	]),
+	new PAtomBuilder({marginBlock: "1em 1em"}, [
+		new TextAtomBuilder(
+			`Rozwiązaniem powyższych problemów może być ograniczenie dostępnych konstrukcji języka do minimalnego zestawu w taki sposób, aby różne zapisy tego samego algorytmu były jak najbardziej do siebie podobne. Można to osiągnąć na dwa sposoby:`,
+		),
+	]),
+	new LiAtomBuilder({marginBlock: "0em 0em"}, [
+		new TextAtomBuilder(
+			`wybierając język bardzo niskiego poziomu (przykładowo jeden z asemblerów);`,
+		),
+	]),
+	new LiAtomBuilder({marginBlock: "0em 0em"}, [
+		new TextAtomBuilder(
+			`wybierając język bardzo wysokiego poziomu, który minimalizuje konstrukcje imperatywne (przykładowo Prolog);`,
+		),
+	]),
+	new PAtomBuilder({marginBlock: "1em 1em"}, [
+		new TextAtomBuilder(
+			`Drugie podejście jest ciekawsze – języki wysokiego poziomu są bardziej przystępne dla programisty, a i tak ostatecznie sprowadzają się do kodu niskiego poziomu.`,
 		),
 	]),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
@@ -283,14 +333,24 @@ rodzic(X, Y) :-
 		]),
 		new BrAtomBuilder(),
 		new TextAtomBuilder(
-			`Jeśli w języku dostępne są funkcje wyższego rzędu, każdą funkcję wieloparametrową można zapisać jako ciąg funkcji jednoargumentowych przy pomocy techniki currying;`,
+			`Jeśli w języku dostępne są funkcje wyższego rzędu, każdą funkcję wieloparametrową można zapisać jako ciąg funkcji jednoargumentowych przy pomocy techniki `,
 		),
+		new SourceAtomBuilder(
+			`rozwijania funkcji`,
+			new InternetSource(
+				"HaskellWiki",
+				new Date(1759090150106),
+				"Currying",
+				"https://wiki.haskell.org/index.php?title=Currying",
+			),
+		),
+		new TextAtomBuilder(`;`),
 	]),
 	new LiAtomBuilder({marginBlock: "1em 1em"}, [
 		new StrongAtomBuilder([new TextAtomBuilder("Bloki (blocks):")]),
 		new BrAtomBuilder(),
 		new TextAtomBuilder(
-			`Blok kodu można zastąpić dodatkową funkcją, która zawiera logikę bloku i zwraca odpowiednie wartości;`,
+			`Blok można zastąpić dodatkową funkcją, która zawiera logikę bloku i zwraca odpowiednie wartości;`,
 		),
 	]),
 	new LiAtomBuilder({marginBlock: "1em 1em"}, [
@@ -324,7 +384,7 @@ rodzic(X, Y) :-
 	]),
 	new LiAtomBuilder({marginBlock: "1em 1em"}, [
 		new StrongAtomBuilder([
-			new TextAtomBuilder("Instrukcja return (return statement):"),
+			new TextAtomBuilder('Instrukcja "return" ("return" statement):'),
 		]),
 		new BrAtomBuilder(),
 		new TextAtomBuilder(
@@ -344,12 +404,12 @@ rodzic(X, Y) :-
 	]),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
 		new TextAtomBuilder(
-			`Kod w takim języku byłby dłuższy i mniej czytelny, przypominając zapis rachunku lambda, ale za to stanowiłby wierniejszą miarę rzeczywistej złożoności kongnitywnej programu.`,
+			`Kod źródłowy w takim języku byłby dłuższy i mniej czytelny, przypominając zapis rachunku lambda, ale za to stanowiłby wierniejszą miarę rzeczywistej złożoności poznawczej programu.`,
 		),
 	]),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
 		new TextAtomBuilder(
-			`Innym aspektem, nad którym warto się zastanowić jest czytelność. Przykładowo, we większości współczesnych języków programowania funkcje mają zasadniczo następującą składnię: nazwa_funkcji(parametr1, parametr2, ...).`,
+			`Warto zastanowić się więc nad tym, czy da w jakiś sposób poprawić czytelność kodu nie wprowadzających nadmiarowych konstrukcji do języka. Na pewno język powinien posiadać konstrukcję funkcji. Zobaczmy, jak wygląda ich zapis we współczesnych popularnych językach programowania. Zasadniczo ich zapis ma następującą składnię: nazwa_funkcji(parametr₁, parametr₂, ...).`,
 		),
 	]),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
@@ -357,9 +417,9 @@ rodzic(X, Y) :-
 			`Z punktu widzenia języka naturalnego jest to zapis nienaturalny. Spójrzmy na `,
 		),
 		new SourceAtomBuilder(
-			`konkretny przykład z repozytorium JavaScriptowej biblioteki React`,
+			`konkretny przykład z repozytorium biblioteki React do języka JavaScript`,
 			new InternetSource(
-				"Meta",
+				"Meta i społeczność biblioteki React",
 				new Date(1759064545140),
 				'Fragment kodu źródłowego biblioteki React z funkcją "transform"',
 				"https://github.com/facebook/react/blob/cad813ac1ed5c04c6ccb390a3bdf5fedbbacaa45/scripts/print-warnings/print-warnings.js#L21",
@@ -382,12 +442,12 @@ rodzic(X, Y) :-
 	),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
 		new TextAtomBuilder(
-			`W języku naturalnym (angielskim) powiedzielibyśmy raczej: transform a file encoded with given encoding and then call a callback. Informację o tym, że jest to funkcja można pominąć, ponieważ wyraźnie widać, że zapis oznacza jakąś czynność (czasownik na początku zdania).`,
+			`W języku naturalnym (angielskim) powiedzielibyśmy raczej: transform a file encoded with given encoding and then call a callback.`,
 		),
 	]),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
 		new TextAtomBuilder(
-			`Można by spróbować dostosować takie zapisy do realiów języka programowania traktując rzeczowniki jako parametry, a resztę słów zostawić jako części nazwy funkcji. Wtedy powyższy przykład mógłby wyglądać tak:`,
+			`Można by spróbować dostosować takie zapisy do realiów języka programowania. Informację o tym, że jest to funkcja można pominąć, ponieważ wyraźnie widać, że zapis oznacza jakąś czynność (czasownik na początku zdania). Następnie potraktujmy rzeczowniki jako parametry, a resztę słów zostawmy jako części nazwy funkcji. Wtedy powyższy przykład mógłby wyglądać tak:`,
 		),
 	]),
 	new PreAtomBuilder(
@@ -408,6 +468,108 @@ rodzic(X, Y) :-
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
 		new TextAtomBuilder(
 			`Taki sposób zapisu wydaje się bardzo naturalny i czytelny. Warto zbadać jak wyglądałyby całe kody źródłowe napisane w taki sposób.`,
+		),
+	]),
+	new PAtomBuilder({marginBlock: "1em 1em"}, [
+		new TextAtomBuilder(
+			`Zastanowić można się też nad tym, jak współczesne języki programowania radzą sobie ze zwracaniem wartości z funkcji.`,
+		),
+	]),
+	new PAtomBuilder({marginBlock: "1em 1em"}, [
+		new TextAtomBuilder(
+			`Okazuje się, że w większości języków programowania podstawowy mechanizm jest następujący: dostępna jest instrukcja "return" przerywająca wykonywanie kodu źródłowego funkcji i zwracająca wartość lub przyjmuje się traktowanie wartości ostatniego wyrażenia jako wartości zwracanej.`,
+		),
+	]),
+	new PAtomBuilder({marginBlock: "1em 1em"}, [
+		new TextAtomBuilder(
+			`Niektóre języki programowania oferują ciekawy mechanizm umożliwiający zwracanie dodatkowych wartości poprzez parametry wyjściowe. Przykładowo w języku C# można napisać:`,
+		),
+	]),
+	new PreAtomBuilder(
+		{
+			...basePreAtomStyles,
+			display: "block",
+			fontSize: "1em",
+			marginBlock: "1em 1em",
+		},
+		[
+			new CodeAtomBuilder([
+				new TextAtomBuilder(`void Divide(int dividend, int divisor, out int result) {
+	result = dividend / divisor;
+}
+`),
+			]),
+		],
+	),
+	new PAtomBuilder({marginBlock: "1em 1em"}, [
+		new TextAtomBuilder(
+			`Funkcja ta nie zwraca żadnej wartości w standardowy sposób (ma typ `,
+		),
+		new PreAtomBuilder(
+			{
+				...basePreAtomStyles,
+				display: "inline",
+				fontSize: "1em",
+				marginBlock: "0em 0em",
+			},
+			[new CodeAtomBuilder([new TextAtomBuilder(`void`)])],
+		),
+		new TextAtomBuilder(
+			`), ale realizuje zwracanie poprzez parametr wyjściowy. Nie ma tu potrzeby używania instrukcji "return". Funkcję wywołuje się następująco:`,
+		),
+	]),
+	new PreAtomBuilder(
+		{
+			...basePreAtomStyles,
+			display: "block",
+			fontSize: "1em",
+			marginBlock: "1em 1em",
+		},
+		[
+			new CodeAtomBuilder([
+				new TextAtomBuilder(`Divide(10, 2, out int output);
+`),
+			]),
+		],
+	),
+	new PAtomBuilder({marginBlock: "1em 1em"}, [
+		new TextAtomBuilder(`Po wywołaniu funkcji zmienna `),
+		new PreAtomBuilder(
+			{
+				...basePreAtomStyles,
+				display: "inline",
+				fontSize: "1em",
+				marginBlock: "0em 0em",
+			},
+			[new CodeAtomBuilder([new TextAtomBuilder(`output`)])],
+		),
+		new TextAtomBuilder(
+			` będzie przechowywać obliczoną wartość. Oczywiście można też używać instrukcji "return" (nawet niezależnie). To programista decyduje, których z tych mechanizmów użyje. Łatwo wyobrazić sobie jakie zamieszanie może wyniknąć z używania obu tych sposobów jednocześnie w zbyt wielu funkcjach i przeplataniu parametrów wyjściowych ze zwykłymi (wejściowymi).`,
+		),
+	]),
+	new PAtomBuilder({marginBlock: "1em 1em"}, [
+		new TextAtomBuilder(
+			`Opisany powyżej potencjalny problem z czytelnością można spróbować rozwiązać decydując się na całkowitą rezygnację z instrukcji "return" i zamiast nich stosować tylko parametry wyjściowe. Kluczowa jest tu też integracja tego pomysłu z omówionym wcześniej naturalnym sposobem zapisu funkcji. Powinno to zagwarantować możliwie największą czytelność. Przykładowo funkcję dzielenia całkowitego z resztą można by zapisać tak:`,
+		),
+	]),
+	new PreAtomBuilder(
+		{
+			...basePreAtomStyles,
+			display: "block",
+			fontSize: "1em",
+			marginBlock: "1em 1em",
+		},
+		[
+			new CodeAtomBuilder([
+				new TextAtomBuilder(
+					`(dividend) / (divisor) = [quotient] and [remainder]`,
+				),
+			]),
+		],
+	),
+	new PAtomBuilder({marginBlock: "1em 1em"}, [
+		new TextAtomBuilder(
+			`Mimo że parametrów są tu 4, to przeplatanie ich ze słowami i symbolami sprawia, że zapis jest czytelny i zrozumiały.`,
 		),
 	]),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [

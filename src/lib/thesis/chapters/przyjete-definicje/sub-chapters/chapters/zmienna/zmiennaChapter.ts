@@ -6,7 +6,7 @@ export const zmiennaChapter = [
 	new H3AtomBuilder("Zmienna (variable)"),
 	new PAtomBuilder({marginBlock: "1em 1em"}, [
 		new TextAtomBuilder(
-			"Przypisanie wartości do łańcucha znaków będącego nazwą zmiennej.",
+			"Zmienna to symboliczna nazwa, która reprezentuje jakąś wartość. Umożliwia wielokrotne odwoływanie się do tej wartości w kodzie źródłowym.",
 		),
 	]),
 ] as const satisfies readonly SupportedAtomBuilder[];
