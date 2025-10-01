@@ -1,6 +1,8 @@
 import type {WithMainFunctionFunctionsAbstractSyntaxTreeNode} from "../../../../../../../../../belve/abstract-syntax-tree-node/implementations/functions/implementations/with-main-function/WithMainFunctionFunctionsAbstractSyntaxTreeNode.ts";
+import {builtInFunctions} from "../../../../../../../../../instances/built-in-functions/builtInFunctions.ts";
 import {SuccessAbstractifyingState} from "../../SuccessAbstractifyingState.ts";
 import {busyExecutingStateTypeName} from "./executing-state/implementations/busy/type-name/busyExecutingStateTypeName.ts";
+import {doneExecutingStateTypeName} from "./executing-state/implementations/done/type-name/doneExecutingStateTypeName.ts";
 import {idleExecutingStateTypeName} from "./executing-state/implementations/idle/type-name/idleExecutingStateTypeName.ts";
 import type {SupportedExecutingState} from "./executing-state/supported/SupportedExecutingState.ts";
 import {withMainFunctionSuccessAbstractifyingStateSubTypeName} from "./sub-type-name/withMainFunctionSuccessAbstractifyingStateSubTypeName.ts";
@@ -22,7 +24,9 @@ export class WithMainFunctionSuccessAbstractifyingState extends SuccessAbstracti
 		void,
 		void
 	> {
-		const executingStates = this.executingState.generateEveryExecutingState();
+		const executingStates = this.executingState.generateEveryExecutingState(
+			this.functions.run(builtInFunctions),
+		);
 		for (const executingState of executingStates) {
 			const newState: WithMainFunctionSuccessAbstractifyingState =
 				new WithMainFunctionSuccessAbstractifyingState(
@@ -33,8 +37,13 @@ export class WithMainFunctionSuccessAbstractifyingState extends SuccessAbstracti
 		}
 	}
 	public run(): WithMainFunctionSuccessAbstractifyingState {
-		if (this.executingState.typeName === idleExecutingStateTypeName) {
-			const newExecutingState = this.executingState.run();
+		if (
+			this.executingState.typeName === idleExecutingStateTypeName
+			|| this.executingState.typeName === doneExecutingStateTypeName
+		) {
+			const newExecutingState = this.executingState.run(
+				this.functions.run(builtInFunctions),
+			);
 			const newState = new WithMainFunctionSuccessAbstractifyingState(
 				newExecutingState,
 				this.functions,

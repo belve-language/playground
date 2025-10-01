@@ -51,9 +51,8 @@ export class SuccessParsingState<
 				} else {
 					switch (abstractSourceCode.typeName) {
 						case withMainFunctionFunctionsAbstractSyntaxTreeNodeTypeName: {
-							const executingState: IdleExecutingState = new IdleExecutingState(
-								abstractSourceCode.run(builtInFunctions),
-							);
+							const executingState: IdleExecutingState =
+								new IdleExecutingState();
 							const abstractifyingState: WithMainFunctionSuccessAbstractifyingState =
 								new WithMainFunctionSuccessAbstractifyingState(
 									executingState,

@@ -14,30 +14,27 @@ import {idleExecutingStateTypeName} from "./type-name/idleExecutingStateTypeName
 export class IdleExecutingState extends ExecutingState<
 	typeof idleExecutingStateTypeName
 > {
-	public constructor(
-		generator: Generator<SupportedFunctionCallingResult, void, void>,
-	) {
+	public constructor() {
 		super(idleExecutingStateTypeName);
-		this.generator = generator;
 	}
-	public override *generateEveryExecutingState(): Generator<
+	public override *generateEveryExecutingState(
+		generator: Generator<SupportedFunctionCallingResult, void, void>,
+	): Generator<
 		BusyExecutingState | DoneExecutingState | IdleExecutingState,
 		void,
 		void
 	> {
 		yield this;
-		const deeperExecutingStates = this.run().generateEveryExecutingState();
+		const deeperExecutingStates =
+			this.run(generator).generateEveryExecutingState();
 		for (const deeperExecutingState of deeperExecutingStates) {
 			yield deeperExecutingState;
 		}
 	}
-	public readonly generator: Generator<
-		SupportedFunctionCallingResult,
-		void,
-		void
-	>;
-	public run(): BusyExecutingState | DoneExecutingState {
-		const result = this.generator.next();
+	public run(
+		generator: Generator<SupportedFunctionCallingResult, void, void>,
+	): BusyExecutingState | DoneExecutingState {
+		const result = generator.next();
 		if (result.done) {
 			const newState = new DoneExecutingState();
 			return newState;
@@ -47,7 +44,7 @@ export class IdleExecutingState extends ExecutingState<
 					switch (result.value.actionTypeName) {
 						case failureLogFunctionCallingResultActionTypeName: {
 							const newState = new BusyExecutingState(
-								this.generator,
+								generator,
 								new FailureHighlight(
 									result.value.availables,
 									result.value.node,
@@ -57,14 +54,14 @@ export class IdleExecutingState extends ExecutingState<
 						}
 						case stepLogFunctionCallingResultActionTypeName: {
 							const newState = new BusyExecutingState(
-								this.generator,
+								generator,
 								new StepHighlight(result.value.availables, result.value.node),
 							);
 							return newState;
 						}
 						case successLogFunctionCallingResultActionTypeName: {
 							const newState = new BusyExecutingState(
-								this.generator,
+								generator,
 								new SuccessHighlight(
 									result.value.availables,
 									result.value.node,
@@ -76,7 +73,7 @@ export class IdleExecutingState extends ExecutingState<
 					}
 				}
 				case returnFunctionCallingResultTypeName: {
-					const newState = new BusyExecutingState(this.generator, null);
+					const newState = new BusyExecutingState(generator, null);
 					return newState;
 				}
 			}
